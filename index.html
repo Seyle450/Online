@@ -1,26 +1,39 @@
 <!DOCTYPE html>
-<html lang="de"><head>
+<html lang="de">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Portfolio von Elyes Ferchichi — Web Developer mit Fokus auf Shopify und Frontend. Aus Bremen, offen für Praktikum oder Minijob.">
+<meta name="author" content="Elyes Ferchichi">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Elyes Ferchichi — Web Developer">
+<meta property="og:description" content="Web Developer mit Fokus auf Shopify & Frontend.">
+<meta property="og:image" content="Daten/Profil.JPEG">
+<meta name="twitter:card" content="summary_large_image">
+
 <title>Elyes Ferchichi — Web Developer</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="Daten/Profil.JPEG">
 <link rel="stylesheet" href="fonts.css">
-<script src="assets/image-slot.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="page">
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+<div class="page" id="main">
 
   <!-- HERO -->
-  <section class="hero" data-screen-label="01 Hero">
+  <section class="hero" data-screen-label="01 Hero" aria-labelledby="hero-title">
     <div class="hero-left">
-      <h1>ELYES<br>FERCHICHI</h1>
+      <h1 id="hero-title">ELYES<br>FERCHICHI</h1>
       <p class="tagline">Web Developer mit Fokus auf Shopify &amp; Frontend</p>
 
       <div class="contact-card">
-        <h3>Kontakt</h3>
+        <h2 class="contact-title">Kontakt</h2>
         <ul>
           <li><span class="lbl">E-Mail:</span> <a href="mailto:elyes.ferchichi@icloud.com">elyes.ferchichi@icloud.com</a></li>
           <li class="link"><a href="#">LinkedIn</a></li>
@@ -30,59 +43,59 @@
       </div>
 
       <div class="badge-row">
-        <div class="badge"><span class="dot blink_me"></span>Auf der Suche nach einem Minijob / Praktikum</div>
+        <div class="badge"><span class="dot blink_me" aria-hidden="true"></span>Auf der Suche nach einem Minijob / Praktikum</div>
         <div class="badge">Remote &amp; Bremen</div>
       </div>
     </div>
 
     <div class="portrait-wrap">
-      <img id="portrait" style="height: -webkit-fill-available;" src="Daten/Profil.JPEG" alt="Elyes Ferchichi">
+      <img class="portrait" src="Daten/Profil.JPEG" alt="Porträt von Elyes Ferchichi" width="280" height="392" fetchpriority="high" decoding="async">
     </div>
   </section>
 
-  <div class="divider"></div>
+  <div class="divider" role="presentation"></div>
 
   <!-- ABOUT -->
-  <section class="about" data-screen-label="02 Über mich">
-    <p><em>Hey,</em> Ich bin ein <em>17-jähriger</em> Schüler und <em>angehender Webentwickler</em> mit Fokus auf <em>Frontend</em> und <em>Shopify</em>. In den letzten Monaten habe ich durch ein Praktikum <em>praktische Erfahrung</em> in der Arbeit an echten E-Commerce-Projekten gesammelt und dabei vor allem an Frontend-Anpassungen, Features und Bugfixes gearbeitet.</p>
+  <section class="about" data-screen-label="02 Über mich" aria-label="Über mich">
+    <p><em>Hey,</em> Ich bin ein <em><span id="age" data-dob="2007-10-15">18</span>-jähriger</em> Schüler und <em>angehender Webentwickler</em> mit Fokus auf <em>Frontend</em> und <em>Shopify</em>. In den letzten Monaten habe ich durch ein Praktikum <em>praktische Erfahrung</em> in der Arbeit an echten E-Commerce-Projekten gesammelt und dabei vor allem an Frontend-Anpassungen, Features und Bugfixes gearbeitet.</p>
     <p>Ich arbeite mich schnell in neue Themen ein und lege Wert auf sauberen, verständlichen Code. Aktuell baue ich mein Portfolio weiter aus und suche nach einer Möglichkeit, als Minijobber im Bereich <em>Webentwicklung</em> weiter <em>praktische Erfahrung</em> zu sammeln.</p>
   </section>
 
-  <div class="divider"></div>
+  <div class="divider" role="presentation"></div>
 
   <!-- TECH STACK -->
-  <section data-screen-label="03 Tech Stack">
+  <section data-screen-label="03 Tech Stack" aria-labelledby="tech-title">
     <div class="section-head">
-      <h2>Tech Stack</h2>
+      <h2 id="tech-title">Tech Stack</h2>
       <span class="count">7 / TECHNOLOGIEN</span>
     </div>
     <div class="tech-block">
-      <div class="tech-pills">
-        <span class="pill">HTML</span>
-        <span class="pill">CSS</span>
-        <span class="pill">JavaScript</span>
-        <span class="pill">Liquid</span>
-        <span class="pill">Shopify</span>
-        <span class="pill">Python</span>
-        <span class="pill">KI</span>
-      </div>
+      <ul class="tech-pills">
+        <li class="pill">HTML</li>
+        <li class="pill">CSS</li>
+        <li class="pill">JavaScript</li>
+        <li class="pill">Liquid</li>
+        <li class="pill">Shopify</li>
+        <li class="pill">Python</li>
+        <li class="pill">KI</li>
+      </ul>
     </div>
   </section>
 
-  <div class="divider"></div>
+  <div class="divider" role="presentation"></div>
 
   <!-- PROJECTS -->
-  <section data-screen-label="03 Projekte"> 
+  <section data-screen-label="04 Projekte" aria-labelledby="projects-title">
     <div class="section-head">
-      <h2>Projekte</h2>
+      <h2 id="projects-title">Projekte</h2>
       <span class="count">3 LIVE · MEHR FOLGEN</span>
     </div>
 
     <div class="projects-wrap">
-     <div class="projects-rail" id="projectsRail">
+     <div class="projects-rail" id="projectsRail" tabindex="0" role="region" aria-label="Projekte – horizontal scrollbar">
       <article class="project-card">
         <div class="project-shot">
-        <img id="portrait" style="width: -webkit-fill-available;" src="Daten/Bloom Naturals.png" alt="Elyes Ferchichi">
+          <img class="project-img" src="Daten/Bloom Naturals.png" alt="Screenshot der Bloom Naturals Website" loading="lazy" decoding="async">
         </div>
         <div class="project-meta">
           <div>
@@ -92,15 +105,15 @@
           <span class="date">März 2026</span>
         </div>
         <p class="project-desc">Shopify-Theme-Anpassungen für eine Natural-Supplements-Marke. Custom Sections, Performance-Optimierung und A/B-Testing der Produktseiten.</p>
-        <div class="project-tags">
-          <span>Shopify</span><span>Liquid</span><span>CSS</span>
-        </div>
-        <a class="project-cta" href="https://www.bloomnaturals.de" target="_blank">Zur Website →</a>
+        <ul class="project-tags">
+          <li>Shopify</li><li>Liquid</li><li>CSS</li>
+        </ul>
+        <a class="project-cta" href="https://www.bloomnaturals.de" target="_blank" rel="noopener noreferrer">Zur Website →</a>
       </article>
 
       <article class="project-card">
         <div class="project-shot">
-        <img id="portrait" style="width: -webkit-fill-available;" src="Daten/Sportnahrung Wehle.png" alt="Elyes Ferchichi">
+          <img class="project-img" src="Daten/Sportnahrung Wehle.png" alt="Screenshot der Sportnahrung Wehle Website" loading="lazy" decoding="async">
         </div>
         <div class="project-meta">
           <div>
@@ -110,15 +123,15 @@
           <span class="date">April 2026</span>
         </div>
         <p class="project-desc">Landing-Page-Redesign und Conversion-Optimierung für eine Collagen-Marke. Custom Hero, neue Produkt-Komponenten und Mobile-First-Layout.</p>
-        <div class="project-tags">
-          <span>Shopify</span><span>JavaScript</span><span>Liquid</span>
-        </div>
-        <a class="project-cta" href="https://sportnahrung-wehle.de" target="_blank">Zur Website →</a>
+        <ul class="project-tags">
+          <li>Shopify</li><li>JavaScript</li><li>Liquid</li>
+        </ul>
+        <a class="project-cta" href="https://sportnahrung-wehle.de" target="_blank" rel="noopener noreferrer">Zur Website →</a>
       </article>
 
       <article class="project-card">
         <div class="project-shot">
-        <img id="portrait" style="width: -webkit-fill-available;" src="Daten/Ostfriesenpfoten.png" alt="Elyes Ferchichi">
+          <img class="project-img" src="Daten/Ostfriesenpfoten.png" alt="Screenshot der Ostfriesenpfoten Website" loading="lazy" decoding="async">
         </div>
         <div class="project-meta">
           <div>
@@ -128,15 +141,13 @@
           <span class="date">Februar 2025</span>
         </div>
         <p class="project-desc">Landing-Page-Redesign und Conversion-Optimierung für eine Collagen-Marke. Custom Hero, neue Produkt-Komponenten und Mobile-First-Layout.</p>
-        <div class="project-tags">
-          <span>Shopify</span><span>JavaScript</span><span>Liquid</span>
-        </div>
-        <a class="project-cta" href="https://ostfriesenpfoten.de">Zur Website →</a>
+        <ul class="project-tags">
+          <li>Shopify</li><li>JavaScript</li><li>Liquid</li>
+        </ul>
+        <a class="project-cta" href="https://ostfriesenpfoten.de" target="_blank" rel="noopener noreferrer">Zur Website →</a>
       </article>
 
-      
-
-      <article class="project-card empty">
+      <article class="project-card empty" aria-hidden="true">
         <div class="glyph">·</div>
         <h3>Coming Soon</h3>
         <p>Mehr Projekte folgen.</p>
@@ -144,33 +155,33 @@
      </div>
 
      <div class="rail-nav">
-       <p class="projects-note" style="margin: 0; text-align: left;">Diese Liste wächst — neue Cases werden laufend ergänzt.</p>
-       <div style="display: flex; align-items: center;">
-         <div class="rail-progress"><span id="railFill"></span></div>
-         <span class="rail-count" id="railCount">01 / 05</span>
-         <div class="rail-arrows" style="margin-left: 12px;">
-           <button class="rail-btn" id="railPrev" aria-label="Vorheriges Projekt">‹</button>
-           <button class="rail-btn" id="railNext" aria-label="Nächstes Projekt">›</button>
+       <p class="projects-note">Diese Liste wächst — neue Cases werden laufend ergänzt.</p>
+       <div class="rail-controls">
+         <div class="rail-progress" aria-hidden="true"><span id="railFill"></span></div>
+         <span class="rail-count" id="railCount" aria-live="polite">01 / 04</span>
+         <div class="rail-arrows">
+           <button type="button" class="rail-btn" id="railPrev" aria-label="Vorheriges Projekt">‹</button>
+           <button type="button" class="rail-btn" id="railNext" aria-label="Nächstes Projekt">›</button>
          </div>
        </div>
      </div>
     </div>
   </section>
 
-  <div class="divider"></div>
+  <div class="divider" role="presentation"></div>
 
   <!-- EXPERIENCE -->
-  <section data-screen-label="05 Werdegang">
+  <section data-screen-label="05 Werdegang" aria-labelledby="cv-title">
     <div class="section-head">
-      <h2>Werdegang</h2>
+      <h2 id="cv-title">Werdegang</h2>
       <span class="count">4 / STATIONEN</span>
     </div>
 
-    <div class="timeline">
-      <div class="tl-item">
+    <ol class="timeline">
+      <li class="tl-item">
         <div class="tl-head">
           <span class="company">Perlease GmbH</span>
-          <span class="line"></span>
+          <span class="line" aria-hidden="true"></span>
           <span class="date">11.2024 – 02.2026</span>
         </div>
         <div class="tl-role">SERVICEKRAFT</div>
@@ -178,27 +189,27 @@
           <li>Event-Aufbau &amp; Logistik</li>
           <li>Gastronomie in Hotels &amp; Restaurants</li>
         </ul>
-      </div>
+      </li>
 
-      <div class="tl-item">
+      <li class="tl-item">
         <div class="tl-head">
           <span class="company">Ekom7</span>
-          <span class="line"></span>
+          <span class="line" aria-hidden="true"></span>
           <span class="date">11.2024 – 03.2025</span>
         </div>
         <div class="tl-role">PRAKTIKANT ALS WEBENTWICKLER</div>
         <ul class="tl-bullets">
-          <li>Shopify Backend & Frontend</li>
-          <li>Entwicklung individueller Blöcke, Sections & Liquid</li>
-          <li> Conversion-optimierte Gestaltung von Produkt- und Kategorieseiten</li>
-          <li> Anpassungen an Produkten, Unterseiten und dem Theme im Shopify Backend</li>
+          <li>Shopify Backend &amp; Frontend</li>
+          <li>Entwicklung individueller Blöcke, Sections &amp; Liquid</li>
+          <li>Conversion-optimierte Gestaltung von Produkt- und Kategorieseiten</li>
+          <li>Anpassungen an Produkten, Unterseiten und dem Theme im Shopify Backend</li>
         </ul>
-      </div>
+      </li>
 
-      <div class="tl-item">
+      <li class="tl-item">
         <div class="tl-head">
           <span class="company">Codext GmbH</span>
-          <span class="line"></span>
+          <span class="line" aria-hidden="true"></span>
           <span class="date">02.2026 – 05.2026</span>
         </div>
         <div class="tl-role">PRAKTIKANT ALS WEBENTWICKLER</div>
@@ -207,31 +218,31 @@
           <li>Optimierung von E-Commerce-Komponenten</li>
           <li>Technische Optimierung &amp; Performance</li>
         </ul>
-      </div>
+      </li>
 
-      <div class="tl-item">
+      <li class="tl-item">
         <div class="tl-head">
           <span class="company">Pistachio Grand Café</span>
-          <span class="line"></span>
+          <span class="line" aria-hidden="true"></span>
           <span class="date">02.2026 – <strong>Jetzt</strong></span>
         </div>
         <div class="tl-role">KELLNER</div>
         <ul class="tl-bullets">
           <li>Kundenempfang und Bedienung</li>
         </ul>
-      </div>
-    </div>
+      </li>
+    </ol>
   </section>
 
-  <div class="divider"></div>
+  <div class="divider" role="presentation"></div>
 
   <!-- DOCUMENTS -->
-  <section data-screen-label="06 Praktikumsbescheinigungen">
+  <section data-screen-label="06 Praktikumsbescheinigungen" aria-labelledby="docs-title">
     <div class="docs-block">
-      <div class="label">Praktikumsbescheinigung</div>
+      <h2 id="docs-title" class="label">Praktikumsbescheinigung</h2>
       <div class="docs-grid">
         <a class="doc-btn" href="Praktikum.html">Codext GmbH</a>
-        <a class="doc-btn" href="Daten/Praktikumsbescheinigung als Webentwickler bei Ekom7.pdf">Ekom UG</a>
+        <a class="doc-btn" href="Daten/Praktikumsbescheinigung als Webentwickler bei Ekom7.pdf" target="_blank" rel="noopener noreferrer">Ekom UG</a>
       </div>
     </div>
   </section>
@@ -243,7 +254,6 @@
   </footer>
 
 </div>
-<script src="script.js"></script>
-
-
-</body></html>
+<script src="script.js" defer></script>
+</body>
+</html>
