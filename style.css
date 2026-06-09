@@ -66,6 +66,7 @@ body::before { animation: bgDrift 18s ease-in-out infinite; }
   }
   .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
 }
+
 :root {
     --bg: #000000;
     --surface: #141414;
@@ -624,3 +625,8 @@ body::before { animation: bgDrift 18s ease-in-out infinite; }
     .contact-card { padding: 18px; }
     .docs-block { padding: 20px; }
   }
+  img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
