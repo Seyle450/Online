@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lokma Lovers — Frische Lokma & Desserts · Bremen</title>
+<link rel="icon" href="assets/logo.jpg">
+<meta name="description" content="Lokma Lovers Bremen — Frische Lokma, Desserts & mobiler Wagen. Knusprig frittiert, süß belegt — für jede Feier, jeden Markt, jeden Hunger.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  :root {
+    --accent:#c8860a;
+    --accent-ink:#ffffff;
+  }
+  .ph-hero {
+    width:100%;
+    height:clamp(200px,28vw,340px);
+    background:var(--paper-2);
+    background-image:repeating-linear-gradient(135deg,transparent 0 11px,rgba(11,11,11,.045) 11px 12px);
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    margin-top:32px;
+    border-radius:0;
+    overflow:hidden;
+  }
+  .ph-label {
+    font-family:'Spline Sans Mono','SFMono-Regular',ui-monospace,monospace;
+    font-size:12px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;
+    background:rgba(255,255,255,.85);padding:8px 14px;border:1px solid var(--line-strong);
+  }
+  .ph-about {
+    width:100%;height:100%;
+    background:var(--paper-3);
+    background-image:repeating-linear-gradient(135deg,transparent 0 11px,rgba(11,11,11,.045) 11px 12px);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ph-wagen {
+    width:100%;height:100%;
+    background:#1a1a1a;
+    background-image:repeating-linear-gradient(135deg,transparent 0 11px,rgba(255,255,255,.05) 11px 12px);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .ph-wagen .ph-label{background:rgba(0,0,0,.5);color:#bbb;border-color:#333;}
+  .logo-img {
+    height:40px;
+    width:40px;
+    border-radius:50%;
+    object-fit:cover;
+  }
+  .logo-wrap {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Anton',sans-serif;
+    font-size:20px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .ftr .logo-wrap {
+    height:auto;
+    margin-bottom:22px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ Header ============ -->
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-inner">
+    <a href="#top" data-scroll aria-label="Lokma Lovers — Startseite">
+      <div class="logo-wrap">
+        <img class="logo-img" src="assets/logo.jpg" alt="Lokma Lovers">
+        <span>Lokma Lovers</span>
+      </div>
+    </a>
+    <nav class="nav">
+      <a href="#about" data-scroll>Über uns</a>
+      <a href="#dishes" data-scroll>Menü</a>
+      <a href="#services" data-scroll>Catering</a>
+      <a href="#wagen" data-scroll>Wagen</a>
+      <a href="#gallery" data-scroll>Galerie</a>
+      <a href="#contact" data-scroll>Kontakt</a>
+    </nav>
+    <div class="hdr-cta">
+      <a class="btn btn--solid" href="#contact" data-scroll>Wagen anfragen
+        <svg class="arrow" width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button class="burger" aria-label="Menü" aria-expanded="false" id="burger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" data-scroll>Über uns</a>
+  <a href="#dishes" data-scroll>Menü</a>
+  <a href="#services" data-scroll>Catering</a>
+  <a href="#wagen" data-scroll>Wagen</a>
+  <a href="#gallery" data-scroll>Galerie</a>
+  <a href="#contact" data-scroll>Kontakt</a>
+  <a class="btn btn--solid btn--block" href="#contact" data-scroll>Wagen anfragen</a>
+</div>
+
+<main>
+
+  <!-- ============ Hero ============ -->
+  <section class="hero hero-typo" id="top">
+    <div class="wrap">
+      <p class="kicker">Frische Lokma & Desserts · Bremen</p>
+      <h1 class="display giant" style="margin-top:18px">Lokma<br><span class="ln2">Lovers</span></h1>
+      <div class="subrow">
+        <p class="lead" style="margin:0">Knusprig frittierte Lokma mit frischen Toppings — für eure Feier, euer Fest, euren Süßhunger. Jetzt in Bremen.</p>
+        <div class="cta-row" style="margin-top:0">
+          <a class="btn btn--solid" href="#contact" data-scroll>Wagen anfragen
+            <svg class="arrow" width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="#dishes" data-scroll>Menü ansehen</a>
+        </div>
+      </div>
+      <img src="assets/hero.png" alt="Lokma Lovers — Frische Lokma & Desserts" class="ph-hero" style="margin-top:32px; object-fit:cover;object-position: 90% 0%">
+    </div>
+  </section>
+
+  <!-- ============ Marquee ============ -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Frische Lokma<span class="dot"></span></span><span>Hausgemachte Saucen<span class="dot"></span></span><span>Individuelle Toppings<span class="dot"></span></span><span>Mobiler Wagen<span class="dot"></span></span><span>Desserts<span class="dot"></span></span><span>Catering<span class="dot"></span></span><span>Bremen<span class="dot"></span></span>
+      <span>Frische Lokma<span class="dot"></span></span><span>Hausgemachte Saucen<span class="dot"></span></span><span>Individuelle Toppings<span class="dot"></span></span><span>Mobiler Wagen<span class="dot"></span></span><span>Desserts<span class="dot"></span></span><span>Catering<span class="dot"></span></span><span>Bremen<span class="dot"></span></span>
+    </div>
+  </div>
+
+  <!-- ============ About ============ -->
+  <section class="section" id="about">
+    <div class="wrap about-grid">
+      <div class="reveal about-media">
+        <img src="assets/Team.png" alt="Wir sind Lokma Lovers — frische Lokma, Desserts & mobiler Wagen in Bremen">
+      </div>
+      <div class="reveal">
+        <div class="eyebrow-row"><span class="rule"></span><span class="kicker">Über uns</span></div>
+        <h2 class="section-h">Lokma —<br>frisch für euch.</h2>
+        <p class="lead" style="margin-top:24px">
+          Lokma Lovers wurde mit einer einfachen Idee gegründet: <strong>die besten Lokma Bremens</strong> — frisch frittiert, großzügig belegt, ganz nach eurem Geschmack.
+        </p>
+        <p style="color:var(--muted);margin-top:16px">
+          Was als Leidenschaft für dieses traditionelle türkische Gebäck begann, ist heute ein fester Name in Bremens Dessert-Szene. Ob im Lokal in der Hemelinger Heerstraße oder mit unserem mobilen Wagen direkt bei euch — wir bringen Süßes dorthin, wo ihr seid.
+        </p>
+        <div class="stats">
+          <div class="stat"><b>2024</b><span>Gegründet</span></div>
+          <div class="stat"><b>2.9K</b><span>Follower</span></div>
+          <div class="stat"><b>100%</b><span>Frisch</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Menü / Speisekarte ============ -->
+  <section class="section" id="dishes" style="background:var(--paper-2)">
+    <div class="wrap">
+      <div class="reveal" style="max-width:760px">
+        <div class="eyebrow-row"><span class="rule"></span><span class="kicker">Speisekarte</span></div>
+        <h2 class="section-h">Unsere Karte.</h2>
+        <p class="lead" style="margin-top:20px">Frisch frittierte Lokma — knusprig außen, weich innen. Zusammengestellt ganz nach eurem Geschmack.</p>
+      </div>
+      <div class="menu-grid reveal">
+
+        <div class="menu-cat">
+          <div class="menu-cat-head"><h3>Lokma</h3><span class="menu-note">Täglich frisch</span></div>
+          <ul class="menu-list">
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Classic Lokma</span><span class="mi-dots"></span><span class="mi-price">4,90 €</span></div><span class="mi-sub">Honig &amp; Zimt</span></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Schoko Lokma</span><span class="mi-dots"></span><span class="mi-price">5,50 €</span></div><span class="mi-sub">Nutella, Schokosauce</span></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Strawberry Lokma</span><span class="mi-dots"></span><span class="mi-price">5,50 €</span></div><span class="mi-sub">Erdbeersauce, frische Erdbeeren</span></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Caramel Lokma</span><span class="mi-dots"></span><span class="mi-price">5,90 €</span></div><span class="mi-sub">Karamell, gesalzene Butter</span></li>
+          </ul>
+        </div>
+
+        <div class="menu-cat">
+          <div class="menu-cat-head"><h3>Premium Lokma</h3><span class="menu-note">Signature</span></div>
+          <ul class="menu-list">
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Lovers Special</span><span class="mi-dots"></span><span class="mi-price">6,90 €</span></div><span class="mi-sub">Nutella, Erdbeeren, Kokos</span></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Pistachio Dream</span><span class="mi-dots"></span><span class="mi-price">6,90 €</span></div><span class="mi-sub">Pistaziencrème, zerstoßene Pistazien</span></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Niagara</span><span class="mi-dots"></span><span class="mi-price">7,50 €</span></div><span class="mi-sub">Doppel-Sauce, Streuer-Topping nach Wahl</span></li>
+          </ul>
+        </div>
+
+        <div class="menu-cat span-row">
+          <div class="menu-cat-head"><h3>Toppings & Extras</h3></div>
+          <ul class="menu-list">
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Extra Topping</span><span class="mi-dots"></span><span class="mi-price">0,80 €</span></div><span class="mi-sub">Kokosraspel · Crushed Oreo · Zuckerstreusel · Schokoraspel</span></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Extra Sauce</span><span class="mi-dots"></span><span class="mi-price">0,80 €</span></div><span class="mi-sub">Schoko · Karamel · Erdbeere · Honig · Pistazie</span></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Frische Früchte</span><span class="mi-dots"></span><span class="mi-price">1,50 €</span></div><span class="mi-sub">Erdbeeren · Banane · Himbeeren</span></li>
+          </ul>
+        </div>
+
+        <div class="menu-cat span-row">
+          <div class="menu-cat-head"><h3>Getränke</h3></div>
+          <ul class="menu-list">
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Softdrinks</span><span class="mi-dots"></span><span class="mi-price">2,90 €</span></div></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Ayran</span><span class="mi-dots"></span><span class="mi-price">2,00 €</span></div></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Wasser</span><span class="mi-dots"></span><span class="mi-price">1,50 €</span></div></li>
+            <li class="menu-item"><div class="mi-row"><span class="mi-name">Kaffee</span><span class="mi-dots"></span><span class="mi-price">2,50 €</span></div></li>
+          </ul>
+        </div>
+
+        <div class="menu-cat span-row sauces">
+          <div class="menu-cat-head"><h3>Alles inklusive</h3></div>
+          <div class="sauce-row">
+            <span class="sauce-chip">Vegetarisch</span>
+            <span class="sauce-chip">Vegane Optionen</span>
+            <span class="sauce-chip">Kartenzahlung</span>
+            <span class="sauce-chip">NFC-Zahlung</span>
+            <span class="sauce-chip">Take-away</span>
+            <span class="sauce-chip">Hundefreundlich</span>
+          </div>
+        </div>
+
+      </div>
+      <p class="reveal" style="margin-top:22px;font-size:13px;color:var(--muted);font-family:'Spline Sans Mono',monospace">Preise laut Aushang · Allergene &amp; Zusatzstoffe auf Anfrage.</p>
+    </div>
+  </section>
+
+  <!-- ============ Services / Catering ============ -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="reveal" style="max-width:760px">
+        <div class="eyebrow-row"><span class="rule"></span><span class="kicker">Catering &amp; Events</span></div>
+        <h2 class="section-h">Wir machen euer<br>Event süßer.</h2>
+        <p class="lead" style="margin-top:20px">Von der kleinen Geburtstagsfeier bis zum großen Firmenevent — Lokma Lovers bringt frische Lokma direkt zu euch.</p>
+      </div>
+      <div class="serv-grid reveal">
+        <div class="serv">
+          <div class="num">01</div>
+          <h3>Privat &amp; Feiern</h3>
+          <p>Geburtstag, Hochzeit, Familienfeier — wir kommen mit unserem Wagen und sorgen für süße Momente.</p>
+          <ul><li>Geburtstage &amp; Familienfeste</li><li>Hochzeiten &amp; Empfänge</li><li>Individuelle Menüplanung</li></ul>
+        </div>
+        <div class="serv">
+          <div class="num">02</div>
+          <h3>Firmen &amp; Events</h3>
+          <p>Firmenevent, Messe, Team-Special. Frische Lokma als Highlight für eure Gäste — unvergesslich süß.</p>
+          <ul><li>Firmen- &amp; Teamevents</li><li>Messen &amp; Promotions</li><li>Komplett-Service inkl. Personal</li></ul>
+        </div>
+        <div class="serv">
+          <div class="num">03</div>
+          <h3>Märkte &amp; Festivals</h3>
+          <p>Straßenfeste, Pop-ups und Märkte in und um Bremen — bucht unseren Wagen für euren Termin.</p>
+          <ul><li>Märkte &amp; Streetfood-Events</li><li>Bar &amp; Kartenzahlung</li><li>Ganzjährig buchbar</li></ul>
+        </div>
+      </div>
+      <div class="reveal" style="margin-top:40px;display:flex;justify-content:center">
+        <a class="btn btn--solid" href="#contact" data-scroll>Unverbindlich anfragen
+          <svg class="arrow" width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Wagen (dark) ============ -->
+  <section class="section dark-sec" id="wagen">
+    <div class="wrap fest-grid">
+      <div class="reveal">
+        <div class="eyebrow-row"><span class="rule" style="background:#444"></span><span class="kicker">Mobiler Wagen · Kommt zu euch</span></div>
+        <h2 class="section-h">Unser Wagen<br>rollt zu euch.</h2>
+        <p class="lead" style="margin-top:22px">Wir bringen Lokma dorthin, wo ihr seid — unser mobiler Wagen lässt sich für eure Feier, euer Festival oder euren Marktauftritt buchen. Frische Lokma, echtes Streetfood-Feeling, überall in Bremen.</p>
+        <div class="fest-list">
+          <div class="fest-row"><div><div class="ev">Privates Event</div><div class="loc">Euer Standort · Bremen & Umgebung</div></div><span class="date">AUF ANFRAGE</span></div>
+          <div class="fest-row"><div><div class="ev">Straßenfest &amp; Markt</div><div class="loc">Bremen · Walle &amp; Umgebung</div></div><span class="date">AUF ANFRAGE</span></div>
+          <div class="fest-row"><div><div class="ev">Firmen- &amp; Teamevents</div><div class="loc">Euer Standort</div></div><span class="date">GANZJÄHRIG</span></div>
+          <div class="fest-row"><div><div class="ev">Hochzeiten &amp; Feiern</div><div class="loc">Euer Standort</div></div><span class="date">AUF ANFRAGE</span></div>
+        </div>
+      </div>
+      <div class="reveal fest-media">
+        <img src="assets/Wagen.png" alt="Unser mobiler Wagen">
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Gallery (Instagram) ============ -->
+  <section class="section" id="gallery" style="background:var(--paper-2)">
+    <div class="wrap">
+      <div class="reveal" style="max-width:720px">
+        <div class="eyebrow-row"><span class="rule"></span><span class="kicker">Galerie · @lokma.lovers</span></div>
+        <h2 class="section-h">Sieht so süß aus,<br>wie es schmeckt.</h2>
+        <p class="lead" style="margin-top:20px">Frisch von unserem Instagram — Lokma-Momente, Toppings und Eindrücke direkt aus der Küche.</p>
+      </div>
+      <div class="ig-grid reveal">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DQSAJ0tiP5b/?utm_source=ig_embed&utm_campaign=loading" data-instgrm-version="14"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DVS9-xPiEKe/?utm_source=ig_embed&utm_campaign=loading" data-instgrm-version="14"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DDrlL7tsVMQ/?utm_source=ig_embed&utm_campaign=loading" data-instgrm-version="14"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DWFkHE8iBF3/?utm_source=ig_embed&utm_campaign=loading" data-instgrm-version="14"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DGvvLEqtTms/?utm_source=ig_embed&utm_campaign=loading" data-instgrm-version="14"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DBpteyHINw0/?utm_source=ig_embed&utm_campaign=loading" data-instgrm-version="14"></blockquote>
+      </div>
+      <div class="reveal" style="margin-top:40px;display:flex;justify-content:center">
+        <a class="btn btn--ghost" href="https://www.instagram.com/lokma.lovers/" target="_blank" rel="noopener">Mehr auf Instagram
+          <svg class="arrow" width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Reviews ============ -->
+  <section class="section" id="reviews">
+    <div class="wrap">
+      <div class="rev-top reveal">
+        <div style="max-width:620px">
+          <div class="eyebrow-row"><span class="rule"></span><span class="kicker">Was Gäste sagen</span></div>
+          <h2 class="section-h">Geliebt in Bremen<br>— und weit darüber.</h2>
+        </div>
+        <div style="text-align:right">
+          <div class="display" style="font-size:clamp(48px,7vw,86px)">8.4</div>
+          <div class="kicker" style="margin-top:6px">von 10 · coolibri</div>
+        </div>
+      </div>
+      <div class="rev-grid">
+        <figure class="rev reveal">
+          <div class="stars">★★★★★</div>
+          <blockquote>„Einmal probieren reicht, um den Geschmack nie zu vergessen. Einfach unglaublich!"</blockquote>
+          <figcaption class="who"><span class="ava">S</span><span><b>Sara K.</b><span>via Instagram</span></span></figcaption>
+        </figure>
+        <figure class="rev reveal" style="transition-delay:80ms">
+          <div class="stars">★★★★★</div>
+          <blockquote>„Bestes Dessert in Bremen! Die Lokma sind frisch, knusprig und die Auswahl an Toppings ist riesig."</blockquote>
+          <figcaption class="who"><span class="ava">M</span><span><b>Mehmet A.</b><span>Google Rezension</span></span></figcaption>
+        </figure>
+        <figure class="rev reveal" style="transition-delay:160ms">
+          <div class="stars">★★★★★</div>
+          <blockquote>„Der Wagen war das Highlight auf unserer Hochzeit — alle Gäste waren begeistert. Absolute Empfehlung!"</blockquote>
+          <figcaption class="who"><span class="ava">L</span><span><b>Lena &amp; Kemal</b><span>Hochzeit 2025</span></span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Hours + Map ============ -->
+  <section class="section" id="hours">
+    <div class="wrap">
+      <div class="reveal" style="max-width:720px;margin-bottom:44px">
+        <div class="eyebrow-row"><span class="rule"></span><span class="kicker">Öffnungszeiten &amp; Standort</span></div>
+        <h2 class="section-h">Kommt vorbei.</h2>
+      </div>
+      <div class="info-grid reveal">
+        <div class="hours-col">
+          <span class="kicker">Geöffnet</span>
+          <table class="hours-tbl" id="hours-tbl">
+            <tbody>
+              <tr data-day="0"><td>Montag</td><td>16:00 – 22:00</td></tr>
+              <tr data-day="1"><td>Dienstag</td><td>16:00 – 22:00</td></tr>
+              <tr data-day="2"><td>Mittwoch</td><td>16:00 – 22:00</td></tr>
+              <tr data-day="3"><td>Donnerstag</td><td>16:00 – 22:00</td></tr>
+              <tr data-day="4"><td>Freitag</td><td>16:00 – 23:00</td></tr>
+              <tr data-day="5"><td>Samstag</td><td>16:00 – 23:00</td></tr>
+              <tr data-day="6"><td>Sonntag</td><td>16:00 – 22:00</td></tr>
+            </tbody>
+          </table>
+          <div class="addr-block">
+            <span class="l">Adresse</span>
+            <span style="font-size:18px;font-weight:600">Hemelinger Heerstraße 1, 28309 Bremen</span>
+            <a class="route" href="https://www.google.com/maps/dir/?api=1&destination=Hemelinger+Heerstra%C3%9Fe+1+Bremen" target="_blank" rel="noopener">Route planen →</a>
+          </div>
+        </div>
+        <div class="map-col">
+          <iframe
+            title="Standort Lokma Lovers"
+            loading="lazy"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=8.8550%2C53.0490%2C8.8750%2C53.0590&layer=mapnik&marker=53.0540%2C8.8650"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Contact (dark) ============ -->
+  <section class="section dark-sec" id="contact">
+    <div class="wrap contact-grid">
+      <div class="contact-side reveal">
+        <div class="eyebrow-row"><span class="rule" style="background:#444"></span><span class="kicker">Kontakt &amp; Anfrage</span></div>
+        <h2 class="section-h">Lasst uns euer<br>Event planen.</h2>
+        <p class="lead" style="margin-top:20px">Erzählt uns von eurem Anlass — wir melden uns mit einem unverbindlichen Angebot für unseren Wagen.</p>
+        <div style="margin-top:30px">
+          <div class="ci"><span class="ic">✆</span><span><span class="l">Telefon</span><a href="tel:+4915205241566">01520 5241566</a></span></div>
+          <div class="ci"><span class="ic">◎</span><span><span class="l">Instagram</span><a href="https://www.instagram.com/lokma.lovers/" target="_blank" rel="noopener">@lokma.lovers</a></span></div>
+          <div class="ci"><span class="ic">◷</span><span><span class="l">Erreichbar</span><span class="v">Mo – So · ab 16:00 Uhr</span></span></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <form id="contact-form" novalidate>
+          <div class="row2">
+            <div class="field" data-field="name">
+              <label>Name *</label>
+              <input name="name" placeholder="Euer Name">
+              <span class="msg"></span>
+            </div>
+            <div class="field" data-field="email">
+              <label>E-Mail *</label>
+              <input name="email" placeholder="name@mail.de">
+              <span class="msg"></span>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label>Telefon</label>
+              <input name="phone" placeholder="Optional">
+            </div>
+            <div class="field">
+              <label>Anliegen</label>
+              <select name="subject">
+                <option>Wagen buchen</option>
+                <option>Catering-Anfrage</option>
+                <option>Privates Event</option>
+                <option>Firmenevent</option>
+                <option>Markt / Festival</option>
+                <option>Sonstiges</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" data-field="message">
+            <label>Nachricht *</label>
+            <textarea name="message" rows="4" placeholder="Anlass, Datum, Gästezahl …" style="resize:vertical"></textarea>
+            <span class="msg"></span>
+          </div>
+          <button type="submit" class="btn btn--solid btn--block" style="background:#fff;color:#0b0b0b;border-color:#fff;margin-top:6px">Anfrage senden
+            <svg class="arrow" width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true"><path d="M1 6h13M9 1l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
+        <div class="form-ok" id="form-ok" style="display:none">
+          <p class="big">Danke!</p>
+          <p class="sub">Eure Nachricht ist bei uns angekommen. Wir melden uns so schnell wie möglich bei euch.</p>
+          <button class="btn btn--lightghost" style="margin-top:24px" id="form-reset">Neue Nachricht</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ Footer ============ -->
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-top">
+      <div>
+        <div class="logo-wrap ftr-logo" style="margin-bottom:22px">
+          <img class="logo-img" src="assets/logo.jpg" alt="Lokma Lovers">
+          <span>Lokma Lovers</span>
+        </div>
+        <p style="color:#9a9a9a;max-width:32ch;margin-top:0">Frische Lokma, Desserts &amp; mobiler Wagen aus Bremen. Knusprig frittiert — für jeden Anlass.</p>
+      </div>
+      <div>
+        <h4>Entdecken</h4>
+        <ul>
+          <li><a href="#about" data-scroll>Über uns</a></li>
+          <li><a href="#dishes" data-scroll>Menü</a></li>
+          <li><a href="#services" data-scroll>Catering</a></li>
+          <li><a href="#wagen" data-scroll>Wagen</a></li>
+          <li><a href="#gallery" data-scroll>Galerie</a></li>
+          <li><a href="#contact" data-scroll>Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kontakt</h4>
+        <ul>
+          <li><a href="tel:+4915205241566">01520 5241566</a></li>
+          <li><a href="https://www.instagram.com/lokma.lovers/" target="_blank" rel="noopener">@lokma.lovers</a></li>
+          <li style="color:#9a9a9a">Hemelinger Heerstraße 1<br>28309 Bremen</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ftr-bottom">
+      <span>© <span id="year"></span> Lokma Lovers Bremen</span>
+      <span>Bar &amp; Kartenzahlung · Catering · Mobiler Wagen</span>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script async src="https://www.instagram.com/embed.js"></script>
+</body>
+</html>
