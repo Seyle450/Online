@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>HSB STARSCAPE — Hochschule Bremen</title>
+  <script src="i18n.js" defer></script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="s-logo">
+    <span class="s-logo-name">HSB STARSCAPE</span>
+    <span class="s-logo-short">HSB</span>
+    <span class="s-logo-sub">Hochschule Bremen · STARS EU</span>
+  </a>
+  <button class="sidebar-collapse-btn" id="collapseBtn" title="Collapse sidebar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
+  </button>
+  <nav class="s-nav">
+    <div class="s-label" data-i18n="label_main">Main</div>
+    <a href="index.html" class="s-link active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span data-i18n="nav_home">Home</span>
+    </a>
+    <a href="ask.html" class="s-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+      <span data-i18n="bc_ask">Ask Questions</span>
+    </a>
+    <a href="phd.html" class="s-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+      <span data-i18n="bc_phd">PhD Cluster</span>
+    </a>
+    <a href="activities.html" class="s-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      <span data-i18n="bc_activities">Activities</span>
+    </a>
+    <a href="spaces.html" class="s-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+      <span data-i18n="bc_spaces">Book Spaces</span>
+    </a>
+    <div class="s-label" style="margin-top:.5rem;" data-i18n="nav_network">Network</div>
+    <a href="about.html" class="s-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      <span data-i18n="nav_about">About STARS EU</span>
+    </a>
+    <a href="network.html" class="s-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"></circle><circle cx="19" cy="18" r="3"></circle><circle cx="5" cy="18" r="3"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="12" y1="16" x2="19" y2="15.5"></line><line x1="12" y1="16" x2="5" y2="15.5"></line></svg>
+      <span data-i18n="nav_network">Network</span>
+    </a>
+  </nav>
+  <div class="s-bottom">
+    <a href="signin.html" class="s-user">
+      <div class="s-avatar">G</div>
+      <div>
+        <span class="s-uname" data-i18n="profile_guest">Guest User</span>
+        <span class="s-urole" data-i18n="profile_role">Sign in to continue</span>
+      </div>
+      <svg style="width:15px;height:15px;color:rgba(255,255,255,.4);margin-left:auto;flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+  </div>
+</aside>
+
+<div class="sidebar-overlay" id="overlay"></div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="topbar-menu-btn" id="menuBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="topbar-search">
+      <div class="topbar-search-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+      <input type="text" placeholder="Search HSB courses, topics, people..." data-i18n-placeholder="search_placeholder">
+    </div>
+    <div class="topbar-right">
+      <button class="lang-btn" onclick="toggleLang()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"></path></svg>
+        <span class="lang-label">EN</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </button>
+      <a href="signin.html" class="sign-in-btn ripple-host">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span data-i18n="nav_signin">Sign In</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <main class="content">
+
+    <!-- Welcome Banner -->
+    <div class="banner reveal">
+      <div class="banner-text">
+        <h1 data-i18n="hero_h1">Science in the City.</h1>
+        <p data-i18n="hero_p">HSB connects students, teachers, courses, knowledge, and spaces across the STARS EU network — anchored in Bremen, looking into the world.</p>
+      </div>
+      <div class="banner-stats">
+        <div>
+          <div class="bstat-num">9</div>
+          <div class="bstat-label" data-i18n="stat_unis">Universities</div>
+        </div>
+        <div>
+          <div class="bstat-num">70+</div>
+          <div class="bstat-label" data-i18n="stat_prog">Programmes</div>
+        </div>
+        <div>
+          <div class="bstat-num">360</div>
+          <div class="bstat-label" data-i18n="stat_part">Partnerships</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 CARDS ALWAYS SIDE BY SIDE ON DESKTOP -->
+    <div class="cards-grid">
+      <a href="ask.html" class="card reveal rd1">
+        <div class="card-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        </div>
+        <h3 data-i18n="card_ask_title">Ask Questions</h3>
+        <p data-i18n="card_ask_p">Ask questions and receive clear answers, useful resources, and relevant course suggestions.</p>
+        <span class="card-arrow">
+          <span data-i18n="learn_more">Learn more</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </span>
+      </a>
+
+      <a href="phd.html" class="card reveal rd2">
+        <div class="card-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+        </div>
+        <h3 data-i18n="card_phd_title">PhD Cluster</h3>
+        <p data-i18n="card_phd_p">Connect with doctoral programs, supervisors, and research opportunities across the network.</p>
+        <span class="card-arrow">
+          <span data-i18n="learn_more">Learn more</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </span>
+      </a>
+
+      <a href="activities.html" class="card reveal rd3">
+        <div class="card-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        </div>
+        <h3 data-i18n="card_activities_title">Join Activities</h3>
+        <p data-i18n="card_activities_p">Discover events, workshops and initiatives across the STARS EU network.</p>
+        <span class="card-arrow">
+          <span data-i18n="learn_more">Learn more</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </span>
+      </a>
+
+      <a href="spaces.html" class="card reveal rd4">
+        <div class="card-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </div>
+        <h3 data-i18n="card_spaces_title">Book Spaces</h3>
+        <p data-i18n="card_spaces_p">Reserve study rooms, labs and spaces at HSB Bremen.</p>
+        <span class="card-arrow">
+          <span data-i18n="learn_more">Learn more</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </span>
+      </a>
+    </div>
+
+    <!-- BOTTOM ROW -->
+    <div class="bottom-row">
+      <!-- Events -->
+      <div class="panel reveal">
+        <div class="panel-header">
+          <h3 data-i18n="upcoming_events">Upcoming Events</h3>
+          <a href="#" class="view-all">
+            <span data-i18n="view_all">View all</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+        <div class="event-item">
+          <div class="event-date">MAY<div class="event-date-day">22</div></div>
+          <div>
+            <div class="ev-title" data-i18n="ev1_title">Virtual Exchange Opportunities Online</div>
+            <div class="ev-time" data-i18n="ev1_time">14:00 – 15:30 CET</div>
+            <span class="ev-badge eb-online">Online</span>
+          </div>
+        </div>
+        <div class="event-item">
+          <div class="event-date">JUN<div class="event-date-day">05</div></div>
+          <div>
+            <div class="ev-title" data-i18n="ev2_title">Sustainable Cities Workshop</div>
+            <div class="ev-time" data-i18n="ev2_time">17:00 – 19:00 CET</div>
+            <span class="ev-badge eb-campus">Campus</span>
+          </div>
+        </div>
+        <div class="event-item">
+          <div class="event-date">JUN<div class="event-date-day">16</div></div>
+          <div>
+            <div class="ev-title" data-i18n="ev3_title">Research Communication for PhD Candidates</div>
+            <div class="ev-time" data-i18n="ev3_time">10:00 – 12:00 CET</div>
+            <span class="ev-badge eb-online">Hybrid</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spaces -->
+      <div class="panel reveal rd1">
+        <div class="panel-header">
+          <h3 data-i18n="spaces_now">Spaces Available Now</h3>
+          <a href="#" class="view-all">
+            <span data-i18n="view_all">View all</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+        </div>
+        <div class="space-item">
+          <div class="space-img">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <div class="space-overlay"><button class="book-btn" onclick="showToast('Lernraum B2')" data-i18n="bookNow">Book Now</button></div>
+          </div>
+          <div class="space-info">
+            <div class="space-details"><h4>Lernraum B2</h4><p>HSB Bremen · Gebäude B</p></div>
+            <span class="avail-badge" data-i18n="available">Available</span>
+          </div>
+        </div>
+        <div class="space-item">
+          <div class="space-img">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            <div class="space-overlay"><button class="book-btn" onclick="showToast('Media Studio')" data-i18n="bookNow">Book Now</button></div>
+          </div>
+          <div class="space-info">
+            <div class="space-details"><h4>Media Studio</h4><p>HSB Bremen · Media Center</p></div>
+            <span class="avail-badge" data-i18n="available">Available</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span id="toastMsg"></span>
+</div>
+
+
+
+<script src="main.js"></script>
+
+</body></html>

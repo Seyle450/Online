@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — HSB STARSCAPE</title>
+  <script src="i18n.js" defer></script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="signin-wrap">
+  <div class="signin-card">
+
+    <!-- Logo -->
+    <div class="signin-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5" style="width:40px;height:40px;margin-bottom:.5rem;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+      <div class="signin-logo-name">HSB STARSCAPE</div>
+      <div class="signin-logo-sub">Hochschule Bremen · STARS EU</div>
+    </div>
+
+    <!-- Sign-in content -->
+    <div id="signinContent">
+      <h1 data-i18n="signin_h1">Welcome back</h1>
+      <p class="sub" data-i18n="signin_sub">Sign in to your HSB STARSCAPE account</p>
+
+      <!-- SSO Buttons -->
+      <button class="sso-btn" onclick="handleSSO('University SSO')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+        <span data-i18n="signin_sso_uni">Continue with University SSO</span>
+      </button>
+
+      <button class="sso-btn" onclick="handleSSO('EU Login')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"></path></svg>
+        <span data-i18n="signin_sso_eu">Continue with EU Login</span>
+      </button>
+
+      <button class="sso-btn" onclick="handleSSO('Google')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 13a9 9 0 1 1-9-9c2.35 0 4.5.91 6.1 2.38"></path><polyline points="21 4 21 10 15 10"></polyline></svg>
+        <span data-i18n="signin_sso_google">Continue with Google</span>
+      </button>
+
+      <!-- Divider -->
+      <div class="divider"><span data-i18n="signin_divider">or sign in with email</span></div>
+
+      <!-- Email/Password form -->
+      <form class="signin-form" onsubmit="handleSignIn(event)">
+        <div class="form-group">
+          <label class="form-label" data-i18n="signin_email">Email address</label>
+          <input type="email" class="form-control" id="signinEmail" placeholder="you@university.eu" required>
+        </div>
+        <div class="form-group">
+          <a href="#" class="forgot-link" data-i18n="signin_forgot">Forgot password?</a>
+          <label class="form-label" data-i18n="signin_password">Password</label>
+          <input type="password" class="form-control" id="signinPassword" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;margin-top:.5rem;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+          <span data-i18n="signin_btn">Sign In</span>
+        </button>
+      </form>
+
+      <div class="signin-footer">
+        <span data-i18n="signin_no_account">Don't have an account?</span>
+        <a href="#" data-i18n="signin_request"> Request access</a>
+      </div>
+    </div>
+
+    <!-- Success state -->
+    <div class="signin-success" id="signinSuccess">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+      <h2 data-i18n="signin_success_h2">Signed in!</h2>
+      <p data-i18n="signin_success_p">Welcome back. You're now connected to the STARS EU network.</p>
+      <a href="index.html" class="btn-primary" style="text-decoration:none;justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span data-i18n="signin_home_btn">Go to dashboard</span>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="main.js"></script>
+<script>
+  function handleSignIn(e) {
+    e.preventDefault();
+    document.getElementById('signinContent').style.display = 'none';
+    document.getElementById('signinSuccess').style.display = 'block';
+  }
+
+  function handleSSO(provider) {
+    document.getElementById('signinContent').style.display = 'none';
+    document.getElementById('signinSuccess').style.display = 'block';
+  }
+</script>
+</body></html>
