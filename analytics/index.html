@@ -311,16 +311,13 @@ async function sha256hex(str) {
   return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
 }
 
-function getToken()  { return sessionStorage.getItem('_at'); }
-function setToken(t) { sessionStorage.setItem('_at', t); }
-function clearToken(){ sessionStorage.removeItem('_at'); }
-
-// Token = 'ok:' + sha256(password+'_session') – keine echten JWTs nötig
-async function makeToken(pw) {
-  return 'ok:' + await sha256hex(pw + '_session');
-}
-async function deriveApiToken(pw) {
-  return await sha256hex(pw + '_api');
+function getToken()    { return sessionStorage.getItem('_at'); }
+function setToken(t)   { sessionStorage.setItem('_at', t); }
+function getApiToken() { return sessionStorage.getItem('_api') || ''; }
+function setApiToken(t){ sessionStorage.setItem('_api', t); }
+function clearSession() {
+  sessionStorage.removeItem('_at');
+  sessionStorage.removeItem('_api');
 }
 
 // ── Login ─────────────────────────────────────────────────────────────────────
@@ -336,8 +333,10 @@ async function tryLogin() {
   var pw   = $pwInput.value;
   var hash = await sha256hex(pw);
   if (hash === PASSWORD_HASH) {
-    setToken(await makeToken(pw));
-    sessionStorage.setItem('_pw', pw); // temporär für API-Token-Ableitung
+    // API-Token einmalig ableiten und in sessionStorage speichern
+    var apiTok = await sha256hex(pw + '_api');
+    setToken('ok:' + await sha256hex(pw + '_session'));
+    setApiToken(apiTok);
     $overlay.style.display = 'none';
     $app.classList.add('visible');
     loadData();
@@ -356,12 +355,12 @@ $loginBtn.addEventListener('click', tryLogin);
 $pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') tryLogin(); });
 
 document.getElementById('logoutBtn').addEventListener('click', function () {
-  clearToken(); sessionStorage.removeItem('_pw');
+  clearSession();
   location.reload();
 });
 
-// Bereits eingeloggt?
-if (getToken()) {
+// Bereits eingeloggt? (beide Tokens müssen vorhanden sein)
+if (getToken() && getApiToken()) {
   $overlay.style.display = 'none';
   $app.classList.add('visible');
 }
@@ -371,14 +370,9 @@ var charts    = {};
 var rawSummary = null;
 var rawEvents  = [];
 
-async function getApiToken() {
-  var pw = sessionStorage.getItem('_pw') || '';
-  return deriveApiToken(pw);
-}
-
 async function loadData() {
   var days    = document.getElementById('rangeSelect').value;
-  var apiTok  = await getApiToken();
+  var apiTok  = getApiToken();
   var errBox  = document.getElementById('errorBox');
   errBox.classList.remove('visible');
 
@@ -579,8 +573,8 @@ function esc(s) {
 document.getElementById('searchInput').addEventListener('input', function () { renderEventsTable(rawEvents); });
 document.getElementById('pageFilter').addEventListener('change', function () { renderEventsTable(rawEvents); });
 
-// Init: wenn bereits eingeloggt
-if (getToken()) loadData();
+// Init: wenn bereits eingeloggt (beide Tokens vorhanden)
+if (getToken() && getApiToken()) loadData();
 </script>
 </body>
 </html>
