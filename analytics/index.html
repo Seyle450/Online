@@ -605,6 +605,27 @@ tr:hover td { background: rgba(255,255,255,.015); }
       </div>
     </div>
 
+    <!-- UTM Generator -->
+    <div class="section-label">UTM Link-Generator</div>
+    <div class="chart-card full" style="margin-bottom:1.25rem">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:.6rem;margin-bottom:.75rem">
+        <div><label style="font-size:.7rem;color:var(--muted);display:block;margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.05em">URL</label>
+          <input id="utmUrl" type="text" placeholder="https://seyle450.github.io/Portfolio/" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:.45rem .7rem;font-size:.82rem;font-family:inherit"></div>
+        <div><label style="font-size:.7rem;color:var(--muted);display:block;margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.05em">Quelle (Source)</label>
+          <input id="utmSource" type="text" placeholder="instagram" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:.45rem .7rem;font-size:.82rem;font-family:inherit"></div>
+        <div><label style="font-size:.7rem;color:var(--muted);display:block;margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.05em">Medium</label>
+          <input id="utmMedium" type="text" placeholder="bio" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:.45rem .7rem;font-size:.82rem;font-family:inherit"></div>
+        <div><label style="font-size:.7rem;color:var(--muted);display:block;margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.05em">Kampagne</label>
+          <input id="utmCampaign" type="text" placeholder="juni" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:.45rem .7rem;font-size:.82rem;font-family:inherit"></div>
+      </div>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <input id="utmResult" readonly type="text" placeholder="Generierter Link erscheint hier…" style="flex:1;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--accent2);padding:.45rem .7rem;font-size:.8rem;font-family:monospace">
+        <button class="btn btn-primary" id="utmGenBtn" style="white-space:nowrap">Generieren</button>
+        <button class="btn btn-ghost" id="utmCopyBtn" style="white-space:nowrap">📋 Kopieren</button>
+      </div>
+      <div id="utmCopyStatus" style="font-size:.75rem;color:var(--green);margin-top:.35rem;min-height:1rem"></div>
+    </div>
+
     <!-- Top Einstiege + Letzte Events -->
     <div class="section-label">Seiten &amp; Events</div>
     <div class="filter-bar">
@@ -1549,6 +1570,29 @@ document.getElementById('alertSaveBtn').addEventListener('click', function() {
   var st = document.getElementById('alertSaveStatus');
   st.textContent = '✓ Gespeichert';
   setTimeout(function(){ st.textContent = ''; }, 2500);
+});
+
+// ── UTM Generator ─────────────────────────────────────────────────────────────
+document.getElementById('utmGenBtn').addEventListener('click', function() {
+  var base = document.getElementById('utmUrl').value.trim() || 'https://seyle450.github.io/Portfolio/';
+  var params = new URLSearchParams();
+  var src = document.getElementById('utmSource').value.trim();
+  var med = document.getElementById('utmMedium').value.trim();
+  var cam = document.getElementById('utmCampaign').value.trim();
+  if (src) params.set('utm_source', src);
+  if (med) params.set('utm_medium', med);
+  if (cam) params.set('utm_campaign', cam);
+  var sep = base.includes('?') ? '&' : '?';
+  document.getElementById('utmResult').value = base + (params.toString() ? sep + params.toString() : '');
+});
+document.getElementById('utmCopyBtn').addEventListener('click', function() {
+  var val = document.getElementById('utmResult').value;
+  if (!val) return;
+  navigator.clipboard.writeText(val).then(function() {
+    var s = document.getElementById('utmCopyStatus');
+    s.textContent = '✓ Link kopiert!';
+    setTimeout(function(){ s.textContent = ''; }, 2000);
+  });
 });
 
 // ── Granularity toggle ────────────────────────────────────────────────────────
