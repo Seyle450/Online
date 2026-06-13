@@ -37,7 +37,7 @@ function unauthorized(origin) {
 
 function isAuthorized(request, env) {
   const auth = request.headers.get('Authorization') || '';
-  return auth === `Bearer ${env.AUTH_TOKEN}`;
+  return auth === `Bearer ${(env.AUTH_TOKEN || '').trim()}`;
 }
 
 /** Einfacher FNV-1a Hash → kurzer Hex-String (für visitorId aus IP+UA) */
