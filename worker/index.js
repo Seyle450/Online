@@ -290,6 +290,58 @@ async function handleData(request, env) {
   return json({ events, count: events.length }, 200, origin);
 }
 
+// ─── Session-Merge: Cross-Tab-Pfade retroaktiv verknüpfen ────────────────────
+// Gleicher Besucher + Referrer von eigener Domain + <30 Min Abstand → eine Session
+function buildSessionMergeMap(events) {
+  const OWN = ['seyle450.github.io', 'localhost', '127.0.0.1'];
+  const byVisitor = {};
+  for (const ev of events) {
+    if (!ev.visitorId || !ev.sessionId) continue;
+    if (!byVisitor[ev.visitorId]) byVisitor[ev.visitorId] = [];
+    byVisitor[ev.visitorId].push(ev);
+  }
+
+  const map = {}; // sessionId → canonical sessionId
+  function resolve(sid) {
+    let s = sid, depth = 0;
+    while (map[s] && depth++ < 30) s = map[s];
+    return s;
+  }
+
+  for (const visEvents of Object.values(byVisitor)) {
+    visEvents.sort((a, b) => a.timestamp - b.timestamp);
+    const lastTs = {}; // resolved sid → last timestamp seen
+
+    for (const ev of visEvents) {
+      const canon = resolve(ev.sessionId);
+      const ref   = ev.referrer || '';
+      const fromOwn = OWN.some(h => ref.includes(h));
+
+      if (fromOwn) {
+        // find the most recent other session within 30 min
+        let bestSid = null, bestTime = 0;
+        for (const [sid, ts] of Object.entries(lastTs)) {
+          if (sid !== canon && ev.timestamp - ts < 30 * 60 * 1000 && ts > bestTime) {
+            bestTime = ts; bestSid = sid;
+          }
+        }
+        if (bestSid) {
+          map[canon] = bestSid;   // merge canon → bestSid
+          // consolidate timestamps
+          const newCanon = resolve(ev.sessionId);
+          lastTs[newCanon] = Math.max(lastTs[newCanon] || 0, lastTs[canon] || 0, ev.timestamp);
+          delete lastTs[canon];
+          continue;
+        }
+      }
+
+      lastTs[resolve(ev.sessionId)] = Math.max(lastTs[resolve(ev.sessionId)] || 0, ev.timestamp);
+    }
+  }
+
+  return resolve;
+}
+
 // ─── GET /summary ─────────────────────────────────────────────────────────────
 
 async function handleSummary(request, env) {
@@ -347,63 +399,65 @@ async function handleSummary(request, env) {
     } while (dayCursor);
   }
 
-  // Events für Gerätetypen + Referrer + recentEvents lesen
+  // Pass 1: alle Events im Zeitraum aus KV laden
+  const allEvents = [];
   let evCursor;
   do {
     const opts = { prefix: 'event:', limit: 1000 };
     if (evCursor) opts.cursor = evCursor;
     const listed = await env.ANALYTICS.list(opts);
     evCursor = listed.list_complete ? null : listed.cursor;
-
     for (const key of listed.keys) {
-      const parts = key.name.split(':');
-      const ts = parseInt(parts[1], 10);
+      const ts = parseInt(key.name.split(':')[1], 10);
       if (ts < since) continue;
       const raw = await env.ANALYTICS.get(key.name);
       if (!raw) continue;
-      let ev;
-      try { ev = JSON.parse(raw); } catch { continue; }
-
-      const dev = ev.device || deviceType(ev.screenWidth);
-      if (dev in deviceCount) deviceCount[dev]++;
-      else deviceCount.unknown++;
-
-      if (ev.referrer) {
-        try {
-          const ref = new URL(ev.referrer).hostname;
-          if (ref) referrerCount[ref] = (referrerCount[ref] || 0) + 1;
-        } catch { /* ignore */ }
-      }
-
-      // Wiederkehrende Besucher
-      if (ev.returning) returningVisitors++;
-      else newVisitors++;
-
-      // Session-Flow aufbauen
-      if (ev.sessionId) {
-        allSessionIds.add(ev.sessionId);
-        if (!sessionFlows[ev.sessionId]) sessionFlows[ev.sessionId] = [];
-        sessionFlows[ev.sessionId].push({ page: ev.page, ts: ev.timestamp, idx: ev.pageIndex || 1 });
-      }
-
-      // Landing Pages
-      if (!ev.previousPage || ev.pageIndex === 1) {
-        landingPages[ev.page] = (landingPages[ev.page] || 0) + 1;
-      }
-
-      // Länder
-      if (ev.country) countryCounts[ev.country] = (countryCounts[ev.country] || 0) + 1;
-
-      // UTM
-      if (ev.utm) {
-        if (ev.utm.source)   utmSourceCount[ev.utm.source]     = (utmSourceCount[ev.utm.source]     || 0) + 1;
-        if (ev.utm.campaign) utmCampaignCount[ev.utm.campaign] = (utmCampaignCount[ev.utm.campaign] || 0) + 1;
-        if (ev.utm.medium)   utmMediumCount[ev.utm.medium]     = (utmMediumCount[ev.utm.medium]     || 0) + 1;
-      }
-
-      if (recentEvents.length < 50) recentEvents.push(ev);
+      try { allEvents.push(JSON.parse(raw)); } catch { /* skip */ }
     }
   } while (evCursor);
+
+  // Pass 2: Session-Merge-Map aufbauen (verknüpft Cross-Tab-Pfade retroaktiv)
+  const resolveSession = buildSessionMergeMap(allEvents);
+
+  // Pass 3: Events auswerten
+  for (const ev of allEvents) {
+    const dev = ev.device || deviceType(ev.screenWidth);
+    if (dev in deviceCount) deviceCount[dev]++;
+    else deviceCount.unknown++;
+
+    if (ev.referrer) {
+      try {
+        const ref = new URL(ev.referrer).hostname;
+        // Eigene Domains nicht als Referrer zählen
+        const OWN = ['seyle450.github.io', 'localhost', '127.0.0.1'];
+        if (ref && !OWN.some(h => ref.includes(h))) referrerCount[ref] = (referrerCount[ref] || 0) + 1;
+      } catch { /* ignore */ }
+    }
+
+    if (ev.returning) returningVisitors++;
+    else newVisitors++;
+
+    if (ev.sessionId) {
+      const sid = resolveSession(ev.sessionId); // ← merged canonical ID
+      allSessionIds.add(sid);
+      if (!sessionFlows[sid]) sessionFlows[sid] = [];
+      sessionFlows[sid].push({ page: ev.page, ts: ev.timestamp, idx: ev.pageIndex || 1 });
+    }
+
+    if (!ev.previousPage || ev.pageIndex === 1) {
+      landingPages[ev.page] = (landingPages[ev.page] || 0) + 1;
+    }
+
+    if (ev.country) countryCounts[ev.country] = (countryCounts[ev.country] || 0) + 1;
+
+    if (ev.utm) {
+      if (ev.utm.source)   utmSourceCount[ev.utm.source]     = (utmSourceCount[ev.utm.source]     || 0) + 1;
+      if (ev.utm.campaign) utmCampaignCount[ev.utm.campaign] = (utmCampaignCount[ev.utm.campaign] || 0) + 1;
+      if (ev.utm.medium)   utmMediumCount[ev.utm.medium]     = (utmMediumCount[ev.utm.medium]     || 0) + 1;
+    }
+
+    if (recentEvents.length < 50) recentEvents.push(ev);
+  }
 
   const topPages = Object.entries(pageCount)
     .sort((a, b) => b[1] - a[1])
