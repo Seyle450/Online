@@ -564,7 +564,7 @@ section.alt { background: var(--green-900); }
 .anatomy .eyebrow::before { background: #9c7c2c; }
 .anatomy .section-head h2, .anatomy h2 { color: var(--green-900); }
 .anatomy .section-head p { color: #5b5343; }
-.anatomy-scene-wrap { perspective: 1400px; overflow: clip; margin: 64px auto 0; max-width: 1000px; }
+.anatomy-scene-wrap { perspective: 1400px; overflow-x: clip; overflow-y: visible; margin: 64px auto 0; max-width: 1000px; }
 .anatomy-scene {
   position: relative; transform-style: preserve-3d;
   transition: transform 0.18s ease-out; margin: 0 auto;

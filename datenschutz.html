@@ -9,20 +9,20 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --ds-bg:      #f8fafc;
-  --ds-surface: #ffffff;
-  --ds-text:    #1e293b;
-  --ds-muted:   #64748b;
-  --ds-subtle:  #475569;
-  --ds-border:  #e2e8f0;
-  --ds-accent:  #6366f1;
-  --ds-accent2: #eef2ff;
-  --ds-green:   #22c55e;
-  --ds-green2:  #f0fdf4;
-  --ds-th-bg:   #f1f5f9;
-  --ds-h1:      #0f172a;
-  --ds-h3:      #334155;
-  --ds-font:    -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --ds-bg:      #000000;
+  --ds-surface: #141414;
+  --ds-text:    #f5f5f5;
+  --ds-muted:   #a0a0a0;
+  --ds-subtle:  #c8c8c8;
+  --ds-border:  rgba(255,255,255,0.09);
+  --ds-accent:  #ffffff;
+  --ds-accent2: rgba(255,255,255,0.04);
+  --ds-green:   #4ade80;
+  --ds-green2:  rgba(74,222,128,0.07);
+  --ds-th-bg:   #1c1c1c;
+  --ds-h1:      #f5f5f5;
+  --ds-h3:      #d4d4d4;
+  --ds-font:    'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --ds-radius:  10px;
 }
 
@@ -78,10 +78,10 @@ td { padding: .6rem .8rem; border: 1px solid var(--ds-border); color: var(--ds-s
 }
 .consent-btn:hover { background: var(--ds-border); }
 .consent-btn.grant {
-  background: var(--ds-accent); color: #fff; border-color: var(--ds-accent);
+  background: #f5f5f5; color: #000; border-color: #f5f5f5;
 }
-.consent-btn.grant:hover { opacity: .88; }
-.consent-btn.revoke { color: #dc2626; background: #fff5f5; border-color: #fecaca; }
+.consent-btn.grant:hover { background: #fff; }
+.consent-btn.revoke { color: #f87171; background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.3); }
 
 #consentStatus { margin-top: .6rem; font-size: .82rem; color: var(--ds-muted); }
 
