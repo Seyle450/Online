@@ -87,17 +87,12 @@
 
       setCurrentPage(currentPage);
 
-      if (navigator.sendBeacon) {
-        var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-        navigator.sendBeacon(WORKER_URL + '/track', blob);
-      } else {
-        fetch(WORKER_URL + '/track', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          keepalive: true,
-        }).catch(function () {});
-      }
+      fetch(WORKER_URL + '/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true,
+      }).catch(function () {});
     } catch (e) { /* leises Scheitern */ }
   }
 
