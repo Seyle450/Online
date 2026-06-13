@@ -170,6 +170,29 @@ async function handleTrack(request, env) {
   if (!daily.visitors.includes(visitorId)) daily.visitors.push(visitorId);
   await env.ANALYTICS.put(dailyKey, JSON.stringify(daily), { expirationTtl: 60 * 60 * 24 * 92 });
 
+  // ── Push-Benachrichtigung ─────────────────────────────────────────────────
+  if (env.NTFY_TOPIC) {
+    const name = pageName(page);
+    const flag = country && country.length === 2
+      ? String.fromCodePoint(0x1F1E6 + country.charCodeAt(0) - 65) + String.fromCodePoint(0x1F1E6 + country.charCodeAt(1) - 65)
+      : '';
+    const watchRaw = (env.NTFY_PAGES || '').toLowerCase();
+    const watched  = watchRaw ? watchRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+    const pageMatches = watched.length === 0 || watched.some(w => page.toLowerCase().includes(w));
+
+    if (pageIndex === 1 && pageMatches) {
+      // Neue Session
+      await sendNtfy(env,
+        'Neue Session ' + flag,
+        name + (dev !== 'unknown' ? ' · ' + dev : '') + (profile.returning ? ' · Wiederkehrend' : ' · Neu'),
+        'eyes'
+      );
+    } else if (pageIndex > 1 && watched.some(w => page.toLowerCase().includes(w))) {
+      // Überwachte Seite aufgerufen (nicht erste Seite der Session)
+      await sendNtfy(env, 'Seite aufgerufen ' + flag, name, 'page_facing_up');
+    }
+  }
+
   return json({ ok: true }, 200, origin);
 }
 
@@ -288,6 +311,34 @@ async function handleData(request, env) {
 
   events.sort((a, b) => b.timestamp - a.timestamp);
   return json({ events, count: events.length }, 200, origin);
+}
+
+// ─── Push-Benachrichtigung via ntfy.sh ───────────────────────────────────────
+function pageName(page) {
+  if (!page) return '?';
+  const p = page.toLowerCase();
+  if (p.includes('starscape')) return 'Starscape';
+  if (p.includes('ben'))       return "Ben's Catering";
+  if (p.includes('hevi'))      return "Hevi's Café";
+  if (p.includes('niki'))      return 'Café Niki';
+  if (p.includes('lokma'))     return 'Lokma Lovers';
+  if (p.includes('antepli'))   return 'Antepli Baklava';
+  if (p.includes('freelance')) return 'Freelance';
+  if (p.includes('datenschutz')) return 'Datenschutz';
+  if (p === '/portfolio/' || p === '/portfolio' || p === '/') return 'Portfolio · Home';
+  return page.split('/').filter(Boolean).pop() || page;
+}
+
+async function sendNtfy(env, title, body, tags) {
+  const topic = (env.NTFY_TOPIC || '').trim();
+  if (!topic) return;
+  try {
+    await fetch('https://ntfy.sh/' + encodeURIComponent(topic), {
+      method: 'POST',
+      headers: { 'Title': title, 'Tags': tags || 'bell', 'Priority': '3', 'Content-Type': 'text/plain' },
+      body: body,
+    });
+  } catch { /* ignore */ }
 }
 
 // ─── Session-Merge: Cross-Tab-Pfade retroaktiv verknüpfen ────────────────────
