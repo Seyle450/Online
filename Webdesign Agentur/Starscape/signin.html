@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In — HSB STARSCAPE</title>
+  <title>Sign In — STARSCAPE</title>
   <script src="i18n.js" defer></script>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
 <script src="/Portfolio/analytics/tracker.js" defer></script>
-</head>
+<style>#_acb .acb-accept{background:#009fad}#_acb .acb-accept:hover{background:#007d8a}#_acb a{color:#009fad}</style></head>
 <body>
 
 <div class="signin-wrap">
@@ -16,14 +16,14 @@
     <!-- Logo -->
     <div class="signin-logo">
       <svg viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.5" style="width:40px;height:40px;margin-bottom:.5rem;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-      <div class="signin-logo-name">HSB STARSCAPE</div>
-      <div class="signin-logo-sub">Hochschule Bremen · STARS EU</div>
+      <div class="signin-logo-name">STARSCAPE</div>
+      <div class="signin-logo-sub">STARS EU Campus Platform</div>
     </div>
 
     <!-- Sign-in content -->
     <div id="signinContent">
       <h1 data-i18n="signin_h1">Welcome back</h1>
-      <p class="sub" data-i18n="signin_sub">Sign in to your HSB STARSCAPE account</p>
+      <p class="sub" data-i18n="signin_sub">Sign in to your STARSCAPE account</p>
 
       <!-- SSO Buttons -->
       <button class="sso-btn" onclick="handleSSO('University SSO')">
@@ -100,4 +100,6 @@
     document.getElementById('signinSuccess').style.display = 'block';
   }
 </script>
+
+<footer style="text-align:center;padding:1.5rem;font-size:.75rem;color:#94a3b8;border-top:1px solid #e2e8f0;margin-top:2rem"><a href="/Portfolio/datenschutz.html" style="color:inherit;opacity:.7">Datenschutz</a></footer>
 </body></html>

@@ -38,9 +38,9 @@ const TRANSLATIONS = {
     booked: 'Booked',
 
     /* INDEX hero */
-    hero_h1: 'Science in the City.',
-    hero_p: 'HSB connects students, teachers, courses, knowledge, and spaces across the STARS EU network — anchored in Bremen, looking into the world.',
-    search_placeholder: 'Search HSB courses, topics, people, partner universities...',
+    hero_h1: 'One European Campus.',
+    hero_p: 'Connecting students, teachers, courses, knowledge and spaces across the STARS EU network.',
+    search_placeholder: 'Search STARS EU courses, topics, people, partner universities...',
     search_btn: 'Search',
 
     /* INDEX cards */
@@ -133,7 +133,7 @@ const TRANSLATIONS = {
 
     /* SIGNIN */
     signin_h1: 'Welcome back',
-    signin_sub: 'Sign in to your HSB STARSCAPE account',
+    signin_sub: 'Sign in to your STARSCAPE account',
     signin_sso_uni: 'Continue with University SSO',
     signin_sso_eu: 'Continue with EU Login',
     signin_sso_google: 'Continue with Google',
@@ -181,9 +181,9 @@ const TRANSLATIONS = {
     booked: 'Gebucht',
 
     /* INDEX hero */
-    hero_h1: 'Wissenschaft in der Stadt.',
-    hero_p: 'HSB verbindet Studierende, Lehrende, Kurse, Wissen und Räume im STARS EU-Netzwerk — verankert in Bremen, blickt in die Welt.',
-    search_placeholder: 'HSB-Kurse, Themen, Personen, Partneruniversitäten suchen...',
+    hero_h1: 'One European Campus.',
+    hero_p: 'Connecting students, teachers, courses, knowledge and spaces across the STARS EU network.',
+    search_placeholder: 'STARS EU Kurse, Themen, Personen, Partneruniversitäten suchen...',
     search_btn: 'Suchen',
 
     /* INDEX cards */
@@ -276,7 +276,7 @@ const TRANSLATIONS = {
 
     /* SIGNIN */
     signin_h1: 'Willkommen zurück',
-    signin_sub: 'Melden Sie sich bei HSB STARSCAPE an',
+    signin_sub: 'Melden Sie sich bei STARSCAPE an',
     signin_sso_uni: 'Weiter mit Uni-SSO',
     signin_sso_eu: 'Weiter mit EU Login',
     signin_sso_google: 'Weiter mit Google',
