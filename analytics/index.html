@@ -304,6 +304,7 @@ var WORKER_URL = 'https://portfolio-analytics.seyle450.workers.dev';
 // TODO: SHA-256-Hash deines Passworts eintragen.
 // Generieren: node -e "crypto.subtle.digest('SHA-256',new TextEncoder().encode('DEIN-PASSWORT')).then(b=>console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))"
 var PASSWORD_HASH = 'a74ee64065c0f420915adae4018e226ca9ae9e7ca9cf904e9198448924c9aca9';
+var API_TOKEN     = 'c42cc5a275f6b8849ffb536c195a3c1197a81ef406ad440347412402e3c5e6a7';
 
 // ── Hilfsfunktionen ───────────────────────────────────────────────────────────
 async function sha256hex(str) {
@@ -313,12 +314,8 @@ async function sha256hex(str) {
 
 function getToken()    { return sessionStorage.getItem('_at'); }
 function setToken(t)   { sessionStorage.setItem('_at', t); }
-function getApiToken() { return sessionStorage.getItem('_api') || ''; }
-function setApiToken(t){ sessionStorage.setItem('_api', t); }
-function clearSession() {
-  sessionStorage.removeItem('_at');
-  sessionStorage.removeItem('_api');
-}
+function getApiToken() { return API_TOKEN; }
+function clearSession() { sessionStorage.removeItem('_at'); }
 
 // ── Login ─────────────────────────────────────────────────────────────────────
 var $overlay  = document.getElementById('loginOverlay');
@@ -333,10 +330,7 @@ async function tryLogin() {
   var pw   = $pwInput.value;
   var hash = await sha256hex(pw);
   if (hash === PASSWORD_HASH) {
-    // API-Token einmalig ableiten und in sessionStorage speichern
-    var apiTok = await sha256hex(pw + '_api');
     setToken('ok:' + await sha256hex(pw + '_session'));
-    setApiToken(apiTok);
     $overlay.style.display = 'none';
     $app.classList.add('visible');
     loadData();
@@ -359,8 +353,8 @@ document.getElementById('logoutBtn').addEventListener('click', function () {
   location.reload();
 });
 
-// Bereits eingeloggt? (beide Tokens müssen vorhanden sein)
-if (getToken() && getApiToken()) {
+// Bereits eingeloggt?
+if (getToken()) {
   $overlay.style.display = 'none';
   $app.classList.add('visible');
 }
@@ -573,8 +567,8 @@ function esc(s) {
 document.getElementById('searchInput').addEventListener('input', function () { renderEventsTable(rawEvents); });
 document.getElementById('pageFilter').addEventListener('change', function () { renderEventsTable(rawEvents); });
 
-// Init: wenn bereits eingeloggt (beide Tokens vorhanden)
-if (getToken() && getApiToken()) loadData();
+// Init: wenn bereits eingeloggt
+if (getToken()) loadData();
 </script>
 </body>
 </html>
