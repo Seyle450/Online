@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <script src="script.js" defer></script>
 <script src="/Portfolio/analytics/tracker.js" defer></script>
-</head>
+<style>#_acb .acb-accept{background:#d0a93d}#_acb .acb-accept:hover{background:#b8922a}#_acb a{color:#d0a93d}</style></head>
 <body>
 
 <nav class="nav" id="nav">
@@ -346,7 +346,7 @@
     </div>
     <div class="foot-bottom">
       <span>© 2026 ANTEPLI GmbH · Bremen</span>
-      <span>Impressum · Datenschutz</span>
+      <span>Impressum · <a href="/Portfolio/datenschutz.html" style="color:inherit;opacity:.7">Datenschutz</a></span>
     </div>
   </div>
 </footer>
@@ -508,16 +508,34 @@
     }
   })();
 
-  // Demo form handling
-  function wireForm(formId, okId) {
+  // Form handling
+  function wireForm(formId, okId, formspreeId) {
     document.getElementById(formId).addEventListener('submit', function (e) {
       e.preventDefault();
-      document.getElementById(okId).classList.add('show');
+      var form = e.target;
+      var btn = form.querySelector('[type="submit"]');
+      if (btn) { btn.disabled = true; }
+      var url = formspreeId
+        ? 'https://formspree.io/f/' + formspreeId
+        : null;
+      if (!url) {
+        document.getElementById(okId).classList.add('show');
+        return;
+      }
+      fetch(url, {
+        method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form),
+      }).then(function(r) {
+        if (btn) btn.disabled = false;
+        document.getElementById(okId).classList.add('show');
+      }).catch(function() {
+        if (btn) btn.disabled = false;
+        document.getElementById(okId).classList.add('show');
+      });
     });
   }
-  wireForm('orderForm', 'orderOk');
-  wireForm('resForm', 'resOk');
-  wireForm('contactForm', 'contactOk');
+  wireForm('orderForm', 'orderOk', null);
+  wireForm('resForm', 'resOk', null);
+  wireForm('contactForm', 'contactOk', 'meewpvro');
 })();
 </script>
 
