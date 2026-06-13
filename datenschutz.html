@@ -64,7 +64,8 @@ a { color: var(--ds-accent); }
 .box-green { border-left: 4px solid var(--ds-green); background: var(--ds-green2); }
 .box-blue  { border-left: 4px solid var(--ds-accent); background: var(--ds-accent2); }
 
-table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 1rem 0; }
+table { width: 100%; min-width: 480px; border-collapse: collapse; font-size: .88rem; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0; border-radius: var(--ds-radius); }
 th { text-align: left; padding: .6rem .8rem; background: var(--ds-th-bg); font-weight: 600; color: var(--ds-h3); border: 1px solid var(--ds-border); }
 td { padding: .6rem .8rem; border: 1px solid var(--ds-border); color: var(--ds-subtle); vertical-align: top; }
 
@@ -141,7 +142,7 @@ footer a:hover { color: var(--ds-accent); }
   </div>
 
   <h3>Was wird erhoben?</h3>
-  <table>
+  <div class="table-wrap"><table>
     <tr><th>Datum</th><th>Zweck</th><th>Speicherdauer</th></tr>
     <tr><td>Aufgerufene Seite (URL)</td><td>Verstehen, welche Inhalte interessant sind</td><td>90 Tage</td></tr>
     <tr><td>Verweildauer auf der Seite</td><td>Einschätzung der Relevanz von Inhalten</td><td>90 Tage</td></tr>
@@ -151,7 +152,7 @@ footer a:hover { color: var(--ds-accent); }
     <tr><td>Referrer (woher Sie kamen)</td><td>Marketing-Auswertung</td><td>90 Tage</td></tr>
     <tr><td>Pseudonymer Besucher-Hash</td><td>Wiederkehrende Besucher erkennen (kein Name, kein Konto)</td><td>365 Tage</td></tr>
     <tr><td>IP-Adresse</td><td>Wird zur Generierung des Besucher-Hashs verarbeitet, <strong>nicht gespeichert</strong></td><td>Nicht gespeichert</td></tr>
-  </table>
+  </table></div>
 
   <h3>Wie wird ein „Besucher-Hash" gebildet?</h3>
   <p>
