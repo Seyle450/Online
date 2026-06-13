@@ -181,7 +181,7 @@ async function handleTrack(request, env, ctx) {
     const pageMatches = watched.length === 0 || watched.some(w => page.toLowerCase().includes(w));
 
     let notifyPromise = null;
-    if (pageIndex === 1 && pageMatches) {
+    if (!previousPage && pageMatches) {
       notifyPromise = sendNtfy(env,
         'Neue Session ' + flag,
         name + (dev !== 'unknown' ? ' · ' + dev : '') + (profile.returning ? ' · Wiederkehrend' : ' · Neu'),
