@@ -60,9 +60,38 @@
   }
 
   // ── Session ───────────────────────────────────────────────────────────────
+  var XTS_KEY = '_xts'; // Cross-tab session state in localStorage
+  var XTS_TTL = 30 * 60 * 1000; // 30 min
+
+  function getCrossTabState() {
+    try {
+      var s = JSON.parse(localStorage.getItem(XTS_KEY) || '{}');
+      if (s.sid && s.ts && (Date.now() - s.ts) < XTS_TTL) return s;
+    } catch(e) {}
+    return null;
+  }
+  function setCrossTabState(sid, pageCount) {
+    try { localStorage.setItem(XTS_KEY, JSON.stringify({ sid: sid, ts: Date.now(), pages: pageCount })); } catch(e) {}
+  }
+
   function getSessionId() {
     var k = '_as', sid = sessionStorage.getItem(k);
-    if (!sid) { sid = Math.random().toString(36).slice(2) + Date.now().toString(36); sessionStorage.setItem(k, sid); }
+    if (!sid) {
+      // New tab: check if referrer is our own site → reuse session
+      var ref = document.referrer;
+      var own = ['seyle450.github.io', location.hostname, 'localhost', '127.0.0.1'];
+      var fromOwnSite = ref && own.some(function(h){ return ref.includes(h); });
+      if (fromOwnSite) {
+        var state = getCrossTabState();
+        if (state) {
+          sid = state.sid;
+          sessionStorage.setItem(k, sid);
+          if (state.pages) sessionStorage.setItem('_api', String(state.pages));
+        }
+      }
+      if (!sid) { sid = Math.random().toString(36).slice(2) + Date.now().toString(36); }
+      sessionStorage.setItem(k, sid);
+    }
     return sid;
   }
   function getSessionPageIndex() {
@@ -118,13 +147,16 @@
     if (previousPage && lastStart > 0) sendDuration(previousPage, now - lastStart);
     setPageStart(now);
     setCurrentPage(currentPage);
+    var sid = getSessionId();
+    var pageIdx = getSessionPageIndex();
+    setCrossTabState(sid, pageIdx);
     var utm = getUtmParams();
     sendEvent({
       page: currentPage, previousPage: previousPage,
-      pageIndex: getSessionPageIndex(), referrer: document.referrer || '',
+      pageIndex: pageIdx, referrer: document.referrer || '',
       userAgent: navigator.userAgent, screenWidth: screen.width,
       language: navigator.language || '', timestamp: now,
-      sessionId: getSessionId(), visitorId: getVisitorId(),
+      sessionId: sid, visitorId: getVisitorId(),
       utm: utm || undefined,
     });
   }
