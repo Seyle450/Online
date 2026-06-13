@@ -170,27 +170,16 @@ async function handleTrack(request, env, ctx) {
   if (!daily.visitors.includes(visitorId)) daily.visitors.push(visitorId);
   await env.ANALYTICS.put(dailyKey, JSON.stringify(daily), { expirationTtl: 60 * 60 * 24 * 92 });
 
-  // ── Push-Benachrichtigung (via ctx.waitUntil damit CF nicht abbricht) ────────
+  // ── Push-Benachrichtigung ─────────────────────────────────────────────────
   if (env.NTFY_TOPIC) {
     const name = pageName(page);
     const flag = country && country.length === 2
       ? String.fromCodePoint(0x1F1E6 + country.charCodeAt(0) - 65) + String.fromCodePoint(0x1F1E6 + country.charCodeAt(1) - 65)
       : '';
-    const watchRaw = (env.NTFY_PAGES || '').toLowerCase();
-    const watched  = watchRaw ? watchRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
-    const pageMatches = watched.length === 0 || watched.some(w => page.toLowerCase().includes(w));
-
-    let notifyPromise = null;
-    if (!previousPage && pageMatches) {
-      notifyPromise = sendNtfy(env,
-        'Neue Session ' + flag,
-        name + (dev !== 'unknown' ? ' · ' + dev : '') + (profile.returning ? ' · Wiederkehrend' : ' · Neu'),
-        'eyes'
-      );
-    } else if (pageIndex > 1 && watched.some(w => page.toLowerCase().includes(w))) {
-      notifyPromise = sendNtfy(env, 'Seite aufgerufen ' + flag, name, 'page_facing_up');
-    }
-    if (notifyPromise && ctx) ctx.waitUntil(notifyPromise);
+    const isNew = !previousPage;
+    const title = (isNew ? '👁 Neuer Besuch ' : '📄 Seite ') + flag;
+    const body  = name + ' · ' + dev + (isNew ? (profile.returning ? ' · ↩ Zurück' : ' · ✦ Neu') : '');
+    ctx.waitUntil(sendNtfy(env, title, body, isNew ? 'eyes' : 'page_facing_up'));
   }
 
   return json({ ok: true }, 200, origin);
