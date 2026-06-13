@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analytics – Einbindungs-Snippet</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #0f1117; color: #e2e8f0; line-height: 1.6; padding: 2rem;
+}
+h1 { font-size: 1.4rem; margin-bottom: .25rem; color: #6366f1; }
+p  { color: #64748b; margin-bottom: 1.5rem; font-size: .9rem; }
+h2 { font-size: 1rem; margin: 1.5rem 0 .75rem; color: #94a3b8; }
+pre {
+  background: #1a1d27; border: 1px solid #2a2d3e; border-radius: 8px;
+  padding: 1.25rem 1.5rem; overflow-x: auto; font-size: .82rem;
+  line-height: 1.7; position: relative;
+}
+code { font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace; }
+.comment { color: #4ade80; }
+.tag     { color: #60a5fa; }
+.attr    { color: #f472b6; }
+.val     { color: #fbbf24; }
+.todo    { color: #fb923c; font-weight: bold; }
+.note {
+  background: rgba(99,102,241,.1); border-left: 3px solid #6366f1;
+  border-radius: 4px; padding: .75rem 1rem; margin: 1rem 0;
+  font-size: .85rem; color: #a5b4fc;
+}
+</style>
+</head>
+<body>
+<h1>Analytics Einbindungs-Snippet</h1>
+<p>Kopiere den folgenden Code und füge ihn in jede HTML-Seite ein, die du tracken möchtest.</p>
+
+<h2>Einbindung in den &lt;head&gt; (empfohlen)</h2>
+<pre><code><span class="comment">&lt;!-- Analytics Tracker – vor dem schließenden &lt;/head&gt; einfügen --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"/analytics/tracker.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
+
+<div class="note">
+  <strong>Wichtig:</strong> Stelle sicher, dass <code>/analytics/tracker.js</code> auf GitHub Pages erreichbar ist.
+  Wenn deine Website in einem Unterordner liegt (z.B. <code>/portfolio/</code>), passe den Pfad entsprechend an.
+</div>
+
+<h2>Alternative: Einbindung vor &lt;/body&gt;</h2>
+<pre><code><span class="comment">&lt;!-- Vor dem schließenden &lt;/body&gt; einfügen --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"/analytics/tracker.js"</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
+
+<h2>Komplettes Beispiel einer HTML-Seite</h2>
+<pre><code><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"de"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;title&gt;</span>Meine Seite<span class="tag">&lt;/title&gt;</span>
+
+  <span class="comment">&lt;!-- ↓↓↓ Einzige Zeile die du hinzufügen musst ↓↓↓ --&gt;</span>
+  <span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="val">"/analytics/tracker.js"</span> <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span>
+  <span class="comment">&lt;!-- ↑↑↑ Fertig! ↑↑↑ --&gt;</span>
+
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+  <span class="comment">&lt;!-- Dein Seiteninhalt --&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></code></pre>
+
+<h2>Tracker konfigurieren (tracker.js anpassen)</h2>
+<pre><code><span class="comment">// In /analytics/tracker.js – einmalig anpassen:</span>
+
+<span class="comment">// TODO: Diese Zeile mit deiner echten Worker-URL ersetzen</span>
+<span class="todo">var WORKER_URL = 'https://TODO-DEIN-SUBDOMAIN.workers.dev';</span>
+<span class="comment">//                  ↑ nach `wrangler deploy` ausgegeben</span></code></pre>
+
+<h2>Seiten die du tracken solltest</h2>
+<pre><code><span class="comment">/* Füge den Script-Tag in alle diese Dateien ein: */</span>
+
+index.html                    <span class="comment">← Portfolio-Hauptseite</span>
+kunde-a/index.html            <span class="comment">← Kundenwebsite A</span>
+kunde-b/index.html            <span class="comment">← Kundenwebsite B</span>
+<span class="todo">// ... weitere Seiten nach demselben Muster</span></code></pre>
+
+<div class="note">
+  Das Tracking-Script lädt asynchron und blockiert nie die Seite.
+  Falls der Worker nicht erreichbar ist, passiert einfach nichts – kein Fehler, kein Absturz.
+</div>
+
+</body>
+</html>

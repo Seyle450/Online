@@ -1,0 +1,15 @@
+name = "portfolio-analytics"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+# TODO: nach `wrangler kv:namespace create ANALYTICS` die id eintragen
+[[kv_namespaces]]
+binding = "ANALYTICS"
+id     = "9b6e7e529c0e4143a32ce8f71de96913"
+
+# Optionaler Preview-Namespace für lokale Entwicklung
+# preview_id = "TODO_PREVIEW_KV_ID"
+
+[vars]
+# AUTH_TOKEN wird als Secret gesetzt: `wrangler secret put AUTH_TOKEN`
+# Hier keinen echten Token eintragen!
