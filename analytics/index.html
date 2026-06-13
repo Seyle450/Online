@@ -142,6 +142,51 @@ main { flex: 1; padding: 1.5rem; max-width: 1440px; width: 100%; margin: 0 auto;
 .chart-wrap { position: relative; height: 220px; }
 .chart-wrap-sm { position: relative; height: 180px; }
 
+/* ── Live Mode ───────────────────────────────────────────────────────────────── */
+.btn-live { background: transparent; border: 1px solid var(--border); color: var(--green); font-weight: 600; }
+.btn-live:hover { border-color: var(--green); background: rgba(34,197,94,.07); }
+.btn-live.live-on {
+  background: rgba(34,197,94,.12); border-color: var(--green);
+  animation: pulse-live 2s ease infinite;
+}
+@keyframes pulse-live { 0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.3)} 60%{box-shadow:0 0 0 6px rgba(34,197,94,0)} }
+.live-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green); margin-right: .35rem;
+  animation: blink-dot 1.2s ease infinite;
+}
+@keyframes blink-dot { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+/* ── Alert Toast ─────────────────────────────────────────────────────────────── */
+.alert-toast {
+  position: fixed; top: 1rem; right: 1rem; z-index: 9000;
+  background: var(--surface); border: 1px solid var(--amber); border-left: 3px solid var(--amber);
+  border-radius: 10px; padding: .85rem 2.5rem .85rem 1.1rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,.5); max-width: 340px; min-width: 220px;
+  animation: toast-in .35s cubic-bezier(.16,1,.3,1);
+}
+@keyframes toast-in { from{transform:translateX(120%);opacity:0} to{transform:translateX(0);opacity:1} }
+.alert-toast.alert-success { border-color: var(--green); border-left-color: var(--green); }
+.alert-toast h4 { font-size: .84rem; color: var(--amber); margin-bottom: .2rem; }
+.alert-toast.alert-success h4 { color: var(--green); }
+.alert-toast p  { font-size: .78rem; color: var(--muted2); }
+.alert-toast-close { position: absolute; top: .4rem; right: .5rem; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; line-height: 1; }
+
+/* ── Alert Settings Panel ────────────────────────────────────────────────────── */
+.alert-settings {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 1.25rem;
+  display: none;
+}
+.alert-settings h3 { font-size: .82rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .85rem; }
+.alert-row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; }
+.alert-field label { display: block; font-size: .73rem; color: var(--muted); margin-bottom: .3rem; letter-spacing: .04em; text-transform: uppercase; }
+.alert-field input {
+  width: 120px; background: var(--bg); border: 1px solid var(--border); border-radius: 7px;
+  color: var(--text); padding: .4rem .65rem; font-size: .85rem; font-family: inherit;
+}
+.alert-field input:focus { outline: none; border-color: var(--accent); }
+
 /* ── Granularity Toggle ──────────────────────────────────────────────────────── */
 .granularity-btn {
   background: transparent; border: 1px solid var(--border); border-radius: 6px;
@@ -388,13 +433,38 @@ tr:hover td { background: rgba(255,255,255,.015); }
         <option value="30" selected>Letzte 30 Tage</option>
         <option value="90">Letzte 90 Tage</option>
       </select>
-      <button class="btn btn-ghost" id="refreshBtn">↺ Aktualisieren</button>
+      <span id="liveTs" style="font-size:.73rem;color:var(--green);min-width:80px"></span>
+      <button class="btn btn-live" id="liveBtn"><span class="live-dot" style="display:none" id="liveDot"></span>Live</button>
+      <button class="btn btn-ghost" id="exportBtn" title="Events als CSV exportieren">↓ CSV</button>
+      <button class="btn btn-ghost" id="alertBtn" title="Alert-Schwellwerte">🔔</button>
+      <button class="btn btn-ghost" id="refreshBtn">↺</button>
       <button class="btn btn-ghost" id="logoutBtn">Abmelden</button>
     </div>
   </header>
 
   <main>
     <div class="error-box" id="errorBox"></div>
+
+    <!-- Alert Settings -->
+    <div class="alert-settings" id="alertSettings">
+      <h3>🔔 Alert-Schwellwerte (täglich)</h3>
+      <div class="alert-row">
+        <div class="alert-field">
+          <label>Minimum Aufrufe</label>
+          <input type="number" id="alertMinViews" placeholder="z.B. 5" min="0">
+        </div>
+        <div class="alert-field">
+          <label>Maximum Aufrufe</label>
+          <input type="number" id="alertMaxViews" placeholder="z.B. 500" min="0">
+        </div>
+        <div class="alert-field">
+          <label>Min. Unique Visitors</label>
+          <input type="number" id="alertMinVisitors" placeholder="z.B. 3" min="0">
+        </div>
+        <button class="btn btn-primary" id="alertSaveBtn" style="padding:.4rem 1rem;font-size:.82rem">Speichern</button>
+        <span id="alertSaveStatus" style="font-size:.8rem;color:var(--green);align-self:center"></span>
+      </div>
+    </div>
 
     <!-- KPI -->
     <div class="section-label">Übersicht</div>
@@ -480,8 +550,25 @@ tr:hover td { background: rgba(255,255,255,.015); }
       </div>
     </div>
 
+    <!-- Duration Histogram + Referrers -->
+    <div class="chart-grid" style="grid-template-columns:1fr 1fr;margin-bottom:1.25rem">
+      <div class="chart-card">
+        <h3>Verweildauer-Verteilung</h3>
+        <div class="chart-wrap"><canvas id="chartDuration"></canvas></div>
+      </div>
+      <div class="panel" style="background:var(--surface2);border:1px solid var(--border);border-radius:12px">
+        <div class="panel-header"><h3>Traffic-Quellen (Referrer)</h3></div>
+        <div class="panel-body">
+          <table>
+            <thead><tr><th>Quelle</th><th>Aufrufe</th></tr></thead>
+            <tbody id="tbReferrers"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <!-- Journey Map -->
-    <div class="section-label">Besucher-Journey</div>
+    <div class="section-label">Besucher-Journey &amp; Kampagnen</div>
     <div class="panel full" style="margin-bottom:1.25rem">
       <div class="panel-header">
         <h3>Häufigste Navigationspfade</h3>
@@ -490,6 +577,30 @@ tr:hover td { background: rgba(255,255,255,.015); }
       <div class="panel-body" style="padding:.75rem 1rem">
         <div class="flow-list" id="flowList">
           <div class="spinner-wrap"><div class="spinner"></div> Journeys laden…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UTM Kampagnen -->
+    <div class="panel-grid" style="margin-bottom:1.25rem">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>UTM Quellen</h3>
+          <span style="font-size:.72rem;color:var(--muted)">?utm_source=…</span>
+        </div>
+        <div class="panel-body">
+          <table><thead><tr><th>Quelle</th><th>Klicks</th></tr></thead>
+          <tbody id="tbUtmSources"></tbody></table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <h3>UTM Kampagnen</h3>
+          <span style="font-size:.72rem;color:var(--muted)">?utm_campaign=…</span>
+        </div>
+        <div class="panel-body">
+          <table><thead><tr><th>Kampagne</th><th>Klicks</th></tr></thead>
+          <tbody id="tbUtmCampaigns"></tbody></table>
         </div>
       </div>
     </div>
@@ -770,9 +881,12 @@ function renderAll() {
   renderDevicesChart(s.deviceTypes || {});
   renderCountries(s.topCountries || []);
   renderFlowMap(s.topSessionPaths || []);
+  renderReferrersTable(s.topReferrers || []);
+  renderUtmPanel(s.topUtmSources || [], s.topUtmCampaigns || []);
   renderLandingTable(s.topLandingPages || []);
   renderPagesTable(s.topPages || [], s.totalPageviews);
   renderEventsTable(rawEvents);
+  checkAlerts(s);
 }
 
 // ── Formatters ────────────────────────────────────────────────────────────────
@@ -1010,6 +1124,7 @@ async function loadProfiles() {
   } catch (e) { rawProfiles = []; }
   finally { loading.style.display = 'none'; }
   renderProfiles();
+  renderDurationHistogram();
 }
 
 function renderProfiles() {
@@ -1234,6 +1349,207 @@ function renderProfiles() {
 }
 
 document.getElementById('profileSearch').addEventListener('input', renderProfiles);
+
+// ── Duration Histogram ────────────────────────────────────────────────────────
+function renderDurationHistogram() {
+  var buckets = [
+    { label: '<10s',    min: 0,      max: 10000,   count: 0 },
+    { label: '10-30s',  min: 10000,  max: 30000,   count: 0 },
+    { label: '30s-2m',  min: 30000,  max: 120000,  count: 0 },
+    { label: '2-5min',  min: 120000, max: 300000,  count: 0 },
+    { label: '5-15min', min: 300000, max: 900000,  count: 0 },
+    { label: '15min+',  min: 900000, max: Infinity, count: 0 },
+  ];
+  rawProfiles.forEach(function(p) {
+    Object.values(p.sessions || {}).forEach(function(s) {
+      var dur = (s.pages || []).reduce(function(sum, pg) { return sum + (pg.durationMs || 0); }, 0);
+      var bucket = buckets.find(function(b) { return dur >= b.min && dur < b.max; });
+      if (bucket) bucket.count++;
+    });
+  });
+  destroyChart('duration');
+  var ctx = document.getElementById('chartDuration').getContext('2d');
+  charts.duration = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: buckets.map(function(b) { return b.label; }),
+      datasets: [{ label: 'Sessions', data: buckets.map(function(b) { return b.count; }),
+        backgroundColor: ['rgba(239,68,68,.65)','rgba(245,158,11,.65)','rgba(34,197,94,.65)','rgba(34,211,238,.65)','rgba(99,102,241,.65)','rgba(167,139,250,.65)'],
+        borderRadius: 5, borderSkipped: false }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: TICK, grid: { display: false } }, y: { ticks: { ...TICK, precision: 0 }, grid: GRID, beginAtZero: true } }
+    }
+  });
+}
+
+// ── Referrers Table ────────────────────────────────────────────────────────────
+function renderReferrersTable(topReferrers) {
+  var tbody = document.getElementById('tbReferrers');
+  if (!topReferrers || !topReferrers.length) {
+    tbody.innerHTML = '<tr><td colspan="2" style="color:var(--muted);text-align:center;padding:1.25rem;font-size:.8rem">Keine Referrer in diesem Zeitraum</td></tr>';
+    return;
+  }
+  var max = topReferrers[0].count;
+  tbody.innerHTML = topReferrers.map(function(r) {
+    var pct = max > 0 ? Math.round(r.count / max * 100) : 0;
+    var fav = 'https://www.google.com/s2/favicons?domain=' + encodeURIComponent(r.referrer) + '&sz=16';
+    return '<tr>'
+      + '<td><div style="display:flex;align-items:center;gap:.5rem">'
+      + '<img src="' + esc(fav) + '" width="13" height="13" style="border-radius:2px;flex-shrink:0" onerror="this.style.display=\'none\'">'
+      + '<span style="font-size:.8rem">' + esc(r.referrer) + '</span></div></td>'
+      + '<td><span style="color:var(--accent2);font-weight:600">' + r.count + '</span>'
+      + '<div style="width:56px;height:3px;background:var(--border2);border-radius:2px;margin:.25rem 0 0 .4rem;display:inline-block;vertical-align:middle">'
+      + '<div style="width:' + pct + '%;height:100%;background:var(--accent2);border-radius:2px"></div></div></td>'
+      + '</tr>';
+  }).join('');
+}
+
+// ── UTM Panel ─────────────────────────────────────────────────────────────────
+function renderUtmPanel(topUtmSources, topUtmCampaigns) {
+  var srcEl  = document.getElementById('tbUtmSources');
+  var campEl = document.getElementById('tbUtmCampaigns');
+  var noData = '<tr><td colspan="2" style="color:var(--muted);text-align:center;padding:1.5rem;font-size:.8rem">'
+    + 'Noch keine Daten.<br><span style="opacity:.6;font-size:.73rem">Links mit ?utm_source=… versehen</span></td></tr>';
+
+  if (!topUtmSources.length) { srcEl.innerHTML = noData; }
+  else {
+    var mx = topUtmSources[0].count;
+    srcEl.innerHTML = topUtmSources.map(function(u) {
+      var pct = mx > 0 ? Math.round(u.count / mx * 100) : 0;
+      return '<tr><td><span class="page-chip" style="background:rgba(99,102,241,.15);color:#818cf8">' + esc(u.source) + '</span></td>'
+        + '<td><span style="color:var(--accent);font-weight:600">' + u.count + '</span>'
+        + '<div style="width:50px;height:3px;background:var(--border2);border-radius:2px;margin:.25rem 0 0 .4rem;display:inline-block;vertical-align:middle">'
+        + '<div style="width:' + pct + '%;height:100%;background:var(--accent);border-radius:2px"></div></div></td></tr>';
+    }).join('');
+  }
+
+  if (!topUtmCampaigns.length) { campEl.innerHTML = noData; }
+  else {
+    var mx2 = topUtmCampaigns[0].count;
+    campEl.innerHTML = topUtmCampaigns.map(function(u) {
+      var pct = mx2 > 0 ? Math.round(u.count / mx2 * 100) : 0;
+      return '<tr><td><span class="page-chip" style="background:rgba(167,139,250,.15);color:#a78bfa">' + esc(u.campaign) + '</span></td>'
+        + '<td><span style="color:var(--purple);font-weight:600">' + u.count + '</span>'
+        + '<div style="width:50px;height:3px;background:var(--border2);border-radius:2px;margin:.25rem 0 0 .4rem;display:inline-block;vertical-align:middle">'
+        + '<div style="width:' + pct + '%;height:100%;background:var(--purple);border-radius:2px"></div></div></td></tr>';
+    }).join('');
+  }
+}
+
+// ── Live Mode ─────────────────────────────────────────────────────────────────
+var _liveInterval = null;
+var _liveActive = false;
+
+document.getElementById('liveBtn').addEventListener('click', function() {
+  _liveActive = !_liveActive;
+  var btn = document.getElementById('liveBtn');
+  var dot = document.getElementById('liveDot');
+  var ts  = document.getElementById('liveTs');
+  if (_liveActive) {
+    btn.classList.add('live-on');
+    btn.innerHTML = '<span class="live-dot" id="liveDot"></span>Stop Live';
+    ts.textContent = 'Startet…';
+    _liveInterval = setInterval(async function() {
+      var days = document.getElementById('rangeSelect').value;
+      try {
+        var r = await fetch(WORKER_URL + '/data?days=' + days, { headers: { 'Authorization': 'Bearer ' + API_TOKEN } });
+        if (r.ok) { var d = await r.json(); rawEvents = d.events || []; renderEventsTable(rawEvents); }
+        document.getElementById('liveTs').textContent = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      } catch {}
+    }, 30000);
+  } else {
+    btn.classList.remove('live-on');
+    btn.innerHTML = 'Live';
+    ts.textContent = '';
+    clearInterval(_liveInterval);
+    _liveInterval = null;
+  }
+});
+
+// ── CSV Export ────────────────────────────────────────────────────────────────
+document.getElementById('exportBtn').addEventListener('click', function() {
+  var cols = ['Zeitpunkt (UTC)','Seite','Pfad','Gerät','Land','Zurückkehrend','Session-ID','Besucher-ID','UTM Source','UTM Medium','UTM Kampagne'];
+  var rows = rawEvents.map(function(e) {
+    var utm = e.utm || {};
+    return [
+      new Date(e.timestamp).toISOString(),
+      labelPage(e.page), e.page || '',
+      e.device || '', countryName(e.country || ''),
+      e.returning ? 'ja' : 'nein',
+      (e.sessionId || '').slice(0, 14), (e.visitorId || '').slice(0, 8),
+      utm.source || '', utm.medium || '', utm.campaign || '',
+    ].map(function(v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(',');
+  });
+  var csv = '﻿' + [cols.map(function(h){ return '"' + h + '"'; }).join(',')].concat(rows).join('\r\n');
+  var a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' })),
+    download: 'analytics-' + new Date().toISOString().slice(0, 10) + '.csv',
+  });
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+});
+
+// ── Alert System ──────────────────────────────────────────────────────────────
+function loadAlertCfg() { try { return JSON.parse(localStorage.getItem('_acfg') || '{}'); } catch { return {}; } }
+function saveAlertCfg(c) { localStorage.setItem('_acfg', JSON.stringify(c)); }
+var _alertFired = {};
+
+function showToast(title, msg, isSuccess) {
+  var t = document.createElement('div');
+  t.className = 'alert-toast' + (isSuccess ? ' alert-success' : '');
+  t.innerHTML = '<button class="alert-toast-close" onclick="this.parentElement.remove()">✕</button>'
+    + '<h4>' + esc(title) + '</h4><p>' + esc(msg) + '</p>';
+  document.body.appendChild(t);
+  setTimeout(function() { if (t.parentElement) { t.style.transition = 'opacity .4s'; t.style.opacity = '0'; setTimeout(function(){ t.remove(); }, 400); } }, 7000);
+}
+
+function checkAlerts(s) {
+  var cfg = loadAlertCfg();
+  var today = (s.dailyStats || [])[s.dailyStats.length - 1];
+  if (!today) return;
+  var todayViews = today.pageviews || 0;
+  var todayVisitors = today.uniqueVisitors || 0;
+  var key = today.date;
+  if (!_alertFired[key]) _alertFired[key] = {};
+
+  if (cfg.minViews && todayViews < parseInt(cfg.minViews) && !_alertFired[key].min) {
+    _alertFired[key].min = true;
+    showToast('⚠️ Wenig Traffic', 'Heute: ' + todayViews + ' Aufrufe (Minimum: ' + cfg.minViews + ')');
+  }
+  if (cfg.maxViews && todayViews > parseInt(cfg.maxViews) && !_alertFired[key].max) {
+    _alertFired[key].max = true;
+    showToast('🎉 Hoher Traffic!', 'Heute: ' + todayViews + ' Aufrufe (Schwellwert: ' + cfg.maxViews + ')', true);
+  }
+  if (cfg.minVisitors && todayVisitors < parseInt(cfg.minVisitors) && !_alertFired[key].minV) {
+    _alertFired[key].minV = true;
+    showToast('👤 Wenig Besucher', 'Heute: ' + todayVisitors + ' Visitors (Minimum: ' + cfg.minVisitors + ')');
+  }
+}
+
+document.getElementById('alertBtn').addEventListener('click', function() {
+  var panel = document.getElementById('alertSettings');
+  var isHidden = panel.style.display === 'none' || !panel.style.display;
+  panel.style.display = isHidden ? 'block' : 'none';
+  if (isHidden) {
+    var cfg = loadAlertCfg();
+    document.getElementById('alertMinViews').value    = cfg.minViews    || '';
+    document.getElementById('alertMaxViews').value    = cfg.maxViews    || '';
+    document.getElementById('alertMinVisitors').value = cfg.minVisitors || '';
+  }
+});
+
+document.getElementById('alertSaveBtn').addEventListener('click', function() {
+  saveAlertCfg({
+    minViews:    document.getElementById('alertMinViews').value.trim()    || null,
+    maxViews:    document.getElementById('alertMaxViews').value.trim()    || null,
+    minVisitors: document.getElementById('alertMinVisitors').value.trim() || null,
+  });
+  var st = document.getElementById('alertSaveStatus');
+  st.textContent = '✓ Gespeichert';
+  setTimeout(function(){ st.textContent = ''; }, 2500);
+});
 
 // ── Granularity toggle ────────────────────────────────────────────────────────
 document.querySelectorAll('.granularity-btn').forEach(function(btn) {

@@ -141,6 +141,13 @@ async function handleTrack(request, env) {
   const visitorId = body.visitorId || deriveVisitorId(request);
   const dev = deviceType(screenWidth);
   const country = request.headers.get('CF-IPCountry') || '';
+  const utm = (body.utm && typeof body.utm === 'object') ? {
+    source:   String(body.utm.source   || '').slice(0, 100),
+    medium:   String(body.utm.medium   || '').slice(0, 100),
+    campaign: String(body.utm.campaign || '').slice(0, 100),
+    content:  String(body.utm.content  || '').slice(0, 100),
+    term:     String(body.utm.term     || '').slice(0, 100),
+  } : null;
 
   // ── Besucher-Profil ───────────────────────────────────────────────────────
   const profile = await updateVisitorProfile(env, visitorId, { page, sessionId, timestamp, referrer, device: dev, screenWidth, language, country });
@@ -149,7 +156,7 @@ async function handleTrack(request, env) {
   const randId = Math.random().toString(36).slice(2, 8);
   await env.ANALYTICS.put(`event:${timestamp}:${randId}`, JSON.stringify({
     page, previousPage, pageIndex, referrer, userAgent, screenWidth, language,
-    timestamp, sessionId, visitorId, device: dev, country,
+    timestamp, sessionId, visitorId, device: dev, country, utm,
     returning: profile.returning, totalVisits: profile.totalPageviews,
   }), { expirationTtl: 60 * 60 * 24 * 90 });
 
@@ -308,6 +315,10 @@ async function handleSummary(request, env) {
   const allSessionIds = new Set(); // all unique session IDs
   const landingPages = {}; // page → count as landing page
   const countryCounts = {}; // country code → count
+  const utmSourceCount = {}; // utm_source → count
+  const utmCampaignCount = {}; // utm_campaign → count
+  const utmMediumCount = {}; // utm_medium → count
+  let totalDurationMs = 0; // sum of all event-level durations (via /duration events)
 
   // Tages-Aggregate aus KV lesen (effizient, kein Event-Scan nötig für Summen)
   for (const date of dateRange) {
@@ -383,6 +394,13 @@ async function handleSummary(request, env) {
       // Länder
       if (ev.country) countryCounts[ev.country] = (countryCounts[ev.country] || 0) + 1;
 
+      // UTM
+      if (ev.utm) {
+        if (ev.utm.source)   utmSourceCount[ev.utm.source]     = (utmSourceCount[ev.utm.source]     || 0) + 1;
+        if (ev.utm.campaign) utmCampaignCount[ev.utm.campaign] = (utmCampaignCount[ev.utm.campaign] || 0) + 1;
+        if (ev.utm.medium)   utmMediumCount[ev.utm.medium]     = (utmMediumCount[ev.utm.medium]     || 0) + 1;
+      }
+
       if (recentEvents.length < 50) recentEvents.push(ev);
     }
   } while (evCursor);
@@ -431,6 +449,10 @@ async function handleSummary(request, env) {
   const bounceSessions = Object.values(sessionFlows).filter(f => f.length === 1).length;
   const bounceRate = totalSessions > 0 ? Math.round(bounceSessions / totalSessions * 100) : 0;
 
+  const topUtmSources = Object.entries(utmSourceCount).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([source, count]) => ({ source, count }));
+  const topUtmCampaigns = Object.entries(utmCampaignCount).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([campaign, count]) => ({ campaign, count }));
+  const topUtmMediums = Object.entries(utmMediumCount).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([medium, count]) => ({ medium, count }));
+
   const summary = {
     totalPageviews,
     uniqueVisitors: uniqueVisitors.size,
@@ -446,6 +468,9 @@ async function handleSummary(request, env) {
     topSessionPaths,
     topLandingPages,
     topCountries,
+    topUtmSources,
+    topUtmCampaigns,
+    topUtmMediums,
     recentEvents: recentEvents.sort((a, b) => b.timestamp - a.timestamp).slice(0, 20),
   };
 

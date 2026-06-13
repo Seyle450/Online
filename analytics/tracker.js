@@ -74,6 +74,25 @@
   function getLastPageStart() { return parseInt(sessionStorage.getItem('_ps') || '0', 10); }
   function setPageStart(ts)   { sessionStorage.setItem('_ps', String(ts)); }
 
+  function getUtmParams() {
+    var params = new URLSearchParams(location.search);
+    var UTM_KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+    var hasUtm = UTM_KEYS.some(function(k){ return params.has(k); });
+    if (hasUtm) {
+      var utm = {
+        source:   params.get('utm_source')   || '',
+        medium:   params.get('utm_medium')   || '',
+        campaign: params.get('utm_campaign') || '',
+        content:  params.get('utm_content')  || '',
+        term:     params.get('utm_term')     || '',
+      };
+      try { sessionStorage.setItem('_utm', JSON.stringify(utm)); } catch(e) {}
+      return utm;
+    }
+    try { var s = sessionStorage.getItem('_utm'); if (s) return JSON.parse(s); } catch(e) {}
+    return null;
+  }
+
   // ── Events senden ────────────────────────────────────────────────────────
   function sendEvent(payload) {
     fetch(WORKER_URL + '/track', {
@@ -99,12 +118,14 @@
     if (previousPage && lastStart > 0) sendDuration(previousPage, now - lastStart);
     setPageStart(now);
     setCurrentPage(currentPage);
+    var utm = getUtmParams();
     sendEvent({
       page: currentPage, previousPage: previousPage,
       pageIndex: getSessionPageIndex(), referrer: document.referrer || '',
       userAgent: navigator.userAgent, screenWidth: screen.width,
       language: navigator.language || '', timestamp: now,
       sessionId: getSessionId(), visitorId: getVisitorId(),
+      utm: utm || undefined,
     });
   }
 
