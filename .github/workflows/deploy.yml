@@ -24,6 +24,8 @@ jobs:
           user = os.environ['FTP_USERNAME']
           pwd  = os.environ['FTP_PASSWORD']
 
+          REMOTE_ROOT = '/Portfolio'
+
           SKIP = {'.git', '.github', 'worker', 'README.md',
                   'ANALYTICS_SETUP.md', 'CNAME', '.ftp-deploy-sync-state.json'}
 
@@ -31,21 +33,20 @@ jobs:
           t.connect(username=user, password=pwd)
           sftp = paramiko.SFTPClient.from_transport(t)
 
-          cwd = sftp.getcwd() or '/'
-          print(f'SFTP working directory: {cwd}')
-          print(f'Root contents: {sftp.listdir(cwd)}')
+          def ensure_dir(path):
+              try: sftp.mkdir(path)
+              except: pass
+              try: sftp.chmod(path, 0o755)
+              except: pass
 
           def upload(local, remote):
               for name in os.listdir(local):
                   if name in SKIP or name.startswith('.'):
                       continue
                   lp = os.path.join(local, name)
-                  rp = f"{remote}/{name}" if remote else f"{cwd}/{name}"
+                  rp = f"{remote}/{name}"
                   if os.path.isdir(lp):
-                      try: sftp.mkdir(rp)
-                      except: pass
-                      try: sftp.chmod(rp, 0o755)
-                      except: pass
+                      ensure_dir(rp)
                       upload(lp, rp)
                   else:
                       print(f'→ {rp}')
@@ -53,7 +54,8 @@ jobs:
                       try: sftp.chmod(rp, 0o644)
                       except: pass
 
-          upload('.', '')
+          ensure_dir(REMOTE_ROOT)
+          upload('.', REMOTE_ROOT)
           sftp.close()
           t.close()
           print('Done!')
