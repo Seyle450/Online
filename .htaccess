@@ -8,11 +8,11 @@ RewriteEngine On
 
 # Weiterleitungen für alte GitHub-Pages-Pfade falls jemand die direkt aufgerufen hat
 RewriteCond %{HTTP_HOST} ^elyesferchichi\.com$ [NC]
-RewriteRule ^Webdesign%20Agentur/antepli-baklava(/.*)?$ https://antepli.elyesferchichi.com$1 [R=301,L]
-RewriteRule ^Webdesign%20Agentur/hevis(/.*)?$ https://hevis.elyesferchichi.com$1 [R=301,L]
-RewriteRule ^Webdesign%20Agentur/bens(/.*)?$ https://bens.elyesferchichi.com$1 [R=301,L]
-RewriteRule ^Webdesign%20Agentur/lokma-lovers(/.*)?$ https://lokma.elyesferchichi.com$1 [R=301,L]
-RewriteRule ^Webdesign%20Agentur/cafe-niki(/.*)?$ https://niki.elyesferchichi.com$1 [R=301,L]
+RewriteRule ^Webdesign-Agentur/antepli-baklava(/.*)?$ https://antepli.elyesferchichi.com$1 [R=301,L]
+RewriteRule ^Webdesign-Agentur/hevis(/.*)?$ https://hevis.elyesferchichi.com$1 [R=301,L]
+RewriteRule ^Webdesign-Agentur/bens(/.*)?$ https://bens.elyesferchichi.com$1 [R=301,L]
+RewriteRule ^Webdesign-Agentur/lokma-lovers(/.*)?$ https://lokma.elyesferchichi.com$1 [R=301,L]
+RewriteRule ^Webdesign-Agentur/cafe-niki(/.*)?$ https://niki.elyesferchichi.com$1 [R=301,L]
 
 # Business-Website auch unter sauberer Subdomain erreichbar
 RewriteRule ^webdesign-bremen(/.*)?$ https://webdesign.elyesferchichi.com$1 [R=301,L]

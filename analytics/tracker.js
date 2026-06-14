@@ -141,7 +141,9 @@
   function track() {
     if (!hasConsent()) return;
     var now = Date.now();
-    var currentPage = location.pathname + location.search;
+    var mainHosts = ['elyesferchichi.com', 'seyle450.github.io', 'localhost', '127.0.0.1'];
+    var isMain = mainHosts.some(function(h){ return location.hostname === h; });
+    var currentPage = (isMain ? '' : location.hostname) + location.pathname + location.search;
     var previousPage = getPreviousPage();
     var lastStart = getLastPageStart();
     if (previousPage && lastStart > 0) sendDuration(previousPage, now - lastStart);
