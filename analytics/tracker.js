@@ -28,7 +28,7 @@
 
   function datenschutzUrl() {
     var key = getSiteKey();
-    return '/Portfolio/datenschutz.html' + (key ? '?site=' + key : '');
+    return 'https://elyesferchichi.com/datenschutz.html' + (key ? '?site=' + key : '');
   }
 
   // ── Canvas-Fingerprint ───────────────────────────────────────────────────

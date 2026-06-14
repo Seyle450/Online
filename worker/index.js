@@ -14,13 +14,15 @@ const CORS_ORIGIN = 'https://elyesferchichi.com';
 // ─── Hilfsfunktionen ────────────────────────────────────────────────────────
 
 function corsHeaders(origin) {
-  const allowed = [
-    'https://elyesferchichi.com',
-    'https://seyle450.github.io',
-    'http://localhost',
-    'http://127.0.0.1',
-  ];
-  const use = allowed.some(o => origin && origin.startsWith(o)) ? origin : CORS_ORIGIN;
+  const isAllowed = origin && (
+    origin === 'https://elyesferchichi.com' ||
+    /^https:\/\/[a-z0-9-]+\.elyesferchichi\.com$/.test(origin) ||
+    origin === 'https://seyle450.github.io' ||
+    origin.startsWith('https://seyle450.github.io/') ||
+    origin.startsWith('http://localhost') ||
+    origin.startsWith('http://127.0.0.1')
+  );
+  const use = isAllowed ? origin : CORS_ORIGIN;
   return {
     'Access-Control-Allow-Origin': use,
     'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, OPTIONS',
