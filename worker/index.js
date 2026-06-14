@@ -182,15 +182,18 @@ async function handleTrack(request, env, ctx) {
       // Neue Session — sofort benachrichtigen
       session = {
         flag, dev, returning: profile.returning,
+        visitorId, muted: profile.muted || false,
         pages: [page], startTs: now2,
         lastActivity: now2, lastNotifiedAt: now2, lastNotifiedCount: 1,
       };
       await putLiveSession(env, sessionId, session);
-      await sendTelegram(env,
-        `👁 <b>Neue Session</b> ${flag}\n` +
-        `${dev} · ${profile.returning ? '↩ Wiederkehrend' : '✦ Neu'}\n\n` +
-        `<b>${pageName(page)}</b>`
-      );
+      if (!session.muted) {
+        await sendTelegram(env,
+          `👁 <b>Neue Session</b> ${flag}\n` +
+          `${dev} · ${profile.returning ? '↩ Wiederkehrend' : '✦ Neu'}\n\n` +
+          `<b>${pageName(page)}</b>`
+        );
+      }
     } else {
       // Session läuft — Seite hinzufügen, Cron schickt Zusammenfassung
       session.pages.push(page);
@@ -278,6 +281,7 @@ async function handleVisitorUpdate(request, env, visitorId) {
     const profile = JSON.parse(raw);
     if (typeof body.alias === 'string') profile.alias = body.alias.slice(0, 80);
     if (typeof body.note  === 'string') profile.note  = body.note.slice(0, 500);
+    if (typeof body.muted === 'boolean') profile.muted = body.muted;
     await env.ANALYTICS.put(profileKey, JSON.stringify(profile), { expirationTtl: 60 * 60 * 24 * 365 });
     return json({ ok: true, profile }, 200, origin);
   } catch { return json({ error: 'Failed' }, 500, origin); }
@@ -395,19 +399,23 @@ async function handleScheduled(env) {
 
       if (isEnded) {
         // Session beendet — finale Nachricht
-        const dur = fmtDur(now - s.startTs);
-        const path = s.pages.map(p => pageName(p)).join(' → ');
-        await sendTelegram(env,
-          `👋 <b>Session beendet</b> ${s.flag}\n` +
-          `${s.dev}${s.returning ? ' · ↩ Wiederkehrend' : ' · ✦ Neu'}${dur ? ' · ' + dur : ''}\n\n` +
-          `<b>Pfad:</b> ${path}`
-        );
+        if (!s.muted) {
+          const dur = fmtDur(now - s.startTs);
+          const path = s.pages.map(p => pageName(p)).join(' → ');
+          await sendTelegram(env,
+            `👋 <b>Session beendet</b> ${s.flag}\n` +
+            `${s.dev}${s.returning ? ' · ↩ Wiederkehrend' : ' · ✦ Neu'}${dur ? ' · ' + dur : ''}\n\n` +
+            `<b>Pfad:</b> ${path}`
+          );
+        }
         await deleteLiveSession(env, sid);
 
       } else if (hasNew && timeSinceLast >= SUMMARY_INTERVAL) {
         // Zusammenfassung der neuen Seiten seit letzter Benachrichtigung
-        const summary = newPages.map(p => pageName(p)).join(' → ');
-        await sendTelegram(env, `📊 ${s.flag} <b>${summary}</b>`);
+        if (!s.muted) {
+          const summary = newPages.map(p => pageName(p)).join(' → ');
+          await sendTelegram(env, `📊 ${s.flag} <b>${summary}</b>`);
+        }
         s.lastNotifiedCount = s.pages.length;
         s.lastNotifiedAt = now;
         await putLiveSession(env, sid, s);

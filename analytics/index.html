@@ -391,16 +391,55 @@ tr:hover td { background: rgba(255,255,255,.015); }
 .country-name { flex: 1; }
 .country-count { color: var(--muted2); font-weight: 600; font-size: .78rem; }
 
+/* ── 3-column chart grid (Pages + Devices + Countries) ───────────────────────── */
+.chart-grid-3col { grid-template-columns: 2fr 1fr 1fr; }
+
+/* ── UTM input grid ───────────────────────────────────────────────────────────── */
+.utm-input-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: .6rem; margin-bottom: .75rem; }
+
+/* ── Muted badge ─────────────────────────────────────────────────────────────── */
+.badge-muted { background: rgba(100,116,139,.15); color: #64748b; }
+
 /* ── Responsive ──────────────────────────────────────────────────────────────── */
+
+/* Prevent iOS input zoom (font-size must be ≥16px / 1rem) */
+.form-group input,
+select.range-select,
+.filter-bar input,
+.filter-bar select,
+.alert-field input,
+#profileSearch,
+.alias-input,
+.note-textarea,
+#utmUrl, #utmSource, #utmMedium, #utmCampaign, #utmResult {
+  font-size: 1rem;
+}
+
+/* iOS URL bar: 100svh overrides 100vh */
+body { min-height: 100svh; }
+#app { min-height: 100svh; }
+
 @media (max-width: 900px) {
   .chart-grid, .panel-grid { grid-template-columns: 1fr; }
   .chart-card.full, .panel.full { grid-column: auto; }
   .expand-grid { grid-template-columns: 1fr; }
+  .chart-grid-3col { grid-template-columns: 1fr; }
+  .utm-input-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .header-controls { gap: .35rem; }
+  #liveTs { display: none; }
+  .btn { padding: .6rem .9rem; font-size: .82rem; }
 }
 @media (max-width: 520px) {
   header { padding: .7rem 1rem; }
   main   { padding: 1rem; }
   .kpi-value { font-size: 1.5rem; }
+  .alert-row { flex-direction: column; align-items: stretch; }
+  .alert-field input { width: 100%; }
+  .utm-input-grid { grid-template-columns: 1fr; }
+  #loginBox { padding: 1.75rem 1.25rem; margin: 1rem; }
+  .header-controls .btn-ghost:not(#alertBtn):not(#refreshBtn) { font-size: .78rem; padding: .5rem .7rem; }
 }
 </style>
 </head>
@@ -535,7 +574,7 @@ tr:hover td { background: rgba(255,255,255,.015); }
     </div>
 
     <!-- Pages + Devices + Countries -->
-    <div class="chart-grid" style="grid-template-columns:2fr 1fr 1fr;margin-bottom:1.25rem">
+    <div class="chart-grid chart-grid-3col" style="margin-bottom:1.25rem">
       <div class="chart-card">
         <h3>Top Seiten</h3>
         <div class="chart-wrap"><canvas id="chartPages"></canvas></div>
@@ -608,7 +647,7 @@ tr:hover td { background: rgba(255,255,255,.015); }
     <!-- UTM Generator -->
     <div class="section-label">UTM Link-Generator</div>
     <div class="chart-card full" style="margin-bottom:1.25rem">
-      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:.6rem;margin-bottom:.75rem">
+      <div class="utm-input-grid">
         <div><label style="font-size:.7rem;color:var(--muted);display:block;margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.05em">URL</label>
           <input id="utmUrl" type="text" placeholder="https://seyle450.github.io/Portfolio/" style="width:100%;background:var(--bg);border:1px solid var(--border);border-radius:7px;color:var(--text);padding:.45rem .7rem;font-size:.82rem;font-family:inherit"></div>
         <div><label style="font-size:.7rem;color:var(--muted);display:block;margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.05em">Quelle (Source)</label>
@@ -661,7 +700,7 @@ tr:hover td { background: rgba(255,255,255,.015); }
       <div class="panel-body">
         <table>
           <thead><tr>
-            <th>Zeitpunkt</th><th>Seite</th><th>Gerät</th><th>Land</th><th>Besucher</th>
+            <th>Zeitpunkt</th><th>Seite</th><th>Gerät</th><th>Land</th><th>Besucher</th><th>Name</th>
           </tr></thead>
           <tbody id="tbEvents"></tbody>
         </table>
@@ -1113,12 +1152,17 @@ function renderEventsTable(events) {
       ? '<span class="badge badge-ret">↩ wiederkehrend</span>'
       : '<span class="badge badge-new">✦ neu</span>';
     var flag = e.country ? '<span title="' + esc(countryName(e.country)) + '">' + countryFlag(e.country) + '</span>' : '–';
+    var prof = rawProfiles.find(function(p) { return p.visitorId === e.visitorId; });
+    var aliasCell = (prof && prof.alias)
+      ? '<span style="font-size:.78rem;font-weight:600;color:var(--muted2)">' + esc(prof.alias) + '</span>'
+      : '<span style="font-size:.75rem;color:var(--muted);font-style:italic">' + esc((e.visitorId || '').slice(0,8)) + '</span>';
     return '<tr>'
       + '<td style="white-space:nowrap;color:var(--muted);font-size:.76rem">' + fmtDateTime(e.timestamp) + '</td>'
       + '<td>' + pageChipHTML(e.page) + '</td>'
       + '<td>' + devBadge + '</td>'
       + '<td>' + flag + '</td>'
       + '<td>' + visBadge + '</td>'
+      + '<td>' + aliasCell + '</td>'
       + '</tr>';
   }).join('');
 }
@@ -1146,6 +1190,7 @@ async function loadProfiles() {
   finally { loading.style.display = 'none'; }
   renderProfiles();
   renderDurationHistogram();
+  renderEventsTable(rawEvents);
 }
 
 function renderProfiles() {
@@ -1200,6 +1245,7 @@ function renderProfiles() {
 
     var expandId = 'exp-' + idx;
     var hasSessions = sessions.length > 0;
+    var isMuted = !!p.muted;
 
     // First + last seen combined
     var visits = p.totalPageviews || 0;
@@ -1207,7 +1253,7 @@ function renderProfiles() {
     return '<tr class="visitor-row' + (hasSessions ? ' expand-trigger' : '') + '" data-expand="' + expandId + '">'
       // Avatar
       + '<td style="padding:.45rem .75rem">'
-      + '<div class="p-avatar" style="background:' + avatarColor_ + '">' + esc(initial) + '</div>'
+      + '<div class="p-avatar" style="background:' + avatarColor_ + (isMuted ? ';opacity:.5' : '') + '">' + esc(initial) + '</div>'
       + '</td>'
       // Name / alias
       + '<td style="min-width:160px"><div class="alias-cell" data-vid="' + vid + '">'
@@ -1232,10 +1278,14 @@ function renderProfiles() {
       + '<td>' + visits + '</td>'
       // Duration
       + '<td style="color:var(--accent2)">' + fmtDuration(p.totalDurationMs) + '</td>'
-      // Status
-      + '<td>' + (p.returning
-          ? '<span class="badge badge-ret">↩ Zurück</span>'
-          : '<span class="badge badge-new">✦ Neu</span>') + '</td>'
+      // Status + Mute toggle
+      + '<td><div style="display:flex;align-items:center;gap:.4rem">'
+      + (isMuted
+          ? '<span class="badge badge-muted">🔕 Stumm</span>'
+          : (p.returning ? '<span class="badge badge-ret">↩ Zurück</span>' : '<span class="badge badge-new">✦ Neu</span>'))
+      + '<button class="icon-btn mute-btn" data-vid="' + vid + '" title="' + (isMuted ? 'Stummschaltung aufheben' : 'Telegram-Benachrichtigungen stummschalten') + '">'
+      + (isMuted ? '🔔' : '🔕') + '</button>'
+      + '</div></td>'
       + '</tr>'
       // Expand row
       + '<tr class="expand-row"><td colspan="9" class="expand-cell">'
@@ -1319,6 +1369,29 @@ function renderProfiles() {
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Enter')  saveBtn.click();
       if (e.key === 'Escape') cancelBtn.click();
+    });
+  });
+
+  // ── Mute toggle ────────────────────────────────────────────────────────────
+  tbody.querySelectorAll('.mute-btn').forEach(function (btn) {
+    btn.addEventListener('click', async function (e) {
+      e.stopPropagation();
+      var vid = btn.dataset.vid;
+      var prof = rawProfiles.find(function(p) { return p.visitorId === vid; });
+      if (!prof) return;
+      var newMuted = !prof.muted;
+      btn.disabled = true;
+      try {
+        var res = await fetch(WORKER_URL + '/visitor/' + encodeURIComponent(vid), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_TOKEN },
+          body: JSON.stringify({ muted: newMuted }),
+        });
+        if (!res.ok) throw new Error(res.status);
+        prof.muted = newMuted;
+        renderProfiles();
+      } catch (err) { alert('Fehler: ' + err.message); }
+      finally { btn.disabled = false; }
     });
   });
 
