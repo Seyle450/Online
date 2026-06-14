@@ -14,5 +14,5 @@ RewriteRule ^Webdesign-Agentur/bens(/.*)?$ https://bens.elyesferchichi.com$1 [R=
 RewriteRule ^Webdesign-Agentur/lokma-lovers(/.*)?$ https://lokma.elyesferchichi.com$1 [R=301,L]
 RewriteRule ^Webdesign-Agentur/cafe-niki(/.*)?$ https://niki.elyesferchichi.com$1 [R=301,L]
 
-# Business-Website auch unter sauberer Subdomain erreichbar
-RewriteRule ^webdesign-bremen(/.*)?$ https://webdesign.elyesferchichi.com$1 [R=301,L]
+# webdesign-bremen/ → root (subdomain wurde gelöscht)
+RewriteRule ^webdesign-bremen(/.*)?$ https://elyesferchichi.com$1 [R=301,L]

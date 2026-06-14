@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Elyes Ferchichi – Webdesign für Cafés & Restaurants · Bremen</title>
 <meta name="description" content="Webdesign aus Bremen für Cafés und Restaurants. Schnell, modern, Festpreis – in 1–2 Wochen online. Jetzt kostenloses Angebot anfragen." />
+<link rel="canonical" href="https://elyesferchichi.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="de_DE" />
+<meta property="og:url" content="https://elyesferchichi.com/" />
+<meta property="og:title" content="Elyes Ferchichi – Webdesign für Cafés & Restaurants · Bremen" />
+<meta property="og:description" content="Webdesign aus Bremen für Cafés und Restaurants. Festpreis, in 1–2 Wochen online." />
+<meta property="og:image" content="https://elyesferchichi.com/Webdesign-Agentur/hevis/assets/cafe.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://elyesferchichi.com/Webdesign-Agentur/hevis/assets/cafe.jpg" />
 <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -196,8 +205,8 @@
     .hero-img{height:420px;}
     section{padding:88px 0;}
     .cta{padding:96px 0;}
-    .prob-list{flex-direction:row;flex-wrap:wrap;gap:20px;}
-    .prob-item{flex:1 1 260px;flex-direction:column;}
+    .prob-list{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .prob-item{flex-direction:column;}
     .cards{flex-direction:row;align-items:stretch;}
     .card{flex:1;}
     .card.feat{transform:translateY(-10px);}
@@ -219,6 +228,11 @@
     .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
     .hero-visual{margin-top:0;}
     .hero-img{height:540px;}
+    .work-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  /* Reduced motion */
+  @media(prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important;}
   }
 </style>
 </head>
@@ -542,7 +556,7 @@
       Bremen, Deutschland<br/>
       © 2026 Elyes Ferchichi
       <div class="foot-links">
-        <a href="webdesign-bremen/impressum.html">Impressum</a>
+        <a href="impressum.html">Impressum</a>
         <a href="datenschutz.html?site=freelance">Datenschutz</a>
         <a href="portfolio.html">Portfolio</a>
       </div>
