@@ -15,14 +15,15 @@
 
   // ── Site-Erkennung für Datenschutz-Link ──────────────────────────────────
   function getSiteKey() {
+    var h = location.hostname.toLowerCase();
     var p = location.pathname.toLowerCase();
-    if (p.includes('starscape'))  return 'starscape';
-    if (p.includes("ben"))        return 'bens';
-    if (p.includes("hevi"))       return 'hevis';
-    if (p.includes("niki"))       return 'cafeniki';
-    if (p.includes("lokma"))      return 'lokma';
-    if (p.includes("antepli"))    return 'antepli';
-    if (p.includes("freelance"))  return 'freelance';
+    if (h.includes('antepli')   || p.includes('antepli'))   return 'antepli';
+    if (h.includes('hevis')     || p.includes('hevi'))      return 'hevis';
+    if (h.includes('bens')      || p.includes('ben'))       return 'bens';
+    if (h.includes('niki')      || p.includes('niki'))      return 'cafeniki';
+    if (h.includes('lokma')     || p.includes('lokma'))     return 'lokma';
+    if (h.includes('starscape') || p.includes('starscape')) return 'starscape';
+    if (p.includes('freelance'))                            return 'freelance';
     return '';
   }
 
