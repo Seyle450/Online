@@ -11,21 +11,47 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy via FTPS
+      - name: Deploy via SFTP
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          sudo apt-get install -y lftp
-          lftp -u "${{ secrets.FTP_USERNAME }}","${{ secrets.FTP_PASSWORD }}" \
-            -e "set ftp:ssl-force true; \
-                set ftp:ssl-protect-data true; \
-                set ssl:verify-certificate no; \
-                set net:timeout 20; \
-                set net:max-retries 3; \
-                mirror -R --verbose \
-                  --exclude-glob .git/ \
-                  --exclude-glob .github/ \
-                  --exclude-glob worker/ \
-                  --exclude README.md \
-                  --exclude ANALYTICS_SETUP.md \
-                  . /; \
-                exit" \
-            ftp://${{ secrets.FTP_SERVER }}
+          pip install paramiko --quiet
+          python3 - << 'EOF'
+          import paramiko, os
+
+          host = os.environ['FTP_SERVER']
+          user = os.environ['FTP_USERNAME']
+          pwd  = os.environ['FTP_PASSWORD']
+
+          SKIP = {'.git', '.github', 'worker', 'README.md',
+                  'ANALYTICS_SETUP.md', 'CNAME', '.ftp-deploy-sync-state.json'}
+
+          t = paramiko.Transport((host, 22))
+          t.connect(username=user, password=pwd)
+          sftp = paramiko.SFTPClient.from_transport(t)
+
+          def upload(local, remote):
+              for name in os.listdir(local):
+                  if name in SKIP or name.startswith('.'):
+                      continue
+                  lp = os.path.join(local, name)
+                  rp = f"{remote}/{name}" if remote else name
+                  if os.path.isdir(lp):
+                      try: sftp.mkdir(rp)
+                      except: pass
+                      try: sftp.chmod(rp, 0o755)
+                      except: pass
+                      upload(lp, rp)
+                  else:
+                      print(f'→ {rp}')
+                      sftp.put(lp, rp)
+                      try: sftp.chmod(rp, 0o644)
+                      except: pass
+
+          upload('.', '')
+          sftp.close()
+          t.close()
+          print('Done!')
+          EOF
