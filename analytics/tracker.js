@@ -7,9 +7,30 @@
   var WORKER_URL = 'https://portfolio-analytics.seyle450.workers.dev';
   var CONSENT_KEY = 'analytics_consent';
 
-  // ── Consent ──────────────────────────────────────────────────────────────
-  function getConsent()    { try { return localStorage.getItem(CONSENT_KEY); } catch(e) { return null; } }
-  function setConsent(val) { try { localStorage.setItem(CONSENT_KEY, val); }  catch(e) {} }
+  // ── Consent (cookie with parent domain so all subdomains share it) ────────
+  function cookieDomain() {
+    var h = location.hostname;
+    // extract root domain: antepli.elyesferchichi.com → .elyesferchichi.com
+    var parts = h.split('.');
+    return parts.length >= 2 ? '.' + parts.slice(-2).join('.') : h;
+  }
+  function getConsent() {
+    try {
+      var m = document.cookie.match('(?:^|;)\\s*' + CONSENT_KEY + '=([^;]+)');
+      return m ? decodeURIComponent(m[1]) : null;
+    } catch(e) { return null; }
+  }
+  function setConsent(val) {
+    try {
+      var age = 60 * 60 * 24 * 365;
+      document.cookie = CONSENT_KEY + '=' + encodeURIComponent(val) +
+        '; max-age=' + age + '; domain=' + cookieDomain() +
+        '; path=/; SameSite=Lax' +
+        (location.protocol === 'https:' ? '; Secure' : '');
+      // also keep localStorage as fallback for localhost
+      localStorage.setItem(CONSENT_KEY, val);
+    } catch(e) {}
+  }
   function hasConsent()    { return getConsent() === 'granted'; }
   function isDenied()      { return getConsent() === 'denied'; }
 
