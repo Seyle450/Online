@@ -1535,8 +1535,8 @@ function renderProfiles() {
       if (!prof) return;
       var newExcluded = !prof.excluded;
       var confirmMsg = newExcluded
-        ? 'Besucher aus allen Statistiken ausschließen? Zukünftige Besuche werden nicht mehr gezählt.'
-        : 'Besucher wieder in die Statistiken einschließen?';
+        ? 'Besucher als "eigener Besucher" markieren? Er wird im Dashboard standardmäßig ausgeblendet (toggle "🚫 Eigene" im Header).'
+        : 'Markierung aufheben? Besucher wird wieder normal in den Statistiken angezeigt.';
       if (!confirm(confirmMsg)) return;
       btn.disabled = true;
       try {
