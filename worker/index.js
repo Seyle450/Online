@@ -139,6 +139,11 @@ async function handleTrack(request, env, ctx) {
   } = body;
 
   const visitorId = body.visitorId || deriveVisitorId(request);
+
+  // Silently ignore excluded visitors (e.g. site owner's own traffic)
+  const isExcluded = await env.ANALYTICS.get('excluded:' + visitorId);
+  if (isExcluded) return json({ ok: true }, 200, origin);
+
   const dev = deviceType(screenWidth);
   const country = request.headers.get('CF-IPCountry') || '';
   const utm = (body.utm && typeof body.utm === 'object') ? {
@@ -188,8 +193,9 @@ async function handleTrack(request, env, ctx) {
       };
       await putLiveSession(env, sessionId, session);
       if (!session.muted) {
+        const nameTag = profile.alias ? ` · <b>${profile.alias}</b>` : '';
         await sendTelegram(env,
-          `👁 <b>Neue Session</b> ${flag}\n` +
+          `👁 <b>Neue Session</b> ${flag}${nameTag}\n` +
           `${dev} · ${profile.returning ? '↩ Wiederkehrend' : '✦ Neu'}\n\n` +
           `<b>${pageName(page)}</b>`
         );
@@ -279,12 +285,33 @@ async function handleVisitorUpdate(request, env, visitorId) {
 
   try {
     const profile = JSON.parse(raw);
-    if (typeof body.alias === 'string') profile.alias = body.alias.slice(0, 80);
-    if (typeof body.note  === 'string') profile.note  = body.note.slice(0, 500);
-    if (typeof body.muted === 'boolean') profile.muted = body.muted;
+    if (typeof body.alias    === 'string')  profile.alias    = body.alias.slice(0, 80);
+    if (typeof body.note     === 'string')  profile.note     = body.note.slice(0, 500);
+    if (typeof body.muted    === 'boolean') profile.muted    = body.muted;
+    if (typeof body.excluded === 'boolean') {
+      profile.excluded = body.excluded;
+      // maintain fast-lookup key for /track and /summary filtering
+      if (body.excluded) {
+        await env.ANALYTICS.put('excluded:' + visitorId, '1', { expirationTtl: 60 * 60 * 24 * 365 * 5 });
+      } else {
+        await env.ANALYTICS.delete('excluded:' + visitorId);
+      }
+    }
     await env.ANALYTICS.put(profileKey, JSON.stringify(profile), { expirationTtl: 60 * 60 * 24 * 365 });
     return json({ ok: true, profile }, 200, origin);
   } catch { return json({ error: 'Failed' }, 500, origin); }
+}
+
+// ── Load excluded visitor IDs (fast: keys only, no value reads) ──────────────
+async function loadExcludedIds(env) {
+  const excluded = new Set();
+  let cursor;
+  do {
+    const listed = await env.ANALYTICS.list({ prefix: 'excluded:', limit: 100, ...(cursor ? { cursor } : {}) });
+    cursor = listed.list_complete ? null : listed.cursor;
+    for (const key of listed.keys) excluded.add(key.name.slice('excluded:'.length));
+  } while (cursor);
+  return excluded;
 }
 
 // ─── GET /data ────────────────────────────────────────────────────────────────
@@ -296,6 +323,7 @@ async function handleData(request, env) {
   const url = new URL(request.url);
   const days = Math.min(parseInt(url.searchParams.get('days') || '30', 10), 90);
   const since = Date.now() - days * 24 * 60 * 60 * 1000;
+  const excludedIds = await loadExcludedIds(env);
 
   // KV-Liste aller event: Keys (max 1000 pro list-Aufruf, Paginierung)
   const events = [];
@@ -313,7 +341,10 @@ async function handleData(request, env) {
       if (ts >= since) {
         const raw = await env.ANALYTICS.get(key.name);
         if (raw) {
-          try { events.push(JSON.parse(raw)); } catch { /* skip */ }
+          try {
+            const ev = JSON.parse(raw);
+            if (!excludedIds.has(ev.visitorId)) events.push(ev);
+          } catch { /* skip */ }
         }
       }
     }
@@ -400,10 +431,17 @@ async function handleScheduled(env) {
       if (isEnded) {
         // Session beendet — finale Nachricht
         if (!s.muted) {
+          let nameTag = '';
+          if (s.visitorId) {
+            try {
+              const pRaw = await env.ANALYTICS.get('profile:' + s.visitorId);
+              if (pRaw) { const p = JSON.parse(pRaw); if (p.alias) nameTag = ` · <b>${p.alias}</b>`; }
+            } catch {}
+          }
           const dur = fmtDur(now - s.startTs);
           const path = s.pages.map(p => pageName(p)).join(' → ');
           await sendTelegram(env,
-            `👋 <b>Session beendet</b> ${s.flag}\n` +
+            `👋 <b>Session beendet</b> ${s.flag}${nameTag}\n` +
             `${s.dev}${s.returning ? ' · ↩ Wiederkehrend' : ' · ✦ Neu'}${dur ? ' · ' + dur : ''}\n\n` +
             `<b>Pfad:</b> ${path}`
           );
@@ -413,8 +451,15 @@ async function handleScheduled(env) {
       } else if (hasNew && timeSinceLast >= SUMMARY_INTERVAL) {
         // Zusammenfassung der neuen Seiten seit letzter Benachrichtigung
         if (!s.muted) {
+          let nameTag = '';
+          if (s.visitorId) {
+            try {
+              const pRaw = await env.ANALYTICS.get('profile:' + s.visitorId);
+              if (pRaw) { const p = JSON.parse(pRaw); if (p.alias) nameTag = ` · <b>${p.alias}</b>`; }
+            } catch {}
+          }
           const summary = newPages.map(p => pageName(p)).join(' → ');
-          await sendTelegram(env, `📊 ${s.flag} <b>${summary}</b>`);
+          await sendTelegram(env, `📊 ${s.flag}${nameTag} <b>${summary}</b>`);
         }
         s.lastNotifiedCount = s.pages.length;
         s.lastNotifiedAt = now;
@@ -533,7 +578,8 @@ async function handleSummary(request, env) {
     } while (dayCursor);
   }
 
-  // Pass 1: alle Events im Zeitraum aus KV laden
+  // Pass 1: alle Events im Zeitraum aus KV laden (ohne ausgeschlossene Besucher)
+  const excludedIds = await loadExcludedIds(env);
   const allEvents = [];
   let evCursor;
   do {
@@ -546,7 +592,10 @@ async function handleSummary(request, env) {
       if (ts < since) continue;
       const raw = await env.ANALYTICS.get(key.name);
       if (!raw) continue;
-      try { allEvents.push(JSON.parse(raw)); } catch { /* skip */ }
+      try {
+        const ev = JSON.parse(raw);
+        if (!excludedIds.has(ev.visitorId)) allEvents.push(ev);
+      } catch { /* skip */ }
     }
   } while (evCursor);
 

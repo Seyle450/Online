@@ -391,6 +391,27 @@ tr:hover td { background: rgba(255,255,255,.015); }
 .country-name { flex: 1; }
 .country-count { color: var(--muted2); font-weight: 600; font-size: .78rem; }
 
+/* ── Refresh spin ────────────────────────────────────────────────────────────── */
+#refreshIcon.spinning { display: inline-block; animation: spin .7s linear infinite; }
+
+/* ── Site Cards ──────────────────────────────────────────────────────────────── */
+.site-card {
+  flex-shrink: 0; min-width: 140px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: .75rem 1rem;
+  cursor: pointer; transition: border-color .15s, background .15s;
+  user-select: none;
+}
+.site-card:hover { border-color: var(--muted); }
+.site-card.active { border-color: var(--accent); background: rgba(99,102,241,.06); }
+.site-card-header { display: flex; align-items: center; gap: .45rem; margin-bottom: .5rem; }
+.site-card-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.site-card-name { font-size: .78rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; }
+.site-card-stats { display: flex; gap: .6rem; font-size: .72rem; color: var(--muted2); margin-bottom: .3rem; flex-wrap: wrap; }
+.site-card-stats b { color: var(--text); }
+.site-card-top { font-size: .69rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.site-card-clear { flex-shrink: 0; align-self: center; }
+
 /* ── 3-column chart grid (Pages + Devices + Countries) ───────────────────────── */
 .chart-grid-3col { grid-template-columns: 2fr 1fr 1fr; }
 
@@ -476,7 +497,7 @@ body { min-height: 100svh; }
       <button class="btn btn-live" id="liveBtn"><span class="live-dot" style="display:none" id="liveDot"></span>Live</button>
       <button class="btn btn-ghost" id="exportBtn" title="Events als CSV exportieren">↓ CSV</button>
       <button class="btn btn-ghost" id="alertBtn" title="Alert-Schwellwerte">🔔</button>
-      <button class="btn btn-ghost" id="refreshBtn">↺</button>
+      <button class="btn btn-ghost" id="refreshBtn"><span id="refreshIcon">↺</span></button>
       <button class="btn btn-ghost" id="logoutBtn">Abmelden</button>
     </div>
   </header>
@@ -504,6 +525,10 @@ body { min-height: 100svh; }
         <span id="alertSaveStatus" style="font-size:.8rem;color:var(--green);align-self:center"></span>
       </div>
     </div>
+
+    <!-- Site Overview -->
+    <div class="section-label">Websites</div>
+    <div id="siteOverviewStrip" style="display:flex;gap:.6rem;overflow-x:auto;padding-bottom:.5rem;margin-bottom:1.25rem;-webkit-overflow-scrolling:touch"></div>
 
     <!-- KPI -->
     <div class="section-label">Übersicht</div>
@@ -888,8 +913,11 @@ var rawSummary  = null;
 var rawEvents   = [];
 var rawProfiles = [];
 var chartGranularity = 'day';
+var activeSiteFilter = null;
 
 async function loadAll() {
+  var icon  = document.getElementById('refreshIcon');
+  if (icon) icon.classList.add('spinning');
   var days   = document.getElementById('rangeSelect').value;
   var errBox = document.getElementById('errorBox');
   errBox.classList.remove('visible');
@@ -901,6 +929,7 @@ async function loadAll() {
   } catch (e) {
     errBox.textContent = 'Fehler beim Laden (' + e.message + ')';
     errBox.classList.add('visible');
+    if (icon) icon.classList.remove('spinning');
     return;
   }
 
@@ -911,7 +940,8 @@ async function loadAll() {
 
   renderAll();
   populatePageFilter();
-  loadProfiles();
+  await loadProfiles();
+  if (icon) icon.classList.remove('spinning');
 }
 
 document.getElementById('refreshBtn').addEventListener('click', loadAll);
@@ -946,6 +976,7 @@ function renderAll() {
   renderLandingTable(s.topLandingPages || []);
   renderPagesTable(s.topPages || [], s.totalPageviews);
   renderEventsTable(rawEvents);
+  renderSiteOverview();
   checkAlerts(s);
 }
 
@@ -1132,10 +1163,70 @@ function renderPagesTable(topPages, total) {
   }).join('');
 }
 
+// ── Site Overview ─────────────────────────────────────────────────────────────
+function renderSiteOverview() {
+  var sitesMap = {};
+  rawEvents.forEach(function(e) {
+    var key = getSiteKey(e.page);
+    if (!key) return;
+    if (!sitesMap[key]) sitesMap[key] = { views: 0, visitors: new Set(), mobile: 0, pages: {} };
+    sitesMap[key].views++;
+    if (e.visitorId) sitesMap[key].visitors.add(e.visitorId);
+    if (e.device === 'mobile') sitesMap[key].mobile++;
+    sitesMap[key].pages[e.page] = (sitesMap[key].pages[e.page] || 0) + 1;
+  });
+
+  var strip = document.getElementById('siteOverviewStrip');
+  var order = Object.keys(PAGE_SITES);
+  var cards = order.filter(function(k) { return sitesMap[k]; }).map(function(key) {
+    var s = sitesMap[key];
+    var site = PAGE_SITES[key];
+    var mobilePct = s.views > 0 ? Math.round(s.mobile / s.views * 100) : 0;
+    var topEntry = Object.entries(s.pages).sort(function(a,b){ return b[1]-a[1]; })[0];
+    var topLabel = topEntry ? esc(labelPage(topEntry[0])) : '';
+    var isActive = activeSiteFilter === key;
+    return '<div class="site-card' + (isActive ? ' active' : '') + '" data-site="' + esc(key) + '">'
+      + '<div class="site-card-header"><span class="site-card-dot" style="background:' + esc(site.bg) + '"></span>'
+      + '<span class="site-card-name">' + esc(site.label.replace(' · ', ' ')) + '</span></div>'
+      + '<div class="site-card-stats">'
+      + '<span>👁 <b>' + s.views + '</b></span>'
+      + '<span>👤 <b>' + s.visitors.size + '</b></span>'
+      + '<span>📱 <b>' + mobilePct + '%</b></span>'
+      + '</div>'
+      + (topLabel ? '<div class="site-card-top">' + topLabel + '</div>' : '')
+      + '</div>';
+  });
+
+  if (!cards.length) {
+    strip.innerHTML = '<span style="color:var(--muted);font-size:.82rem;align-self:center">Noch keine Daten.</span>';
+    return;
+  }
+
+  // Add "Alle" clear-filter card at the start
+  var clearCard = activeSiteFilter
+    ? '<div class="site-card site-card-clear" data-site="" style="min-width:auto;border-style:dashed">'
+      + '<div style="font-size:.75rem;color:var(--muted)">✕ Filter</div>'
+      + '<div style="font-size:.68rem;color:var(--muted);margin-top:.2rem">zurücksetzen</div>'
+      + '</div>'
+    : '';
+
+  strip.innerHTML = clearCard + cards.join('');
+
+  strip.querySelectorAll('.site-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      var key = card.dataset.site;
+      activeSiteFilter = (activeSiteFilter === key || key === '') ? null : key;
+      renderSiteOverview();
+      renderEventsTable(rawEvents);
+    });
+  });
+}
+
 function renderEventsTable(events) {
   var search = (document.getElementById('searchInput').value || '').toLowerCase();
   var filter = document.getElementById('pageFilter').value;
   var filtered = events.filter(function (e) {
+    if (activeSiteFilter && getSiteKey(e.page) !== activeSiteFilter) return false;
     if (filter && e.page !== filter) return false;
     if (search) {
       var needle = (labelPage(e.page) + ' ' + (e.country || '') + ' ' + (e.device || '')).toLowerCase();
@@ -1245,7 +1336,8 @@ function renderProfiles() {
 
     var expandId = 'exp-' + idx;
     var hasSessions = sessions.length > 0;
-    var isMuted = !!p.muted;
+    var isMuted    = !!p.muted;
+    var isExcluded = !!p.excluded;
 
     // First + last seen combined
     var visits = p.totalPageviews || 0;
@@ -1278,13 +1370,17 @@ function renderProfiles() {
       + '<td>' + visits + '</td>'
       // Duration
       + '<td style="color:var(--accent2)">' + fmtDuration(p.totalDurationMs) + '</td>'
-      // Status + Mute toggle
-      + '<td><div style="display:flex;align-items:center;gap:.4rem">'
-      + (isMuted
-          ? '<span class="badge badge-muted">🔕 Stumm</span>'
-          : (p.returning ? '<span class="badge badge-ret">↩ Zurück</span>' : '<span class="badge badge-new">✦ Neu</span>'))
-      + '<button class="icon-btn mute-btn" data-vid="' + vid + '" title="' + (isMuted ? 'Stummschaltung aufheben' : 'Telegram-Benachrichtigungen stummschalten') + '">'
+      // Status + Mute + Exclude toggles
+      + '<td><div style="display:flex;align-items:center;gap:.3rem;flex-wrap:wrap">'
+      + (isExcluded
+          ? '<span class="badge badge-muted">🚫 Ausgeschlossen</span>'
+          : isMuted
+            ? '<span class="badge badge-muted">🔕 Stumm</span>'
+            : (p.returning ? '<span class="badge badge-ret">↩ Zurück</span>' : '<span class="badge badge-new">✦ Neu</span>'))
+      + '<button class="icon-btn mute-btn" data-vid="' + vid + '" title="' + (isMuted ? 'Stummschaltung aufheben' : 'Telegram stummschalten') + '">'
       + (isMuted ? '🔔' : '🔕') + '</button>'
+      + '<button class="icon-btn exclude-btn" data-vid="' + vid + '" title="' + (isExcluded ? 'Wieder einschließen' : 'Aus Statistiken ausschließen (z.B. eigene Besuche)') + '" style="color:' + (isExcluded ? 'var(--green)' : 'var(--muted)') + '">'
+      + (isExcluded ? '✓ ein' : '🚫') + '</button>'
       + '</div></td>'
       + '</tr>'
       // Expand row
@@ -1390,6 +1486,35 @@ function renderProfiles() {
         if (!res.ok) throw new Error(res.status);
         prof.muted = newMuted;
         renderProfiles();
+      } catch (err) { alert('Fehler: ' + err.message); }
+      finally { btn.disabled = false; }
+    });
+  });
+
+  // ── Exclude toggle ─────────────────────────────────────────────────────────
+  tbody.querySelectorAll('.exclude-btn').forEach(function (btn) {
+    btn.addEventListener('click', async function (e) {
+      e.stopPropagation();
+      var vid = btn.dataset.vid;
+      var prof = rawProfiles.find(function(p) { return p.visitorId === vid; });
+      if (!prof) return;
+      var newExcluded = !prof.excluded;
+      var confirmMsg = newExcluded
+        ? 'Besucher aus allen Statistiken ausschließen? Zukünftige Besuche werden nicht mehr gezählt.'
+        : 'Besucher wieder in die Statistiken einschließen?';
+      if (!confirm(confirmMsg)) return;
+      btn.disabled = true;
+      try {
+        var res = await fetch(WORKER_URL + '/visitor/' + encodeURIComponent(vid), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_TOKEN },
+          body: JSON.stringify({ excluded: newExcluded }),
+        });
+        if (!res.ok) throw new Error(res.status);
+        prof.excluded = newExcluded;
+        renderProfiles();
+        renderSiteOverview();
+        renderEventsTable(rawEvents);
       } catch (err) { alert('Fehler: ' + err.message); }
       finally { btn.disabled = false; }
     });
