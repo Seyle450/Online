@@ -9,12 +9,17 @@
  *   ANALYTICS   – gebunden in wrangler.toml
  */
 
-const CORS_ORIGIN = 'https://seyle450.github.io';
+const CORS_ORIGIN = 'https://elyesferchichi.com';
 
 // ─── Hilfsfunktionen ────────────────────────────────────────────────────────
 
 function corsHeaders(origin) {
-  const allowed = [CORS_ORIGIN, 'https://seyle450.github.io', 'http://localhost', 'http://127.0.0.1'];
+  const allowed = [
+    'https://elyesferchichi.com',
+    'https://seyle450.github.io',
+    'http://localhost',
+    'http://127.0.0.1',
+  ];
   const use = allowed.some(o => origin && origin.startsWith(o)) ? origin : CORS_ORIGIN;
   return {
     'Access-Control-Allow-Origin': use,
@@ -497,7 +502,7 @@ async function handleScheduled(env) {
 // ─── Session-Merge: Cross-Tab-Pfade retroaktiv verknüpfen ────────────────────
 // Gleicher Besucher + Referrer von eigener Domain + <30 Min Abstand → eine Session
 function buildSessionMergeMap(events) {
-  const OWN = ['seyle450.github.io', 'localhost', '127.0.0.1'];
+  const OWN = ['elyesferchichi.com', 'seyle450.github.io', 'localhost', '127.0.0.1'];
   const byVisitor = {};
   for (const ev of events) {
     if (!ev.visitorId || !ev.sessionId) continue;
@@ -645,7 +650,7 @@ async function handleSummary(request, env) {
       try {
         const ref = new URL(ev.referrer).hostname;
         // Eigene Domains nicht als Referrer zählen
-        const OWN = ['seyle450.github.io', 'localhost', '127.0.0.1'];
+        const OWN = ['elyesferchichi.com', 'seyle450.github.io', 'localhost', '127.0.0.1'];
         if (ref && !OWN.some(h => ref.includes(h))) referrerCount[ref] = (referrerCount[ref] || 0) + 1;
       } catch { /* ignore */ }
     }
