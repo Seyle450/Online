@@ -11,21 +11,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy via SFTP
+      - name: Deploy via FTPS
         run: |
           sudo apt-get install -y lftp
           lftp -u "${{ secrets.FTP_USERNAME }}","${{ secrets.FTP_PASSWORD }}" \
-            -e "set sftp:auto-confirm yes; \
-                set net:timeout 15; \
+            -e "set ftp:ssl-force true; \
+                set ftp:ssl-protect-data true; \
+                set ssl:verify-certificate no; \
+                set net:timeout 20; \
                 set net:max-retries 3; \
-                mirror -R \
-                  --exclude-glob .git \
-                  --exclude-glob .github \
+                mirror -R --verbose \
+                  --exclude-glob .git/ \
+                  --exclude-glob .github/ \
                   --exclude-glob worker/ \
                   --exclude README.md \
                   --exclude ANALYTICS_SETUP.md \
-                  --exclude .ftp-deploy-sync-state.json \
-                  --verbose \
                   . /; \
                 exit" \
-            sftp://${{ secrets.FTP_SERVER }}
+            ftp://${{ secrets.FTP_SERVER }}
