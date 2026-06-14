@@ -31,12 +31,16 @@ jobs:
           t.connect(username=user, password=pwd)
           sftp = paramiko.SFTPClient.from_transport(t)
 
+          cwd = sftp.getcwd() or '/'
+          print(f'SFTP working directory: {cwd}')
+          print(f'Root contents: {sftp.listdir(cwd)}')
+
           def upload(local, remote):
               for name in os.listdir(local):
                   if name in SKIP or name.startswith('.'):
                       continue
                   lp = os.path.join(local, name)
-                  rp = f"{remote}/{name}" if remote else name
+                  rp = f"{remote}/{name}" if remote else f"{cwd}/{name}"
                   if os.path.isdir(lp):
                       try: sftp.mkdir(rp)
                       except: pass
