@@ -139,11 +139,6 @@ async function handleTrack(request, env, ctx) {
   } = body;
 
   const visitorId = body.visitorId || deriveVisitorId(request);
-
-  // Silently ignore excluded visitors (e.g. site owner's own traffic)
-  const isExcluded = await env.ANALYTICS.get('excluded:' + visitorId);
-  if (isExcluded) return json({ ok: true }, 200, origin);
-
   const dev = deviceType(screenWidth);
   const country = request.headers.get('CF-IPCountry') || '';
   const utm = (body.utm && typeof body.utm === 'object') ? {
@@ -208,6 +203,16 @@ async function handleTrack(request, env, ctx) {
     }
   }
 
+  // Invalidate summary/data caches in background (don't slow down the tracker response)
+  ctx.waitUntil(Promise.all(
+    ['7','30','90'].flatMap(d => [
+      env.ANALYTICS.delete('cache:summary:' + d),
+      env.ANALYTICS.delete('cache:summary:' + d + ':all'),
+      env.ANALYTICS.delete('cache:data:'    + d),
+      env.ANALYTICS.delete('cache:data:'    + d + ':all'),
+    ])
+  ));
+
   return json({ ok: true }, 200, origin);
 }
 
@@ -252,6 +257,12 @@ async function handleProfiles(request, env) {
   const origin = request.headers.get('Origin') || '';
   if (!isAuthorized(request, env)) return unauthorized(origin);
 
+  // Return cached profiles if fresh (5 min TTL)
+  const profCached = await env.ANALYTICS.get('cache:profiles');
+  if (profCached) {
+    return new Response(profCached, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
+  }
+
   const profiles = [];
   let cursor;
   do {
@@ -266,7 +277,9 @@ async function handleProfiles(request, env) {
   } while (cursor);
 
   profiles.sort((a, b) => b.lastSeen - a.lastSeen);
-  return json({ profiles, count: profiles.length }, 200, origin);
+  const profJson = JSON.stringify({ profiles, count: profiles.length });
+  await env.ANALYTICS.put('cache:profiles', profJson, { expirationTtl: 300 });
+  return new Response(profJson, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
 }
 
 // ─── PUT /visitor/:id ─────────────────────────────────────────────────────────
@@ -298,6 +311,7 @@ async function handleVisitorUpdate(request, env, visitorId) {
       }
     }
     await env.ANALYTICS.put(profileKey, JSON.stringify(profile), { expirationTtl: 60 * 60 * 24 * 365 });
+    await env.ANALYTICS.delete('cache:profiles');
     return json({ ok: true, profile }, 200, origin);
   } catch { return json({ error: 'Failed' }, 500, origin); }
 }
@@ -322,8 +336,17 @@ async function handleData(request, env) {
 
   const url = new URL(request.url);
   const days = Math.min(parseInt(url.searchParams.get('days') || '30', 10), 90);
+  const includeExcluded = url.searchParams.get('include_excluded') === '1';
+
+  // Return cached data if fresh (2 min TTL) — separate cache per exclusion mode
+  const dataCacheKey = 'cache:data:' + days + (includeExcluded ? ':all' : '');
+  const dataCached = await env.ANALYTICS.get(dataCacheKey);
+  if (dataCached) {
+    return new Response(dataCached, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
+  }
+
   const since = Date.now() - days * 24 * 60 * 60 * 1000;
-  const excludedIds = await loadExcludedIds(env);
+  const excludedIds = includeExcluded ? new Set() : await loadExcludedIds(env);
 
   // KV-Liste aller event: Keys (max 1000 pro list-Aufruf, Paginierung)
   const events = [];
@@ -351,7 +374,9 @@ async function handleData(request, env) {
   } while (cursor);
 
   events.sort((a, b) => b.timestamp - a.timestamp);
-  return json({ events, count: events.length }, 200, origin);
+  const dataJson = JSON.stringify({ events, count: events.length });
+  await env.ANALYTICS.put(dataCacheKey, dataJson, { expirationTtl: 120 });
+  return new Response(dataJson, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
 }
 
 // ─── Push-Benachrichtigung via Telegram ──────────────────────────────────────
@@ -529,6 +554,14 @@ async function handleSummary(request, env) {
 
   const url = new URL(request.url);
   const days = Math.min(parseInt(url.searchParams.get('days') || '30', 10), 90);
+  const includeExcluded = url.searchParams.get('include_excluded') === '1';
+
+  // Return cached summary if fresh (3 min TTL) — separate cache per exclusion mode
+  const sumCacheKey = 'cache:summary:' + days + (includeExcluded ? ':all' : '');
+  const sumCached = await env.ANALYTICS.get(sumCacheKey);
+  if (sumCached) {
+    return new Response(sumCached, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
+  }
 
   const dateRange = lastNDays(days);
   const since = Date.now() - days * 24 * 60 * 60 * 1000;
@@ -578,8 +611,8 @@ async function handleSummary(request, env) {
     } while (dayCursor);
   }
 
-  // Pass 1: alle Events im Zeitraum aus KV laden (ohne ausgeschlossene Besucher)
-  const excludedIds = await loadExcludedIds(env);
+  // Pass 1: alle Events im Zeitraum aus KV laden
+  const excludedIds = includeExcluded ? new Set() : await loadExcludedIds(env);
   const allEvents = [];
   let evCursor;
   do {
@@ -711,7 +744,9 @@ async function handleSummary(request, env) {
     recentEvents: recentEvents.sort((a, b) => b.timestamp - a.timestamp).slice(0, 20),
   };
 
-  return json(summary, 200, origin);
+  const sumJson = JSON.stringify(summary);
+  await env.ANALYTICS.put(sumCacheKey, sumJson, { expirationTtl: 180 });
+  return new Response(sumJson, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
 }
 
 // ─── Router ───────────────────────────────────────────────────────────────────

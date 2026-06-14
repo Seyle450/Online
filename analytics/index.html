@@ -497,6 +497,7 @@ body { min-height: 100svh; }
       <button class="btn btn-live" id="liveBtn"><span class="live-dot" style="display:none" id="liveDot"></span>Live</button>
       <button class="btn btn-ghost" id="exportBtn" title="Events als CSV exportieren">↓ CSV</button>
       <button class="btn btn-ghost" id="alertBtn" title="Alert-Schwellwerte">🔔</button>
+      <button class="btn btn-ghost" id="excludeToggleBtn" title="Ausgeschlossene Besucher ein-/ausblenden" style="font-size:.75rem">🚫 Eigene</button>
       <button class="btn btn-ghost" id="refreshBtn"><span id="refreshIcon">↺</span></button>
       <button class="btn btn-ghost" id="logoutBtn">Abmelden</button>
     </div>
@@ -914,38 +915,72 @@ var rawEvents   = [];
 var rawProfiles = [];
 var chartGranularity = 'day';
 var activeSiteFilter = null;
+var showExcluded = false;
 
 async function loadAll() {
-  var icon  = document.getElementById('refreshIcon');
+  var icon   = document.getElementById('refreshIcon');
   if (icon) icon.classList.add('spinning');
   var days   = document.getElementById('rangeSelect').value;
   var errBox = document.getElementById('errorBox');
   errBox.classList.remove('visible');
 
+  // Show cached data immediately for instant perceived load
+  var cacheKey = 'ac:' + days + ':' + (showExcluded ? '1' : '0');
   try {
-    var r1 = await fetch(WORKER_URL + '/summary?days=' + days, { headers: { 'Authorization': 'Bearer ' + API_TOKEN } });
-    if (!r1.ok) throw new Error('Summary ' + r1.status);
-    rawSummary = await r1.json();
-  } catch (e) {
-    errBox.textContent = 'Fehler beim Laden (' + e.message + ')';
+    var cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
+    if (cached && !rawSummary) {
+      rawSummary = cached.s; rawEvents = cached.e || [];
+      renderAll(); populatePageFilter();
+    }
+  } catch {}
+
+  // Fetch all 3 endpoints in parallel
+  var hdr = { 'Authorization': 'Bearer ' + API_TOKEN };
+  var exc = showExcluded ? '&include_excluded=1' : '';
+  document.getElementById('profilesLoading').style.display = 'flex';
+
+  var [sr, er, pr] = await Promise.allSettled([
+    fetch(WORKER_URL + '/summary?days=' + days + exc, { headers: hdr }).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }),
+    fetch(WORKER_URL + '/data?days='    + days + exc, { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; }),
+    fetch(WORKER_URL + '/profiles',                   { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; }),
+  ]);
+
+  if (sr.status === 'rejected' && !rawSummary) {
+    errBox.textContent = 'Fehler beim Laden (Summary ' + sr.reason + ')';
     errBox.classList.add('visible');
+    document.getElementById('profilesLoading').style.display = 'none';
     if (icon) icon.classList.remove('spinning');
     return;
   }
+  if (sr.status === 'fulfilled') rawSummary = sr.value;
+  if (er.status === 'fulfilled' && er.value) rawEvents  = er.value.events  || [];
+  if (pr.status === 'fulfilled' && pr.value) rawProfiles = pr.value.profiles || [];
+  document.getElementById('profilesLoading').style.display = 'none';
 
-  try {
-    var r2 = await fetch(WORKER_URL + '/data?days=' + days, { headers: { 'Authorization': 'Bearer ' + API_TOKEN } });
-    if (r2.ok) { var d2 = await r2.json(); rawEvents = d2.events || []; }
-  } catch (e) { rawEvents = []; }
+  // Cache for instant next load
+  try { sessionStorage.setItem(cacheKey, JSON.stringify({ s: rawSummary, e: rawEvents })); } catch {}
 
   renderAll();
   populatePageFilter();
-  await loadProfiles();
+  renderProfiles();
+  renderDurationHistogram();
+  renderEventsTable(rawEvents);
   if (icon) icon.classList.remove('spinning');
 }
 
 document.getElementById('refreshBtn').addEventListener('click', loadAll);
 document.getElementById('rangeSelect').addEventListener('change', loadAll);
+document.getElementById('excludeToggleBtn').addEventListener('click', function() {
+  showExcluded = !showExcluded;
+  var btn = document.getElementById('excludeToggleBtn');
+  btn.style.borderColor  = showExcluded ? 'var(--accent2)' : '';
+  btn.style.color        = showExcluded ? 'var(--accent2)' : '';
+  btn.textContent        = showExcluded ? '👁 Alle' : '🚫 Eigene';
+  sessionStorage.removeItem('ac:' + document.getElementById('rangeSelect').value + ':0');
+  sessionStorage.removeItem('ac:' + document.getElementById('rangeSelect').value + ':1');
+  rawSummary = null;
+  loadAll();
+});
 
 // ── Render All ────────────────────────────────────────────────────────────────
 function renderAll() {
@@ -1317,7 +1352,7 @@ function renderProfiles() {
         + '<div class="session-dot"></div>'
         + '<div class="session-meta">'
         + '<div style="display:flex;align-items:center;gap:.5rem">'
-        + '<span class="session-date">' + fmtDate(s.start) + '</span>'
+        + '<span class="session-date">' + fmtDateTime(s.start) + '</span>'
         + (s.device ? '<span class="badge badge-' + s.device + '">' + s.device + '</span>' : '')
         + '<span class="session-dur">' + fmtDuration(dur) + '</span>'
         + '</div>'
