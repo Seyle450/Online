@@ -11,21 +11,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          # Use repository secrets for sensitive values
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /
-          # Nur geänderte Dateien werden hochgeladen (schnell)
-          state-name: .ftp-deploy-sync-state.json
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            .github/**
-            README.md
-            ANALYTICS_SETUP.md
-            worker/**
+      - name: Deploy via SFTP
+        run: |
+          sudo apt-get install -y lftp
+          lftp -u "${{ secrets.FTP_USERNAME }}","${{ secrets.FTP_PASSWORD }}" \
+            -e "set sftp:auto-confirm yes; \
+                set net:timeout 15; \
+                set net:max-retries 3; \
+                mirror -R \
+                  --exclude-glob .git \
+                  --exclude-glob .github \
+                  --exclude-glob worker/ \
+                  --exclude README.md \
+                  --exclude ANALYTICS_SETUP.md \
+                  --exclude .ftp-deploy-sync-state.json \
+                  --verbose \
+                  . /; \
+                exit" \
+            sftp://${{ secrets.FTP_SERVER }}
