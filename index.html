@@ -729,7 +729,7 @@
               <option value="Instagram">Instagram</option>
               <option value="Telefon">Telefon</option>
             </select>
-            <input id="qfValue" name="contactValue" type="text" placeholder="E-Mail, @handle oder Nummer" required maxlength="120">
+            <input id="qfValue" name="contactValue" type="text" placeholder="ihre@email.de" required maxlength="120">
           </div>
         </div>
 
@@ -739,9 +739,11 @@
             <select id="qfSource" name="source">
               <option value="">Bitte wählen…</option>
               <option>Sie haben mich angeschrieben</option>
-              <option>Über einen anderen Shop von Ihnen</option>
+              <option>Sie waren bei uns im Laden</option>
+              <option>Ich habe Ihre Arbeit woanders gesehen</option>
               <option>Wurde mir empfohlen</option>
               <option>Instagram</option>
+              <option>Sonstiges</option>
             </select>
           </div>
           <div class="fld">
@@ -839,6 +841,20 @@
     if(!form) return;
     const btn = document.getElementById('qfSubmit');
     const status = document.getElementById('qfStatus');
+
+    /* Placeholder je nach gewählter Kontaktart */
+    const typeSel = document.getElementById('qfType');
+    const valInput = document.getElementById('qfValue');
+    const PLACEHOLDERS = {
+      'E-Mail': 'ihre@email.de',
+      'Instagram': '@ihr-instagram-name',
+      'Telefon': '0151 23456789',
+    };
+    typeSel.addEventListener('change', () => {
+      valInput.placeholder = PLACEHOLDERS[typeSel.value] || '';
+      valInput.value = '';
+      valInput.focus();
+    });
 
     function hasConsent(){
       try { return /(?:^|;)\s*analytics_consent=granted/.test(document.cookie); } catch(e){ return false; }
