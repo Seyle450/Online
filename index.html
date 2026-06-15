@@ -16,7 +16,6 @@
 <meta name="twitter:image" content="https://elyesferchichi.com/Webdesign-Agentur/hevis/assets/cafe.jpg" />
 <link rel="icon" type="image/svg+xml" href="ef-monogram-cobalt.svg" />
 <link rel="apple-touch-icon" sizes="180x180" href="ef-monogram-cobalt.svg" />
-<link rel="preload" as="image" href="Webdesign-Agentur/hevis/assets/stand.jpg" fetchpriority="high" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -111,17 +110,41 @@
   .mobile-menu .mob-cta{margin-top:16px;width:100%;justify-content:center;}
 
   /* ---------- hero ---------- */
-  .hero{padding:52px 0 60px;}
-  .hero h1{font-size:clamp(34px,8.5vw,58px);margin:22px 0 0;text-wrap:balance;}
+  .hero{padding:52px 0 0;overflow:hidden;}
+  .hero-inner{padding-bottom:60px;}
+  .hero h1{font-size:clamp(36px,9vw,62px);margin:22px 0 0;text-wrap:balance;line-height:1.04;}
   .hero h1 .hl{color:var(--cobalt);}
-  .hero .hsub{margin-top:20px;max-width:42ch;font-size:17px;color:#3f3f47;line-height:1.6;}
+  .hero .hsub{margin-top:20px;max-width:44ch;font-size:17px;color:#3f3f47;line-height:1.6;}
   .hero-actions{display:flex;flex-direction:column;gap:12px;margin-top:32px;}
   .hero-actions .btn{width:100%;}
   .trust{display:flex;align-items:center;gap:6px 10px;margin-top:28px;color:var(--neutral);font-family:var(--head);font-size:12.5px;letter-spacing:.04em;flex-wrap:wrap;}
   .trust .dot{width:6px;height:6px;border-radius:50%;background:var(--cobalt);flex:none;}
-  .hero-visual{margin-top:40px;}
-  .hero-img{width:100%;height:300px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 4px 32px rgba(22,22,26,.1);}
-  .hero-img img{width:100%;height:100%;object-fit:cover;object-position:center;}
+
+  /* hero stat cards */
+  .hero-right{margin-top:40px;}
+  .hero-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .hc{border-radius:12px;padding:24px 22px;border:1px solid var(--line);background:var(--white);display:flex;flex-direction:column;gap:6px;min-height:120px;}
+  .hc.hc-dark{background:var(--ink);border-color:var(--ink);}
+  .hc.hc-cobalt{background:var(--cobalt);border-color:var(--cobalt);}
+  .hc-num{font-family:var(--head);font-weight:700;font-size:clamp(28px,5vw,40px);letter-spacing:-.04em;line-height:1;color:var(--cobalt);}
+  .hc.hc-dark .hc-num{color:#9bb0ff;}
+  .hc.hc-cobalt .hc-num{color:var(--paper);}
+  .hc-label{font-family:var(--head);font-size:13px;font-weight:500;color:var(--neutral);letter-spacing:.01em;line-height:1.35;margin-top:auto;}
+  .hc.hc-dark .hc-label{color:rgba(246,245,241,.55);}
+  .hc.hc-cobalt .hc-label{color:rgba(246,245,241,.65);}
+
+  /* scrolling ticker */
+  .hero-ticker{border-top:1px solid var(--line);padding:0;margin-top:48px;overflow:hidden;}
+  .ticker-inner{display:flex;white-space:nowrap;animation:ticker-move 28s linear infinite;}
+  .ticker-inner:hover{animation-play-state:paused;}
+  .ticker-seg{display:inline-flex;align-items:center;gap:0;padding:14px 0;flex:none;}
+  .ticker-seg span{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--neutral);padding:0 22px;}
+  .ticker-seg .dot{width:5px;height:5px;border-radius:50%;background:var(--cobalt);flex:none;}
+  @keyframes ticker-move{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){
+    .ticker-inner{animation:none;}
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
 
   /* ---------- section base ---------- */
   section{padding:72px 0;}
@@ -256,10 +279,12 @@
     .nav-links{display:flex;}
     .nav-cta{display:inline-flex;}
     .burger{display:none;}
-    .hero{padding:80px 0 84px;}
+    .hero{padding:80px 0 0;}
+    .hero-inner{padding-bottom:84px;}
     .hero-actions{flex-direction:row;}
     .hero-actions .btn{width:auto;}
-    .hero-img{height:440px;}
+    .hero-right{margin-top:0;}
+    .hc{min-height:140px;}
     section{padding:96px 0;}
     .cta{padding:104px 0;}
     .prob-list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
@@ -284,9 +309,9 @@
     .foot-row{flex-direction:row;justify-content:space-between;align-items:flex-end;}
   }
   @media(min-width:1024px){
-    .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
-    .hero-visual{margin-top:0;}
-    .hero-img{height:560px;}
+    .hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:72px;align-items:center;}
+    .hc{min-height:160px;padding:28px 26px;}
+    .hc-num{font-size:48px;}
   }
 </style>
 </head>
@@ -337,10 +362,35 @@
       </div>
       <div class="trust"><span class="dot"></span> Persönlich · Festpreis · In 1–2 Wochen online</div>
     </div>
-    <div class="hero-visual reveal reveal-d1">
-      <div class="hero-img">
-        <img src="Webdesign-Agentur/hevis/assets/stand.jpg" alt="Hevi's Café – Webdesign-Konzept von Elyes Ferchichi" loading="eager" fetchpriority="high" />
+    <div class="hero-right reveal reveal-d1">
+      <div class="hero-cards">
+        <div class="hc">
+          <span class="hc-num">5+</span>
+          <span class="hc-label">Konzepte & Projekte umgesetzt</span>
+        </div>
+        <div class="hc hc-dark">
+          <span class="hc-num">290€</span>
+          <span class="hc-label">Einstiegs&shy;preis – einmalig</span>
+        </div>
+        <div class="hc hc-cobalt">
+          <span class="hc-num">1–2</span>
+          <span class="hc-label">Wochen bis Ihre Seite online ist</span>
+        </div>
+        <div class="hc">
+          <span class="hc-num">100%</span>
+          <span class="hc-label">Festpreis – keine versteckten Kosten</span>
+        </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Scrolling project ticker -->
+  <div class="hero-ticker">
+    <div class="ticker-inner">
+      <!-- first copy -->
+      <div class="ticker-seg"><span>Hevi's Café</span><span class="dot"></span><span>Ben's Catering</span><span class="dot"></span><span>Lokma Lovers</span><span class="dot"></span><span>Café Niki</span><span class="dot"></span><span>Antepli Baklava</span><span class="dot"></span><span>Gastronomie-Webdesign</span><span class="dot"></span><span>Restaurants & Cafés</span><span class="dot"></span><span>Food Trucks</span><span class="dot"></span></div>
+      <!-- duplicate for seamless loop -->
+      <div class="ticker-seg"><span>Hevi's Café</span><span class="dot"></span><span>Ben's Catering</span><span class="dot"></span><span>Lokma Lovers</span><span class="dot"></span><span>Café Niki</span><span class="dot"></span><span>Antepli Baklava</span><span class="dot"></span><span>Gastronomie-Webdesign</span><span class="dot"></span><span>Restaurants & Cafés</span><span class="dot"></span><span>Food Trucks</span><span class="dot"></span></div>
     </div>
   </div>
 </section>
