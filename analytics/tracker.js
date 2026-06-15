@@ -40,7 +40,7 @@
     var p = location.pathname.toLowerCase();
     if (h.includes('antepli')   || p.includes('antepli'))   return 'antepli';
     if (h.includes('hevis')     || p.includes('hevi'))      return 'hevis';
-    if (h.includes('bens')      || p.includes('ben'))       return 'bens';
+    if (h.includes('bens')      || p.includes('/bens'))     return 'bens';
     if (h.includes('niki')      || p.includes('niki'))      return 'cafeniki';
     if (h.includes('lokma')     || p.includes('lokma'))     return 'lokma';
     if (h.includes('starscape') || p.includes('starscape')) return 'starscape';
@@ -101,7 +101,8 @@
     if (!sid) {
       // New tab: check if referrer is our own site → reuse session
       var ref = document.referrer;
-      var own = ['seyle450.github.io', location.hostname, 'localhost', '127.0.0.1'];
+      // 'elyesferchichi.com' is a substring of all subdomains, so one entry covers all
+      var own = ['elyesferchichi.com', 'seyle450.github.io', 'localhost', '127.0.0.1'];
       var fromOwnSite = ref && own.some(function(h){ return ref.includes(h); });
       if (fromOwnSite) {
         var state = getCrossTabState();
