@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /analytics/
+Disallow: /.htaccess
+
+Sitemap: https://elyesferchichi.com/sitemap.xml
