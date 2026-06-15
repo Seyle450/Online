@@ -293,6 +293,88 @@ async function handleEvent(request, env, ctx) {
   return json({ ok: true }, 200, origin);
 }
 
+// ─── POST /contact ────────────────────────────────────────────────────────────
+// Angebots-Formular von der Hauptseite. Sendet Telegram, speichert in KV,
+// und zählt als Conversion (click-Event category 'form').
+
+function escHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+async function handleContact(request, env, ctx) {
+  const origin = request.headers.get('Origin') || '';
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
+
+  // Honeypot — Bots füllen das versteckte Feld; wir tun "erfolgreich" ohne Aktion
+  if (body.website) return json({ ok: true }, 200, origin);
+
+  const clean = (v, n) => String(v == null ? '' : v).trim().slice(0, n);
+  const company      = clean(body.company, 100);
+  const person       = clean(body.person, 100);
+  const contactType  = clean(body.contactType, 20);
+  const contactValue = clean(body.contactValue, 120);
+  const source       = clean(body.source, 60);
+  const pkg          = clean(body.package, 40);
+  const pflege       = body.pflege ? true : false;
+  const message      = clean(body.message, 2000);
+
+  if (!company || !contactValue) {
+    return json({ error: 'Unternehmen und Kontakt sind erforderlich.' }, 400, origin);
+  }
+
+  const visitorId = body.visitorId || deriveVisitorId(request);
+
+  // Leichtes Rate-Limit: max. 6 Anfragen / Stunde pro Besucher
+  const rlKey = 'rl:contact:' + visitorId;
+  const rlRaw = await env.ANALYTICS.get(rlKey);
+  const rlCount = rlRaw ? parseInt(rlRaw, 10) : 0;
+  if (rlCount >= 6) return json({ error: 'Zu viele Anfragen. Bitte später erneut versuchen.' }, 429, origin);
+  await env.ANALYTICS.put(rlKey, String(rlCount + 1), { expirationTtl: 3600 });
+
+  const ts = Date.now();
+  const country = request.headers.get('CF-IPCountry') || '';
+
+  // In KV ablegen (1 Jahr)
+  const randId = Math.random().toString(36).slice(2, 8);
+  await env.ANALYTICS.put(`contact:${ts}:${randId}`, JSON.stringify({
+    company, person, contactType, contactValue, source, package: pkg, pflege,
+    message, visitorId, country, timestamp: ts,
+  }), { expirationTtl: 60 * 60 * 24 * 365 });
+
+  // Telegram-Nachricht
+  const pkgLine = pkg ? (pkg + (pflege ? ' + Pflege' : '')) : (pflege ? 'Nur Pflege' : '–');
+  await sendTelegram(env,
+    `📩 <b>Neue Angebots-Anfrage</b>\n\n` +
+    `🏢 <b>${escHtml(company)}</b>\n` +
+    (person ? `👤 ${escHtml(person)}\n` : '') +
+    `📞 ${escHtml(contactType || 'Kontakt')}: <b>${escHtml(contactValue)}</b>\n` +
+    `📦 Paket: ${escHtml(pkgLine)}\n` +
+    (source ? `🔗 Woher: ${escHtml(source)}\n` : '') +
+    (message ? `\n💬 ${escHtml(message)}` : '')
+  );
+
+  // Als Conversion zählen (nur wenn Analytics-Consent → sessionId mitgeschickt)
+  const sessionId = clean(body.sessionId, 60);
+  if (sessionId) {
+    await env.ANALYTICS.put(`click:${ts}:${randId}`, JSON.stringify({
+      label: 'Formular: Anfrage gesendet', category: 'form', href: '',
+      page: clean(body.page, 200) || '/', sessionId, visitorId, timestamp: ts,
+    }), { expirationTtl: 60 * 60 * 24 * 90 });
+  }
+
+  // Summary-Caches invalidieren
+  ctx.waitUntil(Promise.all(
+    ['7', '30', '90'].flatMap(d => [
+      env.ANALYTICS.delete('cache:summary:' + d),
+      env.ANALYTICS.delete('cache:summary:' + d + ':all'),
+    ])
+  ));
+
+  return json({ ok: true }, 200, origin);
+}
+
 // ─── GET /profiles ────────────────────────────────────────────────────────────
 
 async function handleProfiles(request, env) {
@@ -682,7 +764,7 @@ async function handleSummary(request, env) {
   const clickCategoryCount = {};
   const scrollDepthCount = { 25: 0, 50: 0, 75: 0, 100: 0 };
   const convSessionIdsRaw = new Set();   // Sessions mit Conversion-Klick (roh)
-  const CONV_CATS = new Set(['whatsapp', 'email', 'phone']);
+  const CONV_CATS = new Set(['whatsapp', 'email', 'phone', 'form']);
   let totalClicks = 0;
   let clkCursor;
   do {
@@ -898,6 +980,9 @@ export default {
     }
     if (url.pathname === '/event' && request.method === 'POST') {
       return handleEvent(request, env, ctx);
+    }
+    if (url.pathname === '/contact' && request.method === 'POST') {
+      return handleContact(request, env, ctx);
     }
     if (url.pathname === '/data' && request.method === 'GET') {
       return handleData(request, env);

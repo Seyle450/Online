@@ -245,6 +245,32 @@
   .cta-info a,.cta-info span{display:flex;align-items:flex-start;gap:12px;font-family:var(--head);font-size:15px;letter-spacing:.01em;}
   .cta-info .k{color:#9bb0ff;font-size:11px;letter-spacing:.14em;text-transform:uppercase;width:72px;flex:none;padding-top:3px;}
 
+  /* ---------- Angebots-Formular ---------- */
+  .qform{background:rgba(255,255,255,.04);border:1px solid var(--line-dk);border-radius:14px;padding:26px 24px;}
+  .qform-head{font-family:var(--head);font-size:18px;font-weight:600;color:var(--paper);margin-bottom:4px;}
+  .qform-intro{color:#c7c7c9;font-size:14px;margin-bottom:20px;}
+  .qform .fld{margin-bottom:14px;}
+  .qform label{display:block;font-family:var(--head);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#9bb0ff;margin-bottom:7px;}
+  .qform label .opt{color:#85858d;text-transform:none;letter-spacing:0;font-weight:400;}
+  .qform input,.qform select,.qform textarea{width:100%;background:rgba(246,245,241,.06);border:1px solid var(--line-dk);border-radius:8px;color:var(--paper);font-family:var(--body);font-size:15px;padding:11px 13px;transition:border-color .15s ease,background .15s ease;}
+  .qform input::placeholder,.qform textarea::placeholder{color:rgba(246,245,241,.38);}
+  .qform input:focus,.qform select:focus,.qform textarea:focus{outline:none;border-color:var(--cobalt);background:rgba(246,245,241,.1);}
+  .qform select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239bb0ff' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px;padding-right:36px;}
+  .qform select option{background:var(--ink);color:var(--paper);}
+  .qform textarea{resize:vertical;min-height:88px;}
+  .qform-row{display:flex;flex-direction:column;}
+  .qform-sub{display:grid;grid-template-columns:128px 1fr;gap:10px;}
+  .qform .chk{display:flex;align-items:center;gap:10px;cursor:pointer;font-family:var(--body);font-size:14px;color:#c7c7c9;text-transform:none;letter-spacing:0;margin-bottom:0;}
+  .qform .chk input{width:auto;accent-color:var(--cobalt);}
+  .qform .hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0;}
+  .qform button{width:100%;justify-content:center;margin-top:8px;}
+  .qform button:disabled{opacity:.6;cursor:not-allowed;}
+  .qform-status{margin-top:13px;font-size:14px;min-height:20px;line-height:1.45;}
+  .qform-status.ok{color:#86e3a6;}
+  .qform-status.err{color:#ff9b9b;}
+  .qform-note{margin-top:14px;font-size:12px;color:#85858d;line-height:1.5;}
+  .qform-note a{color:#9bb0ff;text-decoration:underline;text-underline-offset:2px;}
+
   /* ---------- footer ---------- */
   footer{background:var(--ink);color:var(--paper);padding:36px 0 44px;border-top:1px solid var(--line-dk);}
   .foot-row{display:flex;flex-direction:column;gap:24px;}
@@ -287,7 +313,9 @@
     .step{border-top:1px solid var(--line);}
     .steps .step:nth-child(-n+2){border-top:none;}
     .about-wrap{max-width:720px;}
-    .cta-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:64px;align-items:start;}
+    .cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
+    .qform-row{flex-direction:row;gap:12px;}
+    .qform-row>.fld{flex:1;min-width:0;}
     .cta-btn-wrap{flex-direction:row;flex-wrap:wrap;}
     .cta-btn-wrap .btn{width:auto;}
     .foot-row{flex-direction:row;justify-content:space-between;align-items:flex-end;}
@@ -661,20 +689,87 @@
         <a href="mailto:elyes.ferchichi@icloud.com?subject=Webdesign-Anfrage" class="btn btn-primary btn-arrow" data-track="Per Mail anfragen (Kontakt)">Per Mail anfragen</a>
         <a href="https://wa.me/4915773550528?text=Hallo%20Elyes%2C%20ich%20interessiere%20mich%20f%C3%BCr%20eine%20Website." target="_blank" rel="noopener" class="btn btn-wa" data-track="WhatsApp (Kontakt)">WhatsApp</a>
       </div>
+      <div class="cta-info">
+        <a href="mailto:elyes.ferchichi@icloud.com">
+          <span class="k">E-Mail</span>
+          <span>elyes.ferchichi@icloud.com</span>
+        </a>
+        <a href="https://www.linkedin.com/in/seyle/" target="_blank" rel="noopener">
+          <span class="k">LinkedIn</span>
+          <span>linkedin.com/in/seyle</span>
+        </a>
+        <span>
+          <span class="k">Studio</span>
+          <span>Bremen, Deutschland</span>
+        </span>
+      </div>
     </div>
-    <div class="cta-info reveal reveal-d1">
-      <a href="mailto:elyes.ferchichi@icloud.com">
-        <span class="k">E-Mail</span>
-        <span>elyes.ferchichi@icloud.com</span>
-      </a>
-      <a href="https://www.linkedin.com/in/seyle/" target="_blank" rel="noopener">
-        <span class="k">LinkedIn</span>
-        <span>linkedin.com/in/seyle</span>
-      </a>
-      <span>
-        <span class="k">Studio</span>
-        <span>Bremen, Deutschland</span>
-      </span>
+
+    <div class="reveal reveal-d1">
+      <form class="qform" id="quoteForm" novalidate>
+        <div class="qform-head">Angebot anfragen</div>
+        <p class="qform-intro">Ein paar Angaben genügen – ich melde mich persönlich bei Ihnen.</p>
+
+        <div class="qform-row">
+          <div class="fld">
+            <label for="qfCompany">Unternehmen</label>
+            <input id="qfCompany" name="company" type="text" placeholder="z. B. Café Sonne" required maxlength="100">
+          </div>
+          <div class="fld">
+            <label for="qfPerson">Ansprechpartner <span class="opt">(optional)</span></label>
+            <input id="qfPerson" name="person" type="text" placeholder="Ihr Name" maxlength="100">
+          </div>
+        </div>
+
+        <div class="fld">
+          <label for="qfValue">Wie erreiche ich Sie?</label>
+          <div class="qform-sub">
+            <select id="qfType" name="contactType" aria-label="Kontaktart">
+              <option value="E-Mail">E-Mail</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Telefon">Telefon</option>
+            </select>
+            <input id="qfValue" name="contactValue" type="text" placeholder="E-Mail, @handle oder Nummer" required maxlength="120">
+          </div>
+        </div>
+
+        <div class="qform-row">
+          <div class="fld">
+            <label for="qfSource">Woher kennen Sie mich?</label>
+            <select id="qfSource" name="source">
+              <option value="">Bitte wählen…</option>
+              <option>Sie haben mich angeschrieben</option>
+              <option>Über einen anderen Shop von Ihnen</option>
+              <option>Wurde mir empfohlen</option>
+              <option>Instagram</option>
+            </select>
+          </div>
+          <div class="fld">
+            <label for="qfPackage">Welches Paket?</label>
+            <select id="qfPackage" name="package">
+              <option value="">Bitte wählen…</option>
+              <option>Starter (290 €)</option>
+              <option>Komplett (490 €)</option>
+              <option>Weiß ich noch nicht</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="fld">
+          <label class="chk"><input type="checkbox" id="qfPflege" name="pflege" value="ja"> Pflege-Paket dazu (39 € / Monat)</label>
+        </div>
+
+        <div class="fld">
+          <label for="qfMessage">Ihre Anfrage <span class="opt">(optional)</span></label>
+          <textarea id="qfMessage" name="message" placeholder="Worum geht es? Was wünschen Sie sich?" maxlength="2000"></textarea>
+        </div>
+
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <button type="submit" class="btn btn-primary btn-arrow" id="qfSubmit">Anfrage senden</button>
+        <div class="qform-status" id="qfStatus" role="status" aria-live="polite"></div>
+        <p class="qform-note">Mit dem Absenden stimmen Sie der Verarbeitung Ihrer Angaben zur Bearbeitung Ihrer Anfrage zu. Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+      </form>
     </div>
   </div>
 </section>
@@ -736,6 +831,73 @@
     });
   }, {threshold: 0.1, rootMargin: '0px 0px -40px 0px'});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* Angebots-Formular */
+  (function(){
+    const WORKER_URL = 'https://portfolio-analytics.seyle450.workers.dev';
+    const form = document.getElementById('quoteForm');
+    if(!form) return;
+    const btn = document.getElementById('qfSubmit');
+    const status = document.getElementById('qfStatus');
+
+    function hasConsent(){
+      try { return /(?:^|;)\s*analytics_consent=granted/.test(document.cookie); } catch(e){ return false; }
+    }
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const company = form.company.value.trim();
+      const contactValue = form.contactValue.value.trim();
+      status.className = 'qform-status';
+      if(!company || !contactValue){
+        status.classList.add('err');
+        status.textContent = 'Bitte Unternehmen und eine Kontaktmöglichkeit angeben.';
+        return;
+      }
+      btn.disabled = true;
+      const btnText = btn.textContent;
+      btn.textContent = 'Wird gesendet…';
+      status.textContent = '';
+
+      const payload = {
+        company,
+        person: form.person.value.trim(),
+        contactType: form.contactType.value,
+        contactValue,
+        source: form.source.value,
+        package: form.package.value,
+        pflege: form.pflege.checked,
+        message: form.message.value.trim(),
+        website: form.website.value, /* honeypot */
+        page: '/',
+      };
+      if(hasConsent()){
+        try { payload.sessionId = sessionStorage.getItem('_as') || ''; } catch(e){}
+      }
+
+      try {
+        const res = await fetch(WORKER_URL + '/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if(!res.ok){
+          let msg = 'Senden fehlgeschlagen. Bitte per WhatsApp oder E-Mail versuchen.';
+          try { const d = await res.json(); if(d && d.error) msg = d.error; } catch(e){}
+          throw new Error(msg);
+        }
+        form.reset();
+        status.classList.add('ok');
+        status.textContent = '✓ Danke! Ihre Anfrage ist angekommen – ich melde mich zeitnah bei Ihnen.';
+      } catch(err){
+        status.classList.add('err');
+        status.textContent = err.message || 'Senden fehlgeschlagen. Bitte per WhatsApp oder E-Mail versuchen.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = btnText;
+      }
+    });
+  })();
 </script>
 <script src="analytics/tracker.js" defer></script>
 </body>
