@@ -119,18 +119,13 @@
   .trust{display:flex;align-items:center;gap:6px 10px;margin-top:28px;color:var(--neutral);font-family:var(--head);font-size:12.5px;letter-spacing:.04em;flex-wrap:wrap;}
   .trust .dot{width:6px;height:6px;border-radius:50%;background:var(--cobalt);flex:none;}
 
-  /* hero stat cards */
-  .hero-right{margin-top:40px;}
-  .hero-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .hc{border-radius:12px;padding:24px 22px;border:1px solid var(--line);background:var(--white);display:flex;flex-direction:column;gap:6px;min-height:120px;}
-  .hc.hc-dark{background:var(--ink);border-color:var(--ink);}
-  .hc.hc-cobalt{background:var(--cobalt);border-color:var(--cobalt);}
-  .hc-num{font-family:var(--head);font-weight:700;font-size:clamp(28px,5vw,40px);letter-spacing:-.04em;line-height:1;color:var(--cobalt);}
-  .hc.hc-dark .hc-num{color:#9bb0ff;}
-  .hc.hc-cobalt .hc-num{color:var(--paper);}
-  .hc-label{font-family:var(--head);font-size:13px;font-weight:500;color:var(--neutral);letter-spacing:.01em;line-height:1.35;margin-top:auto;}
-  .hc.hc-dark .hc-label{color:rgba(246,245,241,.55);}
-  .hc.hc-cobalt .hc-label{color:rgba(246,245,241,.65);}
+  /* trust pills */
+  .trust-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;}
+  .pill{font-family:var(--head);font-size:12.5px;font-weight:500;letter-spacing:.04em;padding:7px 14px;border-radius:100px;border:1px solid var(--line);color:#4a4a52;background:var(--white);}
+  .pill.pill-hi{background:var(--cobalt);color:var(--paper);border-color:var(--cobalt);}
+
+  /* hero deco line */
+  .hero-rule{display:none;}
 
   @media(prefers-reduced-motion:reduce){
     .ticker-inner{animation:none;}
@@ -271,11 +266,9 @@
     .nav-cta{display:inline-flex;}
     .burger{display:none;}
     .hero{padding:80px 0 0;}
-    .hero-inner{padding-bottom:84px;}
+    .hero-inner{padding-bottom:96px;}
     .hero-actions{flex-direction:row;}
     .hero-actions .btn{width:auto;}
-    .hero-right{margin-top:0;}
-    .hc{min-height:140px;}
     section{padding:96px 0;}
     .cta{padding:104px 0;}
     .prob-list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
@@ -300,9 +293,7 @@
     .foot-row{flex-direction:row;justify-content:space-between;align-items:flex-end;}
   }
   @media(min-width:1024px){
-    .hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:72px;align-items:center;}
-    .hc{min-height:160px;padding:28px 26px;}
-    .hc-num{font-size:48px;}
+    .hero h1{font-size:72px;}
   }
 </style>
 </head>
@@ -343,38 +334,23 @@
 <!-- ===== HERO ===== -->
 <section class="hero">
   <div class="container hero-inner">
-    <div class="hero-copy reveal">
+    <div class="reveal" style="max-width:820px;">
       <span class="eyebrow">Webdesign Bremen</span>
       <h1>Mehr Gäste – durch eine Website, die <span class="hl">für Sie arbeitet</span>.</h1>
-      <p class="hsub">Webdesign aus Bremen für Cafés und Restaurants. Schnell, modern und so gebaut, dass aus einem Klick ein voller Tisch wird.</p>
+      <p class="hsub" style="max-width:52ch;margin-top:22px;">Webdesign aus Bremen für Cafés und Restaurants. Schnell, modern und so gebaut, dass aus einem Klick ein voller Tisch wird.</p>
       <div class="hero-actions">
         <a href="#kontakt" class="btn btn-primary btn-arrow">Kostenloses Angebot</a>
         <a href="#arbeiten" class="btn btn-ghost">Projekte ansehen</a>
       </div>
-      <div class="trust"><span class="dot"></span> Persönlich · Festpreis · In 1–2 Wochen online</div>
-    </div>
-    <div class="hero-right reveal reveal-d1">
-      <div class="hero-cards">
-        <div class="hc">
-          <span class="hc-num">5+</span>
-          <span class="hc-label">Konzepte & Projekte umgesetzt</span>
-        </div>
-        <div class="hc hc-dark">
-          <span class="hc-num">290€</span>
-          <span class="hc-label">Einstiegs&shy;preis – einmalig</span>
-        </div>
-        <div class="hc hc-cobalt">
-          <span class="hc-num">1–2</span>
-          <span class="hc-label">Wochen bis Ihre Seite online ist</span>
-        </div>
-        <div class="hc">
-          <span class="hc-num">100%</span>
-          <span class="hc-label">Festpreis – keine versteckten Kosten</span>
-        </div>
+      <div class="trust-pills">
+        <span class="pill pill-hi">Ab 290 €</span>
+        <span class="pill">Festpreis</span>
+        <span class="pill">In 1–2 Wochen online</span>
+        <span class="pill">Bremen</span>
+        <span class="pill">Persönlicher Kontakt</span>
       </div>
     </div>
   </div>
-
 </section>
 
 <!-- ===== PROBLEM / LÖSUNG ===== -->
