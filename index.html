@@ -15,11 +15,25 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://elyesferchichi.com/Webdesign-Agentur/hevis/assets/cafe.jpg" />
 <link rel="icon" type="image/svg+xml" href="ef-monogram-cobalt.svg" />
-<link rel="icon" type="image/svg+xml" sizes="any" href="ef-monogram-cobalt.svg" />
 <link rel="apple-touch-icon" sizes="180x180" href="ef-monogram-cobalt.svg" />
+<link rel="preload" as="image" href="Webdesign-Agentur/hevis/assets/stand.jpg" fetchpriority="high" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Elyes Ferchichi – Webdesign",
+  "description": "Webdesign aus Bremen für Cafés und Restaurants. Festpreis, in 1–2 Wochen online.",
+  "url": "https://elyesferchichi.com/",
+  "email": "elyes.ferchichi@icloud.com",
+  "address": { "@type": "PostalAddress", "addressLocality": "Bremen", "addressCountry": "DE" },
+  "areaServed": "Bremen",
+  "priceRange": "€€",
+  "sameAs": ["https://www.linkedin.com/in/seyle/"]
+}
+</script>
 <style>
   :root{
     --ink:#16161A;
@@ -43,78 +57,105 @@
   /* ---------- type ---------- */
   h1,h2,h3{font-family:var(--head);font-weight:600;letter-spacing:-.02em;line-height:1.06;}
   .eyebrow{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--cobalt);display:inline-flex;align-items:center;gap:10px;white-space:nowrap;}
-  .eyebrow::before{content:"";width:22px;height:1.5px;background:var(--cobalt);display:inline-block;}
+  .eyebrow::before{content:"";width:22px;height:1.5px;background:var(--cobalt);display:inline-block;flex:none;}
   .lede{color:#4a4a52;font-size:17px;}
 
   /* ---------- buttons ---------- */
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--head);font-weight:600;font-size:15px;letter-spacing:.01em;padding:15px 24px;border-radius:8px;cursor:pointer;border:1px solid transparent;min-height:50px;transition:transform .15s ease, background .2s ease;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--head);font-weight:600;font-size:15px;letter-spacing:.01em;padding:15px 24px;border-radius:8px;cursor:pointer;border:1px solid transparent;min-height:50px;transition:transform .15s ease, background .2s ease, box-shadow .15s ease;}
   .btn:active{transform:translateY(1px);}
   .btn-primary{background:var(--cobalt);color:var(--paper);}
-  .btn-primary:hover{background:#234ad0;}
-  .btn-ink{background:var(--ink);color:var(--paper);}
-  .btn-ink:hover{background:#2e2e34;}
-  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line);}
+  .btn-primary:hover{background:#234ad0;box-shadow:0 4px 16px rgba(43,80,226,.35);}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:rgba(22,22,26,.2);}
   .btn-ghost:hover{background:rgba(22,22,26,.05);}
   .btn-arrow::after{content:"→";font-size:16px;}
+  .btn-wa{background:var(--cobalt);color:var(--paper);}
+  .btn-wa:hover{background:#234ad0;box-shadow:0 4px 16px rgba(43,80,226,.35);}
+  .btn-wa::before{content:"";width:18px;height:18px;flex:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z'/%3E%3C/svg%3E") center/contain no-repeat;}
+
+  /* ---------- reveal animations ---------- */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.vis{opacity:1;transform:none;}
+  .reveal-d1{transition-delay:.1s;}
+  .reveal-d2{transition-delay:.2s;}
+  .reveal-d3{transition-delay:.3s;}
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
 
   /* ---------- nav ---------- */
-  header.nav{position:sticky;top:0;z-index:50;background:rgba(246,245,241,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .2s ease;}
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(246,245,241,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .2s ease;}
   header.nav.scrolled{border-bottom-color:var(--line);}
-  .nav-row{display:flex;align-items:center;justify-content:space-between;height:64px;}
-  .brand{display:flex;align-items:center;gap:11px;flex:1;}
+  .nav-row{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px;}
+  .brand{display:flex;align-items:center;gap:11px;min-width:0;}
   .brand .mono{width:30px;height:30px;border-radius:7px;overflow:hidden;flex:none;}
   .brand .mono img{display:block;width:100%;height:100%;}
-  .brand .nm{font-family:var(--head);font-weight:600;font-size:16px;letter-spacing:-.01em;}
+  .brand .nm{font-family:var(--head);font-weight:600;font-size:16px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .brand .nm small{display:block;font-weight:400;font-size:11px;letter-spacing:.04em;color:var(--neutral);margin-top:1px;}
-  .nav-links{display:none;gap:28px;}
-  .nav-links a{font-family:var(--head);font-size:14px;font-weight:500;color:var(--neutral);transition:color .15s;}
+  .nav-links{display:none;gap:28px;flex:1;justify-content:center;}
+  .nav-links a{font-family:var(--head);font-size:14px;font-weight:500;color:var(--neutral);transition:color .15s;white-space:nowrap;}
   .nav-links a:hover{color:var(--ink);}
-  .nav-cta{display:none;}
+  .nav-cta{display:none;white-space:nowrap;flex:none;}
 
   /* mobile burger */
-  .burger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:6px;}
+  .burger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;background:none;border:none;cursor:pointer;padding:6px;flex:none;}
   .burger span{display:block;height:1.5px;background:var(--ink);border-radius:2px;transition:transform .2s ease, opacity .2s ease;}
   .burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
   .burger.open span:nth-child(2){opacity:0;}
   .burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
 
   /* mobile drawer */
-  .mobile-menu{display:none;position:fixed;inset:64px 0 0 0;background:var(--paper);z-index:40;flex-direction:column;padding:24px 22px;gap:4px;border-top:1px solid var(--line);}
+  .mobile-menu{display:none;position:fixed;inset:64px 0 0 0;background:var(--paper);z-index:40;flex-direction:column;padding:24px 22px;gap:4px;border-top:1px solid var(--line);overflow-y:auto;}
   .mobile-menu.open{display:flex;}
   .mobile-menu a{font-family:var(--head);font-size:18px;font-weight:600;padding:14px 0;border-bottom:1px solid var(--line);}
   .mobile-menu a:last-child{border-bottom:none;}
   .mobile-menu .mob-cta{margin-top:16px;width:100%;justify-content:center;}
 
   /* ---------- hero ---------- */
-  .hero{padding:48px 0 56px;}
-  .hero h1{font-size:clamp(34px,8.5vw,56px);margin:22px 0 0;text-wrap:balance;}
+  .hero{padding:52px 0 60px;}
+  .hero h1{font-size:clamp(34px,8.5vw,58px);margin:22px 0 0;text-wrap:balance;}
   .hero h1 .hl{color:var(--cobalt);}
-  .hero .hsub{margin-top:20px;max-width:38ch;font-size:17px;color:#3f3f47;}
-  .hero-actions{display:flex;flex-direction:column;gap:12px;margin-top:30px;}
+  .hero .hsub{margin-top:20px;max-width:42ch;font-size:17px;color:#3f3f47;line-height:1.6;}
+  .hero-actions{display:flex;flex-direction:column;gap:12px;margin-top:32px;}
   .hero-actions .btn{width:100%;}
-  .trust{display:flex;align-items:center;gap:10px;margin-top:26px;color:var(--neutral);font-family:var(--head);font-size:12.5px;letter-spacing:.04em;}
+  .trust{display:flex;align-items:center;gap:6px 10px;margin-top:28px;color:var(--neutral);font-family:var(--head);font-size:12.5px;letter-spacing:.04em;flex-wrap:wrap;}
   .trust .dot{width:6px;height:6px;border-radius:50%;background:var(--cobalt);flex:none;}
-  .hero-visual{margin-top:38px;}
-  .hero-img{width:100%;height:300px;border-radius:14px;overflow:hidden;border:1px solid var(--line);}
+  .hero-visual{margin-top:40px;}
+  .hero-img{width:100%;height:300px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 4px 32px rgba(22,22,26,.1);}
   .hero-img img{width:100%;height:100%;object-fit:cover;object-position:center;}
 
   /* ---------- section base ---------- */
-  section{padding:64px 0;}
+  section{padding:72px 0;}
   .sec-head{max-width:640px;}
-  .sec-head h2{font-size:clamp(28px,6.5vw,40px);margin-top:16px;text-wrap:balance;}
+  .sec-head h2{font-size:clamp(28px,6.5vw,42px);margin-top:16px;text-wrap:balance;}
   .sec-head .lede{margin-top:16px;}
 
   /* ---------- problem / solution ---------- */
   .problem{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  .prob-list{display:flex;flex-direction:column;gap:18px;margin-top:34px;}
-  .prob-item{display:flex;gap:16px;align-items:flex-start;}
-  .prob-item .ix{flex:none;width:34px;height:34px;border-radius:8px;background:var(--paper);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:600;font-size:14px;color:var(--cobalt);}
-  .prob-item p{font-size:16px;color:#2c2c33;}
-  .prob-item p b{font-family:var(--head);font-weight:600;}
-  .solution{margin-top:36px;background:var(--ink);color:var(--paper);border-radius:var(--r);padding:30px 26px;}
+  .prob-list{display:flex;flex-direction:column;gap:16px;margin-top:34px;}
+  .prob-item{display:flex;gap:16px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:20px;}
+  .prob-item .ix{flex:none;width:34px;height:34px;border-radius:8px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--head);font-weight:600;font-size:14px;color:var(--cobalt);}
+  .prob-item p{font-size:15.5px;color:#2c2c33;line-height:1.6;}
+  .prob-item p b{font-family:var(--head);font-weight:600;display:block;margin-bottom:4px;}
+  .solution{margin-top:28px;background:var(--ink);color:var(--paper);border-radius:var(--r);padding:32px 28px;}
   .solution .eyebrow{color:#9bb0ff;}
   .solution .eyebrow::before{background:#9bb0ff;}
-  .solution p{margin-top:14px;font-size:18px;font-family:var(--head);font-weight:400;line-height:1.4;letter-spacing:-.01em;}
+  .solution p{margin-top:14px;font-size:18px;font-family:var(--head);font-weight:400;line-height:1.45;letter-spacing:-.01em;}
+
+  /* ---------- vergleich ---------- */
+  .compare{border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .compare-grid{display:flex;flex-direction:column;gap:14px;margin-top:38px;}
+  .cmp-col{border-radius:var(--r);padding:26px 24px;border:1px solid var(--line);}
+  .cmp-col.cmp-muted{background:var(--white);}
+  .cmp-col.cmp-best{background:var(--cobalt);color:var(--paper);border-color:var(--cobalt);}
+  .cmp-head{font-family:var(--head);font-weight:700;font-size:16px;margin-bottom:18px;letter-spacing:-.01em;}
+  .cmp-col.cmp-muted .cmp-head{color:#555;}
+  .cmp-col.cmp-best .cmp-head{color:var(--paper);}
+  .cmp-col ul{list-style:none;display:flex;flex-direction:column;gap:11px;}
+  .cmp-col li{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;line-height:1.45;}
+  .cmp-col.cmp-muted li{color:#666;}
+  .cmp-col li .ci{flex:none;width:18px;text-align:center;font-size:13px;font-weight:700;margin-top:1px;}
+  .cmp-muted li .ci{color:#bbb7b0;}
+  .cmp-best li .ci{color:rgba(246,245,241,.7);}
 
   /* ---------- pakete ---------- */
   .cards{display:flex;flex-direction:column;gap:18px;margin-top:38px;}
@@ -123,67 +164,81 @@
   .card .tier{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--neutral);}
   .card.feat .tier{color:#9bb0ff;}
   .card .badge{position:absolute;top:24px;right:22px;background:var(--cobalt);color:var(--paper);font-family:var(--head);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:100px;}
-  .card .price{font-family:var(--head);font-weight:600;font-size:42px;letter-spacing:-.02em;margin-top:16px;line-height:1;}
-  .card .price span{font-size:16px;font-weight:500;color:var(--neutral);letter-spacing:0;}
+  .card .price{font-family:var(--head);font-weight:700;font-size:44px;letter-spacing:-.03em;margin-top:16px;line-height:1;}
+  .card .price span{font-size:16px;font-weight:400;color:var(--neutral);letter-spacing:0;}
   .card.feat .price span{color:#b9c4ed;}
-  .card .ptag{font-size:15px;color:#4a4a52;margin-top:14px;}
+  .card .ptag{font-size:15px;color:#4a4a52;margin-top:14px;line-height:1.55;}
   .card.feat .ptag{color:#c7c7c9;}
-  .card ul{list-style:none;margin:22px 0 26px;display:flex;flex-direction:column;gap:12px;}
-  .card li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;}
+  .card ul{list-style:none;margin:22px 0 26px;display:flex;flex-direction:column;gap:11px;}
+  .card li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;line-height:1.45;}
   .card li::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;margin-top:1px;background:var(--cobalt);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/13px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/13px no-repeat;}
   .card .btn{margin-top:auto;width:100%;}
+  .card.feat li::before{background:#9bb0ff;}
 
   /* ---------- beispiele ---------- */
-  .work-grid{display:flex;flex-direction:column;gap:26px;margin-top:38px;}
+  .work-grid{display:flex;flex-direction:column;gap:28px;margin-top:38px;}
   .work-item .frame{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--white);}
   .work-item .frame a{display:block;}
   .work-thumb{overflow:hidden;height:230px;}
-  .work-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+  .work-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s ease;}
   .work-item .frame a:hover .work-thumb img{transform:scale(1.04);}
   .work-thumb.contain{display:flex;align-items:center;justify-content:center;padding:28px;}
   .work-thumb.contain img{width:auto;height:100%;max-height:160px;object-fit:contain;}
   .work-meta{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-top:15px;}
   .work-meta h3{font-size:19px;}
   .work-meta .tag{font-family:var(--head);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--neutral);white-space:nowrap;}
-  .work-item > p{margin-top:7px;font-size:15px;color:#4a4a52;}
-  .view-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-family:var(--head);font-size:13px;font-weight:600;color:var(--cobalt);letter-spacing:.01em;}
+  .work-item > p{margin-top:8px;font-size:15px;color:#4a4a52;line-height:1.6;}
+  .view-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-family:var(--head);font-size:13px;font-weight:600;color:var(--cobalt);letter-spacing:.01em;transition:gap .15s ease;}
   .view-link::after{content:"→";}
+  .view-link:hover{gap:10px;}
 
   /* ---------- ablauf ---------- */
   .ablauf{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
   .steps{display:flex;flex-direction:column;gap:0;margin-top:38px;}
-  .step{display:flex;gap:18px;padding:22px 0;border-top:1px solid var(--line);}
+  .step{display:flex;gap:18px;padding:24px 0;border-top:1px solid var(--line);}
   .step:first-child{border-top:none;}
   .step .no{font-family:var(--head);font-weight:600;font-size:15px;color:var(--paper);background:var(--cobalt);width:36px;height:36px;border-radius:9px;flex:none;display:flex;align-items:center;justify-content:center;}
   .step h3{font-size:18px;}
-  .step p{font-size:15px;color:#4a4a52;margin-top:6px;}
+  .step p{font-size:15px;color:#4a4a52;margin-top:6px;line-height:1.6;}
+
+  /* ---------- FAQ ---------- */
+  .faq-list{margin-top:38px;}
+  details.faq-item{border-top:1px solid var(--line);}
+  details.faq-item:last-child{border-bottom:1px solid var(--line);}
+  details.faq-item summary{list-style:none;padding:22px 0;font-family:var(--head);font-weight:600;font-size:17px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;user-select:none;}
+  details.faq-item summary::-webkit-details-marker{display:none;}
+  details.faq-item summary::after{content:"+";font-size:22px;font-weight:300;flex:none;color:var(--cobalt);line-height:1;}
+  details.faq-item[open] summary::after{content:"−";}
+  details.faq-item .faq-a{padding-bottom:22px;font-size:15.5px;color:#4a4a52;line-height:1.7;max-width:680px;}
 
   /* ---------- über mich ---------- */
-  .about-wrap{display:flex;flex-direction:column;gap:28px;margin-top:34px;}
-  .about-photo-frame{border-radius:14px;overflow:hidden;height:320px;}
-  .about-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+  .about-wrap{margin-top:38px;}
   .about-text p{font-size:17px;color:#2c2c33;line-height:1.65;}
   .about-text p + p{margin-top:16px;}
-  .about-sign{font-family:var(--head);font-weight:600;font-size:22px;margin-top:22px;letter-spacing:-.01em;}
+  .about-exp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px;}
+  .exp-card{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;}
+  .exp-card strong{font-family:var(--head);font-size:15px;font-weight:600;display:block;}
+  .exp-card span{font-size:13px;color:var(--neutral);margin-top:3px;display:block;}
+  .about-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;}
+  .about-badge{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:6px 13px;border-radius:100px;border:1px solid var(--line);color:var(--neutral);background:var(--white);}
+  .about-sign{font-family:var(--head);font-weight:600;font-size:22px;margin-top:24px;letter-spacing:-.01em;}
   .about-sign small{display:block;font-weight:400;font-size:13px;color:var(--neutral);letter-spacing:.04em;margin-top:3px;font-family:var(--body);}
-  .about-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
-  .about-badge{font-family:var(--head);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:100px;border:1px solid var(--line);color:var(--neutral);}
 
   /* ---------- CTA ---------- */
-  .cta{background:var(--ink);color:var(--paper);padding:72px 0;}
+  .cta{background:var(--ink);color:var(--paper);padding:80px 0;}
   .cta .eyebrow{color:#9bb0ff;}
   .cta .eyebrow::before{background:#9bb0ff;}
-  .cta h2{font-size:clamp(30px,7vw,46px);text-wrap:balance;margin-top:16px;}
-  .cta .lede{color:#c7c7c9;margin-top:18px;max-width:46ch;}
-  .cta-btn-wrap{margin-top:30px;}
-  .cta-btn-wrap .btn{width:100%;}
-  .cta-info{display:flex;flex-direction:column;gap:14px;margin-top:32px;padding-top:28px;border-top:1px solid var(--line-dk);}
+  .cta h2{font-size:clamp(30px,7vw,48px);text-wrap:balance;margin-top:16px;}
+  .cta .lede{color:#c7c7c9;margin-top:18px;max-width:48ch;}
+  .cta-btn-wrap{display:flex;flex-direction:column;gap:10px;margin-top:32px;}
+  .cta-btn-wrap .btn{width:100%;justify-content:center;}
+  .cta-info{display:flex;flex-direction:column;gap:14px;margin-top:36px;padding-top:30px;border-top:1px solid var(--line-dk);}
   .cta-info a,.cta-info span{display:flex;align-items:flex-start;gap:12px;font-family:var(--head);font-size:15px;letter-spacing:.01em;}
   .cta-info .k{color:#9bb0ff;font-size:11px;letter-spacing:.14em;text-transform:uppercase;width:72px;flex:none;padding-top:3px;}
 
   /* ---------- footer ---------- */
   footer{background:var(--ink);color:var(--paper);padding:36px 0 44px;border-top:1px solid var(--line-dk);}
-  .foot-row{display:flex;flex-direction:column;gap:22px;}
+  .foot-row{display:flex;flex-direction:column;gap:24px;}
   .foot-brand{display:flex;align-items:center;gap:11px;}
   .foot-brand .mono{width:30px;height:30px;border-radius:7px;overflow:hidden;flex:none;}
   .foot-brand .mono img{display:block;width:100%;height:100%;}
@@ -201,40 +256,37 @@
     .nav-links{display:flex;}
     .nav-cta{display:inline-flex;}
     .burger{display:none;}
-    .hero{padding:70px 0 72px;}
+    .hero{padding:80px 0 84px;}
     .hero-actions{flex-direction:row;}
     .hero-actions .btn{width:auto;}
-    .hero-img{height:420px;}
-    section{padding:88px 0;}
-    .cta{padding:96px 0;}
-    .prob-list{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .hero-img{height:440px;}
+    section{padding:96px 0;}
+    .cta{padding:104px 0;}
+    .prob-list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
     .prob-item{flex-direction:column;}
+    .prob-item p b{margin-bottom:6px;}
+    .compare-grid{flex-direction:row;align-items:stretch;}
+    .cmp-col{flex:1;min-width:0;}
+    .cmp-col.cmp-best{transform:translateY(-10px);}
     .cards{flex-direction:row;align-items:stretch;}
-    .card{flex:1;}
-    .card.feat{transform:translateY(-10px);}
-    .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:30px 26px;}
+    .card{flex:1;min-width:0;}
+    .card.feat{transform:translateY(-12px);}
+    .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px 26px;}
     .work-item.wide{grid-column:1 / -1;}
-    .work-item.wide .work-thumb{height:360px;}
-    .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:0 40px;}
+    .work-item.wide .work-thumb{height:380px;}
+    .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:0 48px;}
     .step{border-top:1px solid var(--line);}
-    .steps .step:nth-child(2){border-top:1px solid var(--line);}
-    .about-wrap{flex-direction:row-reverse;align-items:center;gap:48px;}
-    .about-photo{flex:1;}
-    .about-text{flex:1.2;}
-    .about-photo-frame{height:460px;}
-    .cta-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:end;}
+    .steps .step:nth-child(-n+2){border-top:none;}
+    .about-wrap{max-width:720px;}
+    .cta-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:64px;align-items:start;}
+    .cta-btn-wrap{flex-direction:row;flex-wrap:wrap;}
     .cta-btn-wrap .btn{width:auto;}
     .foot-row{flex-direction:row;justify-content:space-between;align-items:flex-end;}
   }
   @media(min-width:1024px){
-    .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+    .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;}
     .hero-visual{margin-top:0;}
-    .hero-img{height:540px;}
-    .work-grid{grid-template-columns:repeat(2,1fr);}
-  }
-  /* Reduced motion */
-  @media(prefers-reduced-motion:reduce){
-    *{transition:none!important;animation:none!important;}
+    .hero-img{height:560px;}
   }
 </style>
 </head>
@@ -243,10 +295,8 @@
 <!-- ===== NAV ===== -->
 <header class="nav" id="nav">
   <div class="container nav-row">
-    <a class="brand" href="#top">
-      <span class="mono">
-        <img src="ef-monogram-cobalt.svg" alt="EF" width="30" height="30">
-      </span>
+    <a class="brand" href="/">
+      <span class="mono"><img src="ef-monogram-cobalt.svg" alt="EF" width="30" height="30"></span>
       <span class="nm">Elyes Ferchichi<small>Webdesign · Bremen</small></span>
     </a>
     <nav class="nav-links">
@@ -254,21 +304,22 @@
       <a href="#arbeiten">Arbeiten</a>
       <a href="#ablauf">Ablauf</a>
       <a href="#ueber">Über mich</a>
+      <a href="#faq">FAQ</a>
     </nav>
-    <a href="#kontakt" class="btn btn-ink nav-cta">Kostenloses Angebot</a>
+    <a href="#kontakt" class="btn btn-primary nav-cta">Kostenloses Angebot</a>
     <button class="burger" id="burger" aria-label="Menü öffnen" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
-<!-- Mobile Drawer -->
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-  <a href="#pakete" class="mob-link">Pakete</a>
-  <a href="#arbeiten" class="mob-link">Arbeiten</a>
-  <a href="#ablauf" class="mob-link">Ablauf</a>
-  <a href="#ueber" class="mob-link">Über mich</a>
-  <a href="#kontakt" class="btn btn-ink mob-cta">Kostenloses Angebot</a>
+  <a href="#pakete">Pakete</a>
+  <a href="#arbeiten">Arbeiten</a>
+  <a href="#ablauf">Ablauf</a>
+  <a href="#ueber">Über mich</a>
+  <a href="#faq">FAQ</a>
+  <a href="#kontakt" class="btn btn-primary mob-cta">Kostenloses Angebot</a>
 </div>
 
 <main id="top">
@@ -276,19 +327,19 @@
 <!-- ===== HERO ===== -->
 <section class="hero">
   <div class="container hero-inner">
-    <div class="hero-copy">
-      <span class="eyebrow">Websites, die Kunden bringen</span>
+    <div class="hero-copy reveal">
+      <span class="eyebrow">Webdesign Bremen</span>
       <h1>Mehr Gäste – durch eine Website, die <span class="hl">für Sie arbeitet</span>.</h1>
       <p class="hsub">Webdesign aus Bremen für Cafés und Restaurants. Schnell, modern und so gebaut, dass aus einem Klick ein voller Tisch wird.</p>
       <div class="hero-actions">
         <a href="#kontakt" class="btn btn-primary btn-arrow">Kostenloses Angebot</a>
-        <a href="#pakete" class="btn btn-ghost">Pakete ansehen</a>
+        <a href="#arbeiten" class="btn btn-ghost">Projekte ansehen</a>
       </div>
       <div class="trust"><span class="dot"></span> Persönlich · Festpreis · In 1–2 Wochen online</div>
     </div>
-    <div class="hero-visual">
+    <div class="hero-visual reveal reveal-d1">
       <div class="hero-img">
-        <img src="Webdesign-Agentur/hevis/assets/stand.jpg" alt="Hevi's Café Stand – Webdesign-Konzept von Elyes Ferchichi" loading="eager" />
+        <img src="Webdesign-Agentur/hevis/assets/stand.jpg" alt="Hevi's Café – Webdesign-Konzept von Elyes Ferchichi" loading="eager" fetchpriority="high" />
       </div>
     </div>
   </div>
@@ -297,28 +348,71 @@
 <!-- ===== PROBLEM / LÖSUNG ===== -->
 <section class="problem">
   <div class="container">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <span class="eyebrow">Warum überhaupt</span>
       <h2>Ihre Karte ist top. Aber findet man Sie auch online?</h2>
       <p class="lede">Die meisten Gäste schauen erst aufs Handy – und entscheiden in Sekunden, ob sie zu Ihnen kommen oder zum Laden nebenan.</p>
     </div>
     <div class="prob-list">
-      <div class="prob-item">
+      <div class="prob-item reveal">
         <span class="ix">1</span>
         <p><b>Gäste googeln Sie, bevor sie kommen.</b> Ohne eigene Seite landen sie nur bei Maps oder einem alten Eintrag – und sehen nicht, was Sie ausmacht.</p>
       </div>
-      <div class="prob-item">
+      <div class="prob-item reveal reveal-d1">
         <span class="ix">2</span>
         <p><b>Karte, Zeiten, Reservierung.</b> Wer das nicht in Sekunden findet, ruft nicht an – der nächste Treffer bekommt den Tisch.</p>
       </div>
-      <div class="prob-item">
+      <div class="prob-item reveal reveal-d2">
         <span class="ix">3</span>
         <p><b>Ein veralteter Auftritt schadet.</b> Selbst das beste Lokal wirkt zweitklassig, wenn die Seite langsam, unübersichtlich oder am Handy kaputt ist.</p>
       </div>
     </div>
-    <div class="solution">
+    <div class="solution reveal">
       <span class="eyebrow">Die Lösung</span>
       <p>Eine eigene Website räumt das auf: übersichtlich, blitzschnell am Handy, mit allem, was Ihre Gäste suchen – und einem Auftritt, der genau zu Ihrem Lokal passt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WARUM NICHT AGENTUR / WIX ===== -->
+<section class="compare" id="vergleich">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Der Unterschied</span>
+      <h2>Warum nicht Wix, Squarespace oder eine Agentur?</h2>
+      <p class="lede">Kurz gesagt: weil Sie damit entweder zu viel bezahlen oder zu wenig bekommen.</p>
+    </div>
+    <div class="compare-grid">
+      <div class="cmp-col cmp-muted reveal">
+        <div class="cmp-head">Wix / Jimdo</div>
+        <ul>
+          <li><span class="ci">✕</span> Monatliche Abo-Kosten für immer</li>
+          <li><span class="ci">✕</span> Generisches Design, das nach Baukasten aussieht</li>
+          <li><span class="ci">✕</span> Google-Optimierung kaum vorhanden</li>
+          <li><span class="ci">✕</span> Sie machen alles selbst – Zeit, die Sie nicht haben</li>
+          <li><span class="ci">✕</span> Kein fester Ansprechpartner</li>
+        </ul>
+      </div>
+      <div class="cmp-col cmp-best reveal reveal-d1">
+        <div class="cmp-head">Elyes Ferchichi</div>
+        <ul>
+          <li><span class="ci">✓</span> Festpreis ab 290 € – einmalig</li>
+          <li><span class="ci">✓</span> Individuelles Design für Ihr Lokal</li>
+          <li><span class="ci">✓</span> Google-Optimierung von Anfang an</li>
+          <li><span class="ci">✓</span> In 1–2 Wochen fertig</li>
+          <li><span class="ci">✓</span> Direkter Kontakt – ich bin Designer, Entwickler und Ansprechpartner</li>
+        </ul>
+      </div>
+      <div class="cmp-col cmp-muted reveal reveal-d2">
+        <div class="cmp-head">Webagentur</div>
+        <ul>
+          <li><span class="ci">✕</span> 3.000–10.000 € und mehr</li>
+          <li><span class="ci">✕</span> Wochen- bis monatelange Wartezeit</li>
+          <li><span class="ci">✕</span> Unpersönlich – Sie sprechen mit Projektmanagern, nicht dem Designer</li>
+          <li><span class="ci">✕</span> Änderungen kosten extra</li>
+          <li><span class="ci">✕</span> Oft Overkill für ein Café oder Restaurant</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -326,13 +420,13 @@
 <!-- ===== PAKETE ===== -->
 <section id="pakete">
   <div class="container">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <span class="eyebrow">Pakete & Preise</span>
       <h2>Klare Pakete. Feste Preise. Keine Überraschungen.</h2>
-      <p class="lede">Sie wissen vorher genau, was Sie bekommen und was es kostet. Aussuchen, anfragen, fertig.</p>
+      <p class="lede">Sie wissen vorher genau, was Sie bekommen und was es kostet.</p>
     </div>
     <div class="cards">
-      <div class="card">
+      <div class="card reveal">
         <span class="tier">Starter</span>
         <div class="price">290 €<span> einmalig</span></div>
         <p class="ptag">Alles Wichtige auf einer Seite. Perfekt für den schnellen, sauberen Start.</p>
@@ -345,7 +439,7 @@
         </ul>
         <a href="#kontakt" class="btn btn-ghost">Starter anfragen</a>
       </div>
-      <div class="card feat">
+      <div class="card feat reveal reveal-d1">
         <span class="badge">Beliebt</span>
         <span class="tier">Komplett</span>
         <div class="price">490 €<span> einmalig</span></div>
@@ -359,15 +453,15 @@
         </ul>
         <a href="#kontakt" class="btn btn-primary">Komplett anfragen</a>
       </div>
-      <div class="card">
+      <div class="card reveal reveal-d2">
         <span class="tier">Pflege</span>
         <div class="price">39 €<span> / Monat</span></div>
         <p class="ptag">Ich halte Ihre Seite aktuell – Sie sagen Bescheid, ich erledige es.</p>
         <ul>
           <li>Änderungen an Karte & Zeiten</li>
           <li>Technische Wartung & Updates</li>
-          <li>Hosting & Sicherheit</li>
-          <li>Schnelle Reaktion, fester Ansprechpartner</li>
+          <li>Hosting & Sicherheit inklusive</li>
+          <li>Fester Ansprechpartner, schnelle Reaktion</li>
         </ul>
         <a href="#kontakt" class="btn btn-ghost">Pflege dazubuchen</a>
       </div>
@@ -376,29 +470,29 @@
 </section>
 
 <!-- ===== BEISPIELE ===== -->
-<section id="arbeiten">
+<section id="arbeiten" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
   <div class="container">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <span class="eyebrow">Ausgewählte Arbeiten</span>
       <h2>Echte Konzepte für echte Lokale.</h2>
       <p class="lede">Alle Projekte sind vollständige Webdesign-Konzepte – von Grund auf selbst entworfen und gebaut.</p>
     </div>
     <div class="work-grid">
 
-      <div class="work-item wide">
+      <div class="work-item wide reveal">
         <div class="frame">
           <a href="https://hevis.elyesferchichi.com" target="_blank" rel="noopener">
             <div class="work-thumb">
-              <img src="Webdesign-Agentur/hevis/assets/cafe.jpg" alt="Hevi's Café Website – Innenansicht" loading="lazy" />
+              <img src="Webdesign-Agentur/hevis/assets/cafe.jpg" alt="Hevi's Café Website" loading="lazy" />
             </div>
           </a>
         </div>
         <div class="work-meta"><h3>Hevi's Café</h3><span class="tag">Mehrseitig</span></div>
-        <p>Atmosphärischer Café-Auftritt mit Galerie, Speisekarte, Öffnungszeiten und Kontaktbereich. Ruhiges, modernes Design für echte Gäste am Handy.</p>
+        <p>Atmosphärischer Café-Auftritt mit Galerie, Speisekarte, Öffnungszeiten und Kontaktbereich.</p>
         <a href="https://hevis.elyesferchichi.com" target="_blank" rel="noopener" class="view-link">Konzept ansehen</a>
       </div>
 
-      <div class="work-item">
+      <div class="work-item reveal">
         <div class="frame">
           <a href="https://bens.elyesferchichi.com" target="_blank" rel="noopener">
             <div class="work-thumb">
@@ -407,11 +501,11 @@
           </a>
         </div>
         <div class="work-meta"><h3>Ben's Catering</h3><span class="tag">One-Pager</span></div>
-        <p>Food-Truck-Auftritt mit Menü, Veranstaltungsanfragen und Standort-Karte. Schnell, klar, direkt zum Bestellen.</p>
+        <p>Food-Truck-Auftritt mit Menü, Veranstaltungsanfragen und Standort-Karte.</p>
         <a href="https://bens.elyesferchichi.com" target="_blank" rel="noopener" class="view-link">Konzept ansehen</a>
       </div>
 
-      <div class="work-item">
+      <div class="work-item reveal reveal-d1">
         <div class="frame">
           <a href="https://lokma.elyesferchichi.com" target="_blank" rel="noopener">
             <div class="work-thumb">
@@ -420,24 +514,24 @@
           </a>
         </div>
         <div class="work-meta"><h3>Lokma Lovers</h3><span class="tag">One-Pager</span></div>
-        <p>Streetfood-Truck mit animierter Speisekarte und direkten Bestell-Links. Auffällig, aber nie überladen.</p>
+        <p>Streetfood-Truck mit animierter Speisekarte und direkten Bestell-Links.</p>
         <a href="https://lokma.elyesferchichi.com" target="_blank" rel="noopener" class="view-link">Konzept ansehen</a>
       </div>
 
-      <div class="work-item">
+      <div class="work-item reveal">
         <div class="frame">
           <a href="https://niki.elyesferchichi.com" target="_blank" rel="noopener">
             <div class="work-thumb">
-              <img src="Webdesign-Agentur/cafe-niki/assets/Interior.png" alt="Café Niki Berlin Innenraum" loading="lazy" />
+              <img src="Webdesign-Agentur/cafe-niki/assets/Interior.png" alt="Café Niki" loading="lazy" />
             </div>
           </a>
         </div>
         <div class="work-meta"><h3>Café Niki</h3><span class="tag">Mehrseitig</span></div>
-        <p>Boutique-Café aus Berlin: eleganter Auftritt mit Galerie, Speisekarte und Online-Reservierung.</p>
+        <p>Boutique-Café aus Berlin: eleganter Auftritt mit Galerie und Online-Reservierung.</p>
         <a href="https://niki.elyesferchichi.com" target="_blank" rel="noopener" class="view-link">Konzept ansehen</a>
       </div>
 
-      <div class="work-item">
+      <div class="work-item reveal reveal-d1">
         <div class="frame">
           <a href="https://antepli.elyesferchichi.com" target="_blank" rel="noopener">
             <div class="work-thumb contain" style="background:#1a1107;">
@@ -446,7 +540,7 @@
           </a>
         </div>
         <div class="work-meta"><h3>Antepli Baklava</h3><span class="tag">Marke</span></div>
-        <p>Türkische Konditorei aus Bremen: Markenauftritt mit interaktiver 3D-Baklava-Anatomie und Shop-Anbindung.</p>
+        <p>Türkische Konditorei aus Bremen: Markenauftritt mit interaktiver 3D-Baklava-Anatomie.</p>
         <a href="https://antepli.elyesferchichi.com" target="_blank" rel="noopener" class="view-link">Konzept ansehen</a>
       </div>
 
@@ -457,25 +551,25 @@
 <!-- ===== ABLAUF ===== -->
 <section class="ablauf" id="ablauf">
   <div class="container">
-    <div class="sec-head">
+    <div class="sec-head reveal">
       <span class="eyebrow">So läuft's ab</span>
       <h2>In vier einfachen Schritten zur fertigen Seite.</h2>
       <p class="lede">Kein technisches Blabla. Sie kümmern sich ums Lokal, ich kümmere mich um die Website.</p>
     </div>
     <div class="steps">
-      <div class="step">
+      <div class="step reveal">
         <span class="no">1</span>
         <div><h3>Anfrage</h3><p>Sie schreiben mir kurz, was Sie brauchen. Kostenlos und unverbindlich – per Mail oder WhatsApp.</p></div>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-d1">
         <span class="no">2</span>
         <div><h3>Angebot & Konzept</h3><p>Sie bekommen ein festes Angebot und einen klaren Vorschlag, wie Ihre Seite aussehen wird.</p></div>
       </div>
-      <div class="step">
+      <div class="step reveal">
         <span class="no">3</span>
         <div><h3>Gestaltung</h3><p>Ich baue Ihre Seite. Fotos und Texte liefern Sie – oder ich helfe Ihnen dabei.</p></div>
       </div>
-      <div class="step">
+      <div class="step reveal reveal-d1">
         <span class="no">4</span>
         <div><h3>Online</h3><p>Letzter Feinschliff, dann geht Ihre Seite live. Auf Wunsch pflege ich sie laufend weiter.</p></div>
       </div>
@@ -483,22 +577,59 @@
   </div>
 </section>
 
-<!-- ===== ÜBER MICH ===== -->
-<section id="ueber">
+<!-- ===== FAQ ===== -->
+<section id="faq">
   <div class="container">
-    <div class="sec-head">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Häufige Fragen</span>
+      <h2>Was Sie vielleicht noch wissen wollen.</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item reveal">
+        <summary>Was kostet Hosting und Domain?</summary>
+        <p class="faq-a">Hosting und Domain sind nicht im Einmalpreis enthalten, aber ich empfehle Ihnen die passenden Anbieter und helfe bei der Einrichtung. Typisch sind ca. 5–15 € pro Monat – das klären wir gemeinsam im ersten Gespräch.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Muss ich selbst Fotos liefern?</summary>
+        <p class="faq-a">Im Idealfall ja – eigene Fotos Ihres Lokals wirken am authentischsten. Falls keine vorhanden sind, helfe ich mit hochwertigen Stockfotos oder gebe Empfehlungen für günstige Fotografen in Bremen.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Kann ich die Seite später selbst bearbeiten?</summary>
+        <p class="faq-a">Ja. Auf Wunsch richte ich ein einfaches System ein, mit dem Sie Öffnungszeiten, Preise und Texte selbst ändern können – ohne technisches Wissen. Alternativ übernehme ich das im Pflege-Paket für 39 € / Monat.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Wie lange dauert es wirklich?</summary>
+        <p class="faq-a">Nach Auftragserteilung und Lieferung der Inhalte dauert es in der Regel 1–2 Wochen bis zur fertigen Seite. Bei einem One-Pager oft schon in einer Woche.</p>
+      </details>
+      <details class="faq-item reveal">
+        <summary>Arbeiten Sie nur mit Lokalen in Bremen?</summary>
+        <p class="faq-a">Nein – ich arbeite deutschlandweit, alles läuft per Video-Call und E-Mail. Der Schwerpunkt liegt auf der Gastronomie, aber ich freue mich über Anfragen aus ganz Deutschland.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ÜBER MICH ===== -->
+<section id="ueber" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="container">
+    <div class="sec-head reveal">
       <span class="eyebrow">Über mich</span>
       <h2>Eine Person. Direkt. Ohne Agentur-Pingpong.</h2>
     </div>
-    <div class="about-wrap">
-      <div class="about-photo">
-        <div class="about-photo-frame">
-          <img src="Daten/Profil-720.jpg" alt="Elyes Ferchichi – Webdesigner aus Bremen" loading="lazy" />
-        </div>
-      </div>
+    <div class="about-wrap reveal">
       <div class="about-text">
         <p>Hallo, ich bin Elyes – 18 Jahre alt und Freelance-Webdesigner aus Bremen. Ich spezialisiere mich auf Websites für Cafés, Restaurants und lokale Gastronomiebetriebe, weil mir genau das Spaß macht: sichtbare Ergebnisse für echte Menschen und echte Lokale.</p>
-        <p>In Praktika bei Ekom7 und der Codext GmbH habe ich als Webentwickler echte Kundenprojekte umgesetzt. Seitdem baue ich eigene Konzepte und Projekte für lokale Betriebe. Bei mir sprechen Sie immer direkt mit der Person, die Ihre Seite baut – kein Hin und Her, keine versteckten Kosten.</p>
+        <p>In Praktika bei Ekom7 und der Codext GmbH habe ich als Webentwickler echte Kundenprojekte umgesetzt. Bei mir sprechen Sie immer direkt mit der Person, die Ihre Seite baut – kein Hin und Her, keine versteckten Kosten.</p>
+        <div class="about-exp">
+          <div class="exp-card">
+            <strong>Ekom7</strong>
+            <span>Webentwickler · Praktikum</span>
+          </div>
+          <div class="exp-card">
+            <strong>Codext GmbH</strong>
+            <span>Webentwickler · Praktikum</span>
+          </div>
+        </div>
         <div class="about-badges">
           <span class="about-badge">HTML · CSS · JS</span>
           <span class="about-badge">Mobile-first</span>
@@ -514,15 +645,16 @@
 <!-- ===== KONTAKT / CTA ===== -->
 <section class="cta" id="kontakt">
   <div class="container cta-grid">
-    <div>
+    <div class="reveal">
       <span class="eyebrow">Kontakt</span>
       <h2>Lassen Sie uns über Ihre Website sprechen.</h2>
       <p class="lede">Kostenloses Erstgespräch, festes Angebot, keine versteckten Kosten. Meist sind Sie in ein bis zwei Wochen online.</p>
       <div class="cta-btn-wrap">
-        <a href="mailto:elyes.ferchichi@icloud.com?subject=Webdesign-Anfrage" class="btn btn-primary btn-arrow">Jetzt anfragen</a>
+        <a href="mailto:elyes.ferchichi@icloud.com?subject=Webdesign-Anfrage" class="btn btn-primary btn-arrow">Per Mail anfragen</a>
+        <a href="https://wa.me/4915901771296?text=Hallo%20Elyes%2C%20ich%20interessiere%20mich%20f%C3%BCr%20eine%20Website." target="_blank" rel="noopener" class="btn btn-wa">WhatsApp</a>
       </div>
     </div>
-    <div class="cta-info">
+    <div class="cta-info reveal reveal-d1">
       <a href="mailto:elyes.ferchichi@icloud.com">
         <span class="k">E-Mail</span>
         <span>elyes.ferchichi@icloud.com</span>
@@ -546,9 +678,7 @@
   <div class="container foot-row">
     <div>
       <div class="foot-brand">
-        <span class="mono">
-          <img src="ef-monogram-cobalt.svg" alt="EF" width="30" height="30">
-        </span>
+        <span class="mono"><img src="ef-monogram-cobalt.svg" alt="EF" width="30" height="30"></span>
         <span class="nm">Elyes Ferchichi</span>
       </div>
       <div class="foot-tagline">Websites, die Kunden bringen.</div>
@@ -559,7 +689,7 @@
       © 2026 Elyes Ferchichi
       <div class="foot-links">
         <a href="impressum.html">Impressum</a>
-        <a href="datenschutz.html?site=freelance">Datenschutz</a>
+        <a href="datenschutz.html">Datenschutz</a>
         <a href="portfolio.html">Portfolio</a>
       </div>
     </div>
@@ -567,11 +697,11 @@
 </footer>
 
 <script>
-  /* ---- Nav scroll border ---- */
+  /* nav scroll border */
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 8), {passive:true});
 
-  /* ---- Mobile menu ---- */
+  /* mobile menu */
   const burger = document.getElementById('burger');
   const menu = document.getElementById('mobile-menu');
   function closeMenu(){
@@ -589,7 +719,15 @@
     document.body.style.overflow = isOpen ? 'hidden' : '';
   });
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-  window.addEventListener('resize', () => { if(window.innerWidth >= 720) closeMenu(); });
+  window.addEventListener('resize', () => { if(window.innerWidth >= 720) closeMenu(); }, {passive:true});
+
+  /* reveal animations */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){ e.target.classList.add('vis'); io.unobserve(e.target); }
+    });
+  }, {threshold: 0.1, rootMargin: '0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 <script src="analytics/tracker.js" defer></script>
 </body>
