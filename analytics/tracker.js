@@ -295,71 +295,59 @@
     if (document.getElementById('_acb')) return;
 
     var css = [
-      '@keyframes _acb-up{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}',
+      '@keyframes _acb-up{from{transform:translate(-50%,22px) scale(.97);opacity:0}to{transform:translate(-50%,0) scale(1);opacity:1}}',
+      '@keyframes _acb-shine{0%,55%{left:-140%}78%,100%{left:170%}}',
 
-      /* Wrapper */
+      /* schwebende Karte, mittig unten */
       '#_acb{',
-        'position:fixed;bottom:0;left:0;right:0;z-index:2147483647;',
-        'background:var(--acb-bg,#fff);',
-        'border-top:1px solid var(--acb-border,rgba(0,0,0,.07));',
-        'border-radius:var(--acb-radius,14px 14px 0 0);',
-        'box-shadow:var(--acb-shadow,0 -8px 48px rgba(0,0,0,.12));',
+        'position:fixed;z-index:2147483647;',
+        'left:50%;bottom:clamp(14px,3vw,30px);transform:translateX(-50%);',
+        'width:calc(100% - 32px);max-width:452px;',
         'font-family:var(--acb-font,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif);',
-        'font-size:var(--acb-size,.875rem);',
-        'color:var(--acb-text,#1e293b);',
-        'line-height:1.55;',
-        'animation:_acb-up .4s cubic-bezier(.16,1,.3,1) .3s both;',
+        'animation:_acb-up .55s cubic-bezier(.16,1,.3,1) .25s both;',
       '}',
+      '#_acb-card{',
+        'position:relative;overflow:hidden;',
+        'background:var(--acb-bg,#fff);',
+        'border:1px solid var(--acb-border,rgba(0,0,0,.08));',
+        'border-radius:var(--acb-radius,20px);',
+        'box-shadow:var(--acb-shadow,0 18px 54px -12px rgba(0,0,0,.30));',
+        'padding:1.3rem 1.35rem 1.2rem;',
+        'color:var(--acb-text,#1e293b);line-height:1.5;font-size:.9rem;',
+      '}',
+      /* dezenter Akzent-Schein oben rechts */
+      '#_acb-card::before{content:"";position:absolute;top:-45%;right:-12%;width:60%;height:130%;pointer-events:none;background:radial-gradient(circle, var(--acb-accent-soft,rgba(99,102,241,.18)), transparent 68%);}',
 
-      /* Inner layout */
-      '#_acb-in{',
-        'display:flex;align-items:center;gap:1.25rem;',
-        'max-width:960px;margin:0 auto;',
-        'padding:1.1rem 1.5rem;',
-        'flex-wrap:wrap;',
-      '}',
+      '#_acb-head{display:flex;align-items:center;gap:.7rem;position:relative;}',
+      '#_acb-ico{flex-shrink:0;width:40px;height:40px;border-radius:12px;background:var(--acb-accent-soft,rgba(99,102,241,.12));display:flex;align-items:center;justify-content:center;color:var(--acb-accent,#6366f1);}',
+      '#_acb-ico svg{width:21px;height:21px;}',
+      '#_acb-ttl{font-weight:700;font-size:1.05rem;letter-spacing:-.01em;color:var(--acb-text,#1e293b);}',
 
-      /* Icon */
-      '#_acb-ico{',
-        'flex-shrink:0;width:36px;height:36px;border-radius:10px;',
-        'background:var(--acb-accent-soft,rgba(99,102,241,.1));',
-        'display:flex;align-items:center;justify-content:center;',
-        'color:var(--acb-accent,#6366f1);',
-      '}',
-      '#_acb-ico svg{width:18px;height:18px;}',
+      '#_acb-sub{margin-top:.75rem;color:var(--acb-sub,#64748b);font-size:.86rem;position:relative;}',
 
-      /* Text block */
-      '#_acb-txt{flex:1;min-width:200px;}',
-      '#_acb-ttl{font-weight:700;font-size:var(--acb-ttl-size,.92rem);margin-bottom:.2rem;color:var(--acb-text,#1e293b);}',
-      '#_acb-sub{color:var(--acb-sub,#64748b);font-size:calc(var(--acb-size,.875rem) * .92);}',
-      '#_acb-sub a{color:var(--acb-accent,#6366f1);text-decoration:underline;text-underline-offset:2px;}',
-      '#_acb-sub a:hover{opacity:.8;}',
+      '#_acb-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.9rem;position:relative;}',
+      '#_acb-chips span{display:inline-flex;align-items:center;gap:.28rem;font-size:.72rem;font-weight:600;letter-spacing:.01em;padding:.32rem .62rem;border-radius:100px;background:var(--acb-accent-soft,rgba(99,102,241,.1));color:var(--acb-accent,#6366f1);white-space:nowrap;}',
 
-      /* Buttons */
-      '#_acb-btns{display:flex;gap:.5rem;flex-shrink:0;}',
-      '#_acb-btns button{',
-        'padding:.55rem 1.15rem;border:none;cursor:pointer;font-family:inherit;',
-        'font-size:calc(var(--acb-size,.875rem) * .9);font-weight:600;',
-        'border-radius:var(--acb-btn-r,8px);transition:all .15s;',
-        'white-space:nowrap;',
-      '}',
-      '#_acbdeny{',
-        'background:var(--acb-deny-bg,#f1f5f9);',
-        'color:var(--acb-deny-text,#475569);',
-      '}',
+      '#_acb-btns{display:flex;gap:.6rem;margin-top:1.15rem;position:relative;}',
+      '#_acb-btns button{flex:1;padding:.72rem 1rem;border:none;cursor:pointer;font-family:inherit;font-size:.88rem;font-weight:700;border-radius:var(--acb-btn-r,12px);transition:transform .12s ease,opacity .15s ease,background .15s ease;}',
+      '#_acb-btns button:active{transform:translateY(1px);}',
+      '#_acbdeny{background:var(--acb-deny-bg,#f1f5f9);color:var(--acb-deny-text,#475569);}',
       '#_acbdeny:hover{background:var(--acb-deny-hover,#e2e8f0);}',
-      '#_acbaccept{',
-        'background:var(--acb-accent,#6366f1);',
-        'color:var(--acb-accent-fg,#fff);',
-      '}',
-      '#_acbaccept:hover{opacity:.88;}',
+      '#_acbaccept{position:relative;overflow:hidden;background:var(--acb-accent,#6366f1);color:var(--acb-accent-fg,#fff);box-shadow:0 8px 20px -8px rgba(0,0,0,.35);}',
+      '#_acbaccept:hover{opacity:.93;}',
+      '#_acbaccept::after{content:"";position:absolute;top:0;left:-140%;width:55%;height:100%;background:linear-gradient(110deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-20deg);animation:_acb-shine 3.4s ease-in-out infinite;pointer-events:none;}',
 
-      /* Mobile */
+      '#_acb-foot{margin-top:.85rem;font-size:.74rem;color:var(--acb-sub,#64748b);position:relative;}',
+      '#_acb-foot a{color:var(--acb-accent,#6366f1);text-decoration:underline;text-underline-offset:2px;}',
+      '#_acb-foot a:hover{opacity:.8;}',
+
       '@media(max-width:560px){',
-        '#_acb-in{padding:.9rem 1rem;gap:.8rem;}',
-        '#_acb-ico{display:none;}',
-        '#_acb-btns{width:100%;justify-content:stretch;}',
-        '#_acb-btns button{flex:1;text-align:center;}',
+        '#_acb{width:calc(100% - 20px);bottom:10px;}',
+        '#_acb-card{padding:1.2rem 1.15rem;}',
+      '}',
+      '@media(prefers-reduced-motion:reduce){',
+        '#_acb{animation:none;}',
+        '#_acbaccept::after{animation:none;display:none;}',
       '}',
     ].join('');
 
@@ -375,25 +363,29 @@
     banner.setAttribute('role', 'dialog');
     banner.setAttribute('aria-label', 'Cookie-Einwilligung');
     banner.innerHTML = [
-      '<div id="_acb-in">',
-        '<div id="_acb-ico">',
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
-            '<path d="M12 2a10 10 0 1 0 10 10"/>',
-            '<path d="M12 6v6l4 2"/>',
-            '<circle cx="18" cy="6" r="3" fill="currentColor" stroke="none"/>',
-          '</svg>',
-        '</div>',
-        '<div id="_acb-txt">',
-          '<div id="_acb-ttl">Anonyme Website-Analyse</div>',
-          '<div id="_acb-sub">',
-            'Ich nutze eigene, datenschutzfreundliche Analyse-Tools — keine Drittanbieter, keine Werbung. ',
-            '<a href="' + dUrl + '" target="_blank">Datenschutzerklärung&nbsp;→</a>',
+      '<div id="_acb-card">',
+        '<div id="_acb-head">',
+          '<div id="_acb-ico">',
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
+              '<path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z"/>',
+              '<path d="M9 12l2 2 4-4"/>',
+            '</svg>',
           '</div>',
+          '<div id="_acb-ttl">Anonyme Website-Analyse</div>',
+        '</div>',
+        '<div id="_acb-sub">',
+          'Mit deiner Zustimmung sehe ich nur <b>anonym</b>, welche Inhalte ankommen — so kann ich die Seite besser machen. Kein Verkauf, keine Werbung, keine Weitergabe an Dritte.',
+        '</div>',
+        '<div id="_acb-chips">',
+          '<span>✓ 100&nbsp;% anonym</span>',
+          '<span>✓ Keine Werbung</span>',
+          '<span>✓ Keine Drittanbieter</span>',
         '</div>',
         '<div id="_acb-btns">',
           '<button id="_acbdeny">Ablehnen</button>',
-          '<button id="_acbaccept">Akzeptieren</button>',
+          '<button id="_acbaccept">Gerne, akzeptieren</button>',
         '</div>',
+        '<div id="_acb-foot">Jederzeit widerrufbar · <a href="' + dUrl + '" target="_blank">Datenschutzerklärung&nbsp;→</a></div>',
       '</div>',
     ].join('');
     document.body.appendChild(banner);
@@ -402,7 +394,7 @@
       setConsent('granted');
       banner.style.animation = 'none';
       banner.style.transition = 'transform .25s ease,opacity .25s ease';
-      banner.style.transform = 'translateY(100%)';
+      banner.style.transform = 'translate(-50%,140%)';
       banner.style.opacity = '0';
       setTimeout(function () { banner.remove(); style.remove(); }, 280);
       track();
@@ -411,7 +403,7 @@
       setConsent('denied');
       banner.style.animation = 'none';
       banner.style.transition = 'transform .25s ease,opacity .25s ease';
-      banner.style.transform = 'translateY(100%)';
+      banner.style.transform = 'translate(-50%,140%)';
       banner.style.opacity = '0';
       setTimeout(function () { banner.remove(); style.remove(); }, 280);
     };
