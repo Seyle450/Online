@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://antepli.elyesferchichi.com/sitemap.xml
