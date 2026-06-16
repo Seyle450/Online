@@ -594,6 +594,12 @@ body { min-height: 100svh; }
         <div class="kpi-value" id="kpiConversion">–</div>
         <div class="kpi-sub" id="kpiConversionSub">Kontakt-Klicks / Sessions</div>
       </div>
+      <div class="kpi-card" style="--kpi-accent:#94a3b8">
+        <div class="kpi-icon">🕶️</div>
+        <div class="kpi-label">Anonyme Aufrufe</div>
+        <div class="kpi-value" id="kpiAnon">–</div>
+        <div class="kpi-sub">Seitenaufrufe ohne Einwilligung</div>
+      </div>
     </div>
 
     <!-- Daily Chart -->
@@ -1063,6 +1069,7 @@ function renderAll() {
   document.getElementById('kpiClicksSub').textContent = topClk ? 'Top: ' + topClk.label : 'Buttons & Links';
   document.getElementById('kpiConversion').textContent = (s.conversionRate != null ? s.conversionRate : 0) + '%';
   document.getElementById('kpiConversionSub').textContent = (s.conversions || 0) + ' von ' + (s.totalSessions || 0) + ' Sessions';
+  document.getElementById('kpiAnon').textContent     = (s.anonymousVisits || 0).toLocaleString('de');
 
   renderDailyChart(s.dailyStats || []);
   renderPagesChart(s.topPages   || []);

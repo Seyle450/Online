@@ -223,6 +223,36 @@ async function handleTrack(request, env, ctx) {
   return json({ ok: true }, 200, origin);
 }
 
+// ─── POST /visit ──────────────────────────────────────────────────────────────
+// Anonymer Besuchs-Ping für Nutzer OHNE Einwilligung (abgelehnt oder unentschieden).
+// Speichert KEINE personenbezogenen Daten: keine visitorId, keine IP, kein
+// User-Agent, keine Session. Nur ein anonymer Tageszähler + Telegram-Hinweis.
+async function handleVisit(request, env, ctx) {
+  const origin = request.headers.get('Origin') || '';
+  let body;
+  try { body = await request.json(); } catch { body = {}; }
+
+  const page = String(body.page || '/').slice(0, 200);
+  const ts = Date.now();
+  const date = toDateString(ts);
+
+  // Anonymer Tageszähler (nur eine Zahl pro Tag, kein Personenbezug)
+  const key = 'anon:' + date;
+  const cur = await env.ANALYTICS.get(key);
+  const n = (cur ? parseInt(cur, 10) || 0 : 0) + 1;
+  await env.ANALYTICS.put(key, String(n), { expirationTtl: 60 * 60 * 24 * 400 });
+
+  // Telegram-Hinweis nur alle 15 anonymen Besuche (gebündelt, keine identifizierenden Daten)
+  if (n % 15 === 0) {
+    ctx.waitUntil(sendTelegram(env,
+      `🕶 <b>${n} anonyme Aufrufe heute</b>\n` +
+      `<i>Besucher ohne Einwilligung (nicht getrackt)</i>`
+    ));
+  }
+
+  return json({ ok: true }, 200, origin);
+}
+
 // ─── POST /duration ───────────────────────────────────────────────────────────
 
 async function handleDuration(request, env) {
@@ -556,11 +586,61 @@ async function deleteLiveSession(env, sessionId) {
   await env.ANALYTICS.delete('live:' + sessionId);
 }
 
+// ─── Tageszusammenfassung berechnen (für Telegram) ───────────────────────────
+async function computeDayStats(env, date) {
+  let pageviews = 0;
+  const visitors = new Set();
+  const pageCount = {};
+  let cursor;
+  do {
+    const opts = { prefix: `daily:${date}:`, limit: 1000 };
+    if (cursor) opts.cursor = cursor;
+    const listed = await env.ANALYTICS.list(opts);
+    cursor = listed.list_complete ? null : listed.cursor;
+    for (const k of listed.keys) {
+      const raw = await env.ANALYTICS.get(k.name);
+      if (!raw) continue;
+      let d; try { d = JSON.parse(raw); } catch { continue; }
+      const page = k.name.split(':').slice(2).join(':');
+      pageviews += d.pageviews || 0;
+      pageCount[page] = (pageCount[page] || 0) + (d.pageviews || 0);
+      (d.visitors || []).forEach(v => visitors.add(v));
+    }
+  } while (cursor);
+
+  const anonRaw = await env.ANALYTICS.get('anon:' + date);
+  const anon = anonRaw ? parseInt(anonRaw, 10) || 0 : 0;
+
+  const top = Object.entries(pageCount).sort((a, b) => b[1] - a[1])[0];
+  return { pageviews, uniqueVisitors: visitors.size, anon, topPage: top ? top[0] : '', topViews: top ? top[1] : 0 };
+}
+
+// Sendet einmal pro Tag (ab 20:00 UTC) eine Zusammenfassung des aktuellen Tages
+async function maybeSendDailySummary(env) {
+  const nowUtcHour = new Date().getUTCHours();
+  if (nowUtcHour < 20) return;
+  const date = toDateString(Date.now());
+  const flagKey = 'dsum:' + date;
+  if (await env.ANALYTICS.get(flagKey)) return; // heute schon gesendet
+  await env.ANALYTICS.put(flagKey, '1', { expirationTtl: 60 * 60 * 48 });
+
+  const s = await computeDayStats(env, date);
+  await sendTelegram(env,
+    `📅 <b>Tageszusammenfassung</b> · ${date}\n\n` +
+    `👁 <b>${s.pageviews}</b> Seitenaufrufe (mit Einwilligung)\n` +
+    `👤 <b>${s.uniqueVisitors}</b> eindeutige Besucher\n` +
+    `🕶 <b>${s.anon}</b> anonyme Aufrufe (ohne Einwilligung)\n` +
+    (s.topPage ? `\n🏆 Top-Seite: <b>${pageName(s.topPage)}</b> (${s.topViews})` : '')
+  );
+}
+
 // ─── Cron: jede Minute aktive Sessions prüfen ────────────────────────────────
 async function handleScheduled(env) {
   const now = Date.now();
   const SUMMARY_INTERVAL = 60 * 1000;   // 1 Minute
   const SESSION_TIMEOUT  = 5 * 60 * 1000; // 5 Minuten Inaktivität = Session beendet
+
+  await maybeSendDailySummary(env);
 
   let cursor;
   do {
@@ -736,6 +816,13 @@ async function handleSummary(request, env) {
         pageCount[page] = (pageCount[page] || 0) + (d.pageviews || 0);
       }
     } while (dayCursor);
+  }
+
+  // Anonyme Besuche (Nutzer ohne Einwilligung) – nur ein Tageszähler, kein Personenbezug
+  let anonymousVisits = 0;
+  for (const date of dateRange) {
+    const raw = await env.ANALYTICS.get('anon:' + date);
+    if (raw) anonymousVisits += parseInt(raw, 10) || 0;
   }
 
   // Pass 1: alle Events im Zeitraum aus KV laden
@@ -943,6 +1030,7 @@ async function handleSummary(request, env) {
     scrollDepth: scrollDepthCount,
     conversions,
     conversionRate,
+    anonymousVisits,
     recentEvents: recentEvents.sort((a, b) => b.timestamp - a.timestamp).slice(0, 20),
   };
 
@@ -974,6 +1062,9 @@ export default {
       if (!isAuthorized(request, env)) return unauthorized(origin);
       await sendTelegram(env, '✅ <b>Test erfolgreich!</b>\nPortfolio Worker → Telegram funktioniert.');
       return json({ ok: true }, 200, origin);
+    }
+    if (url.pathname === '/visit' && request.method === 'POST') {
+      return handleVisit(request, env, ctx);
     }
     if (url.pathname === '/duration' && request.method === 'POST') {
       return handleDuration(request, env);

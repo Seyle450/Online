@@ -186,6 +186,22 @@
     });
   }
 
+  // ── Anonymer Besuchs-Ping (ohne Einwilligung) ────────────────────────────
+  // Sendet KEINE personenbezogenen Daten: keine visitorId, kein Fingerprint,
+  // keine Session, kein User-Agent. Nur der Seitenname für einen anonymen Zähler.
+  // Es wird bewusst NICHTS auf dem Gerät gespeichert (kein Cookie, kein Storage),
+  // damit für Nicht-Einwilliger §25 TTDSG nicht greift. Daher zählt jeder
+  // Seitenaufruf einzeln (Pageview-Zähler, keine Personen-Wiedererkennung).
+  function sendAnonVisit() {
+    var mainHosts = ['elyesferchichi.com', 'seyle450.github.io', 'localhost', '127.0.0.1'];
+    var isMain = mainHosts.some(function (h) { return location.hostname === h; });
+    var page = (isMain ? '' : location.hostname) + location.pathname;
+    fetch(WORKER_URL + '/visit', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page: page }), keepalive: true,
+    }).catch(function () {});
+  }
+
   function onLeave() {
     if (!hasConsent()) return;
     var page = sessionStorage.getItem('_pp');
@@ -403,10 +419,12 @@
 
   // ── Init ─────────────────────────────────────────────────────────────────
   function init() {
-    if (isDenied()) return;
+    if (isDenied()) { sendAnonVisit(); return; }
     if (hasConsent()) {
       track();
     } else {
+      // Noch keine Entscheidung: anonym zählen + Banner zeigen
+      sendAnonVisit();
       if (document.body) injectBanner();
       else document.addEventListener('DOMContentLoaded', injectBanner);
     }
