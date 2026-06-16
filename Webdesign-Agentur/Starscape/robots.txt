@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /signin.html
+
+Sitemap: https://starscape.elyesferchichi.com/sitemap.xml
