@@ -858,7 +858,16 @@ body { min-height: 100svh; }
 // ── Konfiguration ─────────────────────────────────────────────────────────────
 var WORKER_URL    = 'https://portfolio-analytics.seyle450.workers.dev';
 var PASSWORD_HASH = 'a74ee64065c0f420915adae4018e226ca9ae9e7ca9cf904e9198448924c9aca9';
-var API_TOKEN     = 'c42cc5a275f6b8849ffb536c195a3c1197a81ef406ad440347412402e3c5e6a7';
+var API_TOKEN     = (function () {
+  // Token NICHT mehr im Quelltext – einmalig abfragen, nur lokal im Browser speichern.
+  var t = '';
+  try { t = localStorage.getItem('_atk') || ''; } catch (e) {}
+  if (!t) {
+    try { t = (window.prompt('Analytics-Zugangstoken eingeben:') || '').trim(); } catch (e) {}
+    if (t) { try { localStorage.setItem('_atk', t); } catch (e) {} }
+  }
+  return t;
+})();
 
 // ── Seiten-Label-System ───────────────────────────────────────────────────────
 var PAGE_SITES = {
@@ -1041,6 +1050,12 @@ async function loadAll() {
     fetch(WORKER_URL + '/profiles',                   { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; }),
   ]);
 
+  if (sr.status === 'rejected' && sr.reason === 401) {
+    try { localStorage.removeItem('_atk'); } catch (e) {}
+    alert('Zugangstoken ungültig oder fehlend — bitte neu eingeben.');
+    location.reload();
+    return;
+  }
   if (sr.status === 'rejected' && !rawSummary) {
     errBox.textContent = 'Fehler beim Laden (Summary ' + sr.reason + ')';
     errBox.classList.add('visible');
