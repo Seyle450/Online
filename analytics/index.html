@@ -98,6 +98,18 @@ select.range-select {
   cursor: pointer;
 }
 select.range-select:focus { outline: none; border-color: var(--accent); }
+.date-input {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text); padding: .35rem .5rem; font-family: inherit; font-size: .8rem;
+  cursor: pointer; color-scheme: dark;
+}
+.date-input:focus { outline: none; border-color: var(--accent); }
+#customRange { display: none; }
+/* Vergleichs-Badge auf KPI-Karten */
+.kpi-delta { font-weight: 700; }
+.kpi-delta.up   { color: var(--green); }
+.kpi-delta.down { color: var(--red); }
+.kpi-delta.flat { color: var(--muted); }
 
 main { flex: 1; padding: 1.5rem; max-width: 1440px; width: 100%; margin: 0 auto; }
 
@@ -492,7 +504,15 @@ body { min-height: 100svh; }
         <option value="7">Letzte 7 Tage</option>
         <option value="30" selected>Letzte 30 Tage</option>
         <option value="90">Letzte 90 Tage</option>
+        <option value="365">Letztes Jahr</option>
+        <option value="custom">Benutzerdefiniert…</option>
       </select>
+      <span id="customRange" style="display:none;align-items:center;gap:.35rem">
+        <input type="date" id="fromDate" class="date-input" title="Von">
+        <span style="color:var(--muted)">–</span>
+        <input type="date" id="toDate" class="date-input" title="Bis (leer = heute)">
+        <button class="btn btn-primary" id="applyRange" style="padding:.45rem .8rem;font-size:.8rem">Anzeigen</button>
+      </span>
       <span id="liveTs" style="font-size:.73rem;color:var(--green);min-width:80px"></span>
       <button class="btn btn-live" id="liveBtn"><span class="live-dot" style="display:none" id="liveDot"></span>Live</button>
       <button class="btn btn-ghost" id="exportBtn" title="Events als CSV exportieren">↓ CSV</button>
@@ -538,13 +558,13 @@ body { min-height: 100svh; }
         <div class="kpi-icon">👁</div>
         <div class="kpi-label">Seitenaufrufe</div>
         <div class="kpi-value" id="kpiViews">–</div>
-        <div class="kpi-sub">im Zeitraum</div>
+        <div class="kpi-sub" id="kpiViewsSub">im Zeitraum</div>
       </div>
       <div class="kpi-card" style="--kpi-accent:var(--accent2)">
         <div class="kpi-icon">👤</div>
         <div class="kpi-label">Unique Visitors</div>
         <div class="kpi-value" id="kpiVisitors">–</div>
-        <div class="kpi-sub">anonymisiert</div>
+        <div class="kpi-sub" id="kpiVisitorsSub">anonymisiert</div>
       </div>
       <div class="kpi-card" style="--kpi-accent:var(--purple)">
         <div class="kpi-icon">📈</div>
@@ -857,17 +877,10 @@ body { min-height: 100svh; }
 <script>
 // ── Konfiguration ─────────────────────────────────────────────────────────────
 var WORKER_URL    = 'https://portfolio-analytics.seyle450.workers.dev';
-var PASSWORD_HASH = 'a74ee64065c0f420915adae4018e226ca9ae9e7ca9cf904e9198448924c9aca9';
-var API_TOKEN     = (function () {
-  // Token NICHT mehr im Quelltext – einmalig abfragen, nur lokal im Browser speichern.
-  var t = '';
-  try { t = localStorage.getItem('_atk') || ''; } catch (e) {}
-  if (!t) {
-    try { t = (window.prompt('Analytics-Zugangstoken eingeben:') || '').trim(); } catch (e) {}
-    if (t) { try { localStorage.setItem('_atk', t); } catch (e) {} }
-  }
-  return t;
-})();
+// Das Passwort IST das Zugangscredential: Es wird direkt gegen den Worker geprüft.
+// Kein Token/Hash im Quelltext mehr – nichts Verwertbares liegt offen.
+var API_TOKEN     = '';
+try { API_TOKEN = sessionStorage.getItem('_at') || ''; } catch (e) {}
 
 // ── Seiten-Label-System ───────────────────────────────────────────────────────
 var PAGE_SITES = {
@@ -994,16 +1007,29 @@ var lockUntil = 0;
 
 async function tryLogin() {
   if (Date.now() < lockUntil) return;
-  var hash = await sha256hex($pwInput.value);
-  if (hash === PASSWORD_HASH) {
-    setToken('ok:' + await sha256hex($pwInput.value + '_session'));
+  var pw = $pwInput.value;
+  if (!pw) return;
+  $loginBtn.disabled = true;
+  var prev = $loginBtn.textContent;
+  $loginBtn.textContent = 'Prüfe…';
+  $errorEl.textContent = '';
+  var ok = false;
+  try {
+    var r = await fetch(WORKER_URL + '/summary?days=1', { headers: { 'Authorization': 'Bearer ' + pw } });
+    ok = r.ok;
+  } catch (e) { ok = false; }
+  if (ok) {
+    API_TOKEN = pw;
+    setToken(pw);
     $overlay.style.display = 'none';
     $app.classList.add('visible');
+    $loginBtn.textContent = prev;
+    $loginBtn.disabled = false;
     loadAll();
   } else {
     lockUntil = Date.now() + 3000;
     $errorEl.textContent = 'Falsches Passwort. Bitte warte 3 Sekunden.';
-    $loginBtn.disabled = true;
+    $loginBtn.textContent = prev;
     setTimeout(function () { $loginBtn.disabled = false; $errorEl.textContent = ''; }, 3000);
   }
 }
@@ -1025,12 +1051,12 @@ var showExcluded = false;
 async function loadAll() {
   var icon   = document.getElementById('refreshIcon');
   if (icon) icon.classList.add('spinning');
-  var days   = document.getElementById('rangeSelect').value;
+  var rq     = rangeQuery();
   var errBox = document.getElementById('errorBox');
   errBox.classList.remove('visible');
 
   // Show cached data immediately for instant perceived load
-  var cacheKey = 'ac:' + days + ':' + (showExcluded ? '1' : '0');
+  var cacheKey = 'ac:' + rq + ':' + (showExcluded ? '1' : '0');
   try {
     var cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
     if (cached && !rawSummary) {
@@ -1045,15 +1071,14 @@ async function loadAll() {
   document.getElementById('profilesLoading').style.display = 'flex';
 
   var [sr, er, pr] = await Promise.allSettled([
-    fetch(WORKER_URL + '/summary?days=' + days + exc, { headers: hdr }).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }),
-    fetch(WORKER_URL + '/data?days='    + days + exc, { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; }),
+    fetch(WORKER_URL + '/summary?' + rq + exc, { headers: hdr }).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }),
+    fetch(WORKER_URL + '/data?'    + rq + exc, { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; }),
     fetch(WORKER_URL + '/profiles',                   { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; }),
   ]);
 
   if (sr.status === 'rejected' && sr.reason === 401) {
-    try { localStorage.removeItem('_atk'); } catch (e) {}
-    alert('Zugangstoken ungültig oder fehlend — bitte neu eingeben.');
-    location.reload();
+    clearSession();
+    location.reload();   // Session ungültig → zurück zum Passwort-Login
     return;
   }
   if (sr.status === 'rejected' && !rawSummary) {
@@ -1079,8 +1104,26 @@ async function loadAll() {
   if (icon) icon.classList.remove('spinning');
 }
 
+function rangeQuery() {
+  var sel = document.getElementById('rangeSelect').value;
+  if (sel === 'custom') {
+    var f = document.getElementById('fromDate').value;
+    var t = document.getElementById('toDate').value;
+    if (f) return 'from=' + f + (t ? '&to=' + t : '');
+    return 'days=30';
+  }
+  return 'days=' + sel;
+}
 document.getElementById('refreshBtn').addEventListener('click', loadAll);
-document.getElementById('rangeSelect').addEventListener('change', loadAll);
+document.getElementById('rangeSelect').addEventListener('change', function () {
+  var custom = this.value === 'custom';
+  document.getElementById('customRange').style.display = custom ? 'inline-flex' : 'none';
+  if (!custom) { rawSummary = null; loadAll(); }
+});
+document.getElementById('applyRange').addEventListener('click', function () {
+  if (!document.getElementById('fromDate').value) return;
+  rawSummary = null; loadAll();
+});
 document.getElementById('excludeToggleBtn').addEventListener('click', function() {
   showExcluded = !showExcluded;
   var btn = document.getElementById('excludeToggleBtn');

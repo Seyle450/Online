@@ -126,6 +126,26 @@ function lastNDays(n) {
   return days;
 }
 
+// Parst den Zeitraum aus ?days=  ODER  ?from=YYYY-MM-DD[&to=YYYY-MM-DD].
+// Liefert since/until (ms), die Tagesliste und einen Cache-Suffix.
+function parseRange(url) {
+  const fromP = url.searchParams.get('from');
+  const toP   = url.searchParams.get('to');
+  if (fromP && /^\d{4}-\d{2}-\d{2}$/.test(fromP)) {
+    let since = Date.parse(fromP + 'T00:00:00Z');
+    let until = (toP && /^\d{4}-\d{2}-\d{2}$/.test(toP)) ? Date.parse(toP + 'T23:59:59Z') : Date.now();
+    if (isNaN(since)) since = Date.now() - 30 * 86400000;
+    if (isNaN(until) || until < since) until = Date.now();
+    const endStr = (toP && /^\d{4}-\d{2}-\d{2}$/.test(toP)) ? toP : toDateString(Date.now());
+    const dateRange = [];
+    let d = new Date(fromP + 'T00:00:00Z'); const end = new Date(endStr + 'T00:00:00Z'); let g = 0;
+    while (d <= end && g++ < 800) { dateRange.push(d.toISOString().slice(0, 10)); d.setUTCDate(d.getUTCDate() + 1); }
+    return { since, until, dateRange, days: Math.max(1, dateRange.length), suffix: 'f' + fromP + 't' + (toP || 'now') };
+  }
+  const days = Math.min(parseInt(url.searchParams.get('days') || '30', 10), 365);
+  return { since: Date.now() - days * 86400000, until: Date.now(), dateRange: lastNDays(days), days, suffix: String(days) };
+}
+
 // ── Besucher-Profil aktualisieren ─────────────────────────────────────────────
 async function updateVisitorProfile(env, visitorId, { page, sessionId, timestamp, referrer, device, screenWidth, language, country }) {
   const profileKey = `profile:${visitorId}`;
@@ -611,17 +631,16 @@ async function handleData(request, env) {
   if (!isAuthorized(request, env)) return unauthorized(origin);
 
   const url = new URL(request.url);
-  const days = Math.min(parseInt(url.searchParams.get('days') || '30', 10), 90);
+  const { since, until, suffix } = parseRange(url);
   const includeExcluded = url.searchParams.get('include_excluded') === '1';
 
-  // Return cached data if fresh (2 min TTL) — separate cache per exclusion mode
-  const dataCacheKey = 'cache:data:' + days + (includeExcluded ? ':all' : '');
+  // Return cached data if fresh (2 min TTL) — separate cache per exclusion mode + range
+  const dataCacheKey = 'cache:data:' + suffix + (includeExcluded ? ':all' : '');
   const dataCached = await env.ANALYTICS.get(dataCacheKey);
   if (dataCached) {
     return new Response(dataCached, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
   }
 
-  const since = Date.now() - days * 24 * 60 * 60 * 1000;
   const excludedIds = includeExcluded ? new Set() : await loadExcludedIds(env);
 
   // Events aus D1 laden (eine SQL-Query statt KV-Scan)
@@ -630,8 +649,8 @@ async function handleData(request, env) {
     try {
       const res = await env.DB.prepare(
         `SELECT ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign
-         FROM events WHERE ts >= ? ORDER BY ts DESC LIMIT 5000`
-      ).bind(since).all();
+         FROM events WHERE ts >= ? AND ts <= ? ORDER BY ts DESC LIMIT 5000`
+      ).bind(since, until).all();
       for (const r of (res.results || [])) {
         if (!includeExcluded && excludedIds.has(r.visitor_id)) continue;
         events.push(rowToEvent(r));
@@ -886,18 +905,15 @@ async function handleSummary(request, env) {
   if (!isAuthorized(request, env)) return unauthorized(origin);
 
   const url = new URL(request.url);
-  const days = Math.min(parseInt(url.searchParams.get('days') || '30', 10), 90);
+  const { since, until, dateRange, days, suffix } = parseRange(url);
   const includeExcluded = url.searchParams.get('include_excluded') === '1';
 
-  // Return cached summary if fresh (3 min TTL) — separate cache per exclusion mode
-  const sumCacheKey = 'cache:summary:' + days + (includeExcluded ? ':all' : '');
+  // Return cached summary if fresh (3 min TTL) — separate cache per exclusion mode + range
+  const sumCacheKey = 'cache:summary:' + suffix + (includeExcluded ? ':all' : '');
   const sumCached = await env.ANALYTICS.get(sumCacheKey);
   if (sumCached) {
     return new Response(sumCached, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
   }
-
-  const dateRange = lastNDays(days);
-  const since = Date.now() - days * 24 * 60 * 60 * 1000;
 
   let totalPageviews = 0;
   const uniqueVisitors = new Set();
@@ -959,8 +975,8 @@ async function handleSummary(request, env) {
     try {
       const res = await env.DB.prepare(
         `SELECT ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign
-         FROM events WHERE ts >= ? ORDER BY ts ASC`
-      ).bind(since).all();
+         FROM events WHERE ts >= ? AND ts <= ? ORDER BY ts ASC`
+      ).bind(since, until).all();
       for (const r of (res.results || [])) {
         if (!includeExcluded && excludedIds.has(r.visitor_id)) continue;
         allEvents.push(rowToEvent(r));
@@ -978,8 +994,8 @@ async function handleSummary(request, env) {
   if (env.DB) {
     try {
       const res = await env.DB.prepare(
-        `SELECT ts,type,label,category,depth,session_id,visitor_id FROM clicks WHERE ts >= ?`
-      ).bind(since).all();
+        `SELECT ts,type,label,category,depth,session_id,visitor_id FROM clicks WHERE ts >= ? AND ts <= ?`
+      ).bind(since, until).all();
       for (const c of (res.results || [])) {
         if (!includeExcluded && excludedIds.has(c.visitor_id)) continue;
         // Scroll-Tiefe getrennt zählen (kein "Klick")
@@ -1112,9 +1128,23 @@ async function handleSummary(request, env) {
   const topUtmCampaigns = Object.entries(utmCampaignCount).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([campaign, count]) => ({ campaign, count }));
   const topUtmMediums = Object.entries(utmMediumCount).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([medium, count]) => ({ medium, count }));
 
+  // Vergleich zum gleich langen Vorzeitraum (für "Wirkung von Updates")
+  let prevPageviews = 0, prevVisitors = 0;
+  if (env.DB) {
+    try {
+      const span = Math.max(1, until - since);
+      const row = await env.DB.prepare(
+        'SELECT COUNT(*) AS pv, COUNT(DISTINCT visitor_id) AS uv FROM events WHERE ts >= ? AND ts < ?'
+      ).bind(since - span, since).first();
+      if (row) { prevPageviews = row.pv || 0; prevVisitors = row.uv || 0; }
+    } catch (e) { /* ignore */ }
+  }
+
   const summary = {
     totalPageviews,
     uniqueVisitors: uniqueVisitors.size,
+    rangeDays: days,
+    prev: { pageviews: prevPageviews, visitors: prevVisitors },
     totalSessions,
     bounceRate,
     avgPerDay: days > 0 ? Math.round(totalPageviews / days) : 0,
