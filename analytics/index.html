@@ -111,6 +111,23 @@ select.range-select:focus { outline: none; border-color: var(--accent); }
 .kpi-delta.down { color: var(--red); }
 .kpi-delta.flat { color: var(--muted); }
 
+/* Daten-Geltungsbereich: mit Einwilligung vs. anonym */
+.scope {
+  display: inline-flex; align-items: center; gap: .32rem;
+  font-size: .62rem; font-weight: 600; letter-spacing: .02em; text-transform: none;
+  padding: .16rem .5rem; border-radius: 100px; vertical-align: middle; margin-left: .55rem;
+}
+.scope::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.scope-consent { background: rgba(34,197,94,.12);  color: #4ade80; }
+.scope-anon    { background: rgba(148,163,184,.16); color: #94a3b8; }
+.legend {
+  display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; align-items: center;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: .7rem 1rem; margin-bottom: 1.25rem; font-size: .76rem; color: var(--muted2);
+}
+.legend b { color: var(--text); font-weight: 600; }
+.kpi-card.anon-card { border-style: dashed; border-color: rgba(148,163,184,.4); }
+
 main { flex: 1; padding: 1.5rem; max-width: 1440px; width: 100%; margin: 0 auto; }
 
 /* ── Section Labels ──────────────────────────────────────────────────────────── */
@@ -547,12 +564,17 @@ body { min-height: 100svh; }
       </div>
     </div>
 
+    <div class="legend">
+      <span><span class="scope scope-consent">mit Einwilligung</span> personenbezogen &amp; detailliert (Geräte, Pfade, Zeiten, Klicks …)</span>
+      <span><span class="scope scope-anon">nur anonym</span> Besucher ohne Einwilligung – nur aggregierte Zähler, keine Wiedererkennung</span>
+    </div>
+
     <!-- Site Overview -->
-    <div class="section-label">Websites</div>
+    <div class="section-label">Websites <span class="scope scope-consent">mit Einwilligung</span></div>
     <div id="siteOverviewStrip" style="display:flex;gap:.6rem;overflow-x:auto;padding-bottom:.5rem;margin-bottom:1.25rem;-webkit-overflow-scrolling:touch"></div>
 
     <!-- KPI -->
-    <div class="section-label">Übersicht</div>
+    <div class="section-label">Übersicht <span class="scope scope-consent">mit Einwilligung</span></div>
     <div class="kpi-grid" style="margin-bottom:1.25rem">
       <div class="kpi-card" style="--kpi-accent:var(--accent)">
         <div class="kpi-icon">👁</div>
@@ -614,16 +636,16 @@ body { min-height: 100svh; }
         <div class="kpi-value" id="kpiConversion">–</div>
         <div class="kpi-sub" id="kpiConversionSub">Kontakt-Klicks / Sessions</div>
       </div>
-      <div class="kpi-card" style="--kpi-accent:#94a3b8">
+      <div class="kpi-card anon-card" style="--kpi-accent:#94a3b8">
         <div class="kpi-icon">🕶️</div>
-        <div class="kpi-label">Anonyme Aufrufe</div>
+        <div class="kpi-label">Anonyme Aufrufe <span class="scope scope-anon">anonym</span></div>
         <div class="kpi-value" id="kpiAnon">–</div>
-        <div class="kpi-sub">Seitenaufrufe ohne Einwilligung</div>
+        <div class="kpi-sub">ohne Einwilligung · separat gezählt</div>
       </div>
     </div>
 
     <!-- Daily Chart -->
-    <div class="section-label">Traffic</div>
+    <div class="section-label">Traffic <span class="scope scope-consent">mit Einwilligung</span></div>
     <div class="chart-grid" style="grid-template-columns:1fr;margin-bottom:1.25rem">
       <div class="chart-card full">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem">
@@ -671,7 +693,7 @@ body { min-height: 100svh; }
     </div>
 
     <!-- Anonyme Besucher (ohne Einwilligung) -->
-    <div class="section-label">Anonyme Besucher <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0">· ohne Einwilligung · aggregiert, kein Personenbezug</span></div>
+    <div class="section-label">Anonyme Besucher <span class="scope scope-anon">nur anonym</span> <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0">aggregiert, kein Personenbezug</span></div>
     <div class="panel-grid" style="margin-bottom:1.25rem">
       <div class="panel">
         <div class="panel-header"><h3>Seiten</h3><span style="font-size:.72rem;color:var(--muted)">anonyme Aufrufe</span></div>
@@ -703,7 +725,7 @@ body { min-height: 100svh; }
     </div>
 
     <!-- Journey Map -->
-    <div class="section-label">Besucher-Journey &amp; Kampagnen</div>
+    <div class="section-label">Besucher-Journey &amp; Kampagnen <span class="scope scope-consent">mit Einwilligung</span></div>
     <div class="panel full" style="margin-bottom:1.25rem">
       <div class="panel-header">
         <h3>Häufigste Navigationspfade</h3>
@@ -717,7 +739,7 @@ body { min-height: 100svh; }
     </div>
 
     <!-- Klicks & Interaktionen -->
-    <div class="section-label">Klicks &amp; Interaktionen</div>
+    <div class="section-label">Klicks &amp; Interaktionen <span class="scope scope-consent">mit Einwilligung</span></div>
     <div class="panel-grid" style="margin-bottom:1.25rem">
       <div class="panel">
         <div class="panel-header">
@@ -748,7 +770,7 @@ body { min-height: 100svh; }
         <p style="font-size:.72rem;color:var(--muted);margin-top:.5rem">Wie weit Besucher nach unten scrollen (alle Seiten).</p>
       </div>
       <div class="chart-card">
-        <h3>Beste Zeiten <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0">· Wochentag × Uhrzeit</span></h3>
+        <h3>Beste Zeiten <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0">· Wochentag × Uhrzeit</span> <span class="scope scope-consent">mit Einwilligung</span></h3>
         <div id="heatmap" style="overflow-x:auto;padding-top:.25rem"></div>
       </div>
     </div>
@@ -799,7 +821,7 @@ body { min-height: 100svh; }
     </div>
 
     <!-- Top Einstiege + Letzte Events -->
-    <div class="section-label">Seiten &amp; Events</div>
+    <div class="section-label">Seiten &amp; Events <span class="scope scope-consent">mit Einwilligung</span></div>
     <div class="filter-bar">
       <input type="text"   id="searchInput"  placeholder="Events durchsuchen…">
       <select id="pageFilter"><option value="">Alle Seiten</option></select>
@@ -841,7 +863,7 @@ body { min-height: 100svh; }
     </div>
 
     <!-- Visitor Profiles -->
-    <div class="section-label">Besucher-Profile</div>
+    <div class="section-label">Besucher-Profile <span class="scope scope-consent">mit Einwilligung</span></div>
     <div class="panel full" style="margin-bottom:2rem">
       <div class="panel-header">
         <h3>Profile</h3>
@@ -1144,6 +1166,8 @@ function renderAll() {
   // KPI
   document.getElementById('kpiViews').textContent    = s.totalPageviews.toLocaleString('de');
   document.getElementById('kpiVisitors').textContent = s.uniqueVisitors.toLocaleString('de');
+  setDelta('kpiViewsSub',    s.totalPageviews, s.prev && s.prev.pageviews);
+  setDelta('kpiVisitorsSub', s.uniqueVisitors, s.prev && s.prev.visitors);
   document.getElementById('kpiAvg').textContent      = s.avgPerDay.toLocaleString('de');
   var total = (s.returningVisitors || 0) + (s.newVisitors || 0);
   document.getElementById('kpiReturning').textContent   = (s.returningVisitors || 0).toLocaleString('de');
@@ -1177,6 +1201,17 @@ function renderAll() {
   renderEventsTable(rawEvents);
   renderSiteOverview();
   checkAlerts(s);
+}
+
+// Zeigt %-Veränderung zum gleich langen Vorzeitraum auf einer KPI-Karte
+function setDelta(id, cur, prev) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (prev == null || prev === 0) { el.textContent = (cur > 0 ? 'kein Vorzeitraum-Vergleich' : 'im Zeitraum'); return; }
+  var pct = Math.round((cur - prev) / prev * 100);
+  var cls = pct > 0 ? 'up' : (pct < 0 ? 'down' : 'flat');
+  var arrow = pct > 0 ? '▲' : (pct < 0 ? '▼' : '→');
+  el.innerHTML = '<span class="kpi-delta ' + cls + '">' + arrow + ' ' + Math.abs(pct) + '%</span> vs. Vorzeitraum';
 }
 
 // ── Formatters ────────────────────────────────────────────────────────────────
@@ -1230,7 +1265,7 @@ function aggregateByHour(events, days) {
 
 function renderDailyChart(dailyStats) {
   var isHour = chartGranularity === 'hour';
-  var days   = parseInt(document.getElementById('rangeSelect').value || '30', 10);
+  var days   = (rawSummary && rawSummary.rangeDays) || parseInt(document.getElementById('rangeSelect').value, 10) || 30;
   var data   = isHour ? aggregateByHour(rawEvents, days) : dailyStats;
   var labels = isHour ? data.map(function(d){ return d.label; }) : data.map(function(d){ return d.date.slice(5); });
 
@@ -2026,9 +2061,8 @@ document.getElementById('liveBtn').addEventListener('click', function() {
     btn.innerHTML = '<span class="live-dot" id="liveDot"></span>Stop Live';
     ts.textContent = 'Startet…';
     _liveInterval = setInterval(async function() {
-      var days = document.getElementById('rangeSelect').value;
       try {
-        var r = await fetch(WORKER_URL + '/data?days=' + days, { headers: { 'Authorization': 'Bearer ' + API_TOKEN } });
+        var r = await fetch(WORKER_URL + '/data?' + rangeQuery(), { headers: { 'Authorization': 'Bearer ' + API_TOKEN } });
         if (r.ok) { var d = await r.json(); rawEvents = d.events || []; renderEventsTable(rawEvents); }
         document.getElementById('liveTs').textContent = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       } catch {}
