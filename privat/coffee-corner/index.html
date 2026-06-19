@@ -46,12 +46,18 @@
      background:radial-gradient(circle at 30% 30%,rgba(199,149,102,.5),transparent 65%);animation:float 6s ease-in-out infinite}
   @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
   @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(0,20px)}}
+  @keyframes slideInLeft{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:translateX(0)}}
+  @keyframes slideInRight{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0)}}
+  .scroll-animate{opacity:0;will-change:transform,opacity}
+  .scroll-animate.visible{animation:fadeInUp .8s ease-out forwards}
+  .scroll-animate.left{animation:slideInLeft .8s ease-out forwards}
+  .scroll-animate.right{animation:slideInRight .8s ease-out forwards}
   .eyebrow{display:inline-block;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--crema);font-weight:600;margin-bottom:22px}
   .hero h1{font-size:clamp(2.6rem,6vw,4.5rem);color:#fff;max-width:14ch}
   .hero p{margin-top:24px;max-width:46ch;font-size:1.12rem;color:#e6d8c8}
   .hero .actions{margin-top:38px;display:flex;gap:16px;flex-wrap:wrap}
-  .btn-ghost{display:inline-block;padding:13px 26px;border-radius:100px;border:1px solid rgba(246,239,230,.35);color:var(--milk);font-weight:600;font-size:.92rem}
-  .btn-ghost:hover{border-color:var(--milk)}
+  .btn-ghost{display:inline-block;padding:13px 26px;border-radius:100px;border:2px solid rgba(246,239,230,.5);color:var(--milk);font-weight:600;font-size:.92rem;transition:all .3s ease}
+  .btn-ghost:hover{border-color:var(--milk);background:rgba(246,239,230,.1);transform:translateY(-2px)}
   .hero .meta{margin-top:54px;display:flex;gap:34px;flex-wrap:wrap;font-size:.9rem;color:#cdbba8}
   .hero .meta b{color:#fff;font-weight:600;display:block;font-family:'Fraunces',serif;font-size:1.05rem}
 
@@ -63,8 +69,9 @@
   h2{font-size:clamp(2rem,4vw,2.9rem)}
   .about p{margin-top:18px;color:#4a3b30;font-size:1.05rem}
   .imgcard{aspect-ratio:4/5;border-radius:20px;background:
-     linear-gradient(145deg,#6b4a33,#3f2d22);position:relative;box-shadow:0 30px 60px -30px rgba(46,33,26,.6)}
-  .imgcard span{position:absolute;left:20px;bottom:18px;font-size:.8rem;color:rgba(255,255,255,.7)}
+     linear-gradient(135deg,#7d5a3e 0%,#3f2d22 100%);position:relative;box-shadow:0 30px 60px -30px rgba(46,33,26,.6);overflow:hidden}
+  .imgcard::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(199,149,102,.3),transparent 70%);pointer-events:none}
+  .imgcard span{position:absolute;left:20px;bottom:18px;font-size:.8rem;color:rgba(255,255,255,.8);z-index:1}
 
   /* Features */
   .feat{background:var(--milk)}
@@ -108,7 +115,20 @@
   </button>
 </div></nav>
 <script>
-const menu=document.getElementById('menu');menu.addEventListener('click',()=>menu.classList.toggle('active'));
+const menu=document.getElementById('menu');
+menu.addEventListener('click',()=>menu.classList.toggle('active'));
+
+// Scroll animations
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:.1});
+
+document.querySelectorAll('.scroll-animate').forEach(el=>observer.observe(el));
 </script>
 
 <header class="hero"><div class="wrap">
