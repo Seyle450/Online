@@ -27,8 +27,13 @@
   .logo{font-size:1.7rem;font-weight:600;letter-spacing:-.04em}
   .logo b{color:var(--matcha)}
   .navlinks{display:flex;gap:36px;font-size:.84rem;letter-spacing:.14em;text-transform:lowercase;font-weight:400}
-  .navlinks a{color:var(--muted)}.navlinks a:hover{color:var(--ink)}
-  @media(max-width:760px){.navlinks{display:none}}
+  .navlinks a{color:var(--muted);transition:color .2s}.navlinks a:hover{color:var(--ink)}
+  .hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer;background:0;border:0;padding:4px}
+  .hamburger span{width:24px;height:2.5px;background:var(--ink);border-radius:2px;transition:all .3s}
+  .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(8px,8px)}
+  .hamburger.active span:nth-child(2){opacity:0}
+  .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(7px,-7px)}
+  @media(max-width:760px){.navlinks{display:none}.hamburger{display:flex}}
 
   .hero{padding:72px 0 60px;text-align:center}
   .hero .lead{display:block;margin-bottom:30px}
@@ -80,7 +85,9 @@
 <nav><div class="wrap">
   <div class="logo">bay<b>.</b></div>
   <div class="navlinks"><a href="#menu">menü</a><a href="#story">über uns</a><a href="#visit">besuch</a></div>
+<button class="hamburger" id="menu"><span></span><span></span><span></span></button>
 </div></nav>
+<script>document.getElementById("menu").addEventListener("click",e=>e.currentTarget.classList.toggle("active"))</script>
 
 <header class="hero"><div class="wrap">
   <span class="lead">neustadt · bremen</span>

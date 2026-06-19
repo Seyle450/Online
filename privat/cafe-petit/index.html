@@ -25,19 +25,25 @@
   nav .wrap{display:flex;align-items:center;justify-content:space-between;height:74px}
   .logo{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;letter-spacing:.02em}
   .navlinks{display:flex;gap:34px;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
-  .navlinks a{color:var(--muted)}.navlinks a:hover{color:var(--ink)}
-  @media(max-width:760px){.navlinks{display:none}}
+  .navlinks a{color:var(--muted);transition:color .2s}.navlinks a:hover{color:var(--ink)}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:0;border:0;padding:4px}
+  .hamburger span{width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
+  .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(7px,7px)}
+  .hamburger.active span:nth-child(2){opacity:0}
+  .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+  @media(max-width:760px){.navlinks{display:none}.hamburger{display:flex}}
 
   /* hero — editorial, asymmetric */
-  .hero{padding:80px 0 70px}
+  .hero{padding:80px 0 70px;animation:fadeInUp .8s ease-out}
   .hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:end}
   @media(max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:36px}}
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
   .hero h1{font-size:clamp(3.2rem,8vw,6rem);margin:22px 0 0}
   .hero h1 em{font-style:italic;color:var(--blush)}
   .hero p{margin-top:26px;max-width:40ch;color:#5a5249;font-size:1.08rem}
   .hero .actions{margin-top:32px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-  .btn{display:inline-block;background:var(--ink);color:var(--paper);padding:14px 30px;border-radius:2px;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;transition:background .2s}
-  .btn:hover{background:var(--blush)}
+  .btn{display:inline-block;background:var(--ink);color:var(--paper);padding:14px 30px;border-radius:2px;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;transition:background .2s,box-shadow .2s,transform .15s;box-shadow:0 3px 12px rgba(42,39,35,.15)}
+  .btn:hover{background:var(--blush);transform:translateY(-2px);box-shadow:0 6px 20px rgba(207,141,124,.25)}
   .underline{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--ink);padding-bottom:3px}
   .heroart{aspect-ratio:3/4;border-radius:3px;background:
      linear-gradient(150deg,#e7d3c4,#cf8d7c 75%);position:relative;box-shadow:0 40px 70px -40px rgba(207,141,124,.7)}
@@ -84,7 +90,9 @@
 <nav><div class="wrap">
   <div class="logo">Café Petit</div>
   <div class="navlinks"><a href="#about">Über uns</a><a href="#menu">Signature Drinks</a><a href="#besuch">Besuch</a></div>
+  <button class="hamburger" id="menu"><span></span><span></span><span></span></button>
 </div></nav>
+<script>document.getElementById('menu').addEventListener('click',e=>e.currentTarget.classList.toggle('active'))</script>
 
 <header class="hero"><div class="wrap">
   <div>
