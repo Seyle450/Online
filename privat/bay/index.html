@@ -18,8 +18,10 @@
   body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;font-weight:300;-webkit-font-smoothing:antialiased}
   h1,h2,h3{font-family:'Outfit',sans-serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
   .wrap{max-width:1040px;margin:0 auto;padding:0 30px}
-  a{color:inherit;text-decoration:none}
-  .lead{font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--matcha);font-weight:500}
+  a{color:inherit;text-decoration:none;position:relative}
+  a[href^="#"]{transition:color .2s ease}
+  a[href^="#"]:hover{color:var(--crema)}
+  .lead{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--crema);font-weight:700;margin-bottom:16px;display:inline-block}
   .serif{font-family:'Fraunces',serif;font-style:italic;font-weight:400}
 
   nav{position:sticky;top:0;z-index:40;background:rgba(250,249,243,.8);backdrop-filter:blur(12px)}
@@ -27,7 +29,7 @@
   .logo{font-size:1.7rem;font-weight:600;letter-spacing:-.04em}
   .logo b{color:var(--matcha)}
   .navlinks{display:flex;gap:36px;font-size:.84rem;letter-spacing:.14em;text-transform:lowercase;font-weight:400}
-  .navlinks a{color:var(--muted);transition:color .2s}.navlinks a:hover{color:var(--ink)}
+  .navlinks a{color:rgba(0,0,0,.65);transition:color .2s}.navlinks a:hover{color:var(--ink)}
   .hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer;background:0;border:0;padding:4px}
   .hamburger span{width:24px;height:2.5px;background:var(--ink);border-radius:2px;transition:all .3s}
   .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(8px,8px)}
@@ -47,9 +49,10 @@
   .heroband span{position:absolute;left:24px;bottom:20px;font-size:.78rem;color:rgba(255,255,255,.8);letter-spacing:.05em}
   .pill{position:absolute;top:22px;right:22px;background:rgba(255,255,255,.9);color:var(--deepmatcha);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;font-weight:500}
 
-  section{padding:84px 0}
+  section{padding:100px 0}
+  section:nth-of-type(even){background:rgba(199,149,102,.02)}
   .center{text-align:center;max-width:30ch;margin:0 auto 56px}
-  .center h2{font-size:clamp(2.1rem,5vw,3.2rem);font-weight:400;margin-top:14px}
+  .center h2{font-size:clamp(2rem,4vw,2.9rem);color:var(--ink);margin-bottom:16px}
   h2 em{font-family:'Fraunces';font-style:italic;color:var(--matcha)}
 
   .menu{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -58,7 +61,7 @@
   .m:hover{transform:translateY(-5px)}
   .m .dot{width:54px;height:54px;border-radius:50%;margin:0 auto 18px;background:radial-gradient(circle at 35% 30%,#a7b97c,var(--deepmatcha))}
   .m h3{font-size:1.35rem;font-weight:500}
-  .m p{color:var(--muted);font-size:.95rem;margin-top:6px}
+  .m p{color:rgba(0,0,0,.65);font-size:.95rem;margin-top:6px}
   .m .pr{font-family:'Fraunces';font-style:italic;color:var(--matcha);font-size:1.2rem;margin-top:12px}
 
   .story{background:var(--cream)}
@@ -72,12 +75,12 @@
   .vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
   @media(max-width:780px){.vgrid{grid-template-columns:1fr 1fr}}
   .v{padding:26px 18px;border:1px solid var(--foam);border-radius:18px}
-  .v .k{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .v .k{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(0,0,0,.65)}
   .v .val{font-weight:500;margin-top:8px;font-size:1.02rem}
   .btn{display:inline-block;margin-top:40px;background:var(--deepmatcha);color:var(--paper);padding:15px 34px;border-radius:100px;font-weight:500;letter-spacing:.04em;transition:background .2s}
   .btn:hover{background:var(--matcha)}
 
-  footer{padding:46px 0;text-align:center;color:var(--muted);font-size:.84rem}
+  footer{padding:46px 0;text-align:center;color:rgba(0,0,0,.65);font-size:.84rem}
   .concept{display:block;margin-top:8px;color:#a6a899}
 </style>
 </head>
@@ -103,7 +106,7 @@
     <div class="m"><div class="dot"></div><h3>croffle</h3><p>croissant trifft waffel – warm &amp; knusprig</p><div class="pr">4,8</div></div>
     <div class="m"><div class="dot"></div><h3>iced strawberry matcha</h3><p>der star für warme tage</p><div class="pr">5,8</div></div>
   </div>
-  <p style="text-align:center;margin-top:30px;font-size:.85rem;color:var(--muted)">beispielkarte · preise bitte final bestätigen</p>
+  <p style="text-align:center;margin-top:30px;font-size:.85rem;color:rgba(0,0,0,.65)">beispielkarte · preise bitte final bestätigen</p>
 </div></section>
 
 <section id="story" class="story"><div class="wrap">
@@ -125,7 +128,7 @@
     <div class="v"><div class="k">instagram</div><div class="val">@bay.bremen</div></div>
   </div>
   <a href="https://www.google.com/maps/search/?api=1&query=bay.+Langemarckstraße+209+Bremen" target="_blank" class="btn">in google maps öffnen</a>
-  <p style="margin-top:18px;font-size:.82rem;color:var(--muted)">öffnungszeiten beispielhaft – bitte bestätigen</p>
+  <p style="margin-top:18px;font-size:.82rem;color:rgba(0,0,0,.65)">öffnungszeiten beispielhaft – bitte bestätigen</p>
 </div></section>
 
 <footer><div class="wrap">

@@ -18,14 +18,16 @@
   body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased}
   h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.05;letter-spacing:.005em}
   .wrap{max-width:1080px;margin:0 auto;padding:0 30px}
-  a{color:inherit;text-decoration:none}
-  .lead{font-size:.74rem;letter-spacing:.32em;text-transform:uppercase;color:var(--blush);font-weight:600}
+  a{color:inherit;text-decoration:none;position:relative}
+  a[href^="#"]{transition:color .2s ease}
+  a[href^="#"]:hover{color:var(--crema)}
+  .lead{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--crema);font-weight:700;margin-bottom:16px;display:inline-block}
 
   nav{position:sticky;top:0;z-index:40;background:rgba(250,246,241,.82);backdrop-filter:blur(12px);border-bottom:1px solid #ece2d6}
   nav .wrap{display:flex;align-items:center;justify-content:space-between;height:74px}
   .logo{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;letter-spacing:.02em}
   .navlinks{display:flex;gap:34px;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
-  .navlinks a{color:var(--muted);transition:color .2s}.navlinks a:hover{color:var(--ink)}
+  .navlinks a{color:rgba(0,0,0,.65);transition:color .2s}.navlinks a:hover{color:var(--ink)}
   .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:0;border:0;padding:4px}
   .hamburger span{width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
   .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(7px,7px)}
@@ -40,7 +42,7 @@
   @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
   .hero h1{font-size:clamp(3.2rem,8vw,6rem);margin:22px 0 0}
   .hero h1 em{font-style:italic;color:var(--blush)}
-  .hero p{margin-top:26px;max-width:40ch;color:#5a5249;font-size:1.08rem}
+  .hero p{margin-top:26px;max-width:40ch;color:#3a3028;font-size:1.08rem}
   .hero .actions{margin-top:32px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
   .btn{display:inline-block;background:var(--ink);color:var(--paper);padding:14px 30px;border-radius:2px;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;transition:background .2s,box-shadow .2s,transform .15s;box-shadow:0 3px 12px rgba(42,39,35,.15)}
   .btn:hover{background:var(--blush);transform:translateY(-2px);box-shadow:0 6px 20px rgba(207,141,124,.25)}
@@ -52,11 +54,12 @@
   .marq{border-top:1px solid #e7dccd;border-bottom:1px solid #e7dccd;padding:20px 0;overflow:hidden;white-space:nowrap}
   .marq span{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:var(--sage);margin:0 26px}
 
-  section{padding:88px 0}
+  section{padding:100px 0}
+  section:nth-of-type(even){background:rgba(199,149,102,.02)}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
   @media(max-width:860px){.two{grid-template-columns:1fr;gap:34px}}
-  h2{font-size:clamp(2.4rem,5vw,3.6rem)}
-  .about p{margin-top:20px;color:#5a5249;font-size:1.06rem}
+  h2{font-size:clamp(2rem,4vw,2.9rem);color:var(--ink);margin-bottom:16px}
+  .about p{margin-top:20px;color:#3a3028;font-size:1.06rem}
   .square{aspect-ratio:1;border-radius:3px;background:linear-gradient(150deg,#d9e0d2,#9aa88f);position:relative}
   .square span{position:absolute;left:18px;bottom:16px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.85)}
 
@@ -68,8 +71,8 @@
   .mitem h3{font-size:1.7rem}
   .mitem .d{flex:1;border-bottom:1px dotted #c9bba7;margin:0 6px;transform:translateY(-5px)}
   .mitem .p{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--blush)}
-  .mitem small{display:block;font-family:'Inter';font-size:.84rem;color:var(--muted);letter-spacing:0;text-transform:none;margin-top:3px}
-  .tags{margin-top:34px;text-align:center;font-size:.82rem;color:var(--muted);letter-spacing:.04em}
+  .mitem small{display:block;font-family:'Inter';font-size:.84rem;color:rgba(0,0,0,.65);letter-spacing:0;text-transform:none;margin-top:3px}
+  .tags{margin-top:34px;text-align:center;font-size:.82rem;color:rgba(0,0,0,.65);letter-spacing:.04em}
   .tags b{color:var(--sage)}
 
   .info{display:grid;grid-template-columns:1fr 1fr;gap:40px}
@@ -82,7 +85,7 @@
   .cta h2{color:var(--paper);max-width:16ch;margin:0 auto}.cta .lead{color:var(--blush)}
   .cta p{margin:20px auto 32px;max-width:42ch;color:#cbc3ba}
 
-  footer{padding:44px 0;text-align:center;color:var(--muted);font-size:.84rem;border-top:1px solid #e7dccd}
+  footer{padding:44px 0;text-align:center;color:rgba(0,0,0,.65);font-size:.84rem;border-top:1px solid #e7dccd}
   .concept{display:block;margin-top:8px;color:#b0a596}
 </style>
 </head>
@@ -136,7 +139,7 @@
       <div class="row"><span>Montag – Freitag</span><b>08:30 – 18:00</b></div>
       <div class="row"><span>Samstag &amp; Sonntag</span><b>09:30 – 18:00</b></div>
       <div class="row"><span>Feiertage</span><b>nach Aushang</b></div>
-      <p style="margin-top:16px;font-size:.85rem;color:var(--muted)">Zeiten beispielhaft – bitte bestätigen.</p>
+      <p style="margin-top:16px;font-size:.85rem;color:rgba(0,0,0,.65)">Zeiten beispielhaft – bitte bestätigen.</p>
     </div>
     <div>
       <h3>Hier sind wir</h3>
