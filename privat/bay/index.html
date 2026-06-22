@@ -3,119 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e9e5dd">
+<meta property="og:type" content="website">
+<meta property="og:title" content="bay. · Bremen">
+<meta property="og:description" content="Matcha & Croffles in der Neustadt – ein Ort, so schön wie dein Feed.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e9e5dd'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='%231c1a17' font-family='Georgia,serif'%3Eb.%3C/text%3E%3C/svg%3E">
 <title>bay. · Bremen — matcha &amp; croffles</title>
 <meta name="description" content="bay. in der Bremer Neustadt – Matcha, Croffles und ein Ort, der so schön ist wie dein Feed. Langemarckstraße 209.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400;0,9..144,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts.css">
 <style>
   :root{
-    --cream:#f4f2e8; --paper:#faf9f3; --matcha:#7e9255; --deepmatcha:#566237;
-    --ink:#33352c; --muted:#8a8c7d; --foam:#e7e9d7;
+    --bg:#e9e5dd; --paper:#f0ece4; --ink:#1c1a17; --soft:#544f47;
+    --stone:#8c8579; --line:#d9d3c7;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;font-weight:300;-webkit-font-smoothing:antialiased}
-  h1,h2,h3{font-family:'Outfit',sans-serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
+  body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--bg);line-height:1.75;font-weight:300;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.serif{font-family:'Fraunces',serif;font-weight:400;line-height:1.1}
   .wrap{max-width:1040px;margin:0 auto;padding:0 30px}
-  a{color:inherit;text-decoration:none;position:relative}
-  a[href^="#"]{transition:color .2s ease}
-  a[href^="#"]:hover{color:var(--crema)}
-  .lead{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--crema);font-weight:700;margin-bottom:16px;display:inline-block}
-  .serif{font-family:'Fraunces',serif;font-style:italic;font-weight:400}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .lead{font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--stone);font-weight:400}
+  em{font-family:'Fraunces',serif;font-style:italic}
 
-  nav{position:sticky;top:0;z-index:40;background:rgba(250,249,243,.8);backdrop-filter:blur(12px)}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px}
-  .logo{font-size:1.7rem;font-weight:600;letter-spacing:-.04em}
-  .logo b{color:var(--matcha)}
-  .navlinks{display:flex;gap:36px;font-size:.84rem;letter-spacing:.14em;text-transform:lowercase;font-weight:400}
-  .navlinks a{color:rgba(0,0,0,.65);transition:color .2s}.navlinks a:hover{color:var(--ink)}
-  .hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer;background:0;border:0;padding:4px}
-  .hamburger span{width:24px;height:2.5px;background:var(--ink);border-radius:2px;transition:all .3s}
-  .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(8px,8px)}
-  .hamburger.active span:nth-child(2){opacity:0}
-  .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(7px,-7px)}
-  @media(max-width:760px){.navlinks{display:none}.hamburger{display:flex}}
+  nav{position:sticky;top:0;z-index:40;background:rgba(233,229,221,.82);backdrop-filter:blur(12px)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:80px}
+  .logo{font-family:'Fraunces',serif;font-size:1.75rem;font-weight:500;letter-spacing:.01em}
+  .navlinks{display:flex;gap:38px;font-size:.84rem;letter-spacing:.14em;text-transform:lowercase}
+  .navlinks a{color:var(--stone)}.navlinks a:hover{color:var(--ink)}
+  @media(max-width:760px){.navlinks{display:none}}
 
-  .hero{padding:72px 0 60px;text-align:center}
-  .hero .lead{display:block;margin-bottom:30px}
-  .hero h1{font-size:clamp(3.4rem,11vw,7.5rem);font-weight:300;letter-spacing:-.04em;line-height:.95}
-  .hero h1 b{color:var(--matcha);font-weight:600}
-  .hero .sub{margin:26px auto 0;max-width:34ch;font-size:1.12rem;color:#5f6155}
-  .hero .sub em{font-family:'Fraunces';font-style:italic}
-  .heroband{margin-top:54px;aspect-ratio:16/7;border-radius:26px;background:
-     radial-gradient(60% 120% at 50% -20%, #9fb074, transparent 70%),
-     linear-gradient(160deg,var(--matcha),var(--deepmatcha));position:relative;overflow:hidden}
-  .heroband span{position:absolute;left:24px;bottom:20px;font-size:.78rem;color:rgba(255,255,255,.8);letter-spacing:.05em}
-  .pill{position:absolute;top:22px;right:22px;background:rgba(255,255,255,.9);color:var(--deepmatcha);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;border-radius:100px;font-weight:500}
+  .hero{padding:70px 0 56px;text-align:center}
+  .hero .lead{display:block;margin-bottom:34px}
+  .hero h1{font-family:'Fraunces',serif;font-size:clamp(4rem,15vw,9rem);font-weight:400;letter-spacing:-.01em;line-height:.9}
+  .hero .sub{margin:30px auto 0;max-width:32ch;font-size:1.1rem;color:var(--soft)}
+  .heroband{margin-top:52px;position:relative;border-radius:4px;overflow:hidden;aspect-ratio:16/7}
+  .heroband img{width:100%;height:100%;object-fit:cover}
+  .heroband .pill{position:absolute;top:22px;right:22px;background:rgba(233,229,221,.92);color:var(--ink);font-size:.74rem;letter-spacing:.12em;text-transform:lowercase;padding:8px 16px;border-radius:100px}
 
-  section{padding:100px 0}
-  section:nth-of-type(even){background:rgba(199,149,102,.02)}
+  section{padding:84px 0}
   .center{text-align:center;max-width:30ch;margin:0 auto 56px}
-  .center h2{font-size:clamp(2rem,4vw,2.9rem);color:var(--ink);margin-bottom:16px}
-  h2 em{font-family:'Fraunces';font-style:italic;color:var(--matcha)}
+  .center h2{font-size:clamp(2.2rem,5vw,3.2rem);margin-top:14px}
+  h2 em{color:var(--ink)}
 
-  .menu{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  @media(max-width:780px){.menu{grid-template-columns:1fr}}
-  .m{background:var(--cream);border-radius:20px;padding:34px 28px;text-align:center;transition:transform .2s}
+  .menu{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:780px){.menu{grid-template-columns:1fr;max-width:420px;margin:0 auto}}
+  .m{background:var(--paper);border:1px solid var(--line);border-radius:4px;overflow:hidden;text-align:center;transition:transform .2s}
   .m:hover{transform:translateY(-5px)}
-  .m .dot{width:54px;height:54px;border-radius:50%;margin:0 auto 18px;background:radial-gradient(circle at 35% 30%,#a7b97c,var(--deepmatcha))}
-  .m h3{font-size:1.35rem;font-weight:500}
-  .m p{color:rgba(0,0,0,.65);font-size:.95rem;margin-top:6px}
-  .m .pr{font-family:'Fraunces';font-style:italic;color:var(--matcha);font-size:1.2rem;margin-top:12px}
+  .m .pic{aspect-ratio:4/3;overflow:hidden}
+  .m .pic img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+  .m:hover .pic img{transform:scale(1.06)}
+  .m .body{padding:24px 24px 30px}
+  .m h3{font-size:1.4rem}
+  .m p{color:var(--stone);font-size:.95rem;margin-top:6px}
+  .m .pr{font-family:'Fraunces';font-style:italic;color:var(--ink);font-size:1.2rem;margin-top:12px}
 
-  .story{background:var(--cream)}
-  .story .wrap{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center}
+  .story{background:var(--paper)}
+  .story .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
   @media(max-width:820px){.story .wrap{grid-template-columns:1fr;gap:32px}}
-  .story p{margin-top:18px;color:#5a5c50;font-size:1.06rem}
-  .sq{aspect-ratio:1;border-radius:24px;background:linear-gradient(155deg,#dfe3c8,#9fb074);position:relative}
-  .sq span{position:absolute;left:20px;bottom:16px;font-size:.76rem;color:rgba(255,255,255,.85)}
+  .story p{margin-top:18px;color:var(--soft);font-size:1.06rem}
+  .sq{aspect-ratio:1;border-radius:4px;overflow:hidden}
+  .sq img{width:100%;height:100%;object-fit:cover}
 
   .visit{text-align:center}
   .vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
   @media(max-width:780px){.vgrid{grid-template-columns:1fr 1fr}}
-  .v{padding:26px 18px;border:1px solid var(--foam);border-radius:18px}
-  .v .k{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(0,0,0,.65)}
-  .v .val{font-weight:500;margin-top:8px;font-size:1.02rem}
-  .btn{display:inline-block;margin-top:40px;background:var(--deepmatcha);color:var(--paper);padding:15px 34px;border-radius:100px;font-weight:500;letter-spacing:.04em;transition:background .2s}
-  .btn:hover{background:var(--matcha)}
+  .v{padding:28px 18px;border:1px solid var(--line);border-radius:4px}
+  .v .k{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--stone)}
+  .v .val{font-family:'Fraunces';font-size:1.05rem;margin-top:8px}
+  .btn{display:inline-block;margin-top:42px;background:var(--ink);color:var(--bg);padding:15px 36px;border-radius:100px;font-weight:400;letter-spacing:.06em;font-size:.95rem;transition:opacity .2s}
+  .btn:hover{opacity:.82}
 
-  footer{padding:50px 0 30px;text-align:center;color:var(--muted);font-size:.86rem;background:var(--paper);border-top:1px solid #eee2d2;animation:fadeInUp .8s ease-out .8s backwards}
-  .concept{display:block;margin-top:8px;color:#a6a899}
+  /* erweiterte theke-liste */
+  .mlist{max-width:620px;margin:38px auto 0}
+  .mrow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .mrow:last-child{border-bottom:none}
+  .mrow .n{font-family:'Fraunces',serif;font-size:1.15rem}
+  .mrow .n small{display:block;font-family:'Outfit';font-size:.82rem;color:var(--stone);text-transform:none;letter-spacing:0}
+  .mrow .dots{flex:1;border-bottom:1px dotted #cfc8ba;margin:0 8px;transform:translateY(-5px)}
+  .mrow .pr{font-family:'Fraunces';font-style:italic;color:var(--ink);font-size:1.1rem;white-space:nowrap}
+
+  /* werte-trio */
+  .vals{background:var(--paper)}
+  .vals .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:48px}
+  @media(max-width:780px){.vals .row3{grid-template-columns:1fr;max-width:420px;margin:48px auto 0}}
+  .val3{text-align:center}
+  .val3 .ic{font-size:1.7rem}
+  .val3 h3{font-size:1.3rem;margin:12px 0 8px}
+  .val3 p{color:var(--stone);font-size:.95rem}
+
+  /* momente */
+  .gal .row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:46px}
+  @media(max-width:680px){.gal .row{grid-template-columns:1fr 1fr}}
+  .gal figure{aspect-ratio:1;border-radius:4px;overflow:hidden}
+  .gal img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+  .gal figure:hover img{transform:scale(1.05)}
+
+  /* presse */
+  .press{text-align:center}
+  .press blockquote{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.7rem,4vw,2.6rem);max-width:22ch;margin:0 auto;color:var(--ink);line-height:1.25}
+  .press .src{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;margin-top:30px;font-size:.85rem;letter-spacing:.1em;text-transform:lowercase;color:var(--soft)}
+  .press .src a{border-bottom:1px solid transparent;padding-bottom:3px}.press .src a:hover{border-color:var(--stone)}
+
+  footer{padding:54px 0 46px;text-align:center;color:var(--stone);font-size:.84rem;border-top:1px solid var(--line)}
+  .footmark{font-family:'Fraunces',serif;font-size:1.6rem;color:var(--ink);margin-bottom:12px}
+  .concept{display:block;margin-top:10px;color:#a39c8e}
+
+  /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
 </style>
+<style>.skip-link{position:fixed;top:10px;left:50%;transform:translate(-50%,-160%);z-index:9999;background:#16161A;color:#fff;font:600 14px/1 system-ui,-apple-system,sans-serif;padding:11px 18px;border-radius:8px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.3);transition:transform .2s ease}.skip-link:focus{transform:translate(-50%,0);outline:3px solid #fff;outline-offset:2px}@media(prefers-reduced-motion:reduce){.skip-link{transition:none}}</style>
+<style>
+  .mnav-burger{display:none}
+  @media(max-width:760px){
+    nav .wrap{position:relative}
+    .mnav-burger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:42px;height:42px;background:none;border:0;cursor:pointer;padding:9px;margin-left:auto;z-index:2}
+    .mnav-burger span{display:block;height:2px;width:100%;background:#1c1a17;border-radius:2px;transition:transform .25s ease,opacity .2s ease}
+    .mnav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .mnav-burger.open span:nth-child(2){opacity:0}
+    .mnav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    nav .wrap>a.btn{display:none}
+    nav .navlinks{display:none!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;align-items:stretch;background:#e9e5dd;border-top:1px solid #d9d3c7;border-bottom:1px solid #d9d3c7;padding:6px 28px 14px;box-shadow:0 18px 30px -18px rgba(0,0,0,.45);text-transform:none}
+    nav .navlinks.open{display:flex!important}
+    nav .navlinks a{padding:15px 2px;border-bottom:1px solid #d9d3c7;font-size:1.05rem;color:#1c1a17}
+    nav .navlinks a:last-child{border-bottom:none}
+  }
+  @media(prefers-reduced-motion:reduce){.mnav-burger span{transition:none}}
+  </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 <nav><div class="wrap">
-  <div class="logo">bay<b>.</b></div>
-  <div class="navlinks"><a href="#menu">menü</a><a href="#story">über uns</a><a href="#visit">besuch</a></div>
-<button class="hamburger" id="menu"><span></span><span></span><span></span></button>
+  <div class="logo">bay.</div>
+  <div class="navlinks"><a href="#menu">menü</a><a href="#story">über uns</a><a href="#momente">momente</a><a href="#visit">besuch</a></div>
+<button class="mnav-burger" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></nav>
-<script>document.getElementById("menu").addEventListener("click",e=>e.currentTarget.classList.toggle("active"))</script>
 
-<header class="hero"><div class="wrap">
+<header class="hero" id="inhalt"><div class="wrap">
   <span class="lead">neustadt · bremen</span>
-  <h1>matcha<b>.</b><br>croffles<b>.</b></h1>
-  <p class="sub">ein ort, der so schön ist wie dein feed. <em>handgemacht, ruhig, ästhetisch.</em></p>
-  <div class="heroband"><span class="pill">@bay.bremen</span><span>Foto: matcha latte &amp; croffle</span></div>
+  <h1>bay.</h1>
+  <p class="sub">matcha &amp; croffles. <em>handgemacht, ruhig, ästhetisch</em> — ein ort, so schön wie dein feed.</p>
+  <div class="heroband"><img src="img/hero.webp" alt="Matcha Latte"><span class="pill">@bay.bremen</span></div>
 </div></header>
 
 <section id="menu"><div class="wrap">
   <div class="center"><span class="lead">hausgemacht</span><h2>unsere <em>signatures</em></h2></div>
   <div class="menu">
-    <div class="m"><div class="dot"></div><h3>ceremonial matcha</h3><p>steingemahlen, sanft, leuchtend grün</p><div class="pr">5,2</div></div>
-    <div class="m"><div class="dot"></div><h3>croffle</h3><p>croissant trifft waffel – warm &amp; knusprig</p><div class="pr">4,8</div></div>
-    <div class="m"><div class="dot"></div><h3>iced strawberry matcha</h3><p>der star für warme tage</p><div class="pr">5,8</div></div>
+    <div class="m"><div class="pic"><img loading="lazy" src="img/matcha.webp" alt="Ceremonial Matcha"></div><div class="body"><h3>ceremonial matcha</h3><p>steingemahlen, sanft, leuchtend grün</p><div class="pr">5,2</div></div></div>
+    <div class="m"><div class="pic"><img loading="lazy" src="img/croffle.webp" alt="Croffle"></div><div class="body"><h3>croffle</h3><p>croissant trifft waffel – warm &amp; knusprig</p><div class="pr">4,8</div></div></div>
+    <div class="m"><div class="pic"><img loading="lazy" src="img/hero.webp" alt="Iced Strawberry Matcha"></div><div class="body"><h3>iced strawberry matcha</h3><p>der star für warme tage</p><div class="pr">5,8</div></div></div>
   </div>
-  <p style="text-align:center;margin-top:30px;font-size:.85rem;color:rgba(0,0,0,.65)">beispielkarte · preise bitte final bestätigen</p>
+  <div class="mlist">
+    <div class="mrow"><div class="n">hot matcha latte<small>steingemahlen, mit hafer oder kokos</small></div><div class="dots"></div><div class="pr">4,8</div></div>
+    <div class="mrow"><div class="n">flat white<small>specialty coffee, fair geröstet</small></div><div class="dots"></div><div class="pr">3,8</div></div>
+    <div class="mrow"><div class="n">cinnamon bun<small>warm, frisch gebacken</small></div><div class="dots"></div><div class="pr">4,2</div></div>
+    <div class="mrow"><div class="n">iced strawberry matcha<small>der star für warme tage</small></div><div class="dots"></div><div class="pr">5,8</div></div>
+  </div>
+  <p style="text-align:center;margin-top:30px;font-size:.85rem;color:var(--stone)">beispielkarte zum konzept · matcha, kaffee, croffles &amp; buns · preise bitte final bestätigen</p>
 </div></section>
 
 <section id="story" class="story"><div class="wrap">
-  <div class="sq"><span>Foto: bay. interior</span></div>
+  <div class="sq"><img loading="lazy" src="img/interior.webp" alt="bay. Interior"></div>
   <div>
     <span class="lead">die idee</span>
     <h2>weniger, aber <em>schöner.</em></h2>
     <p>bay. ist ein kleiner ruhepol in der neustadt. klare formen, ehrliche zutaten, matcha in seiner schönsten form. ein platz zum durchatmen – und für das eine foto, das einfach sitzt.</p>
     <p>fast 5.000 menschen folgen bay. schon auf instagram. diese seite gibt dem ganzen ein zuhause: karte, zeiten und der weg zu uns, auf einen blick.</p>
+  </div>
+</div></section>
+
+<section id="warum" class="vals"><div class="wrap">
+  <div class="center" style="max-width:34ch"><span class="lead">warum bay</span><h2>drei dinge, die <em>bleiben</em></h2></div>
+  <div class="row3">
+    <div class="val3"><div class="ic">🍵</div><h3>matcha im fokus</h3><p>steingemahlen, leuchtend grün – in seiner schönsten form.</p></div>
+    <div class="val3"><div class="ic">🤍</div><h3>weniger, aber schöner</h3><p>klare formen, ehrliche zutaten, ein platz zum durchatmen.</p></div>
+    <div class="val3"><div class="ic">🌿</div><h3>drinnen &amp; draußen</h3><p>gemütlich am fenster oder draußen in der sonne – für alle.</p></div>
+  </div>
+</div></section>
+
+<section id="momente" class="gal"><div class="wrap">
+  <div class="center" style="max-width:30ch"><span class="lead">momente</span><h2>so schön wie dein <em>feed</em></h2></div>
+  <div class="row">
+    <figure><img loading="lazy" src="img/matcha.webp" alt="matcha"></figure>
+    <figure><img loading="lazy" src="img/croffle.webp" alt="croffle"></figure>
+    <figure><img loading="lazy" src="img/interior.webp" alt="interior"></figure>
+    <figure><img loading="lazy" src="img/hero.webp" alt="bay."></figure>
+  </div>
+</div></section>
+
+<section class="press"><div class="wrap">
+  <blockquote>„matcha-genuss und superfood – ein ort, so schön wie dein feed."</blockquote>
+  <div class="src">
+    <span>beliebt auf</span>
+    <a href="https://www.instagram.com/bay.bremen/" target="_blank" rel="noopener">@bay.bremen</a>
+    <a href="https://www.weser-kurier.de/bremen/stadtteile/stadtteile-bremen-neustadt/" target="_blank" rel="noopener">weser-kurier</a>
   </div>
 </div></section>
 
@@ -128,14 +210,14 @@
     <div class="v"><div class="k">instagram</div><div class="val">@bay.bremen</div></div>
   </div>
   <a href="https://www.google.com/maps/search/?api=1&query=bay.+Langemarckstraße+209+Bremen" target="_blank" class="btn">in google maps öffnen</a>
-  <p style="margin-top:18px;font-size:.82rem;color:rgba(0,0,0,.65)">öffnungszeiten beispielhaft – bitte bestätigen</p>
+  <p style="margin-top:18px;font-size:.82rem;color:var(--stone)">stand laut öffentlichen angaben – bitte bestätigen</p>
 </div></section>
 
-<section style="padding:88px 0"><div class="wrap"><span class="lead" style="text-align:center;display:block">Was Besucher sagen</span><h2 style="text-align:center;margin-top:12px;margin-bottom:46px">Testimonials</h2><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:26px"><div style="padding:30px;background:#fff;border-left:4px solid var(--sun);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.06)"><p style="font-style:italic;margin-bottom:16px">„Perfekt zum Entspannen. Essen, Aussicht, Atmosphäre – alles passt."</p><p style="font-weight:600">– Anna</p></div><div style="padding:30px;background:#fff;border-left:4px solid var(--sun);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.06)"><p style="font-style:italic;margin-bottom:16px">„Mein Lieblingsort in Bremen. Team ist super freundlich."</p><p style="font-weight:600">– Michael</p></div><div style="padding:30px;background:#fff;border-left:4px solid var(--sun);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.06)"><p style="font-style:italic;margin-bottom:16px">„Absolut empfehlenswert. Qualität <footer> Service top."</p><p style="font-weight:600">– Petra</p></div></div></div></section>
-
 <footer><div class="wrap">
-  © bay. · Langemarckstraße 209 · 28199 Bremen
-  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com</span>
+  <div class="footmark">bay.</div>
+  Langemarckstraße 209 · 28199 Bremen
+  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach öffentlich verfügbaren Angaben; Fotos: Platzhalter (Stock), durch echte Laden-Fotos ersetzbar</span>
 </div></footer>
+<script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
 </body>
 </html>

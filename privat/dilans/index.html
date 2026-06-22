@@ -3,180 +3,275 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1c1c1a">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dilan's Café · Bremen">
+<meta property="og:description" content="Frühstück mit Hafenblick – Dachterrasse über dem Wasser in der Überseestadt. Bowls, Eggs, Kuchen & Spezialitätenkaffee.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231c1c1a'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='%23ffffff' font-family='Georgia,serif' font-style='italic'%3ED%3C/text%3E%3C/svg%3E">
 <title>Dilan's Café · Bremen — Frühstück mit Hafenblick</title>
-<meta name="description" content="Dilan's Café in der Überseestadt – Frühstück, Kaffee und Dachterrasse über dem Hafen. Dein Lieblingsplatz am Wasser.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="description" content="Dilan's Café in der Überseestadt – Frühstück, Bowls, Kuchen, Kaffee und Dachterrasse über dem Hafen. Konsul-Smidt-Straße 86, Bremen.">
+<link rel="stylesheet" href="fonts.css">
 <style>
   :root{
-    --sand:#f4ecdd; --paper:#fcf8f0; --sea:#22707d; --deep:#16424a;
-    --sun:#e3a049; --ink:#1d2426; --muted:#6d7b7d;
+    --ink:#1c1c1a; --soft:#3c3c38; --paper:#fbfaf7; --cream:#f0ebe1;
+    --sage:#8d9f85; --deepsage:#5d6e56; --muted:#857f74; --line:#e7e0d2;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased}
-  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:600;line-height:1.05;letter-spacing:-.02em}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.06}
   .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
-  a{color:inherit;text-decoration:none;position:relative}
-  a[href^="#"]{transition:color .2s ease}
-  a[href^="#"]:hover{color:var(--crema)}
-  .lead{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--crema);font-weight:700;margin-bottom:16px;display:inline-block}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .script{font-family:'Pinyon Script',cursive;font-weight:400}
+  .lead{font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:var(--deepsage)}
 
-  nav{position:sticky;top:0;z-index:40;background:rgba(252,248,240,.85);backdrop-filter:blur(10px);border-bottom:1px solid #ece2cf}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:70px}
-  .logo{font-family:'Space Grotesk';font-size:1.4rem;font-weight:700;letter-spacing:-.03em}
-  .logo b{color:var(--sun)}
-  .navlinks{display:flex;gap:30px;font-size:.92rem;font-weight:500}
-  .navlinks a{color:rgba(0,0,0,.65);transition:color .2s}.navlinks a:hover{color:var(--ink)}
-  .btn{display:inline-block;background:var(--sea);color:#fff;padding:13px 26px;border-radius:100px;font-weight:600;font-size:.92rem;transition:transform .15s,background .2s,box-shadow .2s;box-shadow:0 4px 15px rgba(34,112,125,.3)}
-  .btn:hover{transform:translateY(-3px);background:var(--deep);box-shadow:0 8px 25px rgba(34,112,125,.4)}
-  .hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer;background:0;border:0;padding:4px}
-  .hamburger span{width:24px;height:2.5px;background:var(--ink);border-radius:2px;transition:all .3s}
-  .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(8px,8px)}
-  .hamburger.active span:nth-child(2){opacity:0}
-  .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(7px,-7px)}
-  @media(max-width:760px){.navlinks{display:none}.hamburger{display:flex}}
+  nav{position:sticky;top:0;z-index:40;background:rgba(251,250,247,.86);backdrop-filter:blur(10px);border-bottom:1px solid #e9e3d6}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .logo{font-family:'Pinyon Script',cursive;font-size:2.1rem;line-height:1;color:var(--ink);padding-top:6px}
+  .navlinks{display:flex;gap:26px;font-size:.92rem;font-weight:500}
+  .navlinks a{color:var(--muted)}.navlinks a:hover{color:var(--ink)}
+  .btn{display:inline-block;background:var(--ink);color:var(--paper);padding:13px 28px;border-radius:2px;font-weight:600;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;transition:transform .15s,background .2s}
+  .btn:hover{transform:translateY(-2px);background:var(--deepsage)}
+  @media(max-width:760px){.navlinks{display:none}}
 
-  .hero{position:relative;padding:90px 0 100px;background:
-     radial-gradient(700px 380px at 85% 0%, rgba(227,160,73,.4),transparent 60%),
-     linear-gradient(165deg,var(--sea),var(--deep));color:#fff;overflow:hidden;animation:fadeInUp .8s ease-out}
-  .hero:after{content:"";position:absolute;inset:auto 0 -2px 0;height:90px;
-     background:radial-gradient(120% 90px at 50% 100%, rgba(252,248,240,.18),transparent)}
-  @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-  .hero .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:#ffe6c4;font-weight:600;margin-bottom:22px}
-  .hero h1{font-size:clamp(2.7rem,6.5vw,4.8rem);max-width:15ch;color:#fff}
-  .hero h1 b{color:var(--sun)}
-  .hero p{margin-top:24px;max-width:44ch;font-size:1.12rem;color:#d6e6e6}
-  .hero .actions{margin-top:36px;display:flex;gap:16px;flex-wrap:wrap}
-  .btn-ghost{display:inline-block;padding:13px 26px;border-radius:100px;border:1px solid rgba(255,255,255,.4);color:#fff;font-weight:600;font-size:.92rem}
-  .stats{margin-top:52px;display:flex;gap:40px;flex-wrap:wrap}
-  .stats div b{font-family:'Space Grotesk';font-size:1.7rem;display:block;color:#fff}
-  .stats div span{font-size:.85rem;color:#bcd2d2}
+  .hero{position:relative;min-height:92vh;display:flex;align-items:center;
+     background:linear-gradient(160deg,rgba(20,20,18,.5),rgba(20,20,18,.82)),url('img/hero.webp') center/cover no-repeat;color:#fff}
+  .hero .wrap{padding:120px 28px 96px}
+  .hero .script-h{font-family:'Pinyon Script',cursive;font-size:clamp(3.4rem,9vw,6rem);color:#fff;line-height:1;margin-bottom:6px;text-shadow:0 2px 30px rgba(0,0,0,.4)}
+  .hero h1{font-size:clamp(2rem,4.4vw,3.2rem);max-width:18ch;color:#fff;font-weight:500;letter-spacing:.005em}
+  .hero p{margin-top:22px;max-width:44ch;font-size:1.12rem;color:#e9e6dd}
+  .hero .actions{margin-top:34px;display:flex;gap:16px;flex-wrap:wrap}
+  .btn-ghost{display:inline-block;padding:13px 28px;border-radius:2px;border:1px solid rgba(255,255,255,.5);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
+  .btn-ghost:hover{background:rgba(255,255,255,.12)}
+  .stats{margin-top:52px;display:flex;gap:42px;flex-wrap:wrap}
+  .stats div b{font-family:'Cormorant Garamond';font-size:2rem;display:block;color:#fff;font-weight:600}
+  .stats div span{font-size:.84rem;color:#cfcabf;letter-spacing:.04em}
 
-  section{padding:100px 0}
-  section:nth-of-type(even){background:rgba(199,149,102,.02)}
-  .two{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  section{padding:92px 0}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:58px;align-items:center}
   @media(max-width:860px){.two{grid-template-columns:1fr;gap:32px}}
-  h2{font-size:clamp(2rem,4vw,2.9rem);color:var(--ink);margin-bottom:16px}
-  .about p{margin-top:18px;color:#46514f;font-size:1.05rem}
-  .deck{aspect-ratio:5/4;border-radius:22px;background:
-     linear-gradient(160deg,#2f8a96,#16424a);position:relative;box-shadow:0 34px 64px -34px rgba(22,66,74,.7);overflow:hidden}
-  .deck:before{content:"";position:absolute;top:0;left:0;right:0;height:42%;background:linear-gradient(180deg,#e9b463,#e3a049)}
-  .deck span{position:absolute;left:20px;bottom:18px;font-size:.8rem;color:rgba(255,255,255,.85)}
+  h2{font-size:clamp(2.4rem,5vw,3.6rem)}
+  h2 em{font-style:italic;color:var(--deepsage)}
+  .about p{margin-top:18px;color:#4c4a42;font-size:1.06rem}
+  .photo{border-radius:4px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(28,28,26,.45)}
+  .photo img{width:100%;height:100%;object-fit:cover;aspect-ratio:5/4}
 
-  .feat{background:var(--sand)}
+  .feat{background:var(--cream)}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px}
   @media(max-width:820px){.grid3{grid-template-columns:1fr}}
-  .card{background:#fff;border-radius:18px;padding:32px 28px;border:1px solid #ece1cd}
-  .card .n{font-family:'Space Grotesk';font-size:.9rem;font-weight:700;color:var(--sun);letter-spacing:.05em}
-  .card h3{font-size:1.3rem;margin:10px 0 8px}
-  .card p{color:rgba(0,0,0,.65);font-size:.97rem}
+  .card{background:var(--paper);border-radius:4px;padding:34px 30px;border:1px solid #e7e0d2}
+  .card .n{font-family:'Cormorant Garamond';font-style:italic;font-size:1.6rem;color:var(--sage)}
+  .card h3{font-size:1.6rem;margin:6px 0 8px}
+  .card p{color:var(--muted);font-size:.97rem}
+
+  /* Terrasse band */
+  .band{position:relative;min-height:60vh;display:flex;align-items:flex-end;color:#fff;
+     background:linear-gradient(0deg,rgba(20,20,18,.78),rgba(20,20,18,.15)),url('img/terrace.webp') center/cover no-repeat}
+  .band .wrap{padding:60px 28px}
+  .band h2{color:#fff;max-width:16ch}
+  .band p{margin-top:14px;max-width:46ch;color:#e9e6dd;font-size:1.08rem}
+
+  /* Menu */
+  .menu .wrap{max-width:880px}
+  .mcat{margin-top:36px}
+  .mcat>h3{font-family:'Cormorant Garamond';font-style:italic;font-size:1.7rem;color:var(--deepsage);border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:4px}
+  .mitem{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid #efe7d8}
+  .mitem:last-child{border-bottom:none}
+  .mitem h4{font-size:1.45rem;font-family:'Cormorant Garamond';font-weight:500}
+  .mitem small{display:block;font-family:'Inter';font-size:.84rem;color:var(--muted);margin-top:2px}
+  .mitem .d{flex:1;border-bottom:1px dotted #cfc6b4;margin:0 8px;transform:translateY(-5px)}
+  .mitem .p{font-family:'Cormorant Garamond';font-weight:600;font-size:1.4rem;color:var(--deepsage);white-space:nowrap}
+  .note{margin-top:30px;text-align:center;font-size:.86rem;color:var(--muted)}
+  .note b{color:var(--deepsage)}
+
+  /* Gallery */
+  .gal .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:42px}
+  @media(max-width:680px){.gal .grid{grid-template-columns:1fr 1fr}}
+  .gal figure{border-radius:4px;overflow:hidden;aspect-ratio:3/4}
+  .gal img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+  .gal figure:hover img{transform:scale(1.05)}
+
+  /* Press */
+  .press{background:var(--cream);text-align:center}
+  .press blockquote{font-family:'Cormorant Garamond';font-style:italic;font-size:clamp(1.8rem,4vw,2.6rem);max-width:20ch;margin:0 auto;color:var(--ink);line-height:1.2}
+  .press .src{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;margin-top:34px;font-size:.95rem;font-weight:600;color:var(--deepsage)}
+  .press .src a{border-bottom:2px solid transparent;padding-bottom:3px}.press .src a:hover{border-color:var(--sage)}
 
   .info{display:grid;grid-template-columns:1fr 1fr;gap:28px}
   @media(max-width:820px){.info{grid-template-columns:1fr}}
-  .panel{border-radius:22px;padding:42px 38px}
-  .panel.dark{background:var(--deep);color:#fff}
-  .panel.light{background:#fff;border:1px solid #ece1cd}
-  .panel h3{font-size:1.5rem;margin-bottom:20px}
-  .row{display:flex;justify-content:space-between;padding:11px 0;font-size:.97rem;border-bottom:1px solid rgba(255,255,255,.12)}
-  .panel.light .row{border-color:#f0e7d6}.row:last-child{border:none}.row b{font-weight:600}
+  .panel{border-radius:4px;padding:42px 38px}
+  .panel.dark{background:var(--ink);color:var(--paper)}
+  .panel.light{background:var(--paper);border:1px solid #e7e0d2}
+  .panel h3{font-size:1.7rem;margin-bottom:20px}
+  .row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;font-size:.97rem;border-bottom:1px solid rgba(255,255,255,.12)}
+  .panel.light .row{border-color:#efe7d8}.row:last-child{border:none}.row b{font-weight:600}
+  .row.off b{opacity:.6}
 
-  .cta{background:linear-gradient(165deg,var(--sun),#c9863a);color:#3a2a12;text-align:center}
-  .cta h2{max-width:18ch;margin:0 auto;color:#3a2a12}
-  .cta p{margin:18px auto 32px;max-width:42ch;color:#5a4624}
-  .cta .btn{background:var(--deep);color:#fff}
+  .cta{position:relative;text-align:center;color:#fff;
+     background:linear-gradient(160deg,rgba(20,20,18,.72),rgba(20,20,18,.88)),url('img/coffee.webp') center/cover no-repeat}
+  .cta h2{max-width:20ch;margin:0 auto;color:#fff}
+  .cta p{margin:18px auto 32px;max-width:42ch;color:#e9e6dd}
+  .cta .btn{background:var(--paper);color:var(--ink)}
 
-  footer{padding:50px 0 30px;text-align:center;color:var(--muted);font-size:.86rem;background:var(--paper);border-top:1px solid #eee2d2;animation:fadeInUp .8s ease-out .8s backwards}
-  .concept{display:block;margin-top:8px;color:#9aa6a6}
+  footer{padding:50px 0;text-align:center;color:var(--muted);font-size:.85rem;border-top:1px solid #e9e3d6}
+  .footmark{font-family:'Pinyon Script',cursive;font-size:2.2rem;color:var(--ink);margin-bottom:6px}
+  .concept{display:block;margin-top:10px;color:#a39c8c;max-width:62ch;margin-left:auto;margin-right:auto}
+
+  /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
 </style>
+<style>.skip-link{position:fixed;top:10px;left:50%;transform:translate(-50%,-160%);z-index:9999;background:#16161A;color:#fff;font:600 14px/1 system-ui,-apple-system,sans-serif;padding:11px 18px;border-radius:8px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.3);transition:transform .2s ease}.skip-link:focus{transform:translate(-50%,0);outline:3px solid #fff;outline-offset:2px}@media(prefers-reduced-motion:reduce){.skip-link{transition:none}}</style>
+<style>
+  .mnav-burger{display:none}
+  @media(max-width:760px){
+    nav .wrap{position:relative}
+    .mnav-burger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:42px;height:42px;background:none;border:0;cursor:pointer;padding:9px;margin-left:auto;z-index:2}
+    .mnav-burger span{display:block;height:2px;width:100%;background:#1c1c1a;border-radius:2px;transition:transform .25s ease,opacity .2s ease}
+    .mnav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .mnav-burger.open span:nth-child(2){opacity:0}
+    .mnav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    nav .wrap>a.btn{display:none}
+    nav .navlinks{display:none!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;align-items:stretch;background:#fbfaf7;border-top:1px solid #e9e3d6;border-bottom:1px solid #e9e3d6;padding:6px 28px 14px;box-shadow:0 18px 30px -18px rgba(0,0,0,.45);text-transform:none}
+    nav .navlinks.open{display:flex!important}
+    nav .navlinks a{padding:15px 2px;border-bottom:1px solid #e9e3d6;font-size:1.05rem;color:#1c1c1a}
+    nav .navlinks a:last-child{border-bottom:none}
+  }
+  @media(prefers-reduced-motion:reduce){.mnav-burger span{transition:none}}
+  </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 <nav><div class="wrap">
-  <div class="logo">Dilan<b>'</b>s</div>
-  <div class="navlinks"><a href="#about">Café</a><a href="#terrasse">Dachterrasse</a><a href="#fruehstueck">Frühstück</a><a href="#finden">Finden</a></div>
+  <div class="logo">Dilan's</div>
+  <div class="navlinks"><a href="#about">Café</a><a href="#terrasse">Dachterrasse</a><a href="#karte">Karte</a><a href="#momente">Momente</a><a href="#finden">Finden</a></div>
   <a href="#finden" class="btn">Zu uns</a>
-  <button class="hamburger" id="menu"><span></span><span></span><span></span></button>
+<button class="mnav-burger" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></nav>
-<script>document.getElementById('menu').addEventListener('click',e=>e.currentTarget.classList.toggle('active'))</script>
 
-<header class="hero"><div class="wrap">
-  <span class="eyebrow">● Überseestadt · direkt am Wasser</span>
-  <h1>Frühstück mit <b>Hafenblick.</b></h1>
-  <p>Dilan's Café ist dein Lieblingsplatz in der Überseestadt – guter Kaffee, ein Frühstück, das verwöhnt, und eine Dachterrasse über dem Hafen.</p>
+<header class="hero" id="inhalt"><div class="wrap">
+  <span class="lead" style="color:#cdd6c8">Überseestadt · direkt am Wasser</span>
+  <div class="script-h">Dilan's</div>
+  <h1>Frühstück mit Hafenblick – dein Lieblingsplatz am Wasser.</h1>
+  <p>Guter Kaffee, ein Frühstück, das verwöhnt, und eine Dachterrasse über dem Hafen der Überseestadt.</p>
   <div class="actions">
-    <a href="#fruehstueck" class="btn" style="background:var(--sun);color:#3a2a12">Frühstückskarte</a>
+    <a href="#karte" class="btn">Frühstückskarte</a>
     <a href="#terrasse" class="btn-ghost">Die Dachterrasse</a>
   </div>
   <div class="stats">
-    <div><b>~4.000</b><span>auf Instagram</span></div>
     <div><b>Rooftop</b><span>Terrasse am Hafen</span></div>
-    <div><b>Täglich</b><span>frisches Frühstück</span></div>
+    <div><b>Bowls &amp; Eggs</b><span>frisch jeden Tag</span></div>
+    <div><b>6 Tage</b><span>Di – So geöffnet</span></div>
   </div>
 </div></header>
 
 <section id="about" class="about"><div class="wrap two">
   <div>
     <span class="lead">Willkommen</span>
-    <h2>Das Café, das die Überseestadt liebt.</h2>
-    <p>Was auf Instagram längst ein Hit ist, gibt es jetzt zum Anfassen: Dilan's steht für entspannte Vormittage, herzlichen Service und den schönsten Blick übers Wasser.</p>
-    <p>Bisher findet man uns nur auf Social Media. Diese Seite ist dein direkter Weg zu uns – mit Karte, Zeiten und Anfahrt auf einen Blick.</p>
+    <h2>Das Café, das die <em>Überseestadt</em> liebt.</h2>
+    <p>Dilan's steht für entspannte Vormittage, herzlichen Service und den schönsten Blick übers Wasser. Mitten im neuen Bremer Hafenviertel, an der Konsul-Smidt-Straße – dort, wo die Stadt aufs Wasser trifft.</p>
+    <p>Frühstück, das verwöhnt, Bowls, Kuchen und Spezialitätenkaffee: Bei Dilan's nimmt man sich Zeit – am liebsten oben auf der Dachterrasse.</p>
   </div>
-  <div class="deck"><span>Foto: Dachterrasse mit Hafenblick</span></div>
+  <div class="photo"><img src="img/terrace.webp" alt="Dachterrasse mit Hafenblick"></div>
 </div></section>
 
-<section id="terrasse" class="feat"><div class="wrap">
+<section class="feat"><div class="wrap">
   <span class="lead">Warum Dilan's</span>
-  <h2>Drei gute Gründe, heute vorbeizukommen.</h2>
+  <h2>Drei gute Gründe, heute <em>vorbeizukommen.</em></h2>
   <div class="grid3">
-    <div class="card"><div class="n">01</div><h3>Die Dachterrasse</h3><p>Sonne, Wasser, Weite. Der beste Platz der Überseestadt für ein langes Frühstück oder den Feierabend-Kaffee.</p></div>
-    <div class="card"><div class="n">02</div><h3>Frühstück, das verwöhnt</h3><p>Von der Bowl bis zum herzhaften Teller – frisch zubereitet, schön angerichtet, jeden Tag.</p></div>
-    <div class="card"><div class="n">03</div><h3>Mitten im Geschehen</h3><p>Konsul-Smidt-Straße, bestens erreichbar, mit dem Lebensgefühl des neuen Bremer Hafenviertels.</p></div>
+    <div class="card"><div class="n">i.</div><h3>Die Dachterrasse</h3><p>Sonne, Wasser, Weite. Der beste Platz der Überseestadt für ein langes Frühstück oder den Feierabend-Kaffee.</p></div>
+    <div class="card"><div class="n">ii.</div><h3>Frühstück, das verwöhnt</h3><p>Von der Bowl bis zum herzhaften Teller – frisch zubereitet, schön angerichtet, jeden Tag aufs Neue.</p></div>
+    <div class="card"><div class="n">iii.</div><h3>Mitten im Geschehen</h3><p>Konsul-Smidt-Straße, bestens erreichbar, mit dem Lebensgefühl des neuen Bremer Hafenviertels.</p></div>
   </div>
 </div></section>
 
-<section id="fruehstueck"><div class="wrap two">
-  <div class="deck" style="aspect-ratio:4/5;background:linear-gradient(160deg,#e9b463,#c9863a)"><span>Foto: Frühstücksteller</span></div>
-  <div>
-    <span class="lead">Guten Morgen</span>
-    <h2>Frühstück &amp; Kaffee</h2>
-    <p style="margin-top:18px;color:#46514f;font-size:1.05rem">Bowls, Eggs, frische Backwaren und Spezialitätenkaffee – die ganze Karte findest du bald hier. Bis dahin: einfach vorbeikommen und durchprobieren.</p>
-    <a href="https://www.instagram.com/dilans_cafe/" target="_blank" class="btn" style="margin-top:24px">Karte auf Instagram</a>
+<section class="band" id="terrasse"><div class="wrap">
+  <span class="lead" style="color:#cdd6c8">Oben über den Häfen</span>
+  <h2>Dein Platz an der <em>Sonne.</em></h2>
+  <p>Wenn das Wetter mitspielt, ist die Dachterrasse der schönste Tisch der Stadt: Kaffee in der Hand, Hafen im Blick, Zeit im Überfluss.</p>
+</div></section>
+
+<section id="karte" class="menu"><div class="wrap">
+  <div style="text-align:center"><span class="lead">Guten Morgen</span><h2 style="margin-top:8px">Frühstück, Bowls &amp; <em>Kaffee</em></h2></div>
+
+  <div class="mcat">
+    <h3>Frühstück &amp; Herzhaft</h3>
+    <div class="mitem"><div><h4>Eggs Benedict</h4><small>pochierte Eier, Sauce Hollandaise, auf Brioche</small></div><div class="d"></div><div class="p">11,5</div></div>
+    <div class="mitem"><div><h4>Shakshuka</h4><small>Eier in würziger Tomatensauce, Brot</small></div><div class="d"></div><div class="p">10,5</div></div>
+    <div class="mitem"><div><h4>Avocado Bread</h4><small>Sauerteig, Avocado, pochiertes Ei, Sprossen</small></div><div class="d"></div><div class="p">9,8</div></div>
+  </div>
+
+  <div class="mcat">
+    <h3>Bowls &amp; Süßes</h3>
+    <div class="mitem"><div><h4>Açaí Bowl</h4><small>Açaí, Banane, Granola, frische Früchte</small></div><div class="d"></div><div class="p">9,5</div></div>
+    <div class="mitem"><div><h4>Pancakes</h4><small>fluffig, mit Ahornsirup &amp; Beeren</small></div><div class="d"></div><div class="p">8,5</div></div>
+    <div class="mitem"><div><h4>Hausgemachter Kuchen</h4><small>täglich wechselnd</small></div><div class="d"></div><div class="p">4,5</div></div>
+  </div>
+
+  <div class="mcat">
+    <h3>Kaffee &amp; Drinks</h3>
+    <div class="mitem"><div><h4>Flat White · Cappuccino</h4><small>Spezialitätenkaffee, auch mit Pflanzendrink</small></div><div class="d"></div><div class="p">3,8</div></div>
+    <div class="mitem"><div><h4>Matcha Latte</h4><small>cremig, mild</small></div><div class="d"></div><div class="p">4,8</div></div>
+    <div class="mitem"><div><h4>Frische Säfte &amp; Limonaden</h4><small>hausgemacht</small></div><div class="d"></div><div class="p">4,2</div></div>
+  </div>
+
+  <p class="note">Beispielkarte zum Konzept · <b>Bowls, Eggs, Kuchen &amp; Salate</b> · vegane Optionen · Preise bitte final bestätigen</p>
+</div></section>
+
+<section id="momente" class="gal"><div class="wrap">
+  <div style="text-align:center"><span class="lead">Momente</span><h2 style="margin-top:8px">Ein Vormittag bei <em>Dilan's</em></h2></div>
+  <div class="grid">
+    <figure><img loading="lazy" src="img/breakfast.webp" alt="Frühstücksteller"></figure>
+    <figure><img loading="lazy" src="img/coffee.webp" alt="Kaffee"></figure>
+    <figure><img loading="lazy" src="img/terrace.webp" alt="Dachterrasse"></figure>
+    <figure><img loading="lazy" src="img/hero.webp" alt="Dilan's Café"></figure>
   </div>
 </div></section>
 
-<section id="finden" class="feat"><div class="wrap">
-  <div style="text-align:center;margin-bottom:44px"><span class="lead">Besuch</span><h2 style="margin-top:12px">Öffnungszeiten &amp; Anfahrt</h2></div>
+<section class="press"><div class="wrap">
+  <blockquote>„Frühstück mit dem schönsten Blick der Überseestadt."</blockquote>
+  <div class="src">
+    <span>Beliebt auf</span>
+    <a href="https://www.instagram.com/dilans_cafe/" target="_blank" rel="noopener">@dilans_cafe</a>
+    <a href="https://coolibri.de/restaurant/dilans-cafe-bremen/" target="_blank" rel="noopener">coolibri</a>
+    <a href="https://restaurantguru.com/Dilans-Cafe-Bremen" target="_blank" rel="noopener">Restaurant Guru</a>
+  </div>
+</div></section>
+
+<section class="feat" id="finden"><div class="wrap">
+  <div style="text-align:center;margin-bottom:44px"><span class="lead">Besuch</span><h2 style="margin-top:8px">Öffnungszeiten &amp; <em>Anfahrt</em></h2></div>
   <div class="info">
     <div class="panel dark">
       <h3>Öffnungszeiten</h3>
-      <div class="row"><span>Montag – Freitag</span><b>08:30 – 18:00</b></div>
-      <div class="row"><span>Samstag &amp; Sonntag</span><b>09:00 – 18:00</b></div>
-      <div class="row"><span>Sonnenuntergang</span><b>Terrasse offen</b></div>
-      <p style="margin-top:16px;font-size:.84rem;color:#bcd2d2">Zeiten beispielhaft – bitte bestätigen.</p>
+      <div class="row off"><span>Montag</span><b>Ruhetag</b></div>
+      <div class="row"><span>Dienstag – Freitag</span><b>09:00 – 20:00</b></div>
+      <div class="row"><span>Samstag &amp; Sonntag</span><b>08:30 – 19:00</b></div>
+      <p style="margin-top:16px;font-size:.84rem;color:#bdbcb0">Stand laut öffentlichen Angaben – bitte bestätigen.</p>
     </div>
     <div class="panel light">
       <h3>So findest du uns</h3>
-      <div class="row"><span>Adresse</span><b>Konsul-Smidt-Str. 82</b></div>
+      <div class="row"><span>Adresse</span><b>Konsul-Smidt-Str. 86</b></div>
       <div class="row"><span>Stadtteil</span><b>28217 Bremen · Überseestadt</b></div>
       <div class="row"><span>Telefon</span><b>0421 84498180</b></div>
       <div class="row"><span>Instagram</span><b>@dilans_cafe</b></div>
-      <a href="https://www.google.com/maps/search/?api=1&query=Dilans+Café+Konsul-Smidt-Straße+82+Bremen" target="_blank" class="btn" style="margin-top:22px">In Maps öffnen</a>
+      <a href="https://www.google.com/maps/search/?api=1&query=Dilans+Café+Konsul-Smidt-Straße+86+Bremen" target="_blank" rel="noopener" class="btn" style="margin-top:22px">In Maps öffnen</a>
     </div>
   </div>
 </div></section>
 
 <section class="cta"><div class="wrap">
-  <h2>Die Sonne steht günstig. Komm vorbei.</h2>
+  <span class="lead" style="color:#cdd6c8">Bis gleich</span>
+  <h2 style="margin-top:10px">Die Sonne steht günstig. Komm vorbei.</h2>
   <p>Dein Platz auf der Dachterrasse wartet – mit Kaffee und Hafenblick.</p>
-  <a href="https://www.google.com/maps/search/?api=1&query=Dilans+Café+Konsul-Smidt-Straße+82+Bremen" target="_blank" class="btn">Route planen</a>
+  <a href="https://www.google.com/maps/search/?api=1&query=Dilans+Café+Konsul-Smidt-Straße+86+Bremen" target="_blank" rel="noopener" class="btn">Route planen</a>
 </div></section>
 
-<section style="padding:88px 0"><div class="wrap"><span class="lead" style="text-align:center;display:block">Was Besucher sagen</span><h2 style="text-align:center;margin-top:12px;margin-bottom:46px">Testimonials</h2><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:26px"><div style="padding:30px;background:#fff;border-left:4px solid var(--sun);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.06)"><p style="font-style:italic;margin-bottom:16px">„Perfekt zum Entspannen. Essen, Aussicht, Atmosphäre – alles passt."</p><p style="font-weight:600">– Anna</p></div><div style="padding:30px;background:#fff;border-left:4px solid var(--sun);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.06)"><p style="font-style:italic;margin-bottom:16px">„Mein Lieblingsort in Bremen. Team ist super freundlich."</p><p style="font-weight:600">– Michael</p></div><div style="padding:30px;background:#fff;border-left:4px solid var(--sun);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.06)"><p style="font-style:italic;margin-bottom:16px">„Absolut empfehlenswert. Qualität <footer> Service top."</p><p style="font-weight:600">– Petra</p></div></div></div></section>
-
 <footer><div class="wrap">
-  © Dilan's Café · Konsul-Smidt-Straße 82 · 28217 Bremen
-  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com</span>
+  <div class="footmark">Dilan's</div>
+  Konsul-Smidt-Straße 86 · 28217 Bremen · Überseestadt
+  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach öffentlich verfügbaren Angaben (Instagram, Restaurant-Verzeichnisse); Fotos: Platzhalter (Stock), durch echte Laden-Fotos ersetzbar.</span>
 </div></footer>
+<script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
 </body>
 </html>

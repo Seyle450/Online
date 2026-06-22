@@ -3,132 +3,278 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#a14e38">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Café Petit · Bremen — Coffee, slow & beautiful">
+<meta property="og:description" content="Das kleine Nachbarschaftscafé in Schwachhausen: hausgemachte Signature Drinks, Hojicha, Earl Grey Latte, vieles vegan & glutenfrei. Von Lisa & Lina, seit September 2025.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='28' fill='%23f4ede0'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='%23a14e38' font-family='Verdana,sans-serif' font-weight='bold'%3Ep%3C/text%3E%3C/svg%3E">
 <title>Café Petit · Bremen — Coffee, slow &amp; beautiful</title>
-<meta name="description" content="Café Petit in Schwachhausen – Signature Drinks, hausgemacht, vegan &amp; glutenfrei. Ein ästhetischer Ort zum Verlangsamen.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="description" content="Café Petit in Schwachhausen – hausgemachte Signature Drinks, Hojicha, Earl Grey Latte, vegan & glutenfrei. Ein ehrlicher, persönlicher Ort zum Verlangsamen. Von Lisa Haar & Lina Classon.">
+<link rel="stylesheet" href="fonts.css">
 <style>
   :root{
-    --paper:#faf6f1; --cream:#f1e9df; --blush:#cf8d7c; --sage:#9aa88f;
-    --ink:#2a2723; --muted:#8c8278;
+    --brand:#a14e38; --deep:#7e3a28; --cream:#f4ede0; --paper:#faf5ea;
+    --ink:#3a2c25; --muted:#908073; --sand:#ece2d2; --line:#e7dac8;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased}
-  h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.05;letter-spacing:.005em}
+  h1,h2,h3,.round{font-family:'Fredoka',sans-serif;font-weight:600;line-height:1.05}
   .wrap{max-width:1080px;margin:0 auto;padding:0 30px}
-  a{color:inherit;text-decoration:none;position:relative}
-  a[href^="#"]{transition:color .2s ease}
-  a[href^="#"]:hover{color:var(--crema)}
-  .lead{font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--crema);font-weight:700;margin-bottom:16px;display:inline-block}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .lead{font-family:'Fredoka';font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brand);font-weight:600}
 
-  nav{position:sticky;top:0;z-index:40;background:rgba(250,246,241,.82);backdrop-filter:blur(12px);border-bottom:1px solid #ece2d6}
-  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:74px}
-  .logo{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;letter-spacing:.02em}
-  .navlinks{display:flex;gap:34px;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
-  .navlinks a{color:rgba(0,0,0,.65);transition:color .2s}.navlinks a:hover{color:var(--ink)}
-  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:0;border:0;padding:4px}
-  .hamburger span{width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
-  .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(7px,7px)}
-  .hamburger.active span:nth-child(2){opacity:0}
-  .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
-  @media(max-width:760px){.navlinks{display:none}.hamburger{display:flex}}
+  nav{position:sticky;top:0;z-index:40;background:rgba(250,245,234,.86);backdrop-filter:blur(12px);border-bottom:1px solid #ece1d0}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .logo{font-family:'Fredoka';font-weight:700;font-size:1.85rem;color:var(--brand);line-height:.9;display:flex;align-items:baseline;gap:8px}
+  .logo small{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  .navlinks{display:flex;gap:30px;font-size:.92rem;font-weight:500}
+  .navlinks a{color:var(--muted)}.navlinks a:hover{color:var(--brand)}
+  .btn{display:inline-block;background:var(--brand);color:#fff;padding:13px 28px;border-radius:100px;font-family:'Fredoka';font-weight:600;font-size:.95rem;transition:transform .15s,background .2s}
+  .btn:hover{transform:translateY(-2px);background:var(--deep)}
+  .btn.ghost{background:transparent;color:var(--brand);box-shadow:inset 0 0 0 2px var(--brand)}
+  .btn.ghost:hover{background:var(--brand);color:#fff}
+  @media(max-width:760px){.navlinks{display:none}}
 
-  /* hero — editorial, asymmetric */
-  .hero{padding:80px 0 70px;animation:fadeInUp .8s ease-out}
-  .hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:end}
+  .hero{padding:78px 0 66px}
+  .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
   @media(max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:36px}}
-  @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-  .hero h1{font-size:clamp(3.2rem,8vw,6rem);margin:22px 0 0}
-  .hero h1 em{font-style:italic;color:var(--blush)}
-  .hero p{margin-top:26px;max-width:40ch;color:#3a3028;font-size:1.08rem}
-  .hero .actions{margin-top:32px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-  .btn{display:inline-block;background:var(--ink);color:var(--paper);padding:14px 30px;border-radius:2px;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;transition:background .2s,box-shadow .2s,transform .15s;box-shadow:0 3px 12px rgba(42,39,35,.15)}
-  .btn:hover{background:var(--blush);transform:translateY(-2px);box-shadow:0 6px 20px rgba(207,141,124,.25)}
-  .underline{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--ink);padding-bottom:3px}
-  .heroart{aspect-ratio:3/4;border-radius:3px;background:
-     linear-gradient(135deg,#f0dcc8 0%,#d98968 100%);position:relative;box-shadow:0 40px 70px -40px rgba(207,141,124,.7)}
-  .heroart span{position:absolute;left:18px;bottom:16px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+  .hero .big{font-family:'Fredoka';font-weight:700;font-size:clamp(4rem,12vw,8rem);color:var(--brand);line-height:.86;letter-spacing:-.01em}
+  .hero .big small{display:block;font-size:.18em;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-top:8px}
+  .hero h1{font-size:clamp(1.7rem,3vw,2.3rem);margin-top:24px;color:var(--ink);font-weight:500}
+  .hero p{margin-top:16px;max-width:42ch;color:#5c4d44;font-size:1.06rem}
+  .hero .actions{margin-top:30px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .heroart{position:relative;aspect-ratio:4/5;border-radius:24px;overflow:hidden;box-shadow:0 40px 70px -40px rgba(161,78,56,.55)}
+  .heroart img{width:100%;height:100%;object-fit:cover}
+  .heroart .stamp{position:absolute;right:16px;bottom:16px;background:rgba(250,245,234,.94);color:var(--brand);font-family:'Fredoka';font-weight:600;font-size:.84rem;padding:9px 15px;border-radius:100px;box-shadow:0 10px 26px -12px rgba(0,0,0,.5)}
 
-  .marq{border-top:1px solid #e7dccd;border-bottom:1px solid #e7dccd;padding:20px 0;overflow:hidden;white-space:nowrap}
-  .marq span{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:var(--sage);margin:0 26px}
+  .marq{background:var(--brand);color:var(--cream);padding:16px 0;overflow:hidden;white-space:nowrap}
+  .marq span{font-family:'Fredoka';font-weight:500;font-size:1.1rem;margin:0 22px}
 
-  section{padding:100px 0}
-  section:nth-of-type(even){background:rgba(199,149,102,.02)}
+  section{padding:88px 0}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
   @media(max-width:860px){.two{grid-template-columns:1fr;gap:34px}}
-  h2{font-size:clamp(2rem,4vw,2.9rem);color:var(--ink);margin-bottom:16px}
-  .about p{margin-top:20px;color:#3a3028;font-size:1.06rem}
-  .square{aspect-ratio:1;border-radius:3px;background:linear-gradient(150deg,#d9e0d2,#9aa88f);position:relative}
-  .square span{position:absolute;left:18px;bottom:16px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+  h2{font-size:clamp(2.2rem,5vw,3.3rem)}
+  .about p{margin-top:20px;color:#5c4d44;font-size:1.06rem}
+  .square{aspect-ratio:1;border-radius:24px;overflow:hidden}
+  .square img{width:100%;height:100%;object-fit:cover}
 
-  /* menu */
-  .menu{background:var(--cream)}
-  .menu .wrap{max-width:760px}
-  .mhead{text-align:center;margin-bottom:50px}
-  .mitem{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:20px 0;border-bottom:1px solid #e2d6c6}
-  .mitem h3{font-size:1.7rem}
-  .mitem .d{flex:1;border-bottom:1px dotted #c9bba7;margin:0 6px;transform:translateY(-5px)}
-  .mitem .p{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--blush)}
-  .mitem small{display:block;font-family:'Inter';font-size:.84rem;color:rgba(0,0,0,.65);letter-spacing:0;text-transform:none;margin-top:3px}
-  .tags{margin-top:34px;text-align:center;font-size:.82rem;color:rgba(0,0,0,.65);letter-spacing:.04em}
-  .tags b{color:var(--sage)}
+  /* Story stat-row */
+  .facts{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+  .fact{background:var(--cream);border-radius:16px;padding:16px 20px;flex:1;min-width:140px}
+  .fact b{display:block;font-family:'Fredoka';font-weight:700;font-size:1.7rem;color:var(--brand);line-height:1}
+  .fact span{font-size:.85rem;color:var(--muted)}
+  blockquote.pull{margin-top:26px;font-family:'Fredoka';font-weight:500;font-size:1.35rem;color:var(--deep);line-height:1.3;border-left:4px solid var(--brand);padding-left:20px}
+  blockquote.pull cite{display:block;font-family:'Inter';font-style:normal;font-size:.9rem;color:var(--muted);font-weight:500;margin-top:10px}
+
+  /* Werte / feature cards */
+  .values{background:var(--cream)}
+  .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:46px}
+  @media(max-width:860px){.feat-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.feat-grid{grid-template-columns:1fr}}
+  .feat{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:26px 22px}
+  .feat .ic{font-size:1.9rem;line-height:1}
+  .feat h3{font-size:1.2rem;margin:14px 0 8px}
+  .feat p{font-size:.95rem;color:#5c4d44}
+
+  /* Menu with categories */
+  .menu .wrap{max-width:820px}
+  .mhead{text-align:center;margin-bottom:42px}
+  .mcat{margin-top:38px}
+  .mcat>h3{font-family:'Fredoka';font-weight:600;font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;color:var(--brand);border-bottom:2px solid var(--sand);padding-bottom:10px;margin-bottom:6px}
+  .mitem{display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:18px 0;border-bottom:1px solid var(--sand)}
+  .mitem:last-child{border-bottom:none}
+  .mitem h4{font-family:'Fredoka';font-weight:600;font-size:1.3rem}
+  .mitem .d{flex:1;border-bottom:2px dotted #d9cbb8;margin:0 8px;transform:translateY(-5px)}
+  .mitem .p{font-family:'Fredoka';font-weight:600;font-size:1.3rem;color:var(--brand);white-space:nowrap}
+  .mitem small{display:block;font-family:'Inter';font-size:.84rem;color:var(--muted);margin-top:3px;font-weight:400}
+  .tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);background:rgba(161,78,56,.1);border-radius:100px;padding:2px 9px;margin-left:8px;vertical-align:middle}
+  .tags{margin-top:34px;text-align:center;font-size:.86rem;color:var(--muted)}
+  .tags b{color:var(--brand)}
+  .sourced{margin-top:18px;text-align:center;font-size:.92rem;color:#5c4d44}
+  .sourced b{color:var(--brand);font-weight:600}
+
+  /* Saison specials */
+  .specials{background:var(--deep);color:var(--cream)}
+  .specials .lead{color:#f0c9bc}
+  .specials h2{color:#fff}
+  .spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px}
+  @media(max-width:760px){.spec-grid{grid-template-columns:1fr}}
+  .spec{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:26px 24px}
+  .spec h3{font-size:1.35rem;color:#fff}
+  .spec p{margin-top:8px;font-size:.95rem;color:#f3ddd4}
+  .spec .s{display:inline-block;margin-top:14px;font-family:'Fredoka';font-weight:600;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#f0c9bc}
+
+  /* Gallery */
+  .gal{background:var(--cream)}
+  .gal .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+  .gal .grid figure:first-child{grid-column:span 2;grid-row:span 2}
+  @media(max-width:680px){.gal .grid{grid-template-columns:1fr 1fr}.gal .grid figure:first-child{grid-column:span 2}}
+  .gal figure{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:1}
+  .gal .grid figure:first-child{aspect-ratio:4/5}
+  .gal img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+  .gal figure:hover img{transform:scale(1.05)}
+  .gal figcaption{position:absolute;left:16px;bottom:12px;color:#fff;font-family:'Fredoka';font-weight:600;font-size:1.1rem;text-shadow:0 2px 14px rgba(0,0,0,.45)}
+
+  /* Press / social proof */
+  .press{text-align:center}
+  .press .logos{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 26px;margin-top:34px}
+  .press .logos a{font-family:'Fredoka';font-weight:600;font-size:1.15rem;color:var(--deep);opacity:.78;border-bottom:2px solid transparent;padding-bottom:3px;transition:opacity .2s,border-color .2s}
+  .press .logos a:hover{opacity:1;border-color:var(--brand)}
+  .press .quote{max-width:24ch;margin:40px auto 0;font-family:'Fredoka';font-weight:500;font-size:1.6rem;color:var(--ink);line-height:1.25}
+  .press .quote span{color:var(--brand)}
 
   .info{display:grid;grid-template-columns:1fr 1fr;gap:40px}
   @media(max-width:860px){.info{grid-template-columns:1fr}}
-  .info h3{font-size:1.9rem;margin-bottom:18px}
-  .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #e7dccd;font-size:.97rem}
+  .info h3{font-size:1.8rem;margin-bottom:18px}
+  .row{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid var(--sand);font-size:.97rem}
   .row:last-child{border:none}.row b{font-weight:600}
+  .row.closed b{color:var(--muted)}
 
-  .cta{text-align:center;background:var(--ink);color:var(--paper)}
-  .cta h2{color:var(--paper);max-width:16ch;margin:0 auto}.cta .lead{color:var(--blush)}
-  .cta p{margin:20px auto 32px;max-width:42ch;color:#cbc3ba}
+  .cta{text-align:center;background:var(--brand);color:#fff}
+  .cta h2{color:#fff;max-width:18ch;margin:0 auto}.cta .lead{color:#f0d3c8}
+  .cta p{margin:18px auto 30px;max-width:44ch;color:#f3e3da}
+  .cta .btn{background:#fff;color:var(--brand)}
+  .cta .btn:hover{background:var(--cream)}
 
-  footer{padding:50px 0 30px;text-align:center;color:var(--muted);font-size:.86rem;background:var(--paper);border-top:1px solid #eee2d2;animation:fadeInUp .8s ease-out .8s backwards}
-  .concept{display:block;margin-top:8px;color:#b0a596}
+  footer{padding:46px 0;text-align:center;color:var(--muted);font-size:.86rem;border-top:1px solid var(--sand)}
+  .footmark{font-family:'Fredoka';font-weight:700;font-size:1.7rem;color:var(--brand);margin-bottom:6px}
+  .concept{display:block;margin-top:8px;color:#a99a8b;max-width:60ch;margin-left:auto;margin-right:auto}
+
+  /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
 </style>
+<style>.skip-link{position:fixed;top:10px;left:50%;transform:translate(-50%,-160%);z-index:9999;background:#16161A;color:#fff;font:600 14px/1 system-ui,-apple-system,sans-serif;padding:11px 18px;border-radius:8px;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.3);transition:transform .2s ease}.skip-link:focus{transform:translate(-50%,0);outline:3px solid #fff;outline-offset:2px}@media(prefers-reduced-motion:reduce){.skip-link{transition:none}}</style>
+<style>
+  .mnav-burger{display:none}
+  @media(max-width:760px){
+    nav .wrap{position:relative}
+    .mnav-burger{display:flex;flex-direction:column;justify-content:center;gap:5px;width:42px;height:42px;background:none;border:0;cursor:pointer;padding:9px;margin-left:auto;z-index:2}
+    .mnav-burger span{display:block;height:2px;width:100%;background:#a14e38;border-radius:2px;transition:transform .25s ease,opacity .2s ease}
+    .mnav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .mnav-burger.open span:nth-child(2){opacity:0}
+    .mnav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    nav .wrap>a.btn{display:none}
+    nav .navlinks{display:none!important;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;align-items:stretch;background:#faf5ea;border-top:1px solid #ece2d2;border-bottom:1px solid #ece2d2;padding:6px 28px 14px;box-shadow:0 18px 30px -18px rgba(0,0,0,.45);text-transform:none}
+    nav .navlinks.open{display:flex!important}
+    nav .navlinks a{padding:15px 2px;border-bottom:1px solid #ece2d2;font-size:1.05rem;color:#3a2c25}
+    nav .navlinks a:last-child{border-bottom:none}
+  }
+  @media(prefers-reduced-motion:reduce){.mnav-burger span{transition:none}}
+  </style>
 </head>
 <body>
+<a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
 <nav><div class="wrap">
-  <div class="logo">Café Petit</div>
-  <div class="navlinks"><a href="#about">Über uns</a><a href="#menu">Signature Drinks</a><a href="#besuch">Besuch</a></div>
-  <button class="hamburger" id="menu"><span></span><span></span><span></span></button>
+  <div class="logo">petit <small>café</small></div>
+  <div class="navlinks"><a href="#about">Über uns</a><a href="#werte">Was uns ausmacht</a><a href="#menu">Karte</a><a href="#specials">Specials</a><a href="#gal">Momente</a><a href="#besuch">Besuch</a></div>
+  <a href="#besuch" class="btn">Vorbeikommen</a>
+<button class="mnav-burger" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></nav>
-<script>document.getElementById('menu').addEventListener('click',e=>e.currentTarget.classList.toggle('active'))</script>
 
-<header class="hero"><div class="wrap">
+<header class="hero" id="inhalt"><div class="wrap">
   <div>
-    <span class="lead">Schwachhausen · Bremen</span>
-    <h1>Coffee,<br><em>slow</em> &amp; beautiful.</h1>
-    <p>Ein kleiner Ort mit großer Handschrift. Hausgemachte Signature Drinks, viel Liebe zum Detail – und Zeit, die einfach gut tut.</p>
+    <span class="lead">Schwachhausen · Bremen · seit 2025</span>
+    <div class="big" style="margin-top:14px">petit<small>café</small></div>
+    <h1>Coffee, slow &amp; beautiful.</h1>
+    <p>Ein kleiner Eckladen mit großer Handschrift: hausgemachte Signature Drinks, Hojicha &amp; Earl Grey Latte, viel Liebe zum Detail – und Zeit, die einfach gut tut.</p>
     <div class="actions">
-      <a href="#menu" class="btn">Unsere Drinks</a>
-      <a href="#besuch" class="underline">Hartwigstraße 2c →</a>
+      <a href="#menu" class="btn">Unsere Karte</a>
+      <a href="#besuch" class="round" style="color:var(--brand);border-bottom:2px solid var(--brand);padding-bottom:3px">Hartwigstraße 2c →</a>
     </div>
   </div>
-  <div class="heroart"><span>Foto: Petit Signature Latte</span></div>
+  <div class="heroart">
+    <img src="img/hero.webp" alt="Signature Drink im Café Petit">
+    <span class="stamp">★ täglich frisch &amp; hausgemacht</span>
+  </div>
 </div></header>
 
-<div class="marq"><span>· hausgemacht ·</span><span>vegan</span><span>· glutenfrei ·</span><span>specialty coffee</span><span>· slow mornings ·</span><span>made in Bremen</span><span>· hausgemacht ·</span><span>vegan</span></div>
+<div class="marq"><span>★ hausgemacht</span><span>vegan</span><span>★ glutenfreie Optionen</span><span>Specialty Coffee</span><span>★ Hojicha</span><span>Earl Grey Latte</span><span>★ slow mornings</span><span>made in Schwachhausen</span><span>★ hausgemacht</span><span>vegan</span><span>★ Hojicha</span></div>
 
 <section id="about" class="about"><div class="wrap two">
-  <div class="square"><span>Foto: Petit Interior</span></div>
+  <div class="square"><img loading="lazy" src="img/interior.webp" alt="Heller, minimalistischer Innenraum des Café Petit"></div>
   <div>
-    <span class="lead">Die Idee</span>
-    <h2>Klein. Fein.<br>Mit Charakter.</h2>
-    <p>Café Petit ist das Café einer neuen Generation – ästhetisch, persönlich, nahbar. Von Lina &amp; Lisa mit dem Anspruch geführt, dass jedes Detail stimmt: vom Schaum auf dem Matcha bis zur Musik im Raum.</p>
-    <p>Alles hausgemacht, vieles vegan und glutenfrei. Ein Platz, an dem du nicht nur einen Kaffee bekommst, sondern eine kleine Pause vom Tag.</p>
+    <span class="lead">Die Geschichte</span>
+    <h2>Von Lisa &amp; Lina – aus Liebe zum Detail.</h2>
+    <p>Café Petit ist das Werk zweier Freundinnen: <b>Lisa Haar</b>, gebürtige Bremerin, und <b>Lina Classon</b>, die aus Amsterdam herzog. Über eine Reihe glücklicher Zufälle fanden sie zusammen – und einen ehemaligen Hofladen an der Hartwigstraße.</p>
+    <p>In sieben Wochen bauten sie ihn eigenhändig um: Wände raus, verputzt, gestrichen, den großen Holz-Tresen selbst gezimmert. Seit dem 1. September 2025 ist Petit das Eck-Café mit raumhohen Fenstern, in dem jedes Detail eine Geschichte erzählt.</p>
+    <div class="facts">
+      <div class="fact"><b>2025</b><span>eröffnet im September</span></div>
+      <div class="fact"><b>7 Wochen</b><span>selbst umgebaut</span></div>
+      <div class="fact"><b>9–92</b><span>Stammgäste jeden Alters</span></div>
+    </div>
+    <blockquote class="pull">„Wir wollten ein Café eröffnen, das ehrlich, persönlich und unkompliziert ist."
+      <cite>— Lina &amp; Lisa, Café Petit</cite></blockquote>
+  </div>
+</div></section>
+
+<section id="werte" class="values"><div class="wrap">
+  <div style="text-align:center"><span class="lead">Was uns ausmacht</span><h2 style="margin-top:10px">Klein. Fein. Mit Charakter.</h2></div>
+  <div class="feat-grid">
+    <div class="feat"><div class="ic">🤍</div><h3>Ehrlich &amp; nahbar</h3><p>Persönlich geführt, unkompliziert, mit echtem Interesse an dir – kein Schnickschnack.</p></div>
+    <div class="feat"><div class="ic">🥐</div><h3>Hausgemacht</h3><p>Cookies, Kuchen sowie Mandel- &amp; Pistazien-Croissants – täglich frisch gebacken.</p></div>
+    <div class="feat"><div class="ic">🌱</div><h3>Vegan &amp; glutenfrei</h3><p>Vieles ist vegan, glutenfreie Optionen gibt es täglich – ohne Kompromiss beim Geschmack.</p></div>
+    <div class="feat"><div class="ic">🤝</div><h3>Für die Nachbarschaft</h3><p>Studierende, Eltern mit Kinderwagen, Senioren – ein Ort des lebendigen Miteinanders.</p></div>
   </div>
 </div></section>
 
 <section id="menu" class="menu"><div class="wrap">
-  <div class="mhead"><span class="lead">Hausgemacht</span><h2 style="margin-top:12px">Signature Drinks</h2></div>
-  <div class="mitem"><div><h3>Petit Signature Latte</h3><small>Espresso, Hausmilch, Sirup nach Saison</small></div><div class="d"></div><div class="p">5,2</div></div>
-  <div class="mitem"><div><h3>Ceremonial Matcha</h3><small>steingemahlen, mit Hafer oder Kokos</small></div><div class="d"></div><div class="p">5,5</div></div>
-  <div class="mitem"><div><h3>Iced Spanish Latte</h3><small>cremig, süß, perfekt für warme Tage</small></div><div class="d"></div><div class="p">5,8</div></div>
-  <div class="mitem"><div><h3>Hausgemachter Kuchen</h3><small>täglich frisch, oft vegan &amp; glutenfrei</small></div><div class="d"></div><div class="p">4,5</div></div>
-  <p class="tags">Beispielkarte · <b>vegan</b> &amp; <b>glutenfreie</b> Optionen täglich · Preise bitte final bestätigen</p>
+  <div class="mhead"><span class="lead">Hausgemacht</span><h2 style="margin-top:12px">Unsere Karte</h2></div>
+
+  <div class="mcat">
+    <h3>Signature Drinks</h3>
+    <div class="mitem"><div><h4>Earl Grey Latte</h4><small>mit hausgemachtem Sirup – unser Signature</small></div><div class="d"></div><div class="p">5,2</div></div>
+    <div class="mitem"><div><h4>Hojicha Latte <span class="tag">Bestseller</span></h4><small>gerösteter Grüntee, mild &amp; nussig</small></div><div class="d"></div><div class="p">5,2</div></div>
+    <div class="mitem"><div><h4>Dirty Hojicha</h4><small>Hojicha mit einem Shot Espresso</small></div><div class="d"></div><div class="p">5,5</div></div>
+    <div class="mitem"><div><h4>Iced Spanish Latte</h4><small>cremig, süß, perfekt für warme Tage</small></div><div class="d"></div><div class="p">5,8</div></div>
+  </div>
+
+  <div class="mcat">
+    <h3>Matcha &amp; Kaffee</h3>
+    <div class="mitem"><div><h4>Ceremonial Matcha</h4><small>steingemahlen, aus Vietnam – mit Hafer oder Kokos</small></div><div class="d"></div><div class="p">5,5</div></div>
+    <div class="mitem"><div><h4>Cappuccino · Cortado · Flat White</h4><small>Bohnen von Rubiac, Johann Jacobs Haus</small></div><div class="d"></div><div class="p">3,8</div></div>
+    <div class="mitem"><div><h4>Filterkaffee</h4><small>handgebrüht, wechselnde Röstung</small></div><div class="d"></div><div class="p">3,5</div></div>
+  </div>
+
+  <div class="mcat">
+    <h3>Küche &amp; Süßes</h3>
+    <div class="mitem"><div><h4>Kimchi Grilled Cheese</h4><small>auf Sauerteig, mit hausgemachtem Kimchi</small></div><div class="d"></div><div class="p">8,5</div></div>
+    <div class="mitem"><div><h4>Mandel- &amp; Pistazien-Croissant</h4><small>hausgemacht, täglich frisch</small></div><div class="d"></div><div class="p">4,2</div></div>
+    <div class="mitem"><div><h4>Kuchen &amp; Cookies <span class="tag">oft vegan</span></h4><small>täglich wechselnd, glutenfreie Optionen</small></div><div class="d"></div><div class="p">4,5</div></div>
+  </div>
+
+  <p class="sourced">Brot von <b>Lenes Backstube</b> · Kaffee von <b>Rubiac</b> · Matcha &amp; Hojicha über Amsterdam aus Vietnam</p>
+  <p class="tags">Beispielkarte zum Konzept · <b>vegan</b> &amp; <b>glutenfreie</b> Optionen täglich · Preise bitte final bestätigen</p>
+</div></section>
+
+<section id="specials" class="specials"><div class="wrap">
+  <div style="text-align:center"><span class="lead">Saison</span><h2 style="margin-top:12px">Specials, die kommen &amp; gehen</h2></div>
+  <div class="spec-grid">
+    <div class="spec"><h3>Coconut White Mocha</h3><p>Weiße Schokolade, Kokos, Espresso – warm und weich.</p><span class="s">Herbst &amp; Winter</span></div>
+    <div class="spec"><h3>Pumpkin Spice Matcha</h3><p>Matcha trifft Kürbis-Gewürz – unsere Herbst-Hommage.</p><span class="s">Saison-Liebling</span></div>
+    <div class="spec"><h3>Dirty Hojicha</h3><p>Der Bestseller mit Extra-Kick: Hojicha &amp; Espresso.</p><span class="s">ganzjährig beliebt</span></div>
+  </div>
+</div></section>
+
+<section id="gal" class="gal"><div class="wrap">
+  <div style="text-align:center"><span class="lead">Momente</span><h2 style="margin-top:10px">Zum Anschauen &amp; Genießen</h2></div>
+  <div class="grid">
+    <figure><img loading="lazy" src="img/drink.webp" alt="Signature Drink"><figcaption>Signature Drinks</figcaption></figure>
+    <figure><img loading="lazy" src="img/cake.webp" alt="Hausgemachter Kuchen"><figcaption>Hausgemacht</figcaption></figure>
+    <figure><img loading="lazy" src="img/interior.webp" alt="Innenraum"><figcaption>Eckladen mit Licht</figcaption></figure>
+  </div>
+</div></section>
+
+<section id="presse" class="press"><div class="wrap">
+  <span class="lead">Bekannt aus</span>
+  <div class="logos">
+    <a href="https://www.weser-kurier.de/ratgeber/essen-und-trinken/bremens-petit-cafe-kulinarische-vielfalt-auf-kleinem-raum-doc83ik8jokqmq1h90yc2e" target="_blank" rel="noopener">Weser-Kurier</a>
+    <a href="https://magazinefuerbremen.de/schwachhausen-magazin/cafe-petit/" target="_blank" rel="noopener">Magazine für Bremen</a>
+    <a href="https://www.instagram.com/petitcoffeeclub/" target="_blank" rel="noopener">@petitcoffeeclub</a>
+  </div>
+  <p class="quote">„Ein kleines Café mit <span>großer Wirkung</span>."</p>
 </div></section>
 
 <section id="besuch"><div class="wrap">
@@ -136,49 +282,19 @@
   <div class="info">
     <div>
       <h3>Öffnungszeiten</h3>
-      <div class="row"><span>Montag – Freitag</span><b>08:30 – 18:00</b></div>
-      <div class="row"><span>Samstag &amp; Sonntag</span><b>09:30 – 18:00</b></div>
-      <div class="row"><span>Feiertage</span><b>nach Aushang</b></div>
-      <p style="margin-top:16px;font-size:.85rem;color:rgba(0,0,0,.65)">Zeiten beispielhaft – bitte bestätigen.</p>
+      <div class="row"><span>Montag</span><b>08:00 – 17:00</b></div>
+      <div class="row closed"><span>Dienstag</span><b>Ruhetag</b></div>
+      <div class="row"><span>Mittwoch – Freitag</span><b>08:00 – 17:00</b></div>
+      <div class="row"><span>Samstag &amp; Sonntag</span><b>09:00 – 16:00</b></div>
+      <p style="margin-top:16px;font-size:.85rem;color:var(--muted)">Stand laut öffentlichen Angaben – bitte vor Besuch bestätigen.</p>
     </div>
     <div>
       <h3>Hier sind wir</h3>
       <div class="row"><span>Adresse</span><b>Hartwigstraße 2c</b></div>
       <div class="row"><span>Stadtteil</span><b>28209 Bremen · Schwachhausen</b></div>
+      <div class="row"><span>Nähe</span><b>wenige Schritte zur Wachmannstraße</b></div>
       <div class="row"><span>Instagram</span><b>@petitcoffeeclub</b></div>
-      <a href="https://www.google.com/maps/search/?api=1&query=Café+Petit+Hartwigstraße+2c+Bremen" target="_blank" class="btn" style="margin-top:22px">In Maps öffnen</a>
-    </div>
-  </div>
-</div></section>
-
-<section style="padding:88px 0;background:var(--cream)"><div class="wrap">
-  <span class="lead" style="text-align:center;display:block">Team</span>
-  <h2 style="text-align:center;margin-top:12px;margin-bottom:46px">Lina & Lisa</h2>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
-    <div><div style="aspect-ratio:3/4;border-radius:3px;background:linear-gradient(150deg,#e7d3c4,#cf8d7c 75%);position:relative;box-shadow:0 40px 70px -40px rgba(207,141,124,.7)"></div></div>
-    <div>
-      <h3 style="font-size:1.7rem;margin-bottom:16px">Gründer des Petit</h3>
-      <p style="font-size:1.06rem;color:#5a5249;margin-bottom:20px">Lina & Lisa gründeten Petit mit einer einfachen Vision: Ein Ort, an dem Qualität, Nachhaltigkeit und Gemütlichkeit zusammenkommen.</p>
-      <p style="font-size:1.06rem;color:#5a5249">Mit Jahren Erfahrung in der Café-Szene haben sie Petit zu einem Liebling der Schwachhausen-Community gemacht. Jeden Morgen von Hand – jeden Kaffee mit Liebe.</p>
-    </div>
-  </div>
-</div></section>
-
-<section style="padding:88px 0"><div class="wrap">
-  <span class="lead" style="text-align:center;display:block">Kleine Erfolgsgeschichten</span>
-  <h2 style="text-align:center;margin-top:12px;margin-bottom:46px">Was unsere Gäste sagen</h2>
-  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:26px">
-    <div style="padding:30px;background:#fff;border-left:4px solid var(--blush);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.06)">
-      <p style="color:#5a5249;font-style:italic;margin-bottom:16px">„Das beste Matcha in Bremen. Und das Ambiente ist einfach perfekt zum Entspannen."</p>
-      <p style="font-weight:600">– Julia</p>
-    </div>
-    <div style="padding:30px;background:#fff;border-left:4px solid var(--blush);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.06)">
-      <p style="color:#5a5249;font-style:italic;margin-bottom:16px">„Ich liebe es hier. Die Mitarbeiter kennen meinen Namen, und jeder Kaffee schmeckt handgemacht."</p>
-      <p style="font-weight:600">– Thomas</p>
-    </div>
-    <div style="padding:30px;background:#fff;border-left:4px solid var(--blush);border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.06)">
-      <p style="color:#5a5249;font-style:italic;margin-bottom:16px">„Endlich ein Café, das vegan & glutenfrei ernst nimmt. Qualität ohne Kompromisse."</p>
-      <p style="font-weight:600">– Sarah</p>
+      <a href="https://www.google.com/maps/search/?api=1&query=Café+Petit+Hartwigstraße+2c+Bremen" target="_blank" rel="noopener" class="btn" style="margin-top:22px">In Maps öffnen</a>
     </div>
   </div>
 </div></section>
@@ -186,13 +302,15 @@
 <section class="cta"><div class="wrap">
   <span class="lead">Bis gleich</span>
   <h2 style="margin-top:14px">Ein guter Tag beginnt mit einem guten Kaffee.</h2>
-  <p>Wir freuen uns auf dich in der Hartwigstraße.</p>
-  <a href="https://www.instagram.com/petitcoffeeclub/" target="_blank" class="btn" style="background:var(--blush)">Auf Instagram folgen</a>
+  <p>Wir freuen uns auf dich in der Hartwigstraße – ehrlich, persönlich, unkompliziert.</p>
+  <a href="https://www.instagram.com/petitcoffeeclub/" target="_blank" rel="noopener" class="btn">Auf Instagram folgen</a>
 </div></section>
 
 <footer><div class="wrap">
-  © Café Petit · Hartwigstraße 2c · 28209 Bremen
-  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com</span>
+  <div class="footmark">petit café</div>
+  Hartwigstraße 2c · 28209 Bremen · Schwachhausen
+  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach öffentlich verfügbaren Angaben (Presse, Instagram); Fotos: Platzhalter (Stock), durch echte Laden-Fotos ersetzbar.</span>
 </div></footer>
+<script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
 </body>
 </html>
