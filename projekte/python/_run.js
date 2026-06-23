@@ -107,8 +107,8 @@
       if (typeof loadPyodide !== 'function') throw new Error('Pyodide nicht geladen — Internet/Adblocker prüfen.');
       if (!pyodide) {
         pyodide = await loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/' });
-        pyodide.setStdout({ batched: write });
-        pyodide.setStderr({ batched: write });
+        pyodide.setStdout({ batched: function (s) { write(s.endsWith('\n') ? s : s + '\n'); } });
+        pyodide.setStderr({ batched: function (s) { write(s.endsWith('\n') ? s : s + '\n'); } });
       }
       Object.keys(cfg.files).forEach(function (name) { try { pyodide.FS.writeFile(name, cfg.files[name]); } catch (e) {} });
       await pyodide.runPythonAsync(FALLBACK_PRE);

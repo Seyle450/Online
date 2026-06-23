@@ -41,8 +41,8 @@ self.onmessage = async function (e) {
     try {
       importScripts('https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js');
       pyodide = await loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.2/full/' });
-      pyodide.setStdout({ batched: function (s) { post('out', s); } });
-      pyodide.setStderr({ batched: function (s) { post('out', s); } });
+      pyodide.setStdout({ batched: function (s) { post('out', s.endsWith('\n') ? s : s + '\n'); } });
+      pyodide.setStderr({ batched: function (s) { post('out', s.endsWith('\n') ? s : s + '\n'); } });
       pyodide.setStdin({ stdin: readLine });
       post('ready');
     } catch (err) { post('error', String(err && err.message ? err.message : err)); }
