@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grundschule am Halmerweg – Bremen</title>
+<script>
+  /* Reveal-Elemente nur vorab verstecken, wenn Animationen erwünscht sind.
+     Fällt JS/GSAP aus, bleibt die Klasse weg -> Inhalt immer sichtbar. */
+  (function(){try{
+    var ok = !window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (ok) document.documentElement.classList.add('anim-on');
+  }catch(e){}})();
+</script>
+<meta name="description" content="Grundschule am Halmerweg in Bremen-Gröpelingen – eine bunte, weltoffene Schule zum Wohlfühlen, Entdecken und Großwerden. Infos zu Schule, Betreuung, Terminen, Team und Kontakt.">
+<meta name="author" content="Grundschule am Halmerweg">
+<meta name="theme-color" content="#2B7FD4">
+<link rel="canonical" href="https://www.gsamhalmerweg.de/">
+<!-- Open Graph / Social -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="Grundschule am Halmerweg">
+<meta property="og:title" content="Grundschule am Halmerweg – Bremen-Gröpelingen">
+<meta property="og:description" content="Eine bunte, weltoffene Grundschule zum Wohlfühlen, Entdecken und Großwerden.">
+<meta property="og:image" content="assets/Logo.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grundschule am Halmerweg – Bremen-Gröpelingen">
+<meta name="twitter:description" content="Eine bunte, weltoffene Grundschule zum Wohlfühlen, Entdecken und Großwerden.">
+<meta name="twitter:image" content="assets/Logo.png">
+<link rel="preload" href="fonts/baloo2-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/nunito-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" type="image/png" href="assets/favicon.png?v=3">
+<link rel="shortcut icon" type="image/png" href="assets/favicon.png?v=3">
+<link rel="apple-touch-icon" href="assets/favicon.png?v=3">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+  <div class="nav-bar">
+    <a class="brand" href="#start" data-link>
+      <img class="brand-logo" src="assets/Logo.png" alt="Logo der Grundschule am Halmerweg" width="67" height="46">
+      <span>
+        <span class="brand-name">Grundschule am Halmerweg</span>
+        <span class="brand-sub">GEMEINSAM LERNEN &amp; WACHSEN</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Hauptnavigation">
+      <div class="nav-item"><a class="nav-link" href="#start" data-link>Start</a></div>
+      <div class="nav-item"><a class="nav-link" href="#schule" data-link>Unsere Schule</a></div>
+      <div class="nav-item" data-dropdown>
+        <button class="nav-link" type="button" aria-expanded="false">Kinder <svg class="caret" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+        <div class="dropdown">
+          <a href="#aktuelles" data-link>Aktuelles</a>
+          <a href="#regeln" data-link>Unsere Regeln</a>
+          <a href="#schwimmen" data-link>Schwimmen</a>
+          <a href="#ags" data-link>AGs</a>
+          <a href="#schulsachen" data-link>Schulsachen</a>
+        </div>
+      </div>
+      <div class="nav-item" data-dropdown>
+        <button class="nav-link" type="button" aria-expanded="false">Infos <svg class="caret" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+        <div class="dropdown">
+          <a href="#stundenraster" data-link>Stundenraster</a>
+          <a href="#betreuung" data-link>Betreuung</a>
+          <a href="#ganztag" data-link>Ganztag</a>
+          <a href="#termine" data-link>Termine</a>
+          <a href="#uebergang" data-link>Übergang weiterf. Schulen</a>
+          <a href="#unterstuetzung" data-link>Unterstützung beim Lernen</a>
+        </div>
+      </div>
+      <div class="nav-item" data-dropdown>
+        <button class="nav-link" type="button" aria-expanded="false">Team <svg class="caret" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+        <div class="dropdown">
+          <a href="#schulleitung" data-link>Schulleitung &amp; Team</a>
+          <a href="#klassen" data-link>Klassenleitungen</a>
+        </div>
+      </div>
+      <div class="nav-item"><a class="nav-link" href="#kontakt" data-link>Kontakt</a></div>
+    </nav>
+
+    <button class="burger" type="button" aria-label="Menü öffnen" aria-expanded="false">
+      <svg width="26" height="26" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <a class="m-link" href="#start" data-link>Start</a>
+    <a class="m-link" href="#schule" data-link>Unsere Schule</a>
+    <div class="m-group">
+      <span class="m-link" style="cursor:default;opacity:.7;">Kinder</span>
+      <div class="m-sub">
+        <a href="#aktuelles" data-link>Aktuelles</a>
+        <a href="#regeln" data-link>Unsere Regeln</a>
+        <a href="#schwimmen" data-link>Schwimmen</a>
+        <a href="#ags" data-link>AGs</a>
+        <a href="#schulsachen" data-link>Schulsachen</a>
+      </div>
+    </div>
+    <div class="m-group">
+      <span class="m-link" style="cursor:default;opacity:.7;">Infos</span>
+      <div class="m-sub">
+        <a href="#stundenraster" data-link>Stundenraster</a>
+        <a href="#betreuung" data-link>Betreuung</a>
+        <a href="#ganztag" data-link>Ganztag</a>
+        <a href="#termine" data-link>Termine</a>
+        <a href="#uebergang" data-link>Übergang weiterf. Schulen</a>
+        <a href="#unterstuetzung" data-link>Unterstützung beim Lernen</a>
+      </div>
+    </div>
+    <div class="m-group">
+      <span class="m-link" style="cursor:default;opacity:.7;">Team</span>
+      <div class="m-sub">
+        <a href="#schulleitung" data-link>Schulleitung &amp; Team</a>
+        <a href="#klassen" data-link>Klassenleitungen</a>
+      </div>
+    </div>
+    <div class="m-group"><a class="m-link" href="#kontakt" data-link>Kontakt</a></div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <!-- ===================== START ===================== -->
+  <section class="section" id="start">
+    <div class="hero">
+      <span class="blob blob-1"></span><span class="blob blob-2"></span><span class="blob blob-3"></span>
+      <div class="hero-inner">
+        <img data-reveal class="hero-logo" width="1575" height="760" src="assets/logo-wide.png" alt="Grundschule am Halmerweg – Kinder halten gemeinsam die Welt in den Händen" onerror="this.remove()">
+        <span data-reveal class="badge">Willkommen an unserer Schule</span>
+        <h1 data-reveal>Hier fühlen sich<br>Kinder wohl.</h1>
+        <p class="lead" data-reveal>Eine bunte, weltoffene Grundschule in Bremen-Gröpelingen – zum Wohlfühlen, Entdecken und Großwerden, mitten im Herzen des Stadtteils.</p>
+        <div data-reveal class="hero-actions">
+          <a class="btn btn-primary" href="#schule" data-link>Unsere Schule kennenlernen</a>
+          <a class="btn btn-light" href="#kontakt" data-link>Kontakt &amp; Anfahrt</a>
+        </div>
+      </div>
+      <img class="hero-band" src="assets/bg.png" alt="" aria-hidden="true" onerror="this.remove()">
+    </div>
+
+    <!-- Quick access -->
+    <section class="block block-wide" style="padding-top:8px;padding-bottom:20px;">
+      <div class="grid grid-auto-sm quick-grid">
+        <a data-reveal class="quick-card" href="#stundenraster" data-link>
+          <span class="quick-icon" style="background:var(--blue-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="#2B7FD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg></span>
+          <h3>Stundenraster</h3>
+          <span class="txt">Unterrichts- und Pausenzeiten.</span>
+        </a>
+        <a data-reveal class="quick-card" href="#termine" data-link>
+          <span class="quick-icon" style="background:var(--coral-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="#FF7A66" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 9.5h17M8 3.5v3M16 3.5v3"/><path d="M7.5 13h2.5M14 13h2.5M7.5 16.5h2.5M14 16.5h2.5"/></svg></span>
+          <h3>Termine &amp; Ferien</h3>
+          <span class="txt">Alle wichtigen Termine.</span>
+        </a>
+        <a data-reveal class="quick-card" href="#ags" data-link>
+          <span class="quick-icon" style="background:var(--green-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="#46B36B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.6-.8 1.6-1.7 0-.5-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16a4.5 4.5 0 0 0 4.5-4.5C20.5 6.6 16.7 3.5 12 3.5Z"/><circle cx="7.8" cy="12" r="1"/><circle cx="9.8" cy="8.4" r="1"/><circle cx="14.2" cy="8" r="1"/></svg></span>
+          <h3>AGs &amp; Angebote</h3>
+          <span class="txt">Chor, Theater, Tanzen &amp; mehr.</span>
+        </a>
+        <a data-reveal class="quick-card" href="#betreuung" data-link>
+          <span class="quick-icon" style="background:var(--green-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="#46B36B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8.8c1.1-1.9 4-1.2 4 1 0 1.6-2 3-4 4-2-1-4-2.4-4-4 0-2.2 2.9-2.9 4-1Z"/><path d="M3.5 13l3.6-1a3 3 0 0 1 1.8 0l2.6 1a2.4 2.4 0 0 0 1.6 0l3.9-1.5c1.6-.6 2.8 1.5 1.4 2.6-2.1 1.8-4.8 3.6-7.4 3.6-2.1 0-4.6-1.4-5.5-1.9"/></svg></span>
+          <h3>Betreuung</h3>
+          <span class="txt">Verlässlich von früh bis nachmittags.</span>
+        </a>
+        <a data-reveal class="quick-card" href="#schwimmen" data-link>
+          <span class="quick-icon" style="background:var(--blue-soft);"><svg viewBox="0 0 24 24" fill="none" stroke="#2B7FD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9.5" cy="7" r="1.9"/><path d="M6 13l3.2-2.2 3 1.8 2.4-1.4"/><path d="M3 16.6c1.4 1 2.9 1 4.3 0s2.9-1 4.3 0 2.9 1 4.3 0 2.9-1 4.3 0"/><path d="M3 20.2c1.4 1 2.9 1 4.3 0s2.9-1 4.3 0 2.9 1 4.3 0 2.9-1 4.3 0"/></svg></span>
+          <h3>Schwimmen</h3>
+          <span class="txt">Schulschwimmen in Klasse 3.</span>
+        </a>
+        <a data-reveal class="quick-card" href="#unterstuetzung" data-link>
+          <span class="quick-icon" style="background:var(--cream-card);"><svg viewBox="0 0 24 24" fill="none" stroke="#E0A91F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v15h4.5a2.5 2.5 0 0 1 2.5 2.5V5.5Z"/></svg></span>
+          <h3>Lernen &amp; Unterstützung</h3>
+          <span class="txt">So begleiten wir Ihr Kind.</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Highlights -->
+    <section class="block block-wide">
+      <h2 data-reveal style="text-align:center;font-size:clamp(26px,4vw,32px);margin-bottom:10px;">Das macht uns aus</h2>
+      <p data-reveal class="lead" style="text-align:center;margin:0 auto;">Eine Schule, an der sich Kinder gesehen, sicher und ermutigt fühlen.</p>
+      <div class="grid grid-auto g-4" style="margin-top:32px;">
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--blue-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#2B7FD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.6 2.4 2.6 14.6 0 17M12 3.5c-2.6 2.4-2.6 14.6 0 17M5.2 7c4.2 2.2 9.4 2.2 13.6 0M5.2 17c4.2-2.2 9.4-2.2 13.6 0"/></svg></span><h3>Weltoffen &amp; vielfältig</h3><p>Kinder aus rund 30 Nationen lernen bei uns miteinander und voneinander.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--green-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#46B36B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg></span><h3>Verlässliche Grundschule</h3><p>Fester Unterricht von 8–13 Uhr, dazu eine Frühbetreuung ab 7:15 Uhr.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--coral-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF7A66" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 8.8c1.1-1.9 4-1.2 4 1 0 1.6-2 3-4 4-2-1-4-2.4-4-4 0-2.2 2.9-2.9 4-1Z"/><path d="M3.5 13l3.6-1a3 3 0 0 1 1.8 0l2.6 1a2.4 2.4 0 0 0 1.6 0l3.9-1.5c1.6-.6 2.8 1.5 1.4 2.6-2.1 1.8-4.8 3.6-7.4 3.6-2.1 0-4.6-1.4-5.5-1.9"/></svg></span><h3>Betreuung &amp; Ganztag</h3><p>Nachmittagsbetreuung bis 15:30 Uhr – und Schritt für Schritt zur Ganztagsschule.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--cream-card)"><svg viewBox="0 0 24 24" fill="none" stroke="#E0A91F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.6-.8 1.6-1.7 0-.5-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16a4.5 4.5 0 0 0 4.5-4.5C20.5 6.6 16.7 3.5 12 3.5Z"/><circle cx="7.8" cy="12" r="1"/><circle cx="9.8" cy="8.4" r="1"/><circle cx="14.2" cy="8" r="1"/></svg></span><h3>Mehr als Unterricht</h3><p>AGs, Schwimmen, Theater, Schulhund und Projekte mit Büchereien &amp; Museen.</p></div>
+      </div>
+    </section>
+
+    <!-- Welcome -->
+    <section class="block">
+      <div data-reveal class="welcome">
+        <div class="welcome-text">
+          <h2>Schön, dass Sie da sind!</h2>
+          <p>An der Grundschule am Halmerweg lernen Kinder aus etwa 30 Nationen in einer warmen, geborgenen Atmosphäre. Wir nehmen jedes Kind mit seinen Stärken ernst und begleiten es in seinem eigenen Tempo.</p>
+          <p>Neugier, Respekt und Freude am Lernen stehen bei uns im Mittelpunkt – vom ersten Schultag bis zum Übergang in die weiterführende Schule.</p>
+        </div>
+        <div class="welcome-art">
+          <img width="810" height="775" src="assets/logo-badge.png" alt="Logo der Grundschule am Halmerweg" onerror="this.parentElement.remove()">
+        </div>
+      </div>
+    </section>
+
+    <!-- Leitbild teaser -->
+    <section class="block">
+      <div data-reveal style="text-align:center;max-width:760px;margin:0 auto;">
+        <h2 style="font-size:clamp(26px,4vw,32px);margin-bottom:14px;">Unser Leitbild</h2>
+        <p style="font-size:17px;line-height:1.7;font-weight:600;color:var(--ink-2);">Wir verstehen uns als lebendige Gemeinschaft aus Kindern, Familien und Lehrkräften. Jedes Kind soll sich angenommen fühlen, Selbstvertrauen aufbauen und mit Freude lernen.</p>
+      </div>
+      <div class="grid grid-auto-sm g-3" style="margin-top:32px;">
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--cream-card)"><svg viewBox="0 0 24 24" fill="none" stroke="#E0A91F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3C6.7 16.4 4.3 13 4.3 9.6 4.3 7 6.2 5.2 8.4 5.2c1.6 0 3 .9 3.6 2.2C12.6 6.1 14 5.2 15.6 5.2c2.2 0 4.1 1.8 4.1 4.4 0 3.4-2.4 6.8-7.7 10.7Z"/></svg></span><h3>Geborgenheit</h3><p>Feste Bezugspersonen und klare Rituale geben den Kindern Halt.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--blue-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#2B7FD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.2 17h5.6M10 20h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2H14.5c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3Z"/></svg></span><h3>Neugier wecken</h3><p>Forschen, fragen und ausprobieren – Lernen darf Spaß machen.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--green-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#46B36B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="2.6"/><circle cx="16" cy="10" r="2.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M14.6 14.3a4.8 4.8 0 0 1 5.9 4.7"/></svg></span><h3>Gemeinschaft</h3><p>Wir achten aufeinander und lösen Konflikte mit Respekt.</p></div>
+      </div>
+      <div data-reveal style="text-align:center;margin-top:30px;">
+        <a class="btn btn-primary" href="#schule" data-link>Mehr über unsere Schule</a>
+      </div>
+    </section>
+
+    <!-- Zahlen -->
+    <section class="block">
+      <div data-reveal class="stats-panel">
+        <h2 style="text-align:center;">Unsere Schule in Zahlen</h2>
+        <div class="grid grid-auto-sm g-stats" style="text-align:center;">
+          <div><div class="stat-num">8–13</div><div class="stat-label">Uhr Kernzeit</div></div>
+          <div><div class="stat-num">16</div><div class="stat-label">Klassen</div></div>
+          <div><div class="stat-num">~30</div><div class="stat-label">Nationen</div></div>
+          <div><div class="stat-num">1–4</div><div class="stat-label">Jahrgänge</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News + next dates preview -->
+    <section class="block block-wide" style="padding-top:10px;">
+      <div data-reveal class="row-head">
+        <h2>Aktuelles &amp; nächste Termine</h2>
+        <a class="link-arrow" href="#termine" data-link>Alle Termine →</a>
+      </div>
+      <div class="grid grid-auto g-3">
+        <article data-reveal class="news-card">
+          <span class="tag tag-coral">Hinweis</span>
+          <h3>Sommerfest verschoben</h3>
+          <p>Unser Sommerfest am 26. Juni musste wegen einer Unwetterwarnung leider abgesagt werden. Ein neuer Termin wird rechtzeitig bekannt gegeben.</p>
+        </article>
+        <article data-reveal class="news-card">
+          <span class="tag tag-blue">01. Juli</span>
+          <h3>Ausschulung 4. Jahrgang</h3>
+          <p>Wir verabschieden unsere Viertklässlerinnen und Viertklässler und wünschen ihnen alles Gute auf der weiterführenden Schule.</p>
+        </article>
+        <article data-reveal class="news-card">
+          <span class="tag tag-green">15. August</span>
+          <h3>Einschulung 1. Jahrgang</h3>
+          <p>Wir begrüßen unsere neuen Schulkinder mit einer fröhlichen Einschulungsfeier. Herzlich willkommen an der Halmerweg!</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="block">
+      <div data-reveal class="cta">
+        <span class="blob" style="top:-40px;left:-30px;width:160px;height:160px;background:rgba(255,255,255,.12);"></span>
+        <span class="blob" style="bottom:-50px;right:-20px;width:180px;height:180px;background:rgba(255,255,255,.10);"></span>
+        <div class="cta-inner">
+          <h2>Lernen Sie uns persönlich kennen</h2>
+          <p>Sie haben Fragen oder möchten unsere Schule besuchen? Wir freuen uns auf Ihre Nachricht und Ihren Besuch.</p>
+          <div class="cta-actions">
+            <a class="btn btn-light" href="#kontakt" data-link>Kontakt &amp; Anfahrt</a>
+            <a class="btn btn-ghost" href="#schule" data-link>Unsere Schule</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================== UNSERE SCHULE ===================== -->
+  <section class="section" id="schule">
+    <div data-reveal class="page-head head-blue">
+      <span class='ph-ic' style='color:#2B7FD4'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M3 21h18M5 21V9l7-4 7 4v12M9 21v-6h6v6'/><path d='M10.5 11.5h3'/></svg></span>
+      <h1>Unsere Schule</h1>
+      <p>Ein Ort, an dem Kinder gerne ankommen, lernen und sich entwickeln dürfen.</p>
+    </div>
+
+    <section class="block">
+      <h2 style="font-size:30px;margin-bottom:14px;">Bunt, weltoffen, mittendrin</h2>
+      <p class="lead" style="max-width:780px;">Die Grundschule am Halmerweg liegt in Bremen-Gröpelingen, einem lebendigen Stadtteil im Westen Bremens. Unsere Kinder kommen aus etwa 30 verschiedenen Ländern – diese Vielfalt verstehen wir als Schatz und Ressource für das gemeinsame Lernen.</p>
+      <p style="font-size:17px;line-height:1.7;font-weight:600;color:var(--ink-2);max-width:780px;margin-top:16px;">Jedes Kind lernt in seinem eigenen Tempo. Unsere Lehrkräfte unterstützen individuell, sprechen bewusst in einfacher Sprache und fördern gezielt die deutsche Sprache – während Mehrsprachigkeit bei uns ausdrücklich willkommen ist.</p>
+
+      <h2 style="font-size:28px;margin:42px 0 18px;">Wofür wir stehen</h2>
+      <div class="grid grid-auto-sm g-4">
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--cream-card)"><svg viewBox="0 0 24 24" fill="none" stroke="#E0A91F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3C6.7 16.4 4.3 13 4.3 9.6 4.3 7 6.2 5.2 8.4 5.2c1.6 0 3 .9 3.6 2.2C12.6 6.1 14 5.2 15.6 5.2c2.2 0 4.1 1.8 4.1 4.4 0 3.4-2.4 6.8-7.7 10.7Z"/></svg></span><h3>Geborgenheit</h3><p>Feste Bezugspersonen, klare Rituale und ein Kreis im Klassenraum geben den Kindern Halt.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--blue-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#2B7FD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.2 17h5.6M10 20h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1.1 2H14.5c.1-.8.5-1.5 1.1-2A6 6 0 0 0 12 3Z"/></svg></span><h3>Neugier wecken</h3><p>Forschen, fragen und ausprobieren – Lernen darf bei uns Spaß machen.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--green-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#46B36B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="2.6"/><circle cx="16" cy="10" r="2.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M14.6 14.3a4.8 4.8 0 0 1 5.9 4.7"/></svg></span><h3>Gemeinschaft</h3><p>Wir achten aufeinander, leben Vielfalt und lösen Konflikte mit Respekt.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--coral-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF7A66" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C9.8 5 6.7 4.6 4 5.5v12c2.7-.9 5.8-.5 8 1 2.2-1.5 5.3-1.9 8-1v-12c-2.7-.9-5.8-.5-8 1Z"/><path d="M12 6.5V18.5"/></svg></span><h3>Sprache &amp; Lesen</h3><p>Leseförderung, DaZ-Kurse und ein tägliches Leseband stärken jedes Kind.</p></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 style="font-size:28px;margin-bottom:18px;">Unsere Ausstattung</h2>
+      <div class="grid grid-auto g-4">
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--blue-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#2B7FD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V8l7-4 7 4v13M9 21v-5h6v5"/></svg></span><h3>Drei Pavillons</h3><p>Helle Klassenräume sowie ein Musikraum, ein Forscherraum und ein Kunst-/Werkraum.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--green-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#46B36B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v15H6.5A2.5 2.5 0 0 0 4 20.5V5.5Z"/><path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v15h4.5a2.5 2.5 0 0 1 2.5 2.5V5.5Z"/></svg></span><h3>Schulbücherei</h3><p>Eine eigene Bücherei lädt zum Schmökern und Entdecken ein.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--coral-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF7A66" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 8l3 2.2-1.1 3.6h-3.8L9 10.2 12 8Z"/></svg></span><h3>Turnhalle &amp; Schulhof</h3><p>Eine Sporthalle und ein großzügiger Schulhof zum Bewegen und Toben.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--cream-card)"><svg viewBox="0 0 24 24" fill="#E0A91F" stroke="none" aria-hidden="true"><ellipse cx="7.5" cy="11" rx="1.7" ry="2.2"/><ellipse cx="16.5" cy="11" rx="1.7" ry="2.2"/><ellipse cx="9.8" cy="7.6" rx="1.6" ry="2"/><ellipse cx="14.2" cy="7.6" rx="1.6" ry="2"/><path d="M12 13c2.6 0 4.6 1.7 4.6 3.6 0 1.2-1 1.9-2.1 1.9-1 0-1.6-.5-2.5-.5s-1.5.5-2.5.5c-1.1 0-2.1-.7-2.1-1.9C7.4 14.7 9.4 13 12 13Z"/></svg></span><h3>Schulhund &amp; Projekte</h3><p>Schulhund, Theater- und Tanzprojekte sowie Kooperationen mit Büchereien und Museen.</p></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div data-reveal class="stats-panel">
+        <h2>Unsere Schule in Zahlen</h2>
+        <div class="grid grid-auto-sm g-stats">
+          <div><div class="stat-num">8–13</div><div class="stat-label">Uhr Kernzeit</div></div>
+          <div><div class="stat-num">16</div><div class="stat-label">Klassen</div></div>
+          <div><div class="stat-num">~30</div><div class="stat-label">Nationen</div></div>
+          <div><div class="stat-num">1–4</div><div class="stat-label">Jahrgänge</div></div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================== AKTUELLES ===================== -->
+  <section class="section" id="aktuelles">
+    <div data-reveal class="page-head head-coral">
+      <span class='ph-ic' style='color:#FF7A66'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M3 10v4a1 1 0 0 0 1 1h2l6 4V5L6 9H4a1 1 0 0 0-1 1Z'/><path d='M16 9a4 4 0 0 1 0 6'/></svg></span>
+      <h1>Aktuelles</h1>
+      <p>Neuigkeiten und Hinweise aus dem Schulleben.</p>
+    </div>
+    <section class="block block-narrow">
+      <article data-reveal class="news-card" style="margin-bottom:18px;">
+        <span class="tag tag-coral">Aktueller Hinweis</span>
+        <h3>Sommerfest verschoben</h3>
+        <p>Unser für den 26. Juni geplantes Sommerfest musste wegen einer Unwetterwarnung leider abgesagt werden. Sobald ein Nachholtermin feststeht, geben wir ihn hier und über die Klassenleitungen bekannt.</p>
+      </article>
+      <div data-reveal class="empty-state">
+        <span class="emoji" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#8FA9C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4a1 1 0 0 0 1 1h2l6 4V5L6 9H4a1 1 0 0 0-1 1Z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M6 15v3.5"/></svg></span>
+        Hier erfährst du in Zukunft Spannendes aus unserer Schule.<br>
+        Aktuelle Termine findest du jederzeit im Bereich <a href="#termine" data-link style="color:var(--blue);font-weight:800;text-decoration:none;">Termine</a>.
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================== REGELN ===================== -->
+  <section class="section" id="regeln">
+    <div data-reveal class="page-head head-cream">
+      <span class='ph-ic' style='color:#B5870F'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 3l7 2.5v5c0 4.6-3 7.6-7 9-4-1.4-7-4.4-7-9v-5L12 3Z'/><path d='M9 12l2 2 4-4'/></svg></span>
+      <h1>Unsere Regeln</h1>
+      <p>Damit sich alle bei uns wohlfühlen, halten wir uns an drei einfache Schulregeln.</p>
+    </div>
+    <section class="block block-narrow">
+      <div class="stack">
+        <div data-reveal class="rule"><span class="rule-num">1</span><p>Ich tue niemandem weh – auch nicht mit Worten. Bei „Stopp" ist Schluss.</p></div>
+        <div data-reveal class="rule"><span class="rule-num" style="background:#2B7FD4;box-shadow:0 4px 0 #1E5FA3;">2</span><p>Ich höre auf alle Erwachsenen an der Schule.</p></div>
+        <div data-reveal class="rule"><span class="rule-num" style="background:#46B36B;box-shadow:0 4px 0 #2F8C50;">3</span><p>Ich halte meine Schule sauber und in Ordnung.</p></div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================== SCHWIMMEN ===================== -->
+  <section class="section" id="schwimmen">
+    <div data-reveal class="page-head head-blue">
+      <span class='ph-ic' style='color:#2B7FD4'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='9.5' cy='7' r='1.9'/><path d='M6 13l3.2-2.2 3 1.8 2.4-1.4'/><path d='M3 16.6c1.4 1 2.9 1 4.3 0s2.9-1 4.3 0 2.9 1 4.3 0 2.9-1 4.3 0'/><path d='M3 20.2c1.4 1 2.9 1 4.3 0s2.9-1 4.3 0 2.9 1 4.3 0 2.9-1 4.3 0'/></svg></span>
+      <h1>Schwimmen</h1>
+      <p>Das Schulschwimmen gehört für unsere Drittklässler fest dazu.</p>
+    </div>
+    <section class="block block-narrow">
+      <div data-reveal class="card" style="margin-bottom:24px;">
+        <h2 style="font-size:24px;margin-bottom:10px;">Wann &amp; wie?</h2>
+        <p style="font-size:16px;line-height:1.7;font-weight:600;color:var(--ink-2);">Das Schulschwimmen findet in der <strong>3. Klasse</strong> statt – immer am <strong>Mittwoch</strong>. Ein Bus bringt die Kinder zum Schwimmbad und wieder zurück.</p>
+        <h3 style="font-size:18px;color:var(--blue);margin:20px 0 8px;">Das brauchst du dabei</h3>
+        <div data-reveal class="chips">
+          <span class="chip">Badesachen</span><span class="chip">Handtuch</span><span class="chip">Snack &amp; Getränk</span><span class="chip">Tasche</span>
+        </div>
+      </div>
+      <div data-reveal class="card">
+        <h2 style="font-size:24px;margin-bottom:18px;">Unsere Baderegeln</h2>
+        <div class="checklist">
+          <div class="check-item"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><p>Ich gehe nur ins Wasser, wenn ich mich wohlfühle.</p></div>
+          <div class="check-item"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><p>Ich schwimme nur, wenn eine Aufsicht dabei ist.</p></div>
+          <div class="check-item"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><p>Ich gehe nicht mit leerem oder ganz vollem Bauch ins Wasser.</p></div>
+          <div class="check-item"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><p>Ich rufe nur „Hilfe", wenn ich wirklich Hilfe brauche.</p></div>
+          <div class="check-item"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><p>Schwimmflügel, Schwimmtiere und Luftmatratze sind kein sicherer Schutz.</p></div>
+          <div class="check-item"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><p>Ich kühle mich vor dem Schwimmen ab.</p></div>
+          <div class="check-item"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><p>Ich sage einer erwachsenen Person Bescheid, bevor ich ins Wasser gehe.</p></div>
+          <div class="check-item"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><p>Ich nehme Rücksicht – kein Rennen, Schubsen oder Untertauchen.</p></div>
+          <div class="check-item"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><p>Ich schwimme nur dort, wo es sicher und nicht zu tief ist.</p></div>
+          <div class="check-item check-warn"><span class="check-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5M12 16.5h.01"/></svg></span><p>Bei Blitz, Donner oder starkem Regen verlasse ich sofort das Wasser. Baden bei Gewitter ist lebensgefährlich!</p></div>
+        </div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================== AGs ===================== -->
+  <section class="section" id="ags">
+    <div data-reveal class="page-head head-green">
+      <span class='ph-ic' style='color:#46B36B'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.6-.8 1.6-1.7 0-.5-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16a4.5 4.5 0 0 0 4.5-4.5C20.5 6.6 16.7 3.5 12 3.5Z'/><circle cx='7.8' cy='12' r='1'/><circle cx='9.8' cy='8.4' r='1'/><circle cx='14.2' cy='8' r='1'/></svg></span>
+      <h1>Arbeitsgemeinschaften</h1>
+      <p>Am Nachmittag könnt ihr bei uns Neues ausprobieren und euren Interessen nachgehen.</p>
+    </div>
+    <section class="block">
+      <div class="grid grid-auto g-center">
+        <div data-reveal class="card feature"><span class="tag tag-blue">Mo · 13:00–14:00</span><h3 style="margin-top:12px;">Comic zeichnen</h3><p>Für Klasse 2–4</p></div>
+        <div data-reveal class="card feature"><span class="tag tag-blue">Mo · 14:00–15:00</span><h3 style="margin-top:12px;">Spiel &amp; Spaß</h3><p>Für Klasse 2–3</p></div>
+        <div data-reveal class="card feature"><span class="tag tag-green">Di · 13:00–13:45</span><h3 style="margin-top:12px;">Lese-AG</h3><p>Für Klasse 2–3</p></div>
+        <div data-reveal class="card feature"><span class="tag tag-coral">Mi · 13:00–13:45</span><h3 style="margin-top:12px;">Theater-AG</h3><p>Für Klasse 2–3</p></div>
+        <div data-reveal class="card feature"><span class="tag tag-coral">Mi · 13:00–14:00</span><h3 style="margin-top:12px;">Film-AG</h3><p>Für Klasse 2–3</p></div>
+        <div data-reveal class="card feature"><span class="tag tag-cream" style="background:var(--cream-card);color:#B5870F;">Do · 13:00–14:00</span><h3 style="margin-top:12px;">Tanzen</h3><p>Für Klasse 3–4</p></div>
+        <div data-reveal class="card feature"><span class="tag tag-green">Fr · 13:00–13:45</span><h3 style="margin-top:12px;">Chor-AG</h3><p>Für Klasse 2–4</p></div>
+      </div>
+      <div data-reveal class="note">Für die AGs muss man sich vorher anmelden. Sprich dazu einfach deine Klassenlehrerin oder deinen Klassenlehrer an – sie stellen den Kontakt zur AG-Leitung her. (Angebot 1. Halbjahr; das genaue AG-Programm kann sich pro Halbjahr ändern.)</div>
+    </section>
+  </section>
+
+  <!-- ===================== SCHULSACHEN ===================== -->
+  <section class="section" id="schulsachen">
+    <div data-reveal class="page-head head-cream">
+      <span class='ph-ic' style='color:#B5870F'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M6 9a6 6 0 0 1 12 0v8a2.5 2.5 0 0 1-2.5 2.5h-7A2.5 2.5 0 0 1 6 17V9Z'/><path d='M9 9V7.5a3 3 0 0 1 6 0V9'/><path d='M8.5 13h7'/></svg></span>
+      <h1>Schulsachen</h1>
+      <p>Damit der Schultag gut klappt, hast du diese Sachen immer dabei.</p>
+    </div>
+    <section class="block block-narrow">
+      <div data-reveal class="card" style="margin-bottom:22px;">
+        <h2 style="font-size:24px;margin-bottom:14px;">Das gehört in den Ranzen</h2>
+        <div data-reveal class="chips">
+          <span class="chip">Bleistift</span><span class="chip">Radiergummi</span><span class="chip">Schere</span>
+          <span class="chip">Kleber</span><span class="chip">Buntstifte</span><span class="chip">Lineal</span>
+          <span class="chip">Auffüllbare Trinkflasche</span><span class="chip">Brotdose mit Frühstück</span>
+        </div>
+      </div>
+      <div data-reveal class="card" style="margin-bottom:22px;">
+        <h2 style="font-size:22px;margin-bottom:10px;">Gut zu wissen</h2>
+        <ul style="margin:0;padding-left:22px;font-size:16px;line-height:1.8;font-weight:600;color:var(--ink-2);">
+          <li>Stifte bitte zu Hause anspitzen.</li>
+          <li>Alle Sachen mit Namen beschriften – so geht nichts verloren.</li>
+          <li>Regelmäßig nachschauen, ob noch alles da ist, und fehlende Sachen zu Hause sagen.</li>
+        </ul>
+      </div>
+      <div data-reveal class="note">Spielsachen, Smartphones und Smartwatches bleiben zu Hause – sie können leicht verloren gehen oder kaputtgehen.</div>
+    </section>
+  </section>
+
+  <!-- ===================== STUNDENRASTER ===================== -->
+  <section class="section" id="stundenraster">
+    <div data-reveal class="page-head head-blue">
+      <span class='ph-ic' style='color:#2B7FD4'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='12' cy='12' r='8.5'/><path d='M12 7v5l3.2 2'/></svg></span>
+      <h1>Stundenraster</h1>
+      <p>So ist unser Schultag eingeteilt.</p>
+    </div>
+    <section class="block block-narrow">
+      <div data-reveal class="timetable">
+        <div class="tt-row is-care"><span class="lbl">Frühbetreuung</span><span class="tm">07:15 – 08:00</span></div>
+        <div class="tt-row"><span class="lbl">1. Stunde</span><span class="tm">08:00 – 09:00</span></div>
+        <div class="tt-row"><span class="lbl">2. Stunde</span><span class="tm">09:00 – 09:45</span></div>
+        <div class="tt-row is-break"><span class="lbl">1. Pause</span><span class="tm">09:45 – 10:10</span></div>
+        <div class="tt-row"><span class="lbl">3. Stunde</span><span class="tm">10:15 – 11:00</span></div>
+        <div class="tt-row"><span class="lbl">4. Stunde</span><span class="tm">11:00 – 11:50</span></div>
+        <div class="tt-row is-break"><span class="lbl">2. Pause</span><span class="tm">11:50 – 12:10</span></div>
+        <div class="tt-row"><span class="lbl">5. Stunde / Leseband</span><span class="tm">12:15 – 13:00</span></div>
+        <div class="tt-row"><span class="lbl">6. Stunde</span><span class="tm">13:00 – 13:45</span></div>
+      </div>
+      <p style="margin-top:18px;font-weight:600;color:var(--ink-3);font-size:15.5px;">Der verlässliche Unterricht findet von 8:00 bis 13:00 Uhr statt. Eine Frühbetreuung ab 7:15 Uhr sowie Angebote am Nachmittag ergänzen den Schultag.</p>
+    </section>
+  </section>
+
+  <!-- ===================== BETREUUNG ===================== -->
+  <section class="section" id="betreuung">
+    <div data-reveal class="page-head head-green">
+      <span class='ph-ic' style='color:#46B36B'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 8.8c1.1-1.9 4-1.2 4 1 0 1.6-2 3-4 4-2-1-4-2.4-4-4 0-2.2 2.9-2.9 4-1Z'/><path d='M3.5 13l3.6-1a3 3 0 0 1 1.8 0l2.6 1a2.4 2.4 0 0 0 1.6 0l3.9-1.5c1.6-.6 2.8 1.5 1.4 2.6-2.1 1.8-4.8 3.6-7.4 3.6-2.1 0-4.6-1.4-5.5-1.9'/></svg></span>
+      <h1>Betreuung</h1>
+      <p>Verlässliche Betreuung, damit sich Familie und Schule gut vereinbaren lassen.</p>
+    </div>
+    <section class="block">
+      <div class="grid grid-auto g-3">
+        <div data-reveal class="time-card"><div class="time">07:15 – 08:00 Uhr</div><h3>Frühbetreuung</h3><p>In Ruhe ankommen, spielen und gut in den Schultag starten.</p></div>
+        <div data-reveal class="time-card"><div class="time">08:00 – 13:00 Uhr</div><h3>Verlässlicher Unterricht</h3><p>Feste Grundschulzeit mit festen Klassenlehrkräften.</p></div>
+        <div data-reveal class="time-card"><div class="time">bis 15:30 Uhr</div><h3>Nachmittagsbetreuung</h3><p>Betreuung am Nachmittag über einen externen Träger – mit Zeit zum Essen, Spielen und für Hausaufgaben.</p></div>
+      </div>
+      <div data-reveal class="callout">
+        <div class="callout-text">
+          <h3>Anmeldung &amp; Fragen</h3>
+          <p>Sie möchten Ihr Kind für die Betreuung anmelden oder haben Fragen? Das Sekretariat hilft Ihnen gerne weiter – telefonisch oder persönlich.</p>
+        </div>
+        <a class="btn btn-orange" href="#kontakt" data-link>Zum Kontakt</a>
+      </div>
+      <p style="margin-top:18px;font-weight:600;color:var(--ink-3);font-size:15px;">Ab dem Schuljahr 2026/2027 erhalten alle neuen Erstklässler eine Nachmittagsbetreuung bis 15:00 bzw. 16:00 Uhr – ein erster Schritt auf dem Weg zur Ganztagsschule (siehe <a href="#ganztag" data-link style="color:var(--blue);font-weight:800;text-decoration:none;">Ganztag</a>).</p>
+    </section>
+  </section>
+
+  <!-- ===================== GANZTAG ===================== -->
+  <section class="section" id="ganztag">
+    <div data-reveal class="page-head head-cream">
+      <span class='ph-ic' style='color:#B5870F'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='12' cy='12' r='4.2'/><path d='M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7'/></svg></span>
+      <h1>Auf dem Weg zum Ganztag</h1>
+      <p>Ab dem Schuljahr 2028/2029 wird die Halmerweg eine gebundene Ganztagsschule.</p>
+    </div>
+    <section class="block block-narrow">
+      <div data-reveal class="card" style="margin-bottom:22px;">
+        <h2 style="font-size:24px;margin-bottom:10px;">Was bedeutet das?</h2>
+        <p style="font-size:16px;line-height:1.7;font-weight:600;color:var(--ink-2);">In einer gebundenen Ganztagsschule sind Unterricht und Angebote über den ganzen Tag verteilt – mit Zeit zum Lernen, für Pausen, ein gemeinsames Mittagessen und gemeinsame Aktivitäten. Der genaue Tagesablauf wird gerade gemeinsam entwickelt.</p>
+      </div>
+      <h2 style="font-size:24px;margin:8px 0 16px;">So geht es Schritt für Schritt</h2>
+      <div class="term-stack">
+        <div data-reveal class="term"><div class="date-box box-green"><span class="d">26/27</span></div><div><h3>Nachmittagsbetreuung startet</h3><p>Alle neuen Erstklässler erhalten eine betreute Nachmittagszeit bis 15:00 bzw. 16:00 Uhr.</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-cream"><span class="d">Som</span><span class="m">2026</span></div><div><h3>Abriss &amp; Vorbereitung</h3><p>Im Sommer 2026 beginnen die Abrissarbeiten für den Umbau der Schule.</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-cream"><span class="d">Hbt</span><span class="m">2026</span></div><div><h3>Baubeginn</h3><p>Ab Herbst 2026 starten die Bauarbeiten; die Verwaltung zieht vorübergehend in Container.</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-blue"><span class="d">Som</span><span class="m">2028</span></div><div><h3>Fertigstellung</h3><p>Mensa, neue Küche, Bewegungshalle, sanierte Bibliothek und ein Therapiebad entstehen.</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-green"><span class="d">28/29</span></div><div><h3>Start als Ganztagsschule</h3><p>Die Halmerweg wird zur gebundenen Ganztagsschule für alle Kinder.</p></div></div>
+      </div>
+      <div data-reveal class="note">Familien können sich über die Elternvertretung und bei öffentlichen Planungstreffen einbringen und die Ausgestaltung des Ganztags mitgestalten.</div>
+    </section>
+  </section>
+
+  <!-- ===================== TERMINE ===================== -->
+  <section class="section" id="termine">
+    <div data-reveal class="page-head head-coral">
+      <span class='ph-ic' style='color:#FF7A66'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='3.5' y='5' width='17' height='15' rx='3'/><path d='M3.5 9.5h17M8 3.5v3M16 3.5v3'/><path d='M7.5 13h2.5M14 13h2.5M7.5 16.5h2.5M14 16.5h2.5'/></svg></span>
+      <h1>Termine</h1>
+      <p>Alle wichtigen Termine und Ferien auf einen Blick (Schuljahr 2026/2027).</p>
+    </div>
+    <section class="block block-narrow">
+      <h2 style="font-size:24px;margin-bottom:16px;">Schultermine</h2>
+      <div class="term-stack">
+        <div data-reveal class="term"><div class="date-box box-blue"><span class="d">23</span><span class="m">Jun</span></div><div><h3>Elternsprechtag</h3><p>Dienstag, 23.06.2026, 08:00–18:00 Uhr.</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-coral"><span class="d">26</span><span class="m">Jun</span></div><div><h3>Sommerfest <span style="color:var(--coral-dark);">· verschoben</span></h3><p>Freitag, 26.06.2026 – wegen Unwetterwarnung abgesagt, neuer Termin folgt.</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-green"><span class="d">01</span><span class="m">Jul</span></div><div><h3>Ausschulung 4. Jahrgang</h3><p>Mittwoch, 01.07.2026 – Verabschiedung der Viertklässler.</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-blue"><span class="d">13</span><span class="m">Aug</span></div><div><h3>Erster Schultag</h3><p>Donnerstag, 13.08.2026, 08:00 Uhr (Klassen 2–4).</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-green"><span class="d">15</span><span class="m">Aug</span></div><div><h3>Einschulung 1. Jahrgang</h3><p>Samstag, 15.08.2026 – Einschulungsfeier der neuen Erstklässler.</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-blue"><span class="d">17</span><span class="m">Aug</span></div><div><h3>Erster Schultag der Schulanfänger:innen</h3><p>Montag, 17.08.2026.</p></div></div>
+      </div>
+
+      <h2 style="font-size:24px;margin:34px 0 16px;">Ferien</h2>
+      <div class="term-stack">
+        <div data-reveal class="term"><div class="date-box box-cream"><svg class="ferien-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M18.5 5.5l-1.7 1.7M7.2 16.8l-1.7 1.7"/></svg></div><div><h3>Sommerferien</h3><p>03.07.2026 – 13.08.2026</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-cream"><svg class="ferien-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19C5 11 11 5.5 19 5c.8 8-5 14.5-14 14Z"/><path d="M12.5 11.5 7.5 16.5"/></svg></div><div><h3>Herbstferien</h3><p>12.10.2026 – 24.10.2026</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-cream"><svg class="ferien-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 7 11h3l-3 5h10l-3-5h3L12 3Z"/><path d="M12 16v4M10 20h4"/></svg></div><div><h3>Weihnachtsferien</h3><p>23.12.2026 – 09.01.2027</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-cream"><svg class="ferien-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5v19M3.77 7.25 20.23 16.75M20.23 7.25 3.77 16.75"/></svg></div><div><h3>Halbjahresferien</h3><p>01.02.2027 – 02.02.2027</p></div></div>
+        <div data-reveal class="term"><div class="date-box box-cream"><svg class="ferien-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 12c-2.6 0-4.2-2.1-4.2-4.7 1.4 0 2.4.6 3 1.5.3-1 .7-1.9 1.2-2.7.5.8.9 1.7 1.2 2.7.6-.9 1.6-1.5 3-1.5C16.2 9.9 14.6 12 12 12Z"/><path d="M12 12v8.5M12 16.5c-1.9 0-3.1-1-3.7-2.7M12 16.5c1.9 0 3.1-1 3.7-2.7"/></svg></div><div><h3>Osterferien</h3><p>22.03.2027 – 05.04.2027</p></div></div>
+      </div>
+      <p style="margin-top:18px;font-weight:600;color:var(--ink-3);font-size:14.5px;">Gesetzliche Feiertage in diesem Zeitraum: Tag der Deutschen Einheit (03.10.2026) und Reformationstag (31.10.2026).</p>
+    </section>
+  </section>
+
+  <!-- ===================== ÜBERGANG ===================== -->
+  <section class="section" id="uebergang">
+    <div data-reveal class="page-head head-blue">
+      <span class='ph-ic' style='color:#2B7FD4'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M2 9l10-4 10 4-10 4L2 9Z'/><path d='M6 11v4c0 1.6 2.7 3 6 3s6-1.4 6-3v-4'/><path d='M22 9v4.5'/></svg></span>
+      <h1>Übergang in die weiterführenden Schulen</h1>
+      <p>Nach der 4. Klasse endet die Grundschule – wir begleiten Sie und Ihr Kind beim nächsten Schritt.</p>
+    </div>
+    <section class="block block-narrow">
+      <div data-reveal class="card" style="margin-bottom:22px;">
+        <h2 style="font-size:24px;margin-bottom:10px;">So läuft es ab</h2>
+        <p style="font-size:16px;line-height:1.7;font-weight:600;color:var(--ink-2);">Nach Klasse 4 wählen Sie zwischen <strong>Oberschule</strong> und <strong>Gymnasium</strong>. Die Anmeldung ist immer Ende Januar oder Anfang Februar.</p>
+        <p style="font-size:16px;line-height:1.7;font-weight:600;color:var(--ink-2);margin-top:12px;">Beim Elternsprechtag im Halbjahr erklärt die Klassenlehrerin oder der Klassenlehrer alles genau. Zusätzlich lädt der Zentrale Elternbeirat Bremen (ZEB) jährlich nach den Herbstferien zu einem Informationsabend ein – die Einladung erhalten Sie über die Schule.</p>
+      </div>
+      <h2 style="font-size:22px;margin:8px 0 14px;">Oberschulen in der Nähe</h2>
+      <div data-reveal class="chips">
+        <span class="chip">Oberschule Ohlenhof</span>
+        <span class="chip">Neue Oberschule Gröpelingen</span>
+        <span class="chip">Oberschule im Park</span>
+        <span class="chip">Gesamtschule West</span>
+        <span class="chip">Oberschule Waller Ring</span>
+        <span class="chip">Oberschule Helgoländer Straße</span>
+        <span class="chip">Oberschule Überseestadt</span>
+      </div>
+      <div data-reveal class="note">Unsere Empfehlung: Besuchen Sie die Elternabende und Kennenlern-Tage der weiterführenden Schulen gemeinsam mit Ihrem Kind.</div>
+    </section>
+  </section>
+
+  <!-- ===================== UNTERSTÜTZUNG ===================== -->
+  <section class="section" id="unterstuetzung">
+    <div data-reveal class="page-head head-green">
+      <span class='ph-ic' style='color:#46B36B'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 6.5C9.8 5 6.7 4.6 4 5.5v12c2.7-.9 5.8-.5 8 1 2.2-1.5 5.3-1.9 8-1v-12c-2.7-.9-5.8-.5-8 1Z'/><path d='M12 6.5V18.5'/></svg></span>
+      <h1>Unterstützung beim Lernen</h1>
+      <p>So können Sie Ihr Kind zu Hause beim Lernen begleiten.</p>
+    </div>
+    <section class="block">
+      <div class="grid grid-auto g-6">
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--green-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#46B36B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10v9H4a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1h3Z"/><path d="M7 10l4.2-6.3a1.6 1.6 0 0 1 2.8 1.2V8h4.2a1.8 1.8 0 0 1 1.8 2.1l-1.1 6.4A1.8 1.8 0 0 1 16.1 18H7"/></svg></span><h3>Positiv über Schule sprechen</h3><p>Eine wohlwollende Haltung zur Schule gibt Ihrem Kind Sicherheit und Freude.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--blue-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#2B7FD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg></span><h3>Feste Lernzeit</h3><p>Eine ruhige, feste Zeit zum Üben hilft beim Konzentrieren.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--cream-card)"><svg viewBox="0 0 24 24" fill="none" stroke="#E0A91F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9L3.5 9.7l5.9-.9L12 3.5Z"/></svg></span><h3>Loben &amp; ermutigen</h3><p>Anerkennung und Ermutigung stärken das Selbstvertrauen.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--coral-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF7A66" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1 0 1.6-.8 1.6-1.7 0-.5-.2-.8-.5-1.1-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16a4.5 4.5 0 0 0 4.5-4.5C20.5 6.6 16.7 3.5 12 3.5Z"/><circle cx="7.8" cy="12" r="1"/><circle cx="9.8" cy="8.4" r="1"/><circle cx="14.2" cy="8" r="1"/></svg></span><h3>Stärken fördern</h3><p>Musik, Sport, Kunst und Sprache – fördern Sie, worin Ihr Kind aufblüht.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--green-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#46B36B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="9" r="2.6"/><circle cx="16" cy="10" r="2.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M14.6 14.3a4.8 4.8 0 0 1 5.9 4.7"/></svg></span><h3>Gemeinsam üben</h3><p>Schwierige Dinge gemeinsam üben nimmt die Angst und macht Mut.</p></div>
+        <div data-reveal class="card feature"><span class="feat-ic" style="background:var(--blue-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#2B7FD4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C9.8 5 6.7 4.6 4 5.5v12c2.7-.9 5.8-.5 8 1 2.2-1.5 5.3-1.9 8-1v-12c-2.7-.9-5.8-.5-8 1Z"/><path d="M12 6.5V18.5"/></svg></span><h3>Lesen &amp; spielen</h3><p>Gemeinsam lesen und spielen als Familie – Lernen braucht Übung und Wiederholung.</p></div>
+      </div>
+      <div data-reveal class="note">Darüber hinaus unterstützen wir Kinder in der Schule gezielt – z. B. durch DaZ-Kurse (Deutsch als Zweitsprache), Leseförderung und die Begleitung durch das Zentrum für unterstützende Pädagogik (ZuP). Sprechen Sie uns gern an.</div>
+    </section>
+  </section>
+
+  <!-- ===================== SCHULLEITUNG / TEAM ===================== -->
+  <section class="section" id="schulleitung">
+    <div data-reveal class="page-head head-blue">
+      <span class='ph-ic' style='color:#2B7FD4'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='9' cy='9' r='2.6'/><circle cx='16' cy='10' r='2.2'/><path d='M3.5 19a5.5 5.5 0 0 1 11 0M14.6 14.3a4.8 4.8 0 0 1 5.9 4.7'/></svg></span>
+      <h1>Schulleitung &amp; Team</h1>
+      <p>Die Menschen, die unsere Schule jeden Tag mit Leben füllen.</p>
+    </div>
+    <section class="block">
+      <div class="team-grid">
+        <div data-reveal class="person"><span class="avatar">IP</span><div><div class="role">Schulleitung (komm.)</div><div class="name">Ihno Pieper</div></div></div>
+        <div data-reveal class="person"><span class="avatar">P</span><div><div class="role">Konrektor</div><div class="name">Herr Pieper</div></div></div>
+        <div data-reveal class="person"><span class="avatar">R</span><div><div class="role">ZuP-Leitung</div><div class="name">Frau Röhl</div></div></div>
+        <div data-reveal class="person"><span class="avatar">E</span><div><div class="role">Sekretariat</div><div class="name">Frau Eichner</div></div></div>
+        <div data-reveal class="person"><span class="avatar">W</span><div><div class="role">Hausmeister</div><div class="name">Herr Weiß</div></div></div>
+        <div data-reveal class="person"><span class="avatar">Y</span><div><div class="role">Schulsozialarbeit</div><div class="name">Frau Yüceer</div></div></div>
+      </div>
+      <p style="margin-top:20px;font-weight:600;color:var(--ink-3);font-size:15px;">Die Schulleitung ist zurzeit kommissarisch besetzt. Die Schulsozialarbeit (Frau Yüceer) erreichen Sie unter <a href="tel:+4942136 19183" style="color:var(--blue);font-weight:800;text-decoration:none;">0421 – 361 9183</a>.</p>
+    </section>
+  </section>
+
+  <!-- ===================== KLASSENLEITUNGEN ===================== -->
+  <section class="section" id="klassen">
+    <div data-reveal class="page-head head-cream">
+      <span class='ph-ic' style='color:#B5870F'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='3.5' y='4.5' width='17' height='15' rx='2.5'/><path d='M3.5 9.5h17M9 9.5v10M3.5 14.5h17'/></svg></span>
+      <h1>Klassenleitungen</h1>
+      <p>Hier finden Sie alle Klassen mit ihren Klassenleitungen und Räumen.</p>
+    </div>
+    <section class="block block-narrow">
+      <table data-reveal class="class-table">
+        <thead><tr><th>Klasse</th><th>Klassenleitung</th><th class="room">Raum</th></tr></thead>
+        <tbody>
+          <tr><td class="cls">1A</td><td>Frau Celmeta &amp; Frau Coban</td><td class="room">15</td></tr>
+          <tr><td class="cls">1C</td><td>Herr Bornemann-Bratz</td><td class="room">26</td></tr>
+          <tr><td class="cls">1D</td><td>Frau Koçak</td><td class="room">24</td></tr>
+          <tr><td class="cls">2A</td><td>Frau Jüptner</td><td class="room">17</td></tr>
+          <tr><td class="cls">2B</td><td>Frau Drewes</td><td class="room">23</td></tr>
+          <tr><td class="cls">2C</td><td>Herr Hermann</td><td class="room">16</td></tr>
+          <tr><td class="cls">2D</td><td>Frau Teumer</td><td class="room">21</td></tr>
+          <tr><td class="cls">3A</td><td>Frau Mert</td><td class="room">31</td></tr>
+          <tr><td class="cls">3B</td><td>Frau Richter</td><td class="room">25</td></tr>
+          <tr><td class="cls">3C</td><td>Frau Cakim</td><td class="room">37</td></tr>
+          <tr><td class="cls">3D</td><td>Frau Saafi</td><td class="room">28</td></tr>
+          <tr><td class="cls">3E</td><td>Frau Lafrenz</td><td class="room">27</td></tr>
+          <tr><td class="cls">4A</td><td>Frau Özdemir</td><td class="room">33</td></tr>
+          <tr><td class="cls">4B</td><td>Frau Lindenlaub</td><td class="room">22</td></tr>
+          <tr><td class="cls">4C</td><td>Frau Rückel</td><td class="room">18</td></tr>
+          <tr><td class="cls">4D</td><td>Frau Fuhrken</td><td class="room">34</td></tr>
+          <tr><td class="cls">Vorkurs</td><td>Frau Leclerq</td><td class="room">34</td></tr>
+          <tr><td class="cls">Lesekurs</td><td>Frau Celik</td><td class="room">12</td></tr>
+          <tr><td class="cls">Temp. LG</td><td>Frau Ruckelshausen &amp; Herr Ottersberg</td><td class="room">11</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+  <!-- ===================== KONTAKT ===================== -->
+  <section class="section" id="kontakt">
+    <div data-reveal class="page-head head-coral">
+      <span class='ph-ic' style='color:#FF7A66'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z'/><circle cx='12' cy='10' r='2.5'/></svg></span>
+      <h1>Kontakt &amp; Anfahrt</h1>
+      <p>Wir freuen uns auf Ihre Nachricht und Ihren Besuch.</p>
+    </div>
+    <section class="block block-wide">
+      <div class="contact-grid">
+        <div data-reveal class="contact-card">
+          <h2>So erreichen Sie uns</h2>
+          <div class="contact-item">
+            <span class="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" stroke="#2B7FD4" stroke-width="2"/><circle cx="12" cy="10" r="2.5" stroke="#2B7FD4" stroke-width="2"/></svg></span>
+            <div><div class="label">Adresse</div><div class="value">Halmerweg 71<br>28237 Bremen-Gröpelingen</div></div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 4h4l2 5-3 2a12 12 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" stroke="#2B7FD4" stroke-width="2" stroke-linejoin="round"/></svg></span>
+            <div><div class="label">Telefon</div><div class="value"><a href="tel:+494213619174">0421 – 361 9174</a></div></div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 4h2l1 7-2 1M18 20h-2l-1-7 2-1" stroke="#2B7FD4" stroke-width="2" stroke-linecap="round"/><rect x="4" y="11" width="16" height="6" rx="1.5" stroke="#2B7FD4" stroke-width="2"/></svg></span>
+            <div><div class="label">Fax</div><div class="value">0421 – 361 16819</div></div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2.5" stroke="#2B7FD4" stroke-width="2"/><path d="m4 7 8 6 8-6" stroke="#2B7FD4" stroke-width="2"/></svg></span>
+            <div><div class="label">E-Mail</div><div class="value"><a href="mailto:051@schulverwaltung.bremen.de">051@schulverwaltung.bremen.de</a></div></div>
+          </div>
+        </div>
+
+        <div data-reveal class="contact-card">
+          <h2>Sekretariat</h2>
+          <p style="font-size:15.5px;font-weight:600;color:var(--ink-3);margin-bottom:18px;">Frau Eichner ist für Sie da:</p>
+          <div class="hours-row"><span class="day">Montag – Freitag</span><span class="time">07:00 – 14:30 Uhr</span></div>
+          <div class="hours-row"><span class="day">Wochenende</span><span class="time">geschlossen</span></div>
+          <figure class="map-box">
+            <img src="assets/Nachbarschaft.png" alt="Lageplan: die Schule am Halmerweg im Stadtteil Gröpelingen" onerror="this.closest('.map-box').classList.add('map-fallback'); this.remove();">
+            <figcaption><svg viewBox="0 0 24 24" fill="none" stroke="#2B7FD4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>Halmerweg 71, 28237 Bremen-Gröpelingen</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="block block-narrow">
+      <div data-reveal class="card form-card">
+        <h2 style="font-size:24px;margin-bottom:6px;">Schreiben Sie uns</h2>
+        <p class="form-intro">Füllen Sie das Formular aus – beim Absenden öffnet sich Ihr E-Mail-Programm mit der fertigen Nachricht an das Sekretariat.</p>
+        <form id="contactForm" class="contact-form" novalidate>
+          <div class="field">
+            <label for="cf-name">Ihr Name</label>
+            <input id="cf-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="cf-email">Ihre E-Mail</label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          </div>
+          <div class="field">
+            <label for="cf-msg">Ihre Nachricht</label>
+            <textarea id="cf-msg" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Nachricht senden</button>
+          <p class="form-hint" id="cf-hint" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================== IMPRESSUM ===================== -->
+  <section class="section" id="impressum">
+    <div data-reveal class="page-head head-blue"><span class='ph-ic' style='color:#2B7FD4'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z'/><path d='M14 3v4h4M9 12h6M9 16h5'/></svg></span>
+      <h1>Impressum</h1></div>
+    <section class="block block-narrow">
+      <div data-reveal class="prose">
+        <h2>Angaben gemäß § 5 DDG</h2>
+        <p>
+          Grundschule am Halmerweg<br>
+          Halmerweg 71<br>
+          28237 Bremen
+        </p>
+        <h3>Kontakt</h3>
+        <p>
+          Telefon: 0421 – 361 9174<br>
+          Fax: 0421 – 361 16819<br>
+          E-Mail: <a href="mailto:051@schulverwaltung.bremen.de">051@schulverwaltung.bremen.de</a>
+        </p>
+        <h3>Vertretung</h3>
+        <p>Die Schule wird kommissarisch durch den stellvertretenden Schulleiter Ihno Pieper vertreten.</p>
+        <h3>Schulträger / zuständige Behörde</h3>
+        <p>Die Senatorin für Kinder und Bildung der Freien Hansestadt Bremen, Rembertiring 8–12, 28195 Bremen.</p>
+        <h3>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h3>
+        <p>Pierre Hansen, Geeststr. 13, 28237 Bremen</p>
+        <h3>Verbraucherstreitbeilegung</h3>
+        <p>Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+        <div data-reveal class="note">Hinweis: Diese Seite ist eine neu gestaltete Demonstrations-Website. Die Inhalte stammen von der offiziellen Schulwebsite; verbindliche Angaben entnehmen Sie bitte <a href="https://www.gsamhalmerweg.de/impressum.html" target="_blank" rel="noopener">www.gsamhalmerweg.de</a>.</div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================== DATENSCHUTZ ===================== -->
+  <section class="section" id="datenschutz">
+    <div data-reveal class="page-head head-green"><span class='ph-ic' style='color:#46B36B'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><rect x='5' y='11' width='14' height='9' rx='2.5'/><path d='M8 11V8a4 4 0 0 1 8 0v3'/><circle cx='12' cy='15.5' r='1.3'/></svg></span>
+      <h1>Datenschutz</h1></div>
+    <section class="block block-narrow">
+      <div data-reveal class="prose">
+        <h2>Datenschutz auf einen Blick</h2>
+        <p>Der Schutz Ihrer persönlichen Daten ist uns wichtig. Im Folgenden informieren wir über Art, Umfang und Zweck der Verarbeitung personenbezogener Daten beim Besuch dieser Website.</p>
+
+        <h3>Verantwortliche Stelle</h3>
+        <p>
+          output bremen<br>
+          Pierre Hansen<br>
+          Geeststr. 13, 28237 Bremen<br>
+          E-Mail: <a href="mailto:pierre.hansen@output-bremen.de">pierre.hansen@output-bremen.de</a><br>
+          Telefon: 0421 – 67328724
+        </p>
+
+        <h3>Verarbeitete Datenarten</h3>
+        <ul>
+          <li>Bestandsdaten und Kontaktdaten</li>
+          <li>Inhalts- und Nutzungsdaten</li>
+          <li>Meta-, Kommunikations- und Verfahrensdaten</li>
+          <li>Protokolldaten</li>
+        </ul>
+
+        <h3>Hosting &amp; Server-Logfiles</h3>
+        <p>Der Zugriff auf unser Onlineangebot wird in Form von sogenannten Server-Logfiles protokolliert (u. a. abgerufene Seiten, übertragene Datenmengen, Browsertyp und IP-Adresse). Diese Informationen werden aus Gründen der Sicherheit maximal 30 Tage gespeichert und anschließend gelöscht oder anonymisiert. Eine längere Speicherung erfolgt nur, soweit sie zur Beweissicherung erforderlich ist.</p>
+
+        <h3>Cookies</h3>
+        <p>Die Website verwendet temporäre (Session-) sowie permanente Cookies; permanente Cookies können bis zu zwei Jahre gespeichert bleiben. Eine erteilte Einwilligung können Sie jederzeit widerrufen und der Verwendung über die Einstellungen Ihres Browsers widersprechen.</p>
+
+        <h3>Ihre Rechte</h3>
+        <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung, auf Datenübertragbarkeit sowie auf Widerspruch gegen die Verarbeitung. Zudem steht Ihnen ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu (Die Landesbeauftragte für Datenschutz und Informationsfreiheit der Freien Hansestadt Bremen).</p>
+
+        <p style="font-size:14px;color:var(--ink-3);">Stand: 8. September 2025</p>
+        <div data-reveal class="note">Inhalt übernommen von der offiziellen Datenschutzerklärung. Verbindliche Fassung: <a href="https://www.gsamhalmerweg.de/datenschutzerklaerung.html" target="_blank" rel="noopener">www.gsamhalmerweg.de</a>.</div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================== BARRIEREFREIHEIT ===================== -->
+  <section class="section" id="barrierefreiheit">
+    <div data-reveal class="page-head head-blue"><span class='ph-ic' style='color:#2B7FD4'><svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><circle cx='12' cy='4.6' r='1.7'/><path d='M4.5 8.5h15M12 8v6M8.5 20l3.5-6 3.5 6'/></svg></span>
+      <h1>Erklärung zur Barrierefreiheit</h1></div>
+    <section class="block block-narrow">
+      <div data-reveal class="prose">
+        <p>Wir sind bemüht, unsere Website im Einklang mit dem Bremischen Behindertengleichstellungsgesetz (BremBGG) und der Barrierefreie-Informationstechnik-Verordnung (BITV 2.0) barrierefrei zugänglich zu machen.</p>
+        <h3>Maßnahmen dieser Seite</h3>
+        <ul>
+          <li>Klare, kontrastreiche Farben und gut lesbare Schriften</li>
+          <li>Sichtbare Fokus-Markierungen für die Bedienung per Tastatur</li>
+          <li>Responsives Layout für Smartphone, Tablet und Computer</li>
+          <li>Reduzierte Animationen bei Aktivierung von „prefers-reduced-motion"</li>
+          <li>Aussagekräftige Beschriftungen und semantische Struktur</li>
+        </ul>
+        <h3>Barrieren melden</h3>
+        <p>Ihnen ist eine Barriere aufgefallen? Bitte teilen Sie uns das mit – wir kümmern uns darum. Kontakt: <a href="mailto:051@schulverwaltung.bremen.de">051@schulverwaltung.bremen.de</a>, Telefon 0421 – 361 9174.</p>
+        <h3>Durchsetzungsverfahren</h3>
+        <p>Sind Sie mit der Antwort nicht zufrieden, können Sie sich an die Zentralstelle für barrierefreie Informationstechnik der Freien Hansestadt Bremen wenden.</p>
+        <div data-reveal class="note">Hinweis: Auf der offiziellen Website ist die Erklärung zur Barrierefreiheit derzeit noch nicht ausformuliert. Diese Fassung beschreibt die Maßnahmen dieser neu gestalteten Seite.</div>
+      </div>
+    </section>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img class="footer-logo" src="assets/Logo.png" alt="" height="42" aria-hidden="true">
+        <span style="font-family:'Baloo 2',cursive;font-weight:800;font-size:18px;color:#fff;">Grundschule am Halmerweg</span>
+      </div>
+      <p>Eine bunte Schule in Bremen-Gröpelingen – zum Wohlfühlen, Entdecken und Großwerden.</p>
+    </div>
+    <div>
+      <h4>Schnellzugriff</h4>
+      <div class="footer-links">
+        <a href="#schule" data-link>Unsere Schule</a>
+        <a href="#stundenraster" data-link>Stundenraster</a>
+        <a href="#betreuung" data-link>Betreuung</a>
+        <a href="#termine" data-link>Termine</a>
+        <a href="#klassen" data-link>Klassenleitungen</a>
+      </div>
+    </div>
+    <div>
+      <h4>Kontakt</h4>
+      <p>
+        Halmerweg 71<br>28237 Bremen<br>
+        Tel. 0421 – 361 9174<br>
+        <a href="mailto:051@schulverwaltung.bremen.de" style="color:#A9C2DC;">051@schulverwaltung.bremen.de</a>
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © <span id="year"></span> Grundschule am Halmerweg ·
+    <a href="#impressum" data-link>Impressum</a> ·
+    <a href="#datenschutz" data-link>Datenschutz</a> ·
+    <a href="#barrierefreiheit" data-link>Barrierefreiheit</a>
+  </div>
+</footer>
+
+<script src="js/lib/gsap.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
