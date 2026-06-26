@@ -6,15 +6,16 @@
 <meta name="theme-color" content="#1c1c1a">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Dilan's Café · Bremen">
-<meta property="og:description" content="Frühstück mit Hafenblick – Dachterrasse über dem Wasser in der Überseestadt. Bowls, Eggs, Kuchen & Spezialitätenkaffee.">
+<meta property="og:description" content="Liebevolles Frühstück, frische Bowls, hausgemachtes Eis & guter Kaffee in der Bremer Überseestadt. Feiert eure Geburtstage & Anlässe bei uns – liebevoll dekoriert.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231c1c1a'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='%23ffffff' font-family='Georgia,serif' font-style='italic'%3ED%3C/text%3E%3C/svg%3E">
-<title>Dilan's Café · Bremen — Frühstück mit Hafenblick</title>
-<meta name="description" content="Dilan's Café in der Überseestadt – Frühstück, Bowls, Kuchen, Kaffee und Dachterrasse über dem Hafen. Konsul-Smidt-Straße 86, Bremen.">
+<title>Dilan's Café · Bremen — Frühstück, Bowls & Eis in der Überseestadt</title>
+<meta name="description" content="Dilan's Café in der Bremer Überseestadt – liebevolles Frühstück, frische Bowls, hausgemachtes Eis und richtig guter Kaffee. Feiert Geburtstage & Anlässe bei uns, liebevoll dekoriert. Konsul-Smidt-Straße 86, Bremen.">
 <link rel="stylesheet" href="fonts.css">
 <style>
   :root{
     --ink:#1c1c1a; --soft:#3c3c38; --paper:#fbfaf7; --cream:#f0ebe1;
     --sage:#8d9f85; --deepsage:#5d6e56; --muted:#857f74; --line:#e7e0d2;
+    --sagebg:#eceee6;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -26,6 +27,16 @@
   .script{font-family:'Pinyon Script',cursive;font-weight:400}
   .lead{font-size:.74rem;letter-spacing:.24em;text-transform:uppercase;font-weight:600;color:var(--deepsage)}
 
+  /* Brand ornament — Blatt-Zweig, greift das Logo-Motiv auf */
+  .sprig{display:block;width:30px;aspect-ratio:48/58;height:auto;color:var(--deepsage)}
+  .flourish{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px}
+  .flourish::before,.flourish::after{content:"";height:1px;width:54px}
+  .flourish::before{background:linear-gradient(90deg,transparent,var(--sage))}
+  .flourish::after{background:linear-gradient(90deg,var(--sage),transparent)}
+  .flourish .sprig{width:22px}
+  .sprig-left{margin-bottom:14px}
+  .sprig-left .sprig{width:24px}
+
   nav{position:sticky;top:0;z-index:40;background:rgba(251,250,247,.86);backdrop-filter:blur(10px);border-bottom:1px solid #e9e3d6}
   nav .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
   .logo{font-family:'Pinyon Script',cursive;font-size:2.1rem;line-height:1;color:var(--ink);padding-top:6px}
@@ -36,11 +47,11 @@
   @media(max-width:760px){.navlinks{display:none}}
 
   .hero{position:relative;min-height:92vh;display:flex;align-items:center;
-     background:linear-gradient(160deg,rgba(20,20,18,.5),rgba(20,20,18,.82)),url('img/hero.webp') center/cover no-repeat;color:#fff}
+     background:linear-gradient(160deg,rgba(20,20,18,.5),rgba(20,20,18,.82)),url('img/spread.webp') center/cover no-repeat;color:#fff}
   .hero .wrap{padding:120px 28px 96px}
   .hero .script-h{font-family:'Pinyon Script',cursive;font-size:clamp(3.4rem,9vw,6rem);color:#fff;line-height:1;margin-bottom:6px;text-shadow:0 2px 30px rgba(0,0,0,.4)}
   .hero h1{font-size:clamp(2rem,4.4vw,3.2rem);max-width:18ch;color:#fff;font-weight:500;letter-spacing:.005em}
-  .hero p{margin-top:22px;max-width:44ch;font-size:1.12rem;color:#e9e6dd}
+  .hero p{margin-top:22px;max-width:46ch;font-size:1.12rem;color:#e9e6dd}
   .hero .actions{margin-top:34px;display:flex;gap:16px;flex-wrap:wrap}
   .btn-ghost{display:inline-block;padding:13px 28px;border-radius:2px;border:1px solid rgba(255,255,255,.5);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
   .btn-ghost:hover{background:rgba(255,255,255,.12)}
@@ -56,6 +67,7 @@
   .about p{margin-top:18px;color:#4c4a42;font-size:1.06rem}
   .photo{border-radius:4px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(28,28,26,.45)}
   .photo img{width:100%;height:100%;object-fit:cover;aspect-ratio:5/4}
+  .photo.tall img{aspect-ratio:4/5}
 
   .feat{background:var(--cream)}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px}
@@ -65,12 +77,11 @@
   .card h3{font-size:1.6rem;margin:6px 0 8px}
   .card p{color:var(--muted);font-size:.97rem}
 
-  /* Terrasse band */
-  .band{position:relative;min-height:60vh;display:flex;align-items:flex-end;color:#fff;
-     background:linear-gradient(0deg,rgba(20,20,18,.78),rgba(20,20,18,.15)),url('img/terrace.webp') center/cover no-repeat}
-  .band .wrap{padding:60px 28px}
-  .band h2{color:#fff;max-width:16ch}
-  .band p{margin-top:14px;max-width:46ch;color:#e9e6dd;font-size:1.08rem}
+  /* Feiern */
+  .celebrate{background:var(--sagebg)}
+  .celebrate .lead{color:var(--deepsage)}
+  .celebrate p{margin-top:16px;color:#454b40;font-size:1.06rem}
+  .celebrate .btn{margin-top:26px}
 
   /* Menu */
   .menu .wrap{max-width:880px}
@@ -94,7 +105,7 @@
 
   /* Press */
   .press{background:var(--cream);text-align:center}
-  .press blockquote{font-family:'Cormorant Garamond';font-style:italic;font-size:clamp(1.8rem,4vw,2.6rem);max-width:20ch;margin:0 auto;color:var(--ink);line-height:1.2}
+  .press blockquote{font-family:'Cormorant Garamond';font-style:italic;font-size:clamp(1.8rem,4vw,2.6rem);max-width:22ch;margin:0 auto;color:var(--ink);line-height:1.2}
   .press .src{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;margin-top:34px;font-size:.95rem;font-weight:600;color:var(--deepsage)}
   .press .src a{border-bottom:2px solid transparent;padding-bottom:3px}.press .src a:hover{border-color:var(--sage)}
 
@@ -109,14 +120,31 @@
   .row.off b{opacity:.6}
 
   .cta{position:relative;text-align:center;color:#fff;
-     background:linear-gradient(160deg,rgba(20,20,18,.72),rgba(20,20,18,.88)),url('img/coffee.webp') center/cover no-repeat}
+     background:linear-gradient(160deg,rgba(20,20,18,.72),rgba(20,20,18,.88)),url('img/plate.webp') center/cover no-repeat}
   .cta h2{max-width:20ch;margin:0 auto;color:#fff}
   .cta p{margin:18px auto 32px;max-width:42ch;color:#e9e6dd}
+  .cta .flourish::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.5))}
+  .cta .flourish::after{background:linear-gradient(90deg,rgba(255,255,255,.5),transparent)}
+  .cta .flourish .sprig{color:#cdd6c8}
   .cta .btn{background:var(--paper);color:var(--ink)}
 
   footer{padding:50px 0;text-align:center;color:var(--muted);font-size:.85rem;border-top:1px solid #e9e3d6}
   .footmark{font-family:'Pinyon Script',cursive;font-size:2.2rem;color:var(--ink);margin-bottom:6px}
+  .footmark-wrap{margin-bottom:6px}
   .concept{display:block;margin-top:10px;color:#a39c8c;max-width:62ch;margin-left:auto;margin-right:auto}
+
+  /* Instagram */
+  .insta{background:var(--paper)}
+  .ig-handle{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'Cormorant Garamond';font-style:italic;font-size:1.45rem;color:var(--deepsage);margin-top:14px}
+  .ig-handle svg{width:22px;height:22px;flex:none}
+  .ig-handle:hover{color:var(--ink)}
+  .ig-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:42px}
+  @media(max-width:980px){.ig-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:600px){.ig-grid{grid-template-columns:minmax(0,1fr)}}
+  .ig-cell{display:flex;justify-content:center;align-items:flex-start;min-height:560px}
+  .ig-cell .instagram-media{margin:0 auto!important;min-width:0!important;width:100%!important}
+  .ig-fallback{align-self:center;color:var(--muted);font-size:.92rem;border:1px solid var(--line);border-radius:4px;padding:14px 18px}
+  .ig-foot{text-align:center;margin-top:40px}
 
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
@@ -146,94 +174,108 @@
 </head>
 <body>
 <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+<!-- Wiederverwendbares Zweig-Ornament -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="sprig" viewBox="0 0 48 58"><path d="M24 57 V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><path d="M24 41C17.5 39.5 13.5 34.5 12.5 28 19 28.5 23 33 24 41Z" fill="currentColor"/><path d="M24 41C30.5 39.5 34.5 34.5 35.5 28 29 28.5 25 33 24 41Z" fill="currentColor"/><path d="M24 31C18.5 29.7 15 25.4 14 20 19.6 20.6 23 24.4 24 31Z" fill="currentColor"/><path d="M24 31C29.5 29.7 33 25.4 34 20 28.4 20.6 25 24.4 24 31Z" fill="currentColor"/><circle cx="24" cy="13" r="3.4" fill="currentColor"/></symbol></svg>
+
 <nav><div class="wrap">
   <div class="logo">Dilan's</div>
-  <div class="navlinks"><a href="#about">Café</a><a href="#terrasse">Dachterrasse</a><a href="#karte">Karte</a><a href="#momente">Momente</a><a href="#finden">Finden</a></div>
+  <div class="navlinks"><a href="#about">Café</a><a href="#karte">Karte</a><a href="#feiern">Feiern</a><a href="#momente">Momente</a><a href="#finden">Finden</a></div>
   <a href="#finden" class="btn">Zu uns</a>
 <button class="mnav-burger" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></nav>
 
 <header class="hero" id="inhalt"><div class="wrap">
-  <span class="lead" style="color:#cdd6c8">Überseestadt · direkt am Wasser</span>
+  <span class="lead" style="color:#cdd6c8">Überseestadt · Bremen</span>
   <div class="script-h">Dilan's</div>
-  <h1>Frühstück mit Hafenblick – dein Lieblingsplatz am Wasser.</h1>
-  <p>Guter Kaffee, ein Frühstück, das verwöhnt, und eine Dachterrasse über dem Hafen der Überseestadt.</p>
+  <h1>Frühstück, Bowls &amp; Eis – dein Lieblingsplatz zum Genießen.</h1>
+  <p>Liebevoll zubereitetes Frühstück, frische Bowls, hausgemachtes Eis und richtig guter Kaffee. Mitten in der Bremer Überseestadt.</p>
   <div class="actions">
-    <a href="#karte" class="btn">Frühstückskarte</a>
-    <a href="#terrasse" class="btn-ghost">Die Dachterrasse</a>
+    <a href="#karte" class="btn">Zur Karte</a>
+    <a href="#feiern" class="btn-ghost">Bei uns feiern</a>
   </div>
   <div class="stats">
-    <div><b>Rooftop</b><span>Terrasse am Hafen</span></div>
-    <div><b>Bowls &amp; Eggs</b><span>frisch jeden Tag</span></div>
-    <div><b>6 Tage</b><span>Di – So geöffnet</span></div>
+    <div><b>Frühstück</b><span>den ganzen Vormittag</span></div>
+    <div><b>Bowls &amp; Eis</b><span>frisch &amp; hausgemacht</span></div>
+    <div><b>Feiern</b><span>Geburtstage &amp; mehr</span></div>
   </div>
 </div></header>
 
 <section id="about" class="about"><div class="wrap two">
   <div>
+    <div class="sprig-left"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg></div>
     <span class="lead">Willkommen</span>
     <h2>Das Café, das die <em>Überseestadt</em> liebt.</h2>
-    <p>Dilan's steht für entspannte Vormittage, herzlichen Service und den schönsten Blick übers Wasser. Mitten im neuen Bremer Hafenviertel, an der Konsul-Smidt-Straße – dort, wo die Stadt aufs Wasser trifft.</p>
-    <p>Frühstück, das verwöhnt, Bowls, Kuchen und Spezialitätenkaffee: Bei Dilan's nimmt man sich Zeit – am liebsten oben auf der Dachterrasse.</p>
+    <p>Dilan's steht für entspannte Vormittage, herzlichen Service und liebevoll angerichtete Teller. Mitten im neuen Bremer Hafenviertel, an der Konsul-Smidt-Straße – dort, wo die Stadt ein bisschen leichter atmet.</p>
+    <p>Frühstück, das verwöhnt, frische Bowls, hausgemachtes Eis und Spezialitätenkaffee: Bei Dilan's nimmt man sich Zeit – für sich, für gute Gespräche und für den schönsten Start in den Tag.</p>
   </div>
-  <div class="photo"><img src="img/terrace.webp" alt="Dachterrasse mit Hafenblick"></div>
+  <div class="photo tall"><img src="img/plate.webp" alt="Liebevoll angerichtetes Frühstück bei Dilan's"></div>
 </div></section>
 
 <section class="feat"><div class="wrap">
-  <span class="lead">Warum Dilan's</span>
-  <h2>Drei gute Gründe, heute <em>vorbeizukommen.</em></h2>
+  <div style="text-align:center"><div class="flourish"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg></div><span class="lead">Warum Dilan's</span>
+  <h2 style="margin-top:8px">Drei gute Gründe, heute <em>vorbeizukommen.</em></h2></div>
   <div class="grid3">
-    <div class="card"><div class="n">i.</div><h3>Die Dachterrasse</h3><p>Sonne, Wasser, Weite. Der beste Platz der Überseestadt für ein langes Frühstück oder den Feierabend-Kaffee.</p></div>
-    <div class="card"><div class="n">ii.</div><h3>Frühstück, das verwöhnt</h3><p>Von der Bowl bis zum herzhaften Teller – frisch zubereitet, schön angerichtet, jeden Tag aufs Neue.</p></div>
-    <div class="card"><div class="n">iii.</div><h3>Mitten im Geschehen</h3><p>Konsul-Smidt-Straße, bestens erreichbar, mit dem Lebensgefühl des neuen Bremer Hafenviertels.</p></div>
+    <div class="card"><div class="n">i.</div><h3>Frühstück, das verwöhnt</h3><p>Von der bunten Frühstückstafel bis zum herzhaften Teller – frisch zubereitet, schön angerichtet, jeden Tag aufs Neue.</p></div>
+    <div class="card"><div class="n">ii.</div><h3>Bowls &amp; hausgemachtes Eis</h3><p>Frische Bowls voller guter Zutaten und cremiges Eis aus eigener Herstellung. Dazu Spezialitätenkaffee und vieles mehr.</p></div>
+    <div class="card"><div class="n">iii.</div><h3>Mitten im Geschehen</h3><p>Konsul-Smidt-Straße, bestens erreichbar, mit dem entspannten Lebensgefühl des neuen Bremer Hafenviertels.</p></div>
   </div>
 </div></section>
 
-<section class="band" id="terrasse"><div class="wrap">
-  <span class="lead" style="color:#cdd6c8">Oben über den Häfen</span>
-  <h2>Dein Platz an der <em>Sonne.</em></h2>
-  <p>Wenn das Wetter mitspielt, ist die Dachterrasse der schönste Tisch der Stadt: Kaffee in der Hand, Hafen im Blick, Zeit im Überfluss.</p>
+<section class="celebrate" id="feiern"><div class="wrap two">
+  <div class="photo tall"><img src="img/signature.webp" alt="Besonderes Gericht für eure Feier bei Dilan's"></div>
+  <div>
+    <div class="sprig-left"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg></div>
+    <span class="lead">Feiern bei Dilan's</span>
+    <h2>Eure schönsten <em>Momente</em> – bei uns gefeiert.</h2>
+    <p>Ob Geburtstag, Babyshower, Taufe oder einfach ein gemütliches Beisammensein mit den Liebsten: Bei Dilan's seid ihr genau richtig.</p>
+    <p>Auf Wunsch dekorieren wir liebevoll passend zu eurem Anlass, stellen euch ein Frühstück oder ein Buffet ganz nach Geschmack zusammen und kümmern uns um den Rest – damit ihr einfach genießen könnt. Sagt uns, was ihr euch wünscht.</p>
+    <a href="tel:+4942184498180" class="btn">Feier anfragen</a>
+  </div>
 </div></section>
 
 <section id="karte" class="menu"><div class="wrap">
-  <div style="text-align:center"><span class="lead">Guten Morgen</span><h2 style="margin-top:8px">Frühstück, Bowls &amp; <em>Kaffee</em></h2></div>
+  <div style="text-align:center"><div class="flourish"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg></div><span class="lead">Guten Morgen</span><h2 style="margin-top:8px">Frühstück, Bowls, Eis &amp; <em>Kaffee</em></h2></div>
 
   <div class="mcat">
     <h3>Frühstück &amp; Herzhaft</h3>
+    <div class="mitem"><div><h4>Dilan's Frühstückstafel</h4><small>große Auswahl: Käse, Aufschnitt, Eier, Obst, Aufstriche &amp; mehr</small></div><div class="d"></div><div class="p">18,5</div></div>
     <div class="mitem"><div><h4>Eggs Benedict</h4><small>pochierte Eier, Sauce Hollandaise, auf Brioche</small></div><div class="d"></div><div class="p">11,5</div></div>
     <div class="mitem"><div><h4>Shakshuka</h4><small>Eier in würziger Tomatensauce, Brot</small></div><div class="d"></div><div class="p">10,5</div></div>
     <div class="mitem"><div><h4>Avocado Bread</h4><small>Sauerteig, Avocado, pochiertes Ei, Sprossen</small></div><div class="d"></div><div class="p">9,8</div></div>
   </div>
 
   <div class="mcat">
-    <h3>Bowls &amp; Süßes</h3>
+    <h3>Frische Bowls &amp; Süßes</h3>
     <div class="mitem"><div><h4>Açaí Bowl</h4><small>Açaí, Banane, Granola, frische Früchte</small></div><div class="d"></div><div class="p">9,5</div></div>
+    <div class="mitem"><div><h4>Joghurt-Bowl</h4><small>cremiger Joghurt, Granola, Honig, Saisonobst</small></div><div class="d"></div><div class="p">8,5</div></div>
     <div class="mitem"><div><h4>Pancakes</h4><small>fluffig, mit Ahornsirup &amp; Beeren</small></div><div class="d"></div><div class="p">8,5</div></div>
     <div class="mitem"><div><h4>Hausgemachter Kuchen</h4><small>täglich wechselnd</small></div><div class="d"></div><div class="p">4,5</div></div>
   </div>
 
   <div class="mcat">
-    <h3>Kaffee &amp; Drinks</h3>
+    <h3>Eis, Kaffee &amp; Drinks</h3>
+    <div class="mitem"><div><h4>Hausgemachtes Eis</h4><small>wechselnde Sorten · im Becher oder Hörnchen</small></div><div class="d"></div><div class="p">1,8</div></div>
+    <div class="mitem"><div><h4>Eisbecher</h4><small>mit frischen Früchten &amp; Sahne</small></div><div class="d"></div><div class="p">6,9</div></div>
     <div class="mitem"><div><h4>Flat White · Cappuccino</h4><small>Spezialitätenkaffee, auch mit Pflanzendrink</small></div><div class="d"></div><div class="p">3,8</div></div>
-    <div class="mitem"><div><h4>Matcha Latte</h4><small>cremig, mild</small></div><div class="d"></div><div class="p">4,8</div></div>
-    <div class="mitem"><div><h4>Frische Säfte &amp; Limonaden</h4><small>hausgemacht</small></div><div class="d"></div><div class="p">4,2</div></div>
+    <div class="mitem"><div><h4>Matcha Latte · Frische Säfte</h4><small>cremig &amp; mild · Säfte hausgemacht</small></div><div class="d"></div><div class="p">4,8</div></div>
   </div>
 
-  <p class="note">Beispielkarte zum Konzept · <b>Bowls, Eggs, Kuchen &amp; Salate</b> · vegane Optionen · Preise bitte final bestätigen</p>
+  <p class="note">Beispielkarte zum Konzept · <b>Frühstück, Bowls, Eis &amp; vieles mehr</b> · vegane Optionen · Preise bitte final bestätigen</p>
 </div></section>
 
 <section id="momente" class="gal"><div class="wrap">
-  <div style="text-align:center"><span class="lead">Momente</span><h2 style="margin-top:8px">Ein Vormittag bei <em>Dilan's</em></h2></div>
+  <div style="text-align:center"><div class="flourish"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg></div><span class="lead">Momente</span><h2 style="margin-top:8px">Ein Vormittag bei <em>Dilan's</em></h2></div>
   <div class="grid">
-    <figure><img loading="lazy" src="img/breakfast.webp" alt="Frühstücksteller"></figure>
-    <figure><img loading="lazy" src="img/coffee.webp" alt="Kaffee"></figure>
-    <figure><img loading="lazy" src="img/terrace.webp" alt="Dachterrasse"></figure>
-    <figure><img loading="lazy" src="img/hero.webp" alt="Dilan's Café"></figure>
+    <figure><img loading="lazy" src="img/spread.webp" alt="Reich gedeckte Frühstückstafel"></figure>
+    <figure><img loading="lazy" src="img/signature.webp" alt="Besonderes Gericht bei Dilan's"></figure>
+    <figure><img loading="lazy" src="img/plate.webp" alt="Liebevoll angerichteter Teller"></figure>
+    <figure><img loading="lazy" src="img/coffee.webp" alt="Kaffee bei Dilan's"></figure>
   </div>
 </div></section>
 
 <section class="press"><div class="wrap">
-  <blockquote>„Frühstück mit dem schönsten Blick der Überseestadt."</blockquote>
+  <blockquote>„Frühstück, frische Bowls und hausgemachtes Eis – mit ganz viel Liebe gemacht."</blockquote>
   <div class="src">
     <span>Beliebt auf</span>
     <a href="https://www.instagram.com/dilans_cafe/" target="_blank" rel="noopener">@dilans_cafe</a>
@@ -242,8 +284,29 @@
   </div>
 </div></section>
 
+<section class="insta" id="instagram"><div class="wrap">
+  <div style="text-align:center">
+    <div class="flourish"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg></div>
+    <span class="lead">Aus dem Café</span>
+    <h2 style="margin-top:8px">Frisch von <em>Instagram</em></h2>
+    <a class="ig-handle" href="https://www.instagram.com/dilans_cafe/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+      @dilans_cafe
+    </a>
+  </div>
+  <div class="ig-grid">
+    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DPCZT4bDMHI/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DPCZT4bDMHI/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
+    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DRUq8vMjDeB/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DRUq8vMjDeB/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
+    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DFPlC07us_8/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DFPlC07us_8/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
+    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DA5SWlOuw1p/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DA5SWlOuw1p/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
+    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DB3QB0LuS1K/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DB3QB0LuS1K/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
+    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DRhlFE3jCX-/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DRhlFE3jCX-/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
+  </div>
+  <div class="ig-foot"><a class="btn" href="https://www.instagram.com/dilans_cafe/" target="_blank" rel="noopener">Auf Instagram folgen</a></div>
+</div></section>
+
 <section class="feat" id="finden"><div class="wrap">
-  <div style="text-align:center;margin-bottom:44px"><span class="lead">Besuch</span><h2 style="margin-top:8px">Öffnungszeiten &amp; <em>Anfahrt</em></h2></div>
+  <div style="text-align:center;margin-bottom:44px"><div class="flourish"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg></div><span class="lead">Besuch</span><h2 style="margin-top:8px">Öffnungszeiten &amp; <em>Anfahrt</em></h2></div>
   <div class="info">
     <div class="panel dark">
       <h3>Öffnungszeiten</h3>
@@ -264,17 +327,50 @@
 </div></section>
 
 <section class="cta"><div class="wrap">
+  <div class="flourish"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg></div>
   <span class="lead" style="color:#cdd6c8">Bis gleich</span>
-  <h2 style="margin-top:10px">Die Sonne steht günstig. Komm vorbei.</h2>
-  <p>Dein Platz auf der Dachterrasse wartet – mit Kaffee und Hafenblick.</p>
+  <h2 style="margin-top:10px">Der Tisch ist gedeckt. Komm vorbei.</h2>
+  <p>Frühstück, Bowls, Eis und guter Kaffee warten auf dich – mitten in der Überseestadt.</p>
   <a href="https://www.google.com/maps/search/?api=1&query=Dilans+Café+Konsul-Smidt-Straße+86+Bremen" target="_blank" rel="noopener" class="btn">Route planen</a>
 </div></section>
 
 <footer><div class="wrap">
-  <div class="footmark">Dilan's</div>
+  <div class="footmark-wrap"><svg class="sprig" style="width:24px;margin:0 auto 4px" aria-hidden="true"><use href="#sprig"></use></svg><div class="footmark">Dilan's</div></div>
   Konsul-Smidt-Straße 86 · 28217 Bremen · Überseestadt
-  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach öffentlich verfügbaren Angaben (Instagram, Restaurant-Verzeichnisse); Fotos: Platzhalter (Stock), durch echte Laden-Fotos ersetzbar.</span>
+  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach Angaben des Cafés und öffentlich verfügbaren Quellen. Preise &amp; Öffnungszeiten bitte final bestätigen.</span>
 </div></footer>
 <script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
+
+<!-- Instagram-Embeds -->
+<script async src="https://www.instagram.com/embed.js"></script>
+
+<!-- Bewegung: dezente Scroll-Reveals (GSAP), respektiert prefers-reduced-motion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  if(!window.gsap || !window.ScrollTrigger) return; // Fällt das CDN aus, bleibt alles sichtbar
+  gsap.registerPlugin(ScrollTrigger);
+  var mm = gsap.matchMedia();
+  mm.add("(prefers-reduced-motion: no-preference)", function(){
+    gsap.from(".hero .wrap > *", {autoAlpha:0, y:22, duration:.8, ease:"power3.out", stagger:.1});
+
+    var singles = gsap.utils.toArray(".about .two > div, .celebrate .two > div, .feat > .wrap > div:first-child, .menu > .wrap > div:first-child, .gal > .wrap > div:first-child, .insta > .wrap > div:first-child, .press blockquote, .cta > .wrap");
+    gsap.set(singles, {autoAlpha:0, y:28});
+    singles.forEach(function(el){
+      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out"}); }});
+    });
+
+    var groups = gsap.utils.toArray(".feat .card, .gal figure, .info .panel, .menu .mcat");
+    gsap.set(groups, {autoAlpha:0, y:24});
+    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.09, overwrite:true}); }});
+
+    return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
+  });
+  // Layout nach Bild-/Embed-Laden neu vermessen
+  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+  setTimeout(function(){ ScrollTrigger.refresh(); }, 2200);
+})();
+</script>
 </body>
 </html>
