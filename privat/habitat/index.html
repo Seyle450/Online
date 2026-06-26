@@ -112,6 +112,9 @@
   footer img{height:54px;margin:0 auto 14px}
   .concept{display:block;margin-top:8px;color:#a3a6bd}
 
+  .val3 .ic{line-height:0}
+  .val3 .ic svg{width:36px;height:36px;color:var(--navy)}
+
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
@@ -178,9 +181,9 @@
 <section id="angebot" class="vals"><div class="wrap">
   <div class="center" style="max-width:36ch"><span class="lead">Auf der Matte</span><h2>Was dich bei Habitat <em>erwartet</em></h2></div>
   <div class="row3">
-    <div class="val3"><div class="ic">🧘</div><h3>Yoga &amp; Pilates</h3><p>Vom Morning Flow bis Slow &amp; Restore – kräftigend oder sanft, immer in kleinen Gruppen.</p></div>
-    <div class="val3"><div class="ic">🔔</div><h3>Sound Baths</h3><p>Klangreisen zum Loslassen – tief durchatmen und den Kopf einmal leer werden lassen.</p></div>
-    <div class="val3"><div class="ic">🍫</div><h3>Kakao-Zeremonien</h3><p>Wärmend &amp; verbindend – Achtsamkeit zum Anfassen, gemeinsam in der Runde.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5.4" r="2"/><path d="M12 8.2c-1 1.8-1.1 3.3-1.1 5.1M12 8.2c1 1.8 1.1 3.3 1.1 5.1"/><path d="M4.5 18.5c2.2-1.1 4.6-1.7 7.5-1.7s5.3.6 7.5 1.7"/><path d="M7 18.5l4-4.6M17 18.5l-4-4.6"/></svg></div><h3>Yoga &amp; Pilates</h3><p>Vom Morning Flow bis Slow &amp; Restore – kräftigend oder sanft, immer in kleinen Gruppen.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M8.6 8.6a5 5 0 0 0 0 6.8M15.4 8.6a5 5 0 0 1 0 6.8"/><path d="M6 6a8.5 8.5 0 0 0 0 12M18 6a8.5 8.5 0 0 1 0 12"/></svg></div><h3>Sound Baths</h3><p>Klangreisen zum Loslassen – tief durchatmen und den Kopf einmal leer werden lassen.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h11v5.5a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4Z"/><path d="M16 10h2.4a2 2 0 0 1 0 4H16"/><path d="M8 3.6c-.5.7-.5 1.3 0 2M11.5 3.6c-.5.7-.5 1.3 0 2"/></svg></div><h3>Kakao-Zeremonien</h3><p>Wärmend &amp; verbindend – Achtsamkeit zum Anfassen, gemeinsam in der Runde.</p></div>
   </div>
 </div></section>
 
@@ -237,5 +240,32 @@
   <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach öffentlich verfügbaren Angaben; Fotos: Platzhalter (Stock), durch echte Laden-Fotos ersetzbar</span>
 </div></footer>
 <script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
+
+<!-- Bewegung: dezente Scroll-Reveals (GSAP), respektiert prefers-reduced-motion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  if(!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  var mm = gsap.matchMedia();
+  mm.add("(prefers-reduced-motion: no-preference)", function(){
+    gsap.from(".hero .eyebrow, .hero h1, .hero p, .hero .actions", {autoAlpha:0, y:24, duration:.8, ease:"power3.out", stagger:.1});
+
+    var singles = gsap.utils.toArray(".about .two > div, .center, .press blockquote, .press .src, .booking .lead, .booking h2, .booking p, .booking .btn, #finden .info > div");
+    gsap.set(singles, {autoAlpha:0, y:28});
+    singles.forEach(function(el){
+      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
+    });
+
+    var groups = gsap.utils.toArray(".big, .val3, .trow");
+    gsap.set(groups, {autoAlpha:0, y:24});
+    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
+
+    return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
+  });
+  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+})();
+</script>
 </body>
 </html>

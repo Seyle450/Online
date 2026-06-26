@@ -49,8 +49,12 @@
   .heroart img{width:100%;height:100%;object-fit:cover}
   .heroart .stamp{position:absolute;right:16px;bottom:16px;background:rgba(250,245,234,.94);color:var(--brand);font-family:'Fredoka';font-weight:600;font-size:.84rem;padding:9px 15px;border-radius:100px;box-shadow:0 10px 26px -12px rgba(0,0,0,.5)}
 
-  .marq{background:var(--brand);color:var(--cream);padding:16px 0;overflow:hidden;white-space:nowrap}
-  .marq span{font-family:'Fredoka';font-weight:500;font-size:1.1rem;margin:0 22px}
+  .marq{background:var(--brand);color:var(--cream);padding:16px 0;overflow:hidden}
+  .marq__track{display:flex;width:max-content;animation:marq 32s linear infinite}
+  .marq__grp{display:flex;flex:none}
+  .marq span{font-family:'Fredoka';font-weight:500;font-size:1.1rem;margin:0 22px;white-space:nowrap}
+  @keyframes marq{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.marq__track{animation:none}}
 
   section{padding:88px 0}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
@@ -142,6 +146,9 @@
   .footmark{font-family:'Fredoka';font-weight:700;font-size:1.7rem;color:var(--brand);margin-bottom:6px}
   .concept{display:block;margin-top:8px;color:#a99a8b;max-width:60ch;margin-left:auto;margin-right:auto}
 
+  .feat .ic{line-height:0}
+  .feat .ic svg{width:34px;height:34px;color:var(--brand)}
+
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
@@ -194,7 +201,10 @@
   </div>
 </div></header>
 
-<div class="marq"><span>★ hausgemacht</span><span>vegan</span><span>★ glutenfreie Optionen</span><span>Specialty Coffee</span><span>★ Hojicha</span><span>Earl Grey Latte</span><span>★ slow mornings</span><span>made in Schwachhausen</span><span>★ hausgemacht</span><span>vegan</span><span>★ Hojicha</span></div>
+<div class="marq" aria-label="hausgemacht · vegan · glutenfreie Optionen · Specialty Coffee · Hojicha · Earl Grey Latte · slow mornings · made in Schwachhausen"><div class="marq__track">
+  <div class="marq__grp"><span>★ hausgemacht</span><span>vegan</span><span>★ glutenfreie Optionen</span><span>Specialty Coffee</span><span>★ Hojicha</span><span>Earl Grey Latte</span><span>★ slow mornings</span><span>made in Schwachhausen</span></div>
+  <div class="marq__grp" aria-hidden="true"><span>★ hausgemacht</span><span>vegan</span><span>★ glutenfreie Optionen</span><span>Specialty Coffee</span><span>★ Hojicha</span><span>Earl Grey Latte</span><span>★ slow mornings</span><span>made in Schwachhausen</span></div>
+</div></div>
 
 <section id="about" class="about"><div class="wrap two">
   <div class="square"><img loading="lazy" src="img/interior.webp" alt="Heller, minimalistischer Innenraum des Café Petit"></div>
@@ -216,10 +226,10 @@
 <section id="werte" class="values"><div class="wrap">
   <div style="text-align:center"><span class="lead">Was uns ausmacht</span><h2 style="margin-top:10px">Klein. Fein. Mit Charakter.</h2></div>
   <div class="feat-grid">
-    <div class="feat"><div class="ic">🤍</div><h3>Ehrlich &amp; nahbar</h3><p>Persönlich geführt, unkompliziert, mit echtem Interesse an dir – kein Schnickschnack.</p></div>
-    <div class="feat"><div class="ic">🥐</div><h3>Hausgemacht</h3><p>Cookies, Kuchen sowie Mandel- &amp; Pistazien-Croissants – täglich frisch gebacken.</p></div>
-    <div class="feat"><div class="ic">🌱</div><h3>Vegan &amp; glutenfrei</h3><p>Vieles ist vegan, glutenfreie Optionen gibt es täglich – ohne Kompromiss beim Geschmack.</p></div>
-    <div class="feat"><div class="ic">🤝</div><h3>Für die Nachbarschaft</h3><p>Studierende, Eltern mit Kinderwagen, Senioren – ein Ort des lebendigen Miteinanders.</p></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-9.5A3.6 3.6 0 0 1 12 8a3.6 3.6 0 0 1 7 2.5C19 15.5 12 20 12 20Z"/></svg></div><h3>Ehrlich &amp; nahbar</h3><p>Persönlich geführt, unkompliziert, mit echtem Interesse an dir – kein Schnickschnack.</p></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="9.6" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="14.4" cy="11" r="1" fill="currentColor" stroke="none"/><circle cx="11.4" cy="14.4" r="1" fill="currentColor" stroke="none"/></svg></div><h3>Hausgemacht</h3><p>Cookies, Kuchen sowie Mandel- &amp; Pistazien-Croissants – täglich frisch gebacken.</p></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-8"/><path d="M12 14c0-3-2.4-5.2-5.6-5.2C6.4 11.8 8.8 14 12 14Z"/><path d="M12 12c0-2.6 2.2-4.7 5.2-4.7C17.2 9.9 15 12 12 12Z"/></svg></div><h3>Vegan &amp; glutenfrei</h3><p>Vieles ist vegan, glutenfreie Optionen gibt es täglich – ohne Kompromiss beim Geschmack.</p></div>
+    <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="9" r="2.4"/><circle cx="16" cy="9" r="2.4"/><path d="M3.8 19c0-2.5 1.9-4 4.2-4s4.2 1.5 4.2 4"/><path d="M12.2 18.6c.4-2 2-3.3 3.8-3.3 2.3 0 4.2 1.5 4.2 4"/></svg></div><h3>Für die Nachbarschaft</h3><p>Studierende, Eltern mit Kinderwagen, Senioren – ein Ort des lebendigen Miteinanders.</p></div>
   </div>
 </div></section>
 
@@ -315,5 +325,32 @@
   <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach öffentlich verfügbaren Angaben (Presse, Instagram); Fotos: Platzhalter (Stock), durch echte Laden-Fotos ersetzbar.</span>
 </div></footer>
 <script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
+
+<!-- Bewegung: dezente Scroll-Reveals (GSAP), respektiert prefers-reduced-motion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  if(!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  var mm = gsap.matchMedia();
+  mm.add("(prefers-reduced-motion: no-preference)", function(){
+    gsap.from(".hero .lead, .hero .big, .hero h1, .hero p, .hero .actions, .heroart", {autoAlpha:0, y:24, duration:.8, ease:"power3.out", stagger:.1});
+
+    var singles = gsap.utils.toArray(".about .two > div, [style*='text-align:center'], .mhead, .press > .wrap, .cta > .wrap");
+    gsap.set(singles, {autoAlpha:0, y:28});
+    singles.forEach(function(el){
+      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
+    });
+
+    var groups = gsap.utils.toArray(".feat, .spec, .gal figure, .mcat, .fact");
+    gsap.set(groups, {autoAlpha:0, y:24});
+    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
+
+    return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
+  });
+  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+})();
+</script>
 </body>
 </html>

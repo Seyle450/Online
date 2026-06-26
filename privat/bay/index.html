@@ -109,6 +109,10 @@
   .footmark{font-family:'Fraunces',serif;font-size:1.6rem;color:var(--ink);margin-bottom:12px}
   .concept{display:block;margin-top:10px;color:#a39c8e}
 
+  /* werte-icons */
+  .val3 .ic{line-height:0}
+  .val3 .ic svg{width:32px;height:32px;margin:0 auto;color:var(--soft)}
+
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
@@ -147,15 +151,15 @@
   <span class="lead">neustadt · bremen</span>
   <h1>bay.</h1>
   <p class="sub">matcha &amp; croffles. <em>handgemacht, ruhig, ästhetisch</em> — ein ort, so schön wie dein feed.</p>
-  <div class="heroband"><img src="img/hero.webp" alt="Matcha Latte"><span class="pill">@bay.bremen</span></div>
+  <div class="heroband"><img src="img/front.webp" alt="bay. in der Bremer Neustadt" style="object-position:center 40%"><span class="pill">@bay.bremen</span></div>
 </div></header>
 
 <section id="menu"><div class="wrap">
   <div class="center"><span class="lead">hausgemacht</span><h2>unsere <em>signatures</em></h2></div>
   <div class="menu">
-    <div class="m"><div class="pic"><img loading="lazy" src="img/matcha.webp" alt="Ceremonial Matcha"></div><div class="body"><h3>ceremonial matcha</h3><p>steingemahlen, sanft, leuchtend grün</p><div class="pr">5,2</div></div></div>
+    <div class="m"><div class="pic"><img loading="lazy" src="img/cans.webp" alt="bay. Matcha to go"></div><div class="body"><h3>ceremonial matcha</h3><p>steingemahlen, sanft, leuchtend grün</p><div class="pr">5,2</div></div></div>
     <div class="m"><div class="pic"><img loading="lazy" src="img/croffle.webp" alt="Croffle"></div><div class="body"><h3>croffle</h3><p>croissant trifft waffel – warm &amp; knusprig</p><div class="pr">4,8</div></div></div>
-    <div class="m"><div class="pic"><img loading="lazy" src="img/hero.webp" alt="Iced Strawberry Matcha"></div><div class="body"><h3>iced strawberry matcha</h3><p>der star für warme tage</p><div class="pr">5,8</div></div></div>
+    <div class="m"><div class="pic"><img loading="lazy" src="img/matcha.webp" alt="Iced Strawberry Matcha"></div><div class="body"><h3>iced strawberry matcha</h3><p>der star für warme tage</p><div class="pr">5,8</div></div></div>
   </div>
   <div class="mlist">
     <div class="mrow"><div class="n">hot matcha latte<small>steingemahlen, mit hafer oder kokos</small></div><div class="dots"></div><div class="pr">4,8</div></div>
@@ -167,7 +171,7 @@
 </div></section>
 
 <section id="story" class="story"><div class="wrap">
-  <div class="sq"><img loading="lazy" src="img/interior.webp" alt="bay. Interior"></div>
+  <div class="sq"><img loading="lazy" src="img/room.webp" alt="bay. Innenraum mit Bögen und warmem Licht"></div>
   <div>
     <span class="lead">die idee</span>
     <h2>weniger, aber <em>schöner.</em></h2>
@@ -179,19 +183,19 @@
 <section id="warum" class="vals"><div class="wrap">
   <div class="center" style="max-width:34ch"><span class="lead">warum bay</span><h2>drei dinge, die <em>bleiben</em></h2></div>
   <div class="row3">
-    <div class="val3"><div class="ic">🍵</div><h3>matcha im fokus</h3><p>steingemahlen, leuchtend grün – in seiner schönsten form.</p></div>
-    <div class="val3"><div class="ic">🤍</div><h3>weniger, aber schöner</h3><p>klare formen, ehrliche zutaten, ein platz zum durchatmen.</p></div>
-    <div class="val3"><div class="ic">🌿</div><h3>drinnen &amp; draußen</h3><p>gemütlich am fenster oder draußen in der sonne – für alle.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M9 5.5c-.6 1.1.4 1.8.4 3M14.6 5.5c-.6 1.1.4 1.8.4 3"/></svg></div><h3>matcha im fokus</h3><p>steingemahlen, leuchtend grün – in seiner schönsten form.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></div><h3>weniger, aber schöner</h3><p>klare formen, ehrliche zutaten, ein platz zum durchatmen.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 20.5V11a7.5 7.5 0 0 1 15 0v9.5"/><path d="M4.5 20.5h15"/></svg></div><h3>drinnen &amp; draußen</h3><p>gemütlich am fenster oder draußen in der sonne – für alle.</p></div>
   </div>
 </div></section>
 
 <section id="momente" class="gal"><div class="wrap">
   <div class="center" style="max-width:30ch"><span class="lead">momente</span><h2>so schön wie dein <em>feed</em></h2></div>
   <div class="row">
-    <figure><img loading="lazy" src="img/matcha.webp" alt="matcha"></figure>
-    <figure><img loading="lazy" src="img/croffle.webp" alt="croffle"></figure>
-    <figure><img loading="lazy" src="img/interior.webp" alt="interior"></figure>
-    <figure><img loading="lazy" src="img/hero.webp" alt="bay."></figure>
+    <figure><img loading="lazy" src="img/table.webp" alt="gedeckter tisch bei bay."></figure>
+    <figure><img loading="lazy" src="img/toast.webp" alt="sandwich bei bay."></figure>
+    <figure><img loading="lazy" src="img/cans.webp" alt="matcha to go"></figure>
+    <figure><img loading="lazy" src="img/front.webp" alt="bay. storefront"></figure>
   </div>
 </div></section>
 
@@ -219,8 +223,35 @@
 <footer><div class="wrap">
   <div class="footmark">bay.</div>
   Langemarckstraße 209 · 28199 Bremen
-  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach öffentlich verfügbaren Angaben; Fotos: Platzhalter (Stock), durch echte Laden-Fotos ersetzbar</span>
+  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach Angaben des Cafés und öffentlich verfügbaren Quellen. Preise &amp; Öffnungszeiten bitte final bestätigen.</span>
 </div></footer>
 <script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
+
+<!-- Bewegung: dezente Scroll-Reveals (GSAP), respektiert prefers-reduced-motion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  if(!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  var mm = gsap.matchMedia();
+  mm.add("(prefers-reduced-motion: no-preference)", function(){
+    gsap.from(".hero .lead, .hero h1, .hero .sub, .heroband", {autoAlpha:0, y:22, duration:.8, ease:"power3.out", stagger:.1});
+
+    var singles = gsap.utils.toArray(".center, .story .sq, .story .wrap > div:not(.sq), .press blockquote, #visit .btn");
+    gsap.set(singles, {autoAlpha:0, y:28});
+    singles.forEach(function(el){
+      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
+    });
+
+    var groups = gsap.utils.toArray(".menu .m, .mlist .mrow, .val3, .gal figure, .vgrid .v");
+    gsap.set(groups, {autoAlpha:0, y:24});
+    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
+
+    return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
+  });
+  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+})();
+</script>
 </body>
 </html>

@@ -46,8 +46,12 @@
   .btn-ghost{display:inline-block;padding:13px 26px;border-radius:4px;border:1px solid #44444c;color:#fff;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.06em}
   .btn-ghost:hover{border-color:var(--yellow);color:var(--yellow)}
 
-  .ticker{background:var(--yellow);color:#141417;padding:14px 0;overflow:hidden;white-space:nowrap;font-family:'Space Grotesk';font-weight:700;text-transform:uppercase;letter-spacing:.05em}
-  .ticker span{margin:0 22px}
+  .ticker{background:var(--yellow);color:#141417;padding:14px 0;overflow:hidden;font-family:'Space Grotesk';font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+  .ticker__track{display:flex;width:max-content;animation:ticker 24s linear infinite}
+  .ticker__grp{display:flex;flex:none}
+  .ticker span{margin:0 22px;white-space:nowrap}
+  @keyframes ticker{to{transform:translateX(-50%)}}
+  @media(prefers-reduced-motion:reduce){.ticker__track{animation:none}}
 
   section{padding:92px 0}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
@@ -106,6 +110,10 @@
   footer{padding:46px 0;text-align:center;color:var(--muted);font-size:.84rem;border-top:1px solid #2a2a30}
   .concept{display:block;margin-top:8px;color:#76767e}
 
+  /* USP-Icons */
+  .val3 .ic{line-height:0}
+  .val3 .ic svg{width:34px;height:34px;color:var(--yellow)}
+
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
@@ -151,7 +159,10 @@
   </div>
 </div></header>
 
-<div class="ticker"><span>★ Burger</span><span>★ Hotdogs</span><span>★ Fries</span><span>★ frisch gemacht</span><span>★ Steintor Bremen</span><span>★ Burger</span><span>★ Hotdogs</span><span>★ Fries</span><span>★ frisch gemacht</span></div>
+<div class="ticker" aria-label="Burger · Hotdogs · Fries · frisch gemacht · Steintor Bremen"><div class="ticker__track">
+  <div class="ticker__grp"><span>★ Burger</span><span>★ Hotdogs</span><span>★ Fries</span><span>★ frisch gemacht</span><span>★ Steintor Bremen</span></div>
+  <div class="ticker__grp" aria-hidden="true"><span>★ Burger</span><span>★ Hotdogs</span><span>★ Fries</span><span>★ frisch gemacht</span><span>★ Steintor Bremen</span></div>
+</div></div>
 
 <section id="about" class="about"><div class="wrap two">
   <div>
@@ -166,9 +177,9 @@
 <section id="warum" class="vals"><div class="wrap">
   <div class="center" style="max-width:30ch"><span class="lead">Warum BURDOGS</span><h2>Kein Schnickschnack</h2></div>
   <div class="grid3v">
-    <div class="val3"><div class="ic">🍔</div><h3>Smashed Patties</h3><p>Auf der heißen Platte plattgedrückt – maximale Kruste, voller Geschmack.</p></div>
-    <div class="val3"><div class="ic">🌭</div><h3>Loaded Hotdogs</h3><p>Knackige Wurst, Toppings ohne Ende – so muss ein Dog sein.</p></div>
-    <div class="val3"><div class="ic">🎮</div><h3>GTA-Energie</h3><p>Neon, Sound, Attitude – Street Food mit der Optik aus dem Game.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5C4 6.7 7.6 4.8 12 4.8s8 1.9 8 4.7Z"/><path d="M4.4 13h15.2"/><path d="M5 16.5h14a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3Z"/></svg></div><h3>Smashed Patties</h3><p>Auf der heißen Platte plattgedrückt – maximale Kruste, voller Geschmack.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="9" width="18" height="6.4" rx="3.2"/><path d="M7 12.2l2-1.1 2 1.1 2-1.1 2 1.1"/></svg></div><h3>Loaded Hotdogs</h3><p>Knackige Wurst, Toppings ohne Ende – so muss ein Dog sein.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.5 8.5h9a4.5 4.5 0 0 1 4.4 5.5l-.5 2.3a2.4 2.4 0 0 1-4.3.9l-1-1.4H8.4l-1 1.4a2.4 2.4 0 0 1-4.3-.9l-.5-2.3A4.5 4.5 0 0 1 7.5 8.5Z"/><path d="M6 12v2.2M4.9 13.1h2.2"/><circle cx="16" cy="12.2" r=".9" fill="currentColor" stroke="none"/><circle cx="18" cy="14.2" r=".9" fill="currentColor" stroke="none"/></svg></div><h3>GTA-Energie</h3><p>Neon, Sound, Attitude – Street Food mit der Optik aus dem Game.</p></div>
   </div>
 </div></section>
 
@@ -227,5 +238,32 @@
   <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com · Fotos: Platzhalter (Stock), durch echte Laden-Fotos ersetzbar · Account vor Kontakt verifizieren (@_burdogs)</span>
 </div></footer>
 <script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
+
+<!-- Bewegung: dezente Scroll-Reveals (GSAP), respektiert prefers-reduced-motion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  if(!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  var mm = gsap.matchMedia();
+  mm.add("(prefers-reduced-motion: no-preference)", function(){
+    gsap.from(".hero .tagline, .hero h1, .hero p, .hero .actions", {autoAlpha:0, y:24, duration:.8, ease:"power3.out", stagger:.1});
+
+    var singles = gsap.utils.toArray(".about .two > div, .center, .press blockquote, .cta h2, .cta p, .cta .btn");
+    gsap.set(singles, {autoAlpha:0, y:28});
+    singles.forEach(function(el){
+      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
+    });
+
+    var groups = gsap.utils.toArray(".val3, .menu .item, .info .panel");
+    gsap.set(groups, {autoAlpha:0, y:24});
+    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
+
+    return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
+  });
+  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+})();
+</script>
 </body>
 </html>

@@ -108,6 +108,9 @@
   footer img{height:46px;margin:0 auto 14px;opacity:.9}
   .concept{display:block;margin-top:8px;color:#a8a596}
 
+  .val3 .ic{line-height:0}
+  .val3 .ic svg{width:36px;height:36px;color:var(--green);margin:0 auto}
+
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
@@ -205,9 +208,9 @@
 <section id="warum" class="about"><div class="wrap">
   <div class="center" style="max-width:36ch"><span class="lead">Perché Farfalla</span><h2>Warum es bei uns <em>schmeckt</em></h2></div>
   <div class="vals"><div class="row3">
-    <div class="val3"><div class="ic">🔥</div><h3>Aus dem Holzofen</h3><p>Teig mit 48 Stunden Geduld, hohe Hitze, leicht gerösteter Rand – echte neapolitanische Schule.</p></div>
-    <div class="val3"><div class="ic">👨‍👩‍👧</div><h3>Für Familien gemacht</h3><p>Spielecke drinnen und draußen – damit auch die Kleinen einen schönen Abend haben.</p></div>
-    <div class="val3"><div class="ic">🛵</div><h3>Reservierung &amp; Abholung</h3><p>Tisch sichern oder warm abholen – wie es für dich am besten passt.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c.5 3.2 4 4.4 4 8.2A4 4 0 0 1 8 12c0-1.6.7-2.6 1.5-3.4C10.3 9 12 6.8 12 3Z"/><path d="M12 20a2.2 2.2 0 0 0 2.2-2.2c0-1.5-2.2-2.4-2.2-4.3 0 1.9-2.2 2.8-2.2 4.3A2.2 2.2 0 0 0 12 20Z" fill="currentColor" stroke="none"/></svg></div><h3>Aus dem Holzofen</h3><p>Teig mit 48 Stunden Geduld, hohe Hitze, leicht gerösteter Rand – echte neapolitanische Schule.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.4" cy="7" r="2.2"/><path d="M5 19v-4.2a3.4 3.4 0 0 1 6.8 0V19"/><circle cx="16.6" cy="9.6" r="1.7"/><path d="M13.9 19v-3.1a2.7 2.7 0 0 1 5.3 0V19"/></svg></div><h3>Für Familien gemacht</h3><p>Spielecke drinnen und draußen – damit auch die Kleinen einen schönen Abend haben.</p></div>
+    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8.5h12l-1 11H7l-1-11Z"/><path d="M9 8.5V6.5a3 3 0 0 1 6 0v2"/></svg></div><h3>Reservierung &amp; Abholung</h3><p>Tisch sichern oder warm abholen – wie es für dich am besten passt.</p></div>
   </div></div>
 </div></section>
 
@@ -253,5 +256,32 @@
   <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Inhalte nach öffentlich verfügbaren Angaben; Fotos: Platzhalter (Stock), durch echte Restaurant-Fotos ersetzbar</span>
 </div></footer>
 <script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
+
+<!-- Bewegung: dezente Scroll-Reveals (GSAP), respektiert prefers-reduced-motion -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  if(!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  var mm = gsap.matchMedia();
+  mm.add("(prefers-reduced-motion: no-preference)", function(){
+    gsap.from(".hero .eyebrow, .hero h1, .hero p, .hero .actions, .hero .tag", {autoAlpha:0, y:24, duration:.8, ease:"power3.out", stagger:.1});
+
+    var singles = gsap.utils.toArray(".about .two > div, .center, .press blockquote, .press .src, .cta .lead, .cta h2, .cta p, .cta .btn");
+    gsap.set(singles, {autoAlpha:0, y:28});
+    singles.forEach(function(el){
+      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
+    });
+
+    var groups = gsap.utils.toArray(".val3, .mcat, .gallery figure, .info .panel");
+    gsap.set(groups, {autoAlpha:0, y:24});
+    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
+
+    return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
+  });
+  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+})();
+</script>
 </body>
 </html>
