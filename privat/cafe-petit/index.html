@@ -40,8 +40,8 @@
   .hero{padding:78px 0 66px}
   .hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
   @media(max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:36px}}
-  .hero .big{font-family:'Fredoka';font-weight:700;font-size:clamp(4rem,12vw,8rem);color:var(--brand);line-height:.86;letter-spacing:-.01em}
-  .hero .big small{display:block;font-size:.18em;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-top:8px}
+  .hero .big{font-family:'Fredoka';font-weight:700;font-size:clamp(4rem,12vw,8rem);color:var(--brand);line-height:.95;letter-spacing:-.01em;padding-bottom:.04em}
+  .hero .big small{display:block;font-family:'Fredoka',sans-serif;font-size:.24em;letter-spacing:.01em;text-transform:none;color:var(--brand);font-weight:600;margin-top:8px;line-height:1}
   .hero h1{font-size:clamp(1.7rem,3vw,2.3rem);margin-top:24px;color:var(--ink);font-weight:500}
   .hero p{margin-top:16px;max-width:42ch;color:#5c4d44;font-size:1.06rem}
   .hero .actions{margin-top:30px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
@@ -91,7 +91,7 @@
   .mitem:last-child{border-bottom:none}
   .mitem h4{font-family:'Fredoka';font-weight:600;font-size:1.3rem}
   .mitem .d{flex:1;border-bottom:2px dotted #d9cbb8;margin:0 8px;transform:translateY(-5px)}
-  .mitem .p{font-family:'Fredoka';font-weight:600;font-size:1.3rem;color:var(--brand);white-space:nowrap}
+  .mitem .p{font-family:'Fredoka';font-weight:600;font-size:1.3rem;color:var(--brand);white-space:nowrap;font-variant-numeric:tabular-nums}
   .mitem small{display:block;font-family:'Inter';font-size:.84rem;color:var(--muted);margin-top:3px;font-weight:400}
   .tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);background:rgba(161,78,56,.1);border-radius:100px;padding:2px 9px;margin-left:8px;vertical-align:middle}
   .tags{margin-top:34px;text-align:center;font-size:.86rem;color:var(--muted)}
@@ -149,6 +149,57 @@
   .feat .ic{line-height:0}
   .feat .ic svg{width:34px;height:34px;color:var(--brand)}
 
+  /* Menübuch – blätterbare Speisekarte mit Rahmen */
+  .msub{margin-top:14px;color:var(--muted);font-size:.98rem}
+  .menubook{max-width:720px;margin:46px auto 0;perspective:1600px}
+  .mb-frame{position:relative;background:
+      radial-gradient(120% 80% at 50% 0%, #fffdf8, var(--paper) 70%);
+      border:1px solid var(--brand);border-radius:24px;padding:16px;
+      box-shadow:0 40px 80px -50px rgba(126,58,40,.6), inset 0 0 0 1px rgba(255,255,255,.6)}
+  .mb-frame::before{content:"";position:absolute;inset:10px;border:1.5px solid rgba(161,78,56,.32);border-radius:16px;pointer-events:none}
+  .mb-corner{position:absolute;width:20px;height:20px;border:2px solid var(--brand);opacity:.65;pointer-events:none}
+  .mb-corner.tl{top:20px;left:20px;border-right:0;border-bottom:0;border-radius:7px 0 0 0}
+  .mb-corner.tr{top:20px;right:20px;border-left:0;border-bottom:0;border-radius:0 7px 0 0}
+  .mb-corner.bl{bottom:74px;left:20px;border-right:0;border-top:0;border-radius:0 0 0 7px}
+  .mb-corner.br{bottom:74px;right:20px;border-left:0;border-top:0;border-radius:0 0 7px 0}
+  .mb-stage{position:relative;min-height:430px;transform-style:preserve-3d}
+  @media(max-width:560px){.mb-stage{min-height:500px}.mb-corner.bl,.mb-corner.br{bottom:96px}}
+  .mpage{position:absolute;inset:0;padding:34px 34px 6px;opacity:0;visibility:hidden;pointer-events:none;
+      transform:translateX(38px) rotateY(7deg);transform-origin:left center;backface-visibility:hidden;
+      transition:opacity .5s ease, transform .55s cubic-bezier(.4,.05,.2,1)}
+  @media(max-width:560px){.mpage{padding:28px 20px 6px}}
+  .mpage.is-active{position:relative;opacity:1;visibility:visible;pointer-events:auto;transform:none}
+  .mpage.pre{visibility:visible;opacity:0;transform:translateX(38px) rotateY(7deg)}
+  .mpage.pre.pre-left{transform:translateX(-38px) rotateY(-7deg)}
+  .mpage.leaving{visibility:visible;opacity:0}
+  .mpage.leaving.to-left{transform:translateX(-38px) rotateY(-7deg)}
+  .mpage.leaving.to-right{transform:translateX(38px) rotateY(7deg)}
+  .mpage-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;padding-bottom:14px;border-bottom:2px solid var(--sand)}
+  .mpage-no{font-family:'Fredoka';font-weight:700;font-size:1rem;color:#fff;background:var(--brand);width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none}
+  .mpage-head h3{font-family:'Fredoka';font-weight:600;font-size:1.5rem;color:var(--brand)}
+  .mb-nav{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 14px;padding:16px 16px 6px;border-top:1px solid var(--sand)}
+  .mb-btn{width:46px;height:46px;border-radius:50%;border:0;background:var(--brand);color:#fff;font-size:1.2rem;line-height:1;cursor:pointer;transition:transform .15s,background .2s;display:grid;place-items:center;flex:none}
+  .mb-btn:hover{background:var(--deep);transform:translateY(-2px)}
+  .mb-dots{display:flex;align-items:center;gap:10px}
+  .mb-dot{position:relative;width:10px;height:10px;border-radius:50%;background:var(--sand);border:0;cursor:pointer;padding:0;transition:transform .2s,background .2s}
+  .mb-dot::before{content:"";position:absolute;inset:-13px}
+  .mb-dot.is-active{background:var(--brand);transform:scale(1.35)}
+
+  /* Instagram */
+  .insta{background:var(--cream)}
+  .ig-handle{display:inline-flex;align-items:center;gap:10px;margin-top:14px;font-family:'Fredoka';font-weight:600;color:var(--brand);font-size:1.15rem}
+  .ig-handle svg{width:22px;height:22px;flex:none}
+  .ig-handle:hover{color:var(--deep)}
+  .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:42px}
+  @media(max-width:760px){.ig-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:430px){.ig-grid{grid-template-columns:1fr}}
+  .ig-card{position:relative;display:block;aspect-ratio:1;border-radius:18px;overflow:hidden;background:var(--sand)}
+  .ig-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+  .ig-card:hover img{transform:scale(1.06)}
+  .ig-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(161,78,56,0),rgba(126,58,40,.55));opacity:0;transition:opacity .3s ease}
+  .ig-card:hover .ig-ov,.ig-card:focus-visible .ig-ov{opacity:1}
+  .ig-ov svg{width:34px;height:34px;color:#fff}
+
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
@@ -196,7 +247,7 @@
     </div>
   </div>
   <div class="heroart">
-    <img src="img/hero.webp" alt="Signature Drink im Café Petit">
+    <img src="img/1.webp" alt="Der „petit"-Schriftzug an der Wand mit einem kleinen Kuchen im warmen Licht">
     <span class="stamp">★ täglich frisch &amp; hausgemacht</span>
   </div>
 </div></header>
@@ -207,7 +258,7 @@
 </div></div>
 
 <section id="about" class="about"><div class="wrap two">
-  <div class="square"><img loading="lazy" src="img/interior.webp" alt="Heller, minimalistischer Innenraum des Café Petit"></div>
+  <div class="square"><img loading="lazy" src="img/2.webp" alt="Sonniger Tisch im Café Petit mit Latte, Blumen und der Karte"></div>
   <div>
     <span class="lead">Die Geschichte</span>
     <h2>Von Lisa &amp; Lina – aus Liebe zum Detail.</h2>
@@ -234,28 +285,44 @@
 </div></section>
 
 <section id="menu" class="menu"><div class="wrap">
-  <div class="mhead"><span class="lead">Hausgemacht</span><h2 style="margin-top:12px">Unsere Karte</h2></div>
+  <div class="mhead"><span class="lead">Hausgemacht</span><h2 style="margin-top:12px">Unsere Karte</h2>
+    <p class="msub">Blättere durch unsere Karte – wie in einem kleinen Menübuch.</p></div>
 
-  <div class="mcat">
-    <h3>Signature Drinks</h3>
-    <div class="mitem"><div><h4>Earl Grey Latte</h4><small>mit hausgemachtem Sirup – unser Signature</small></div><div class="d"></div><div class="p">5,2</div></div>
-    <div class="mitem"><div><h4>Hojicha Latte <span class="tag">Bestseller</span></h4><small>gerösteter Grüntee, mild &amp; nussig</small></div><div class="d"></div><div class="p">5,2</div></div>
-    <div class="mitem"><div><h4>Dirty Hojicha</h4><small>Hojicha mit einem Shot Espresso</small></div><div class="d"></div><div class="p">5,5</div></div>
-    <div class="mitem"><div><h4>Iced Spanish Latte</h4><small>cremig, süß, perfekt für warme Tage</small></div><div class="d"></div><div class="p">5,8</div></div>
-  </div>
+  <div class="menubook" id="menubook">
+    <div class="mb-frame">
+      <span class="mb-corner tl"></span><span class="mb-corner tr"></span><span class="mb-corner bl"></span><span class="mb-corner br"></span>
 
-  <div class="mcat">
-    <h3>Matcha &amp; Kaffee</h3>
-    <div class="mitem"><div><h4>Ceremonial Matcha</h4><small>steingemahlen, aus Vietnam – mit Hafer oder Kokos</small></div><div class="d"></div><div class="p">5,5</div></div>
-    <div class="mitem"><div><h4>Cappuccino · Cortado · Flat White</h4><small>Bohnen von Rubiac, Johann Jacobs Haus</small></div><div class="d"></div><div class="p">3,8</div></div>
-    <div class="mitem"><div><h4>Filterkaffee</h4><small>handgebrüht, wechselnde Röstung</small></div><div class="d"></div><div class="p">3,5</div></div>
-  </div>
+      <div class="mb-stage">
+        <article class="mpage is-active" data-title="Signature Drinks">
+          <div class="mpage-head"><span class="mpage-no">I</span><h3>Signature Drinks</h3></div>
+          <div class="mitem"><div><h4>Earl Grey Latte</h4><small>mit hausgemachtem Sirup – unser Signature</small></div><div class="d"></div><div class="p">5,2</div></div>
+          <div class="mitem"><div><h4>Hojicha Latte <span class="tag">Bestseller</span></h4><small>gerösteter Grüntee, mild &amp; nussig</small></div><div class="d"></div><div class="p">5,2</div></div>
+          <div class="mitem"><div><h4>Dirty Hojicha</h4><small>Hojicha mit einem Shot Espresso</small></div><div class="d"></div><div class="p">5,5</div></div>
+          <div class="mitem"><div><h4>Iced Spanish Latte</h4><small>cremig, süß, perfekt für warme Tage</small></div><div class="d"></div><div class="p">5,8</div></div>
+        </article>
 
-  <div class="mcat">
-    <h3>Küche &amp; Süßes</h3>
-    <div class="mitem"><div><h4>Kimchi Grilled Cheese</h4><small>auf Sauerteig, mit hausgemachtem Kimchi</small></div><div class="d"></div><div class="p">8,5</div></div>
-    <div class="mitem"><div><h4>Mandel- &amp; Pistazien-Croissant</h4><small>hausgemacht, täglich frisch</small></div><div class="d"></div><div class="p">4,2</div></div>
-    <div class="mitem"><div><h4>Kuchen &amp; Cookies <span class="tag">oft vegan</span></h4><small>täglich wechselnd, glutenfreie Optionen</small></div><div class="d"></div><div class="p">4,5</div></div>
+        <article class="mpage" data-title="Matcha &amp; Kaffee">
+          <div class="mpage-head"><span class="mpage-no">II</span><h3>Matcha &amp; Kaffee</h3></div>
+          <div class="mitem"><div><h4>Ceremonial Matcha</h4><small>steingemahlen, aus Vietnam – mit Hafer oder Kokos</small></div><div class="d"></div><div class="p">5,5</div></div>
+          <div class="mitem"><div><h4>Cappuccino · Cortado · Flat White</h4><small>Bohnen von Rubiac, Johann Jacobs Haus</small></div><div class="d"></div><div class="p">3,8</div></div>
+          <div class="mitem"><div><h4>Filterkaffee</h4><small>handgebrüht, wechselnde Röstung</small></div><div class="d"></div><div class="p">3,5</div></div>
+          <div class="mitem"><div><h4>Heiße Schokolade</h4><small>cremig, auch mit Pflanzendrink</small></div><div class="d"></div><div class="p">4,2</div></div>
+        </article>
+
+        <article class="mpage" data-title="Küche &amp; Süßes">
+          <div class="mpage-head"><span class="mpage-no">III</span><h3>Küche &amp; Süßes</h3></div>
+          <div class="mitem"><div><h4>Kimchi Grilled Cheese</h4><small>auf Sauerteig, mit hausgemachtem Kimchi</small></div><div class="d"></div><div class="p">8,5</div></div>
+          <div class="mitem"><div><h4>Mandel- &amp; Pistazien-Croissant</h4><small>hausgemacht, täglich frisch</small></div><div class="d"></div><div class="p">4,2</div></div>
+          <div class="mitem"><div><h4>Kuchen &amp; Cookies <span class="tag">oft vegan</span></h4><small>täglich wechselnd, glutenfreie Optionen</small></div><div class="d"></div><div class="p">4,5</div></div>
+        </article>
+      </div>
+
+      <div class="mb-nav">
+        <button class="mb-btn mb-prev" type="button" aria-label="Vorherige Seite">&#8592;</button>
+        <div class="mb-dots" role="tablist" aria-label="Seiten der Speisekarte"></div>
+        <button class="mb-btn mb-next" type="button" aria-label="Nächste Seite">&#8594;</button>
+      </div>
+    </div>
   </div>
 
   <p class="sourced">Brot von <b>Lenes Backstube</b> · Kaffee von <b>Rubiac</b> · Matcha &amp; Hojicha über Amsterdam aus Vietnam</p>
@@ -274,9 +341,9 @@
 <section id="gal" class="gal"><div class="wrap">
   <div style="text-align:center"><span class="lead">Momente</span><h2 style="margin-top:10px">Zum Anschauen &amp; Genießen</h2></div>
   <div class="grid">
-    <figure><img loading="lazy" src="img/drink.webp" alt="Signature Drink"><figcaption>Signature Drinks</figcaption></figure>
-    <figure><img loading="lazy" src="img/cake.webp" alt="Hausgemachter Kuchen"><figcaption>Hausgemacht</figcaption></figure>
-    <figure><img loading="lazy" src="img/interior.webp" alt="Innenraum"><figcaption>Eckladen mit Licht</figcaption></figure>
+    <figure><img loading="lazy" src="img/4.webp" alt="Eckladen von Café Petit am Abend mit beleuchtetem Schriftzug"><figcaption>Eckladen mit Licht</figcaption></figure>
+    <figure><img loading="lazy" src="img/3.webp" alt="Reihe von Signature Drinks im Café Petit"><figcaption>Signature Drinks</figcaption></figure>
+    <figure><img loading="lazy" src="img/5.webp" alt="Iced Matcha und drei Lattes mit Latte-Art"><figcaption>Hausgemacht</figcaption></figure>
   </div>
 </div></section>
 
@@ -288,6 +355,26 @@
     <a href="https://www.instagram.com/petitcoffeeclub/" target="_blank" rel="noopener">@petitcoffeeclub</a>
   </div>
   <p class="quote">„Ein kleines Café mit <span>großer Wirkung</span>."</p>
+</div></section>
+
+<section id="instagram" class="insta"><div class="wrap">
+  <div style="text-align:center">
+    <span class="lead">Folge uns</span>
+    <h2 style="margin-top:12px">Frisch von Instagram</h2>
+    <a class="ig-handle" href="https://www.instagram.com/petitcoffeeclub/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+      @petitcoffeeclub
+    </a>
+  </div>
+  <div class="ig-grid">
+    <a class="ig-card" href="https://www.instagram.com/p/DZ9kie6Nh1Z/" target="_blank" rel="noopener"><img loading="lazy" src="img/1.webp" alt="Beitrag von Café Petit auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DZwbCMtjd-c/" target="_blank" rel="noopener"><img loading="lazy" src="img/2.webp" alt="Beitrag von Café Petit auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DZKbBIiDdBR/" target="_blank" rel="noopener"><img loading="lazy" src="img/3.webp" alt="Beitrag von Café Petit auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DYZKNcwDS9o/" target="_blank" rel="noopener"><img loading="lazy" src="img/7.webp" alt="Beitrag von Café Petit auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DUoOEdmjM6L/" target="_blank" rel="noopener"><img loading="lazy" src="img/5.webp" alt="Beitrag von Café Petit auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DTSG-U6DC3S/" target="_blank" rel="noopener"><img loading="lazy" src="img/6.webp" alt="Beitrag von Café Petit auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+  </div>
+  <div style="text-align:center;margin-top:40px"><a class="btn" href="https://www.instagram.com/petitcoffeeclub/" target="_blank" rel="noopener">Auf Instagram folgen</a></div>
 </div></section>
 
 <section id="besuch"><div class="wrap">
@@ -330,26 +417,74 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
 <script>
+// Menübuch – blätterbare Speisekarte
+(function(){
+  var book = document.getElementById("menubook"); if(!book) return;
+  var pages = [].slice.call(book.querySelectorAll(".mpage"));
+  var dotsWrap = book.querySelector(".mb-dots");
+  var prev = book.querySelector(".mb-prev"), next = book.querySelector(".mb-next");
+  if(pages.length < 2) return;
+  var i = 0, animating = false, dots = [];
+  pages.forEach(function(p, idx){
+    var d = document.createElement("button");
+    d.className = "mb-dot" + (idx === 0 ? " is-active" : "");
+    d.type = "button"; d.setAttribute("role","tab");
+    d.setAttribute("aria-label", "Seite " + (idx + 1) + ": " + (p.getAttribute("data-title") || ""));
+    d.setAttribute("aria-selected", idx === 0 ? "true" : "false");
+    d.addEventListener("click", function(){ go(idx); });
+    dotsWrap.appendChild(d); dots.push(d);
+  });
+  function go(n, dir){
+    n = (n + pages.length) % pages.length;
+    if(n === i || animating) return;
+    animating = true;
+    dir = dir || (n > i ? 1 : -1);
+    var cur = pages[i], nxt = pages[n];
+    nxt.classList.add("pre"); nxt.classList.toggle("pre-left", dir < 0);
+    void nxt.offsetWidth;                         // Reflow erzwingen → Übergang läuft
+    nxt.classList.remove("pre","pre-left"); nxt.classList.add("is-active");
+    cur.classList.remove("is-active");
+    cur.classList.add("leaving", dir > 0 ? "to-left" : "to-right");
+    dots[i].classList.remove("is-active"); dots[i].setAttribute("aria-selected","false");
+    dots[n].classList.add("is-active"); dots[n].setAttribute("aria-selected","true");
+    window.setTimeout(function(){
+      cur.classList.remove("leaving","to-left","to-right");
+      animating = false;
+    }, 560);
+    i = n;
+  }
+  prev.addEventListener("click", function(){ go(i - 1, -1); });
+  next.addEventListener("click", function(){ go(i + 1, 1); });
+  book.addEventListener("keydown", function(e){
+    if(e.key === "ArrowLeft"){ go(i - 1, -1); } else if(e.key === "ArrowRight"){ go(i + 1, 1); }
+  });
+})();
+
+// Scroll-Reveals
 (function(){
   if(!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
+  var rafId;
+  function refresh(){ cancelAnimationFrame(rafId); rafId = requestAnimationFrame(function(){ ScrollTrigger.refresh(); }); }
   var mm = gsap.matchMedia();
   mm.add("(prefers-reduced-motion: no-preference)", function(){
     gsap.from(".hero .lead, .hero .big, .hero h1, .hero p, .hero .actions, .heroart", {autoAlpha:0, y:24, duration:.8, ease:"power3.out", stagger:.1});
 
-    var singles = gsap.utils.toArray(".about .two > div, [style*='text-align:center'], .mhead, .press > .wrap, .cta > .wrap");
+    var singles = gsap.utils.toArray(".about .two > div, .values [style*='text-align:center'], .specials [style*='text-align:center'], .gal [style*='text-align:center'], .insta [style*='text-align:center'], #besuch [style*='text-align:center'], .mhead, .menubook, .press > .wrap, .cta > .wrap");
     gsap.set(singles, {autoAlpha:0, y:28});
     singles.forEach(function(el){
-      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
+      ScrollTrigger.create({trigger:el, start:"top 88%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
     });
 
-    var groups = gsap.utils.toArray(".feat, .spec, .gal figure, .mcat, .fact");
+    var groups = gsap.utils.toArray(".feat, .spec, .gal figure, .ig-card, .fact");
     gsap.set(groups, {autoAlpha:0, y:24});
-    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
+    ScrollTrigger.batch(groups, {start:"top 90%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
 
     return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
   });
-  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+  if(window.ResizeObserver){ new ResizeObserver(refresh).observe(document.body); }
+  window.addEventListener("load", refresh);
+  [800,1800,3200].forEach(function(t){ setTimeout(refresh, t); });
 })();
 </script>
 </body>

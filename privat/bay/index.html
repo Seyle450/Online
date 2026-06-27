@@ -17,8 +17,8 @@
     --stone:#8c8579; --line:#d9d3c7;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--bg);line-height:1.75;font-weight:300;-webkit-font-smoothing:antialiased}
+  html{scroll-behavior:smooth;overflow-x:clip}
+  body{font-family:'Outfit',sans-serif;color:var(--ink);background:var(--bg);line-height:1.75;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:clip}
   h1,h2,h3,.serif{font-family:'Fraunces',serif;font-weight:400;line-height:1.1}
   .wrap{max-width:1040px;margin:0 auto;padding:0 30px}
   a{color:inherit;text-decoration:none}
@@ -33,7 +33,8 @@
   .navlinks a{color:var(--stone)}.navlinks a:hover{color:var(--ink)}
   @media(max-width:760px){.navlinks{display:none}}
 
-  .hero{padding:70px 0 56px;text-align:center}
+  .hero{padding:84px 0 72px;text-align:center;min-height:74vh;display:flex;align-items:center}
+  .hero .wrap{width:100%}
   .hero .lead{display:block;margin-bottom:34px}
   .hero h1{font-family:'Fraunces',serif;font-size:clamp(4rem,15vw,9rem);font-weight:400;letter-spacing:-.01em;line-height:.9}
   .hero .sub{margin:30px auto 0;max-width:32ch;font-size:1.1rem;color:var(--soft)}
@@ -81,7 +82,7 @@
   .mrow .n{font-family:'Fraunces',serif;font-size:1.15rem}
   .mrow .n small{display:block;font-family:'Outfit';font-size:.82rem;color:var(--stone);text-transform:none;letter-spacing:0}
   .mrow .dots{flex:1;border-bottom:1px dotted #cfc8ba;margin:0 8px;transform:translateY(-5px)}
-  .mrow .pr{font-family:'Fraunces';font-style:italic;color:var(--ink);font-size:1.1rem;white-space:nowrap}
+  .mrow .pr{font-family:'Fraunces';font-style:italic;color:var(--ink);font-size:1.1rem;white-space:nowrap;font-variant-numeric:tabular-nums}
 
   /* werte-trio */
   .vals{background:var(--paper)}
@@ -109,9 +110,90 @@
   .footmark{font-family:'Fraunces',serif;font-size:1.6rem;color:var(--ink);margin-bottom:12px}
   .concept{display:block;margin-top:10px;color:#a39c8e}
 
-  /* werte-icons */
-  .val3 .ic{line-height:0}
-  .val3 .ic svg{width:32px;height:32px;margin:0 auto;color:var(--soft)}
+  /* ---- Hintergrund-Grafiken (dezent, sollen nur das Auge führen) ---- */
+  .hero,section{position:relative}
+  .wrap{position:relative;z-index:2}
+  /* durchgehende Leinwand: helle Sektionen transparent, damit Formen übergreifen */
+  .specials,.story,.vals,.insta{background:transparent}
+  .bg{position:absolute;z-index:0;pointer-events:none;color:var(--stone)}
+  .bg svg{display:block;width:100%;height:100%;overflow:visible}
+  .bg.x1{opacity:.2}.bg.x2{opacity:.28}.bg.x3{opacity:.34}
+  /* weicher Gradient-Blob als Akzent (Matcha-Ton) */
+  .orb{border-radius:58% 42% 55% 45% / 52% 48% 52% 48%;filter:blur(38px);opacity:.32;
+       background:radial-gradient(circle at 40% 35%, rgba(150,166,140,.55), rgba(150,166,140,0) 70%)}
+
+  /* Scroll-Hinweis im Hero */
+  .scrollcue{margin:46px auto 0;width:1px;height:56px;background:linear-gradient(var(--stone),transparent);position:relative;z-index:2}
+  .scrollcue::after{content:"";position:absolute;left:50%;top:0;width:4px;height:4px;border-radius:50%;background:var(--stone);transform:translateX(-50%)}
+
+  /* Numeralen statt Icon-Symbole */
+  .val3 .rn{font-family:'Fraunces',serif;font-style:italic;font-size:1.8rem;color:var(--stone)}
+
+  /* Specials – Bagels · Matcha · French Toast */
+  .specials{background:var(--paper)}
+  .spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:48px}
+  @media(max-width:820px){.spec-grid{grid-template-columns:1fr;max-width:430px;margin:48px auto 0}}
+  .spec{position:relative;border-radius:6px;overflow:hidden;background:var(--bg)}
+  .spec .pic{aspect-ratio:4/5;overflow:hidden}
+  .spec .pic img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+  .spec:hover .pic img{transform:scale(1.05)}
+  .spec .cap{position:absolute;left:0;right:0;bottom:0;padding:24px 22px 20px;color:#fff;background:linear-gradient(transparent,rgba(20,18,15,.74))}
+  .spec .cap .t{font-family:'Fraunces',serif;font-size:1.55rem;font-style:italic}
+  .spec .cap .d{font-size:.86rem;color:#ece8df;margin-top:3px;line-height:1.5}
+  .spec .num{position:absolute;top:16px;left:18px;font-family:'Fraunces';font-style:italic;color:#fff;font-size:1.05rem;opacity:.9;text-shadow:0 1px 10px rgba(0,0,0,.5)}
+
+  /* Blätterbare Speisekarte */
+  .mbook{max-width:680px;margin:48px auto 0;perspective:1600px}
+  .mb-card{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:16px}
+  .mb-card::before{content:"";position:absolute;inset:9px;border:1px solid var(--line);border-radius:3px;pointer-events:none}
+  .mb-stage{position:relative;min-height:330px;transform-style:preserve-3d}
+  @media(max-width:560px){.mb-stage{min-height:410px}}
+  .mpg{position:absolute;inset:0;padding:30px 34px 8px;opacity:0;visibility:hidden;pointer-events:none;transform:translateX(34px) rotateY(6deg);transform-origin:left center;backface-visibility:hidden;transition:opacity .5s ease, transform .55s cubic-bezier(.4,.05,.2,1)}
+  @media(max-width:560px){.mpg{padding:24px 20px 8px}}
+  .mpg.is-active{position:relative;opacity:1;visibility:visible;pointer-events:auto;transform:none}
+  .mpg.pre{visibility:visible;opacity:0;transform:translateX(34px) rotateY(6deg)}
+  .mpg.pre.pre-left{transform:translateX(-34px) rotateY(-6deg)}
+  .mpg.leaving{visibility:visible;opacity:0}
+  .mpg.leaving.to-left{transform:translateX(-34px) rotateY(-6deg)}
+  .mpg.leaving.to-right{transform:translateX(34px) rotateY(6deg)}
+  .mpg .cat{font-family:'Fraunces',serif;font-style:italic;font-size:1.5rem;color:var(--ink);margin-bottom:6px;display:flex;align-items:center;gap:16px}
+  .mpg .cat::after{content:"";flex:1;height:1px;background:var(--line)}
+  .mb-nav{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:8px 18px 4px;padding:16px 0 6px;border-top:1px solid var(--line)}
+  .mb-arrow{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:1.1rem;cursor:pointer;display:grid;place-items:center;transition:background .2s,color .2s,border-color .2s}
+  .mb-arrow:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .mb-pages{display:flex;align-items:center;gap:10px}
+  .mb-dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--line);border:0;cursor:pointer;padding:0;transition:transform .2s,background .2s}
+  .mb-dot::before{content:"";position:absolute;inset:-14px}
+  .mb-dot.is-active{background:var(--ink);transform:scale(1.45)}
+
+  /* Finde uns – aufgewertet */
+  .visit2{display:grid;grid-template-columns:1.02fr .98fr;gap:24px;margin-top:48px;text-align:left}
+  @media(max-width:820px){.visit2{grid-template-columns:1fr;gap:18px}}
+  .vcard{border:1px solid var(--line);border-radius:6px;padding:38px 34px;background:var(--paper);position:relative;overflow:hidden}
+  .vcard.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .vcard h3{font-family:'Fraunces',serif;font-style:italic;font-size:1.55rem;margin-bottom:18px}
+  .vrow{display:flex;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid var(--line);font-size:.97rem}
+  .vcard.dark .vrow{border-color:rgba(255,255,255,.14)}
+  .vrow:last-child{border-bottom:none}
+  .vrow .k{color:var(--stone);letter-spacing:.04em}
+  .vcard.dark .vrow .k{color:#b7b1a6}
+  .vrow .v2{font-family:'Fraunces',serif}
+  .vcard .btn{margin-top:28px}
+  .vcard.dark .btn{background:var(--bg);color:var(--ink)}
+
+  /* Instagram */
+  .insta{background:var(--paper)}
+  .ig-handle{display:inline-flex;align-items:center;gap:10px;margin-top:14px;font-family:'Fraunces',serif;font-style:italic;font-size:1.2rem;color:var(--ink)}
+  .ig-handle svg{width:22px;height:22px;flex:none}
+  .ig-handle:hover{color:var(--soft)}
+  .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:46px}
+  @media(max-width:760px){.ig-grid{grid-template-columns:1fr 1fr}}
+  .ig-card{position:relative;display:block;aspect-ratio:1;border-radius:6px;overflow:hidden;background:var(--bg)}
+  .ig-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+  .ig-card:hover img{transform:scale(1.06)}
+  .ig-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(transparent,rgba(20,18,15,.45));opacity:0;transition:opacity .3s ease}
+  .ig-card:hover .ig-ov,.ig-card:focus-visible .ig-ov{opacity:1}
+  .ig-ov svg{width:32px;height:32px;color:#fff}
 
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
@@ -141,36 +223,102 @@
 </head>
 <body>
 <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
+<!-- Organische Blob-Formen, jede einzigartig (keine Symbole) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="b-blob1" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="M108 18 C150 6 196 46 188 92 C182 128 204 168 158 186 C120 200 64 198 36 166 C8 132 8 70 46 40 C66 24 86 24 108 18Z" fill="currentColor"/></symbol>
+  <symbol id="b-blob2" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="M100 12 C146 10 180 40 184 84 C188 124 170 150 176 178 C148 196 110 188 78 184 C40 180 14 150 12 108 C10 62 30 26 64 18 C78 14 86 13 100 12Z" fill="currentColor"/></symbol>
+  <symbol id="b-blob3" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="M112 16 C158 14 190 52 182 96 C176 130 190 158 162 180 C130 200 80 196 48 174 C16 152 8 104 24 66 C38 32 70 18 112 16Z" fill="currentColor"/></symbol>
+  <symbol id="b-blob4" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="M96 14 C140 6 188 34 190 80 C192 120 160 140 168 176 C150 198 96 190 58 180 C22 170 8 128 14 88 C20 48 52 22 96 14Z" fill="currentColor"/></symbol>
+  <symbol id="b-blob5" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="M104 20 C152 12 184 50 178 96 C172 134 200 160 170 184 C136 204 78 198 44 172 C12 148 14 92 28 58 C42 28 66 26 104 20Z" fill="currentColor"/></symbol>
+  <symbol id="b-blob6" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="M100 10 C150 8 178 44 180 88 C182 128 156 152 164 182 C140 200 88 196 52 178 C18 160 10 110 18 72 C26 36 58 12 100 10Z" fill="currentColor"/></symbol>
+  <symbol id="b-blob7" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="M118 16 C160 8 188 50 182 94 C176 134 196 158 160 180 C124 202 70 196 40 168 C12 142 18 92 32 58 C46 28 78 24 118 16Z" fill="currentColor"/></symbol>
+  <symbol id="b-blob8" viewBox="0 0 200 200" preserveAspectRatio="none"><path d="M98 16 C144 8 182 38 186 82 C190 122 166 148 172 180 C150 200 100 192 60 182 C22 172 6 124 16 84 C26 44 56 24 98 16Z" fill="currentColor"/></symbol>
+</svg>
+
 <nav><div class="wrap">
   <div class="logo">bay.</div>
-  <div class="navlinks"><a href="#menu">menü</a><a href="#story">über uns</a><a href="#momente">momente</a><a href="#visit">besuch</a></div>
+  <div class="navlinks"><a href="#specials">specials</a><a href="#menu">menü</a><a href="#story">über uns</a><a href="#momente">momente</a><a href="#visit">besuch</a></div>
 <button class="mnav-burger" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></nav>
 
-<header class="hero" id="inhalt"><div class="wrap">
+<header class="hero" id="inhalt">
+  <div class="bg x1" data-speed="0.45" data-spin="8" style="top:calc(50% - 260px);left:calc(50% - 290px);width:580px;height:520px;color:#9aa890"><svg aria-hidden="true"><use href="#b-blob5"></use></svg></div>
+  <div class="bg x2" data-speed="0.6" data-spin="18" style="bottom:10%;right:6%;width:170px;height:150px;color:#8d9f85"><svg aria-hidden="true"><use href="#b-blob2"></use></svg></div>
+  <div class="wrap">
   <span class="lead">neustadt · bremen</span>
   <h1>bay.</h1>
   <p class="sub">matcha &amp; croffles. <em>handgemacht, ruhig, ästhetisch</em> — ein ort, so schön wie dein feed.</p>
-  <div class="heroband"><img src="img/front.webp" alt="bay. in der Bremer Neustadt" style="object-position:center 40%"><span class="pill">@bay.bremen</span></div>
+  <div class="scrollcue" aria-hidden="true"></div>
 </div></header>
 
-<section id="menu"><div class="wrap">
-  <div class="center"><span class="lead">hausgemacht</span><h2>unsere <em>signatures</em></h2></div>
-  <div class="menu">
-    <div class="m"><div class="pic"><img loading="lazy" src="img/cans.webp" alt="bay. Matcha to go"></div><div class="body"><h3>ceremonial matcha</h3><p>steingemahlen, sanft, leuchtend grün</p><div class="pr">5,2</div></div></div>
-    <div class="m"><div class="pic"><img loading="lazy" src="img/croffle.webp" alt="Croffle"></div><div class="body"><h3>croffle</h3><p>croissant trifft waffel – warm &amp; knusprig</p><div class="pr">4,8</div></div></div>
-    <div class="m"><div class="pic"><img loading="lazy" src="img/matcha.webp" alt="Iced Strawberry Matcha"></div><div class="body"><h3>iced strawberry matcha</h3><p>der star für warme tage</p><div class="pr">5,8</div></div></div>
+<section id="specials" class="specials">
+  <div class="bg x2" data-speed="0.34" data-spin="14" style="top:6%;right:2%;width:175px;height:165px;color:#97a07f"><svg aria-hidden="true"><use href="#b-blob4"></use></svg></div>
+  <div class="wrap">
+  <div class="center" style="max-width:32ch"><span class="lead">jeden tag frisch</span><h2>unsere <em>specials</em></h2></div>
+  <div class="spec-grid">
+    <article class="spec"><div class="pic"><img loading="lazy" src="img/2.webp" alt="frisch belegte bagels bei bay."></div><span class="num">i</span><div class="cap"><div class="t">bagels</div><div class="d">frisch belegt, knusprig getoastet</div></div></article>
+    <article class="spec"><div class="pic"><img loading="lazy" src="img/1.webp" alt="strawberry matcha bei bay."></div><span class="num">ii</span><div class="cap"><div class="t">matcha</div><div class="d">steingemahlen, leuchtend grün</div></div></article>
+    <article class="spec"><div class="pic"><img loading="lazy" src="img/3.webp" alt="french toast mit erdbeeren bei bay."></div><span class="num">iii</span><div class="cap"><div class="t">french toast</div><div class="d">warm, mit frischen erdbeeren</div></div></article>
   </div>
-  <div class="mlist">
-    <div class="mrow"><div class="n">hot matcha latte<small>steingemahlen, mit hafer oder kokos</small></div><div class="dots"></div><div class="pr">4,8</div></div>
-    <div class="mrow"><div class="n">flat white<small>specialty coffee, fair geröstet</small></div><div class="dots"></div><div class="pr">3,8</div></div>
-    <div class="mrow"><div class="n">cinnamon bun<small>warm, frisch gebacken</small></div><div class="dots"></div><div class="pr">4,2</div></div>
-    <div class="mrow"><div class="n">iced strawberry matcha<small>der star für warme tage</small></div><div class="dots"></div><div class="pr">5,8</div></div>
-  </div>
-  <p style="text-align:center;margin-top:30px;font-size:.85rem;color:var(--stone)">beispielkarte zum konzept · matcha, kaffee, croffles &amp; buns · preise bitte final bestätigen</p>
 </div></section>
 
-<section id="story" class="story"><div class="wrap">
+<section id="menu">
+  <div class="bg x2" data-speed="0.4" data-spin="12" style="bottom:-70px;left:-40px;width:250px;height:235px;color:#8d9f85"><svg aria-hidden="true"><use href="#b-blob7"></use></svg></div>
+  <div class="wrap">
+  <div class="center"><span class="lead">hausgemacht</span><h2>die ganze <em>karte</em></h2></div>
+  <div class="mbook" id="mbook">
+    <div class="mb-card">
+      <div class="mb-stage">
+        <article class="mpg is-active" data-title="matcha &amp; grüntee">
+          <div class="cat">matcha &amp; grüntee</div>
+          <div class="mrow"><div class="n">ceremonial matcha<small>steingemahlen, mit hafer oder kokos</small></div><div class="dots"></div><div class="pr">4,8</div></div>
+          <div class="mrow"><div class="n">iced strawberry matcha<small>der star für warme tage</small></div><div class="dots"></div><div class="pr">5,8</div></div>
+          <div class="mrow"><div class="n">matcha latte<small>sanft &amp; cremig</small></div><div class="dots"></div><div class="pr">5,2</div></div>
+          <div class="mrow"><div class="n">hojicha latte<small>gerösteter grüntee, nussig</small></div><div class="dots"></div><div class="pr">5,2</div></div>
+          <div class="mrow"><div class="n">matcha lemonade<small>spritzig, leuchtend grün</small></div><div class="dots"></div><div class="pr">5,5</div></div>
+        </article>
+
+        <article class="mpg" data-title="kaffee">
+          <div class="cat">kaffee</div>
+          <div class="mrow"><div class="n">flat white<small>specialty coffee, fair geröstet</small></div><div class="dots"></div><div class="pr">3,8</div></div>
+          <div class="mrow"><div class="n">cappuccino · latte<small>auch mit pflanzendrink</small></div><div class="dots"></div><div class="pr">3,8</div></div>
+          <div class="mrow"><div class="n">filterkaffee<small>handgebrüht, wechselnde röstung</small></div><div class="dots"></div><div class="pr">3,2</div></div>
+          <div class="mrow"><div class="n">espresso tonic<small>espresso trifft tonic, auf eis</small></div><div class="dots"></div><div class="pr">4,8</div></div>
+          <div class="mrow"><div class="n">chai latte<small>hausgemachte gewürzmischung</small></div><div class="dots"></div><div class="pr">4,5</div></div>
+        </article>
+
+        <article class="mpg" data-title="croffles &amp; french toast">
+          <div class="cat">croffles &amp; süßes</div>
+          <div class="mrow"><div class="n">croffle<small>croissant trifft waffel – warm &amp; knusprig</small></div><div class="dots"></div><div class="pr">4,8</div></div>
+          <div class="mrow"><div class="n">croffle deluxe<small>mit matcha-creme &amp; beeren</small></div><div class="dots"></div><div class="pr">6,2</div></div>
+          <div class="mrow"><div class="n">french toast<small>warm, mit frischen erdbeeren</small></div><div class="dots"></div><div class="pr">7,5</div></div>
+          <div class="mrow"><div class="n">cinnamon bun<small>frisch gebacken</small></div><div class="dots"></div><div class="pr">4,2</div></div>
+          <div class="mrow"><div class="n">cookie des tages<small>groß &amp; warm</small></div><div class="dots"></div><div class="pr">2,8</div></div>
+        </article>
+
+        <article class="mpg" data-title="herzhaft &amp; bagels">
+          <div class="cat">herzhaft &amp; bagels</div>
+          <div class="mrow"><div class="n">bagel klassik<small>frischkäse, avocado, ei</small></div><div class="dots"></div><div class="pr">6,5</div></div>
+          <div class="mrow"><div class="n">bagel avocado<small>avocado, sprossen, sesam</small></div><div class="dots"></div><div class="pr">6,8</div></div>
+          <div class="mrow"><div class="n">bagel lachs<small>räucherlachs, frischkäse, dill</small></div><div class="dots"></div><div class="pr">7,8</div></div>
+          <div class="mrow"><div class="n">sandwich des tages<small>frisch, saisonal</small></div><div class="dots"></div><div class="pr">7,2</div></div>
+        </article>
+      </div>
+
+      <div class="mb-nav">
+        <button class="mb-arrow mb-prev" type="button" aria-label="vorherige seite">&#8592;</button>
+        <div class="mb-pages" role="tablist" aria-label="seiten der karte"></div>
+        <button class="mb-arrow mb-next" type="button" aria-label="nächste seite">&#8594;</button>
+      </div>
+    </div>
+  </div>
+  <p style="text-align:center;margin-top:28px;font-size:.85rem;color:var(--stone)">beispielkarte zum konzept · matcha, kaffee, croffles &amp; bagels · preise bitte final bestätigen</p>
+</div></section>
+
+<section id="story" class="story">
+  <div class="bg x2" data-speed="0.32" data-spin="10" style="top:-20px;right:-30px;width:235px;height:225px;color:#9aa890"><svg aria-hidden="true"><use href="#b-blob1"></use></svg></div>
+  <div class="wrap">
   <div class="sq"><img loading="lazy" src="img/room.webp" alt="bay. Innenraum mit Bögen und warmem Licht"></div>
   <div>
     <span class="lead">die idee</span>
@@ -180,16 +328,20 @@
   </div>
 </div></section>
 
-<section id="warum" class="vals"><div class="wrap">
+<section id="warum" class="vals">
+  <div class="bg x2" data-speed="0.36" data-spin="14" style="bottom:-30px;left:-20px;width:235px;height:225px;color:#8d9f85"><svg aria-hidden="true"><use href="#b-blob6"></use></svg></div>
+  <div class="wrap">
   <div class="center" style="max-width:34ch"><span class="lead">warum bay</span><h2>drei dinge, die <em>bleiben</em></h2></div>
   <div class="row3">
-    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M9 5.5c-.6 1.1.4 1.8.4 3M14.6 5.5c-.6 1.1.4 1.8.4 3"/></svg></div><h3>matcha im fokus</h3><p>steingemahlen, leuchtend grün – in seiner schönsten form.</p></div>
-    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></div><h3>weniger, aber schöner</h3><p>klare formen, ehrliche zutaten, ein platz zum durchatmen.</p></div>
-    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 20.5V11a7.5 7.5 0 0 1 15 0v9.5"/><path d="M4.5 20.5h15"/></svg></div><h3>drinnen &amp; draußen</h3><p>gemütlich am fenster oder draußen in der sonne – für alle.</p></div>
+    <div class="val3"><div class="rn">i</div><h3>matcha im fokus</h3><p>steingemahlen, leuchtend grün – in seiner schönsten form.</p></div>
+    <div class="val3"><div class="rn">ii</div><h3>weniger, aber schöner</h3><p>klare formen, ehrliche zutaten, ein platz zum durchatmen.</p></div>
+    <div class="val3"><div class="rn">iii</div><h3>drinnen &amp; draußen</h3><p>gemütlich am fenster oder draußen in der sonne – für alle.</p></div>
   </div>
 </div></section>
 
-<section id="momente" class="gal"><div class="wrap">
+<section id="momente" class="gal">
+  <div class="bg x2" data-speed="0.42" data-spin="-13" style="bottom:4%;right:5%;width:235px;height:222px;color:#97a07f"><svg aria-hidden="true"><use href="#b-blob8"></use></svg></div>
+  <div class="wrap">
   <div class="center" style="max-width:30ch"><span class="lead">momente</span><h2>so schön wie dein <em>feed</em></h2></div>
   <div class="row">
     <figure><img loading="lazy" src="img/table.webp" alt="gedeckter tisch bei bay."></figure>
@@ -208,16 +360,45 @@
   </div>
 </div></section>
 
-<section id="visit" class="visit"><div class="wrap">
-  <div class="center" style="max-width:36ch"><span class="lead">komm vorbei</span><h2>besuch uns in der <em>neustadt</em></h2></div>
-  <div class="vgrid">
-    <div class="v"><div class="k">adresse</div><div class="val">Langemarckstr. 209</div></div>
-    <div class="v"><div class="k">stadtteil</div><div class="val">28199 Bremen</div></div>
-    <div class="v"><div class="k">täglich</div><div class="val">10:00 – 19:00</div></div>
-    <div class="v"><div class="k">instagram</div><div class="val">@bay.bremen</div></div>
+<section id="instagram" class="insta">
+  <div class="bg x2" data-speed="0.34" data-spin="-12" style="bottom:-60px;right:-46px;width:245px;height:232px;color:#8d9f85"><svg aria-hidden="true"><use href="#b-blob5"></use></svg></div>
+  <div class="wrap">
+  <div class="center" style="max-width:30ch"><span class="lead">folge uns</span><h2>frisch von <em>instagram</em></h2>
+    <a class="ig-handle" href="https://www.instagram.com/bay.bremen/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+      @bay.bremen
+    </a>
   </div>
-  <a href="https://www.google.com/maps/search/?api=1&query=bay.+Langemarckstraße+209+Bremen" target="_blank" class="btn">in google maps öffnen</a>
-  <p style="margin-top:18px;font-size:.82rem;color:var(--stone)">stand laut öffentlichen angaben – bitte bestätigen</p>
+  <div class="ig-grid">
+    <a class="ig-card" href="https://www.instagram.com/p/DaAh2lWNbHp/" target="_blank" rel="noopener"><img loading="lazy" src="img/1.webp" alt="Beitrag von bay. auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DZ958aeDSAt/" target="_blank" rel="noopener"><img loading="lazy" src="img/2.webp" alt="Beitrag von bay. auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DZzQtE4tHpN/" target="_blank" rel="noopener"><img loading="lazy" src="img/3.webp" alt="Beitrag von bay. auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DXaHGBUDPFZ/" target="_blank" rel="noopener"><img loading="lazy" src="img/table.webp" alt="Beitrag von bay. auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DWblIvVjDWl/" target="_blank" rel="noopener"><img loading="lazy" src="img/croffle.webp" alt="Beitrag von bay. auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DXOdegKDEeL/" target="_blank" rel="noopener"><img loading="lazy" src="img/matcha.webp" alt="Beitrag von bay. auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+  </div>
+  <div style="text-align:center"><a href="https://www.instagram.com/bay.bremen/" target="_blank" rel="noopener" class="btn">auf instagram folgen</a></div>
+</div></section>
+
+<section id="visit" class="visit">
+  <div class="bg x2" data-speed="0.3" data-spin="10" style="top:-10px;right:-20px;width:230px;height:218px;color:#9aa890"><svg aria-hidden="true"><use href="#b-blob1"></use></svg></div>
+  <div class="wrap">
+  <div class="center" style="max-width:36ch"><span class="lead">komm vorbei</span><h2>besuch uns in der <em>neustadt</em></h2></div>
+  <div class="visit2">
+    <div class="vcard dark">
+      <h3>öffnungszeiten</h3>
+      <div class="vrow"><span class="k">montag – freitag</span><span class="v2">10:00 – 19:00</span></div>
+      <div class="vrow"><span class="k">samstag &amp; sonntag</span><span class="v2">10:00 – 19:00</span></div>
+      <p style="margin-top:16px;font-size:.82rem;color:#a9a399">stand laut öffentlichen angaben – bitte bestätigen.</p>
+    </div>
+    <div class="vcard">
+      <h3>so findest du uns</h3>
+      <div class="vrow"><span class="k">adresse</span><span class="v2">Langemarckstr. 209</span></div>
+      <div class="vrow"><span class="k">stadtteil</span><span class="v2">28199 Bremen · Neustadt</span></div>
+      <div class="vrow"><span class="k">instagram</span><span class="v2">@bay.bremen</span></div>
+      <a href="https://www.google.com/maps/search/?api=1&query=bay.+Langemarckstraße+209+Bremen" target="_blank" rel="noopener" class="btn">in google maps öffnen</a>
+    </div>
+  </div>
 </div></section>
 
 <footer><div class="wrap">
@@ -231,26 +412,81 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
 <script>
+// Blätterbare Speisekarte
+(function(){
+  var book = document.getElementById("mbook"); if(!book) return;
+  var pages = [].slice.call(book.querySelectorAll(".mpg"));
+  var dotsWrap = book.querySelector(".mb-pages");
+  var prev = book.querySelector(".mb-prev"), next = book.querySelector(".mb-next");
+  if(pages.length < 2) return;
+  var i = 0, animating = false, dots = [];
+  pages.forEach(function(p, idx){
+    var d = document.createElement("button");
+    d.className = "mb-dot" + (idx === 0 ? " is-active" : "");
+    d.type = "button"; d.setAttribute("role","tab");
+    d.setAttribute("aria-label", "seite " + (idx + 1) + ": " + (p.getAttribute("data-title") || ""));
+    d.setAttribute("aria-selected", idx === 0 ? "true" : "false");
+    d.addEventListener("click", function(){ go(idx); });
+    dotsWrap.appendChild(d); dots.push(d);
+  });
+  function go(n, dir){
+    n = (n + pages.length) % pages.length;
+    if(n === i || animating) return;
+    animating = true;
+    dir = dir || (n > i ? 1 : -1);
+    var cur = pages[i], nxt = pages[n];
+    nxt.classList.add("pre"); nxt.classList.toggle("pre-left", dir < 0);
+    void nxt.offsetWidth;
+    nxt.classList.remove("pre","pre-left"); nxt.classList.add("is-active");
+    cur.classList.remove("is-active");
+    cur.classList.add("leaving", dir > 0 ? "to-left" : "to-right");
+    dots[i].classList.remove("is-active"); dots[i].setAttribute("aria-selected","false");
+    dots[n].classList.add("is-active"); dots[n].setAttribute("aria-selected","true");
+    window.setTimeout(function(){ cur.classList.remove("leaving","to-left","to-right"); animating = false; }, 560);
+    i = n;
+  }
+  prev.addEventListener("click", function(){ go(i - 1, -1); });
+  next.addEventListener("click", function(){ go(i + 1, 1); });
+  book.addEventListener("keydown", function(e){ if(e.key === "ArrowLeft"){ go(i - 1, -1); } else if(e.key === "ArrowRight"){ go(i + 1, 1); } });
+})();
+
+// Scroll-Reveals + dezente Hintergrund-Parallax (Vorstellung beim Durchscrollen)
 (function(){
   if(!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
+  var rafId;
+  function refresh(){ cancelAnimationFrame(rafId); rafId = requestAnimationFrame(function(){ ScrollTrigger.refresh(); }); }
   var mm = gsap.matchMedia();
   mm.add("(prefers-reduced-motion: no-preference)", function(){
-    gsap.from(".hero .lead, .hero h1, .hero .sub, .heroband", {autoAlpha:0, y:22, duration:.8, ease:"power3.out", stagger:.1});
+    gsap.from(".hero .lead, .hero h1, .hero .sub, .scrollcue", {autoAlpha:0, y:24, duration:.9, ease:"power3.out", stagger:.12});
 
-    var singles = gsap.utils.toArray(".center, .story .sq, .story .wrap > div:not(.sq), .press blockquote, #visit .btn");
-    gsap.set(singles, {autoAlpha:0, y:28});
-    singles.forEach(function(el){
-      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
+    // Hintergrund-Grafiken: sanfte Parallax + leichte Drehung, gekoppelt an den Scroll
+    gsap.utils.toArray(".bg").forEach(function(el){
+      var host = el.parentElement;
+      var sp = parseFloat(el.getAttribute("data-speed") || "0.3");
+      var spin = parseFloat(el.getAttribute("data-spin") || "0");
+      gsap.fromTo(el, {yPercent:-sp*70, rotation:-spin}, {yPercent:sp*70, rotation:spin, ease:"none",
+        scrollTrigger:{trigger:host, start:"top bottom", end:"bottom top", scrub:1}});
+      // sanftes „Atmen" beim Scrollen – jeder Blob etwas anders
+      gsap.fromTo(el, {scale:0.92}, {scale:1.08, ease:"none",
+        scrollTrigger:{trigger:host, start:"top bottom", end:"bottom top", scrub:1.4}});
     });
 
-    var groups = gsap.utils.toArray(".menu .m, .mlist .mrow, .val3, .gal figure, .vgrid .v");
-    gsap.set(groups, {autoAlpha:0, y:24});
-    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
+    var singles = gsap.utils.toArray(".center, .story .sq, .story .wrap > div:not(.sq), .mbook, .press blockquote, .press .src, .visit2 .vcard");
+    gsap.set(singles, {autoAlpha:0, y:30});
+    singles.forEach(function(el){
+      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.85, ease:"power2.out", clearProps:"transform"}); }});
+    });
+
+    var groups = gsap.utils.toArray(".spec, .val3, .gal figure, .ig-card");
+    gsap.set(groups, {autoAlpha:0, y:26});
+    ScrollTrigger.batch(groups, {start:"top 90%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", stagger:.1, overwrite:true, clearProps:"transform"}); }});
 
     return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
   });
-  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+  if(window.ResizeObserver){ new ResizeObserver(refresh).observe(document.body); }
+  window.addEventListener("load", refresh);
+  [800,1800,3200].forEach(function(t){ setTimeout(refresh, t); });
 })();
 </script>
 </body>

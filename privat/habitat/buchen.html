@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#252c84">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23ffffff'/%3E%3Ctext x='50' y='71' font-size='62' text-anchor='middle' fill='%23252c84' font-family='Georgia,serif'%3Eh%3C/text%3E%3C/svg%3E">
+<title>Kurse buchen · Habitat Bremen — Vorschau</title>
+<meta name="description" content="Kursbuchung bei Habitat Bremen – Wochenplan, freie Plätze und Anmeldung. Diese Seite ist ein Vorschau-Entwurf.">
+<link rel="stylesheet" href="fonts.css">
+<style>
+  :root{
+    --navy:#252c84; --deepnavy:#191e5e; --ink:#1f2240; --mist:#eef0fa;
+    --paper:#fcfcff; --muted:#777b96; --line:#e6e8f4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;line-height:1.1;letter-spacing:-.01em}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 30px;position:relative;z-index:2}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .lead{font-size:.74rem;letter-spacing:.26em;text-transform:uppercase;color:var(--navy);font-weight:600}
+  em{font-style:italic;color:var(--navy)}
+
+  nav{position:sticky;top:0;z-index:40;background:rgba(252,252,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:74px;max-width:1000px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Fraunces';font-size:1.4rem;font-weight:600;color:var(--navy)}
+  .logo img{height:42px;width:auto}
+  .back{font-size:.92rem;font-weight:500;color:var(--muted)}
+  .back:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff;padding:13px 26px;border-radius:100px;font-weight:600;font-size:.92rem;border:0;cursor:pointer;transition:transform .15s,background .2s}
+  .btn:hover{transform:translateY(-2px);background:var(--deepnavy)}
+
+  /* Hero / Banner */
+  .top{position:relative;overflow:hidden;
+     background:linear-gradient(150deg,var(--navy),var(--deepnavy));color:#fff;padding:72px 0 80px}
+  .top .fly{position:absolute;z-index:0;pointer-events:none}
+  .orb{border-radius:50%;filter:blur(40px)}
+  .orb.b1{border-radius:60% 40% 55% 45% / 55% 50% 50% 45%}
+  .orb.b2{border-radius:42% 58% 48% 52% / 60% 42% 58% 40%}
+  .badge{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:8px 16px;border-radius:100px}
+  .badge .pulse{width:9px;height:9px;border-radius:50%;background:#ffd27a;box-shadow:0 0 0 0 rgba(255,210,122,.7);animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 9px rgba(255,210,122,0)}100%{box-shadow:0 0 0 0 rgba(255,210,122,0)}}
+  @media(prefers-reduced-motion:reduce){.badge .pulse{animation:none}}
+  .top h1{font-size:clamp(2.4rem,5.6vw,4rem);color:#fff;margin-top:22px;max-width:18ch}
+  .top h1 em{color:#c3c9f5}
+  .top p{margin-top:18px;max-width:52ch;font-size:1.1rem;color:#e4e6f7}
+  .notebar{background:#fff6e6;border:1px solid #f3e0b8;color:#7a5b1e;border-radius:14px;padding:16px 20px;margin-top:30px;font-size:.95rem;max-width:60ch}
+  .notebar b{color:#5e4413}
+
+  section{padding:72px 0;position:relative;overflow:hidden}
+  .head{max-width:46ch}
+  .head h2{font-size:clamp(2rem,4.4vw,2.8rem);margin-top:10px}
+
+  /* Tag-Tabs */
+  .days{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+  .day{font-family:'Inter';font-weight:600;font-size:.92rem;color:var(--muted);background:#fff;border:1px solid var(--line);padding:10px 18px;border-radius:100px;cursor:pointer;transition:color .2s,background .2s,border-color .2s}
+  .day:hover{color:var(--navy);border-color:#c7ccea}
+  .day.is-active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  .panel{display:none;margin-top:28px}
+  .panel.is-active{display:block;animation:fade .45s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.panel.is-active{animation:none}}
+
+  .course{display:grid;grid-template-columns:96px 1fr 220px;gap:22px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 26px;margin-bottom:14px}
+  @media(max-width:760px){.course{grid-template-columns:1fr;gap:14px}}
+  .course .time,.avail .nums,.avail .nums b{font-variant-numeric:tabular-nums}
+  .course .time{font-family:'Fraunces';font-size:1.4rem;color:var(--navy)}
+  .course .time small{display:block;font-family:'Inter';font-size:.78rem;color:var(--muted);font-weight:500;margin-top:2px}
+  .course .info h3{font-size:1.3rem}
+  .course .info span{font-size:.92rem;color:var(--muted)}
+  .course .avail{text-align:left}
+  .avail .nums{font-size:.86rem;color:var(--ink);font-weight:600;margin-bottom:8px}
+  .avail .nums b{color:var(--navy)}
+  .avail .bar{height:7px;border-radius:100px;background:var(--mist);overflow:hidden}
+  .avail .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--navy),#5560c8);border-radius:100px}
+  .avail.low .bar i{background:linear-gradient(90deg,#d98a2b,#e7a94a)}
+  .avail .full{color:#b0455a;font-weight:600}
+  .reserve{margin-top:12px;width:100%;background:var(--mist);color:var(--navy);border:1px solid #d7dcf2;padding:11px 16px;border-radius:100px;font-weight:600;font-size:.86rem;cursor:not-allowed;opacity:.9}
+  .restday{background:#fff;border:1px dashed #cfd3ea;border-radius:18px;padding:40px;text-align:center;color:var(--muted)}
+  .restday b{color:var(--navy);font-family:'Fraunces'}
+
+  /* Anmeldung */
+  .signup{background:var(--mist)}
+  .form{margin-top:32px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:38px 36px;max-width:640px;box-shadow:0 40px 80px -56px rgba(31,34,64,.4)}
+  @media(max-width:560px){.form{padding:28px 22px}}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:.86rem;font-weight:600;color:var(--ink);margin-bottom:7px}
+  .field input,.field select,.field textarea{width:100%;font-family:'Inter';font-size:1rem;color:var(--ink);background:#fbfbff;border:1px solid var(--line);border-radius:12px;padding:13px 16px}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(37,44,132,.12)}
+  .field textarea{resize:vertical;min-height:90px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:560px){.row2{grid-template-columns:1fr}}
+  .formnote{font-size:.85rem;color:var(--muted);margin-top:4px}
+  .disabled-hint{display:inline-block;margin-left:10px;font-size:.78rem;color:#b0455a;font-weight:600}
+
+  footer{padding:46px 0;text-align:center;color:var(--muted);font-size:.84rem;border-top:1px solid var(--line)}
+  footer img{height:48px;margin:0 auto 12px}
+  .concept{display:block;margin-top:8px;color:#a3a6bd}
+
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="logo" href="index.html"><img src="img/logo.png" alt="Habitat Logo"><span>Habitat</span></a>
+  <a class="back" href="index.html">&#8592; zur Startseite</a>
+</div></nav>
+
+<header class="top">
+  <div class="fly orb b1" data-speed="0.3" style="top:2%;right:5%;width:280px;height:280px;opacity:.3;background:radial-gradient(circle at 40% 35%, rgba(195,201,245,.7), rgba(195,201,245,0) 70%)"></div>
+  <div class="fly orb b2" data-speed="0.45" style="bottom:6%;left:6%;width:240px;height:240px;opacity:.26;background:radial-gradient(circle at 42% 38%, rgba(170,178,235,.7), rgba(170,178,235,0) 72%)"></div>
+  <div class="wrap">
+    <span class="badge"><span class="pulse"></span>In Arbeit · Vorschau</span>
+    <h1>Kurse buchen – <em>bald in Sekunden.</em></h1>
+    <p>So wird die Buchung bei Habitat funktionieren: Wochenplan ansehen, freien Platz finden, anmelden. Aktuell ist dies ein Gestaltungs-Entwurf.</p>
+    <div class="notebar"><b>Diese Seite ist noch nicht fertig.</b> Wochenplan, freie Plätze und Anmeldung sind eine Vorschau und noch nicht aktiv. Die echte Buchung folgt in Kürze.</div>
+  </div>
+</header>
+
+<section id="plan">
+  <div class="wrap">
+    <div class="head"><span class="lead">Wochenplan</span><h2>Welche Kurse es wann gibt</h2></div>
+    <div class="days" role="tablist" aria-label="Wochentage">
+      <button class="day is-active" type="button" data-day="d1" role="tab" aria-selected="true">Mo</button>
+      <button class="day" type="button" data-day="d2" role="tab" aria-selected="false">Di</button>
+      <button class="day" type="button" data-day="d3" role="tab" aria-selected="false">Mi</button>
+      <button class="day" type="button" data-day="d4" role="tab" aria-selected="false">Do</button>
+      <button class="day" type="button" data-day="d5" role="tab" aria-selected="false">Fr</button>
+      <button class="day" type="button" data-day="d6" role="tab" aria-selected="false">Sa</button>
+      <button class="day" type="button" data-day="d7" role="tab" aria-selected="false">So</button>
+    </div>
+
+    <div class="panel is-active" id="d1" role="tabpanel">
+      <div class="restday"><b>Montag ist Ruhetag.</b><br>Heute finden keine Kurse statt – wir sehen uns ab Dienstag wieder auf der Matte.</div>
+    </div>
+
+    <div class="panel" id="d2" role="tabpanel">
+      <div class="course"><div class="time">08:00<small>60 Min</small></div><div class="info"><h3>Morning Flow Yoga</h3><span>alle Level · mit Lisa</span></div><div class="avail"><div class="nums">noch <b>9</b> von 12 Plätzen frei</div><div class="bar"><i style="width:25%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+      <div class="course"><div class="time">17:30<small>75 Min</small></div><div class="info"><h3>Slow &amp; Restore</h3><span>sanft · mit Mirko</span></div><div class="avail low"><div class="nums">noch <b>4</b> von 10 Plätzen frei</div><div class="bar"><i style="width:60%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+    </div>
+
+    <div class="panel" id="d3" role="tabpanel">
+      <div class="course"><div class="time">10:30<small>50 Min</small></div><div class="info"><h3>Pilates Mat</h3><span>Kräftigung · mit Luisa</span></div><div class="avail"><div class="nums">noch <b>6</b> von 12 Plätzen frei</div><div class="bar"><i style="width:50%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+      <div class="course"><div class="time">19:30<small>60 Min</small></div><div class="info"><h3>Sound Bath</h3><span>Klangreise zum Loslassen</span></div><div class="avail low"><div class="nums">noch <b>3</b> von 14 Plätzen frei</div><div class="bar"><i style="width:79%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+    </div>
+
+    <div class="panel" id="d4" role="tabpanel">
+      <div class="course"><div class="time">08:00<small>60 Min</small></div><div class="info"><h3>Morning Flow Yoga</h3><span>alle Level · mit Lisa</span></div><div class="avail"><div class="nums">noch <b>11</b> von 12 Plätzen frei</div><div class="bar"><i style="width:8%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+      <div class="course"><div class="time">18:00<small>60 Min</small></div><div class="info"><h3>Vinyasa Yoga</h3><span>fließend · mit Lisa</span></div><div class="avail"><div class="nums">noch <b>5</b> von 12 Plätzen frei</div><div class="bar"><i style="width:58%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+    </div>
+
+    <div class="panel" id="d5" role="tabpanel">
+      <div class="course"><div class="time">10:30<small>50 Min</small></div><div class="info"><h3>Pilates Mat</h3><span>Kräftigung · mit Luisa</span></div><div class="avail"><div class="nums">noch <b>8</b> von 12 Plätzen frei</div><div class="bar"><i style="width:33%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+      <div class="course"><div class="time">17:00<small>90 Min</small></div><div class="info"><h3>Kakao-Zeremonie</h3><span>wärmend &amp; verbindend</span></div><div class="avail"><div class="nums">noch <b>7</b> von 16 Plätzen frei</div><div class="bar"><i style="width:56%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+    </div>
+
+    <div class="panel" id="d6" role="tabpanel">
+      <div class="course"><div class="time">09:30<small>75 Min</small></div><div class="info"><h3>Weekend Flow</h3><span>alle Level · mit Lisa</span></div><div class="avail low"><div class="nums">noch <b>2</b> von 12 Plätzen frei</div><div class="bar"><i style="width:83%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+      <div class="course"><div class="time">11:30<small>50 Min</small></div><div class="info"><h3>Pilates</h3><span>Kräftigung · mit Luisa</span></div><div class="avail"><div class="nums">noch <b>6</b> von 12 Plätzen frei</div><div class="bar"><i style="width:50%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+    </div>
+
+    <div class="panel" id="d7" role="tabpanel">
+      <div class="course"><div class="time">10:00<small>75 Min</small></div><div class="info"><h3>Slow Sunday Yoga</h3><span>sanft · mit Mirko</span></div><div class="avail"><div class="nums">noch <b>9</b> von 12 Plätzen frei</div><div class="bar"><i style="width:25%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+      <div class="course"><div class="time">16:00<small>60 Min</small></div><div class="info"><h3>Sound Bath</h3><span>Klangreise zum Loslassen</span></div><div class="avail"><div class="nums">noch <b>5</b> von 14 Plätzen frei</div><div class="bar"><i style="width:64%"></i></div><button class="reserve" type="button" disabled>Platz reservieren (bald)</button></div></div>
+    </div>
+
+    <p class="formnote" style="margin-top:18px">Beispiel-Wochenplan · die echten Kurse, Zeiten und freien Plätze werden hier später live gepflegt.</p>
+  </div>
+</section>
+
+<section id="anmelden" class="signup">
+  <div class="wrap">
+    <div class="head"><span class="lead">Anmeldung</span><h2>Sichere dir deinen Platz</h2></div>
+    <form class="form" onsubmit="return false">
+      <div class="row2">
+        <div class="field"><label for="n">Name</label><input id="n" type="text" placeholder="Dein Name" autocomplete="name"></div>
+        <div class="field"><label for="e">E-Mail</label><input id="e" type="email" placeholder="du@beispiel.de" autocomplete="email"></div>
+      </div>
+      <div class="field"><label for="k">Kurs &amp; Termin</label>
+        <select id="k">
+          <option>Bitte wählen …</option>
+          <option>Di · 08:00 · Morning Flow Yoga</option>
+          <option>Di · 17:30 · Slow &amp; Restore</option>
+          <option>Mi · 10:30 · Pilates Mat</option>
+          <option>Mi · 19:30 · Sound Bath</option>
+          <option>Do · 18:00 · Vinyasa Yoga</option>
+          <option>Fr · 17:00 · Kakao-Zeremonie</option>
+          <option>Sa · 09:30 · Weekend Flow</option>
+          <option>So · 10:00 · Slow Sunday Yoga</option>
+        </select>
+      </div>
+      <div class="field"><label for="m">Nachricht (optional)</label><textarea id="m" placeholder="Erfahrungslevel, Fragen, Wünsche …"></textarea></div>
+      <button class="btn" type="button" disabled style="cursor:not-allowed;opacity:.7">Anmeldung absenden<span class="disabled-hint">bald verfügbar</span></button>
+      <p class="formnote">Dies ist eine Vorschau – das Formular ist noch nicht aktiv und versendet keine Daten.</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <img src="img/logo.png" alt="Habitat Logo">
+  Habitat · Schwachhauser Heerstraße 12–14 · 28203 Bremen
+  <span class="concept">Konzept-Entwurf gestaltet von Elyes Ferchichi · elyesferchichi.com — Buchungsseite als Vorschau; Kurse, Zeiten &amp; Plätze sind Beispielinhalte.</span>
+</footer>
+
+<script>
+// Tag-Tabs
+(function(){
+  var days = [].slice.call(document.querySelectorAll(".day"));
+  var panels = [].slice.call(document.querySelectorAll(".panel"));
+  days.forEach(function(d){
+    d.addEventListener("click", function(){
+      var id = d.getAttribute("data-day");
+      days.forEach(function(x){ var on = x === d; x.classList.toggle("is-active", on); x.setAttribute("aria-selected", on ? "true" : "false"); });
+      panels.forEach(function(p){ p.classList.toggle("is-active", p.id === id); });
+    });
+  });
+})();
+</script>
+
+<!-- Bewegung -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  if(!window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+  var mm = gsap.matchMedia();
+  mm.add("(prefers-reduced-motion: no-preference)", function(){
+    gsap.from(".top .badge, .top h1, .top p, .notebar", {autoAlpha:0, y:22, duration:.8, ease:"power3.out", stagger:.1});
+    gsap.utils.toArray(".top .fly").forEach(function(el){
+      var sp = parseFloat(el.getAttribute("data-speed") || "0.3");
+      gsap.fromTo(el, {yPercent:-sp*30}, {yPercent:sp*30, ease:"none", scrollTrigger:{trigger:".top", start:"top top", end:"bottom top", scrub:true}});
+    });
+    var singles = gsap.utils.toArray(".head, .days, .form");
+    gsap.set(singles, {autoAlpha:0, y:26});
+    singles.forEach(function(el){
+      ScrollTrigger.create({trigger:el, start:"top 88%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
+    });
+    return function(){ gsap.set(singles, {clearProps:"all"}); };
+  });
+  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+})();
+</script>
+</body>
+</html>

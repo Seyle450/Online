@@ -92,9 +92,34 @@
   .mitem h4{font-size:1.45rem;font-family:'Cormorant Garamond';font-weight:500}
   .mitem small{display:block;font-family:'Inter';font-size:.84rem;color:var(--muted);margin-top:2px}
   .mitem .d{flex:1;border-bottom:1px dotted #cfc6b4;margin:0 8px;transform:translateY(-5px)}
-  .mitem .p{font-family:'Cormorant Garamond';font-weight:600;font-size:1.4rem;color:var(--deepsage);white-space:nowrap}
+  .mitem .p{font-family:'Cormorant Garamond';font-weight:600;font-size:1.4rem;color:var(--deepsage);white-space:nowrap;font-variant-numeric:tabular-nums}
   .note{margin-top:30px;text-align:center;font-size:.86rem;color:var(--muted)}
   .note b{color:var(--deepsage)}
+
+  /* Blätterbare Speisekarte */
+  .dbook{max-width:760px;margin:40px auto 0;perspective:1600px}
+  .db-frame{position:relative;background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:16px;box-shadow:0 40px 80px -52px rgba(28,28,26,.45)}
+  .db-frame::before{content:"";position:absolute;inset:9px;border:1px solid var(--line);border-radius:2px;pointer-events:none}
+  .db-stage{position:relative;min-height:312px;transform-style:preserve-3d}
+  @media(max-width:560px){.db-stage{min-height:392px}}
+  .dpage{position:absolute;inset:0;padding:26px 34px 6px;opacity:0;visibility:hidden;pointer-events:none;transform:translateX(34px) rotateY(6deg);transform-origin:left center;backface-visibility:hidden;transition:opacity .5s ease,transform .55s cubic-bezier(.4,.05,.2,1)}
+  @media(max-width:560px){.dpage{padding:22px 20px 6px}}
+  .dpage.is-active{position:relative;opacity:1;visibility:visible;pointer-events:auto;transform:none}
+  .dpage.pre{visibility:visible;opacity:0;transform:translateX(34px) rotateY(6deg)}
+  .dpage.pre.pre-left{transform:translateX(-34px) rotateY(-6deg)}
+  .dpage.leaving{visibility:visible;opacity:0}
+  .dpage.leaving.to-left{transform:translateX(-34px) rotateY(-6deg)}
+  .dpage.leaving.to-right{transform:translateX(34px) rotateY(6deg)}
+  .dhead{text-align:center;margin-bottom:6px}
+  .dhead .sprig{width:20px;margin:0 auto 6px}
+  .dhead h3{font-family:'Cormorant Garamond';font-style:italic;font-size:1.75rem;color:var(--deepsage)}
+  .db-nav{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:8px 16px 4px;padding:14px 0 4px;border-top:1px solid var(--line)}
+  .db-arrow{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:1.1rem;cursor:pointer;display:grid;place-items:center;transition:background .2s,color .2s,border-color .2s}
+  .db-arrow:hover{background:var(--deepsage);color:#fff;border-color:var(--deepsage)}
+  .db-dots{display:flex;align-items:center;gap:10px}
+  .db-dot{position:relative;width:9px;height:9px;border-radius:50%;background:var(--line);border:0;cursor:pointer;padding:0;transition:transform .2s,background .2s}
+  .db-dot::before{content:"";position:absolute;inset:-13px}
+  .db-dot.is-active{background:var(--deepsage);transform:scale(1.4)}
 
   /* Gallery */
   .gal .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:42px}
@@ -138,12 +163,15 @@
   .ig-handle{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:'Cormorant Garamond';font-style:italic;font-size:1.45rem;color:var(--deepsage);margin-top:14px}
   .ig-handle svg{width:22px;height:22px;flex:none}
   .ig-handle:hover{color:var(--ink)}
-  .ig-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:42px}
-  @media(max-width:980px){.ig-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  @media(max-width:600px){.ig-grid{grid-template-columns:minmax(0,1fr)}}
-  .ig-cell{display:flex;justify-content:center;align-items:flex-start;min-height:560px}
-  .ig-cell .instagram-media{margin:0 auto!important;min-width:0!important;width:100%!important}
-  .ig-fallback{align-self:center;color:var(--muted);font-size:.92rem;border:1px solid var(--line);border-radius:4px;padding:14px 18px}
+  .ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:42px}
+  @media(max-width:760px){.ig-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:430px){.ig-grid{grid-template-columns:1fr}}
+  .ig-card{position:relative;display:block;aspect-ratio:1;border-radius:4px;overflow:hidden;background:var(--cream)}
+  .ig-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+  .ig-card:hover img{transform:scale(1.06)}
+  .ig-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(transparent,rgba(28,28,26,.5));opacity:0;transition:opacity .3s ease}
+  .ig-card:hover .ig-ov,.ig-card:focus-visible .ig-ov{opacity:1}
+  .ig-ov svg{width:34px;height:34px;color:#fff}
   .ig-foot{text-align:center;margin-top:40px}
 
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
@@ -237,28 +265,40 @@
 <section id="karte" class="menu"><div class="wrap">
   <div style="text-align:center"><div class="flourish"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg></div><span class="lead">Guten Morgen</span><h2 style="margin-top:8px">Frühstück, Bowls, Eis &amp; <em>Kaffee</em></h2></div>
 
-  <div class="mcat">
-    <h3>Frühstück &amp; Herzhaft</h3>
-    <div class="mitem"><div><h4>Dilan's Frühstückstafel</h4><small>große Auswahl: Käse, Aufschnitt, Eier, Obst, Aufstriche &amp; mehr</small></div><div class="d"></div><div class="p">18,5</div></div>
-    <div class="mitem"><div><h4>Eggs Benedict</h4><small>pochierte Eier, Sauce Hollandaise, auf Brioche</small></div><div class="d"></div><div class="p">11,5</div></div>
-    <div class="mitem"><div><h4>Shakshuka</h4><small>Eier in würziger Tomatensauce, Brot</small></div><div class="d"></div><div class="p">10,5</div></div>
-    <div class="mitem"><div><h4>Avocado Bread</h4><small>Sauerteig, Avocado, pochiertes Ei, Sprossen</small></div><div class="d"></div><div class="p">9,8</div></div>
-  </div>
+  <div class="dbook" id="dbook">
+    <div class="db-frame">
+      <div class="db-stage">
+        <article class="dpage is-active" data-title="Frühstück &amp; Herzhaft">
+          <div class="dhead"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg><h3>Frühstück &amp; Herzhaft</h3></div>
+          <div class="mitem"><div><h4>Dilan's Frühstückstafel</h4><small>große Auswahl: Käse, Aufschnitt, Eier, Obst, Aufstriche &amp; mehr</small></div><div class="d"></div><div class="p">18,5</div></div>
+          <div class="mitem"><div><h4>Eggs Benedict</h4><small>pochierte Eier, Sauce Hollandaise, auf Brioche</small></div><div class="d"></div><div class="p">11,5</div></div>
+          <div class="mitem"><div><h4>Shakshuka</h4><small>Eier in würziger Tomatensauce, Brot</small></div><div class="d"></div><div class="p">10,5</div></div>
+          <div class="mitem"><div><h4>Avocado Bread</h4><small>Sauerteig, Avocado, pochiertes Ei, Sprossen</small></div><div class="d"></div><div class="p">9,8</div></div>
+        </article>
 
-  <div class="mcat">
-    <h3>Frische Bowls &amp; Süßes</h3>
-    <div class="mitem"><div><h4>Açaí Bowl</h4><small>Açaí, Banane, Granola, frische Früchte</small></div><div class="d"></div><div class="p">9,5</div></div>
-    <div class="mitem"><div><h4>Joghurt-Bowl</h4><small>cremiger Joghurt, Granola, Honig, Saisonobst</small></div><div class="d"></div><div class="p">8,5</div></div>
-    <div class="mitem"><div><h4>Pancakes</h4><small>fluffig, mit Ahornsirup &amp; Beeren</small></div><div class="d"></div><div class="p">8,5</div></div>
-    <div class="mitem"><div><h4>Hausgemachter Kuchen</h4><small>täglich wechselnd</small></div><div class="d"></div><div class="p">4,5</div></div>
-  </div>
+        <article class="dpage" data-title="Frische Bowls &amp; Süßes">
+          <div class="dhead"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg><h3>Frische Bowls &amp; Süßes</h3></div>
+          <div class="mitem"><div><h4>Açaí Bowl</h4><small>Açaí, Banane, Granola, frische Früchte</small></div><div class="d"></div><div class="p">9,5</div></div>
+          <div class="mitem"><div><h4>Joghurt-Bowl</h4><small>cremiger Joghurt, Granola, Honig, Saisonobst</small></div><div class="d"></div><div class="p">8,5</div></div>
+          <div class="mitem"><div><h4>Pancakes</h4><small>fluffig, mit Ahornsirup &amp; Beeren</small></div><div class="d"></div><div class="p">8,5</div></div>
+          <div class="mitem"><div><h4>Hausgemachter Kuchen</h4><small>täglich wechselnd</small></div><div class="d"></div><div class="p">4,5</div></div>
+        </article>
 
-  <div class="mcat">
-    <h3>Eis, Kaffee &amp; Drinks</h3>
-    <div class="mitem"><div><h4>Hausgemachtes Eis</h4><small>wechselnde Sorten · im Becher oder Hörnchen</small></div><div class="d"></div><div class="p">1,8</div></div>
-    <div class="mitem"><div><h4>Eisbecher</h4><small>mit frischen Früchten &amp; Sahne</small></div><div class="d"></div><div class="p">6,9</div></div>
-    <div class="mitem"><div><h4>Flat White · Cappuccino</h4><small>Spezialitätenkaffee, auch mit Pflanzendrink</small></div><div class="d"></div><div class="p">3,8</div></div>
-    <div class="mitem"><div><h4>Matcha Latte · Frische Säfte</h4><small>cremig &amp; mild · Säfte hausgemacht</small></div><div class="d"></div><div class="p">4,8</div></div>
+        <article class="dpage" data-title="Eis, Kaffee &amp; Drinks">
+          <div class="dhead"><svg class="sprig" aria-hidden="true"><use href="#sprig"></use></svg><h3>Eis, Kaffee &amp; Drinks</h3></div>
+          <div class="mitem"><div><h4>Hausgemachtes Eis</h4><small>wechselnde Sorten · im Becher oder Hörnchen</small></div><div class="d"></div><div class="p">1,8</div></div>
+          <div class="mitem"><div><h4>Eisbecher</h4><small>mit frischen Früchten &amp; Sahne</small></div><div class="d"></div><div class="p">6,9</div></div>
+          <div class="mitem"><div><h4>Flat White · Cappuccino</h4><small>Spezialitätenkaffee, auch mit Pflanzendrink</small></div><div class="d"></div><div class="p">3,8</div></div>
+          <div class="mitem"><div><h4>Matcha Latte · Frische Säfte</h4><small>cremig &amp; mild · Säfte hausgemacht</small></div><div class="d"></div><div class="p">4,8</div></div>
+        </article>
+      </div>
+
+      <div class="db-nav">
+        <button class="db-arrow db-prev" type="button" aria-label="Vorherige Seite">&#8592;</button>
+        <div class="db-dots" role="tablist" aria-label="Seiten der Speisekarte"></div>
+        <button class="db-arrow db-next" type="button" aria-label="Nächste Seite">&#8594;</button>
+      </div>
+    </div>
   </div>
 
   <p class="note">Beispielkarte zum Konzept · <b>Frühstück, Bowls, Eis &amp; vieles mehr</b> · vegane Optionen · Preise bitte final bestätigen</p>
@@ -295,12 +335,12 @@
     </a>
   </div>
   <div class="ig-grid">
-    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DPCZT4bDMHI/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DPCZT4bDMHI/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
-    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DRUq8vMjDeB/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DRUq8vMjDeB/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
-    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DFPlC07us_8/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DFPlC07us_8/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
-    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DA5SWlOuw1p/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DA5SWlOuw1p/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
-    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DB3QB0LuS1K/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DB3QB0LuS1K/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
-    <div class="ig-cell"><blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DRhlFE3jCX-/" data-instgrm-version="14"><a class="ig-fallback" href="https://www.instagram.com/p/DRhlFE3jCX-/" target="_blank" rel="noopener">Beitrag auf Instagram ansehen</a></blockquote></div>
+    <a class="ig-card" href="https://www.instagram.com/p/DPCZT4bDMHI/" target="_blank" rel="noopener"><img loading="lazy" src="img/spread.webp" alt="Beitrag von Dilan's Café auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DRUq8vMjDeB/" target="_blank" rel="noopener"><img loading="lazy" src="img/plate.webp" alt="Beitrag von Dilan's Café auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DFPlC07us_8/" target="_blank" rel="noopener"><img loading="lazy" src="img/signature.webp" alt="Beitrag von Dilan's Café auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DA5SWlOuw1p/" target="_blank" rel="noopener"><img loading="lazy" src="img/coffee.webp" alt="Beitrag von Dilan's Café auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DB3QB0LuS1K/" target="_blank" rel="noopener"><img loading="lazy" src="img/plate.webp" alt="Beitrag von Dilan's Café auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DRhlFE3jCX-/" target="_blank" rel="noopener"><img loading="lazy" src="img/spread.webp" alt="Beitrag von Dilan's Café auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
   </div>
   <div class="ig-foot"><a class="btn" href="https://www.instagram.com/dilans_cafe/" target="_blank" rel="noopener">Auf Instagram folgen</a></div>
 </div></section>
@@ -341,8 +381,45 @@
 </div></footer>
 <script>(function(){var b=document.querySelector(".mnav-burger"),m=document.querySelector("nav .navlinks");if(!b||!m)return;function set(o){m.classList.toggle("open",o);b.classList.toggle("open",o);b.setAttribute("aria-expanded",String(o));}b.addEventListener("click",function(){set(!m.classList.contains("open"));});m.querySelectorAll("a").forEach(function(a){a.addEventListener("click",function(){set(false);});});window.addEventListener("resize",function(){if(innerWidth>760)set(false);});})();</script>
 
-<!-- Instagram-Embeds -->
-<script async src="https://www.instagram.com/embed.js"></script>
+<!-- Blätterbare Speisekarte -->
+<script>
+(function(){
+  var book = document.getElementById("dbook"); if(!book) return;
+  var pages = [].slice.call(book.querySelectorAll(".dpage"));
+  var dotsWrap = book.querySelector(".db-dots");
+  var prev = book.querySelector(".db-prev"), next = book.querySelector(".db-next");
+  if(pages.length < 2) return;
+  var i = 0, animating = false, dots = [];
+  pages.forEach(function(p, idx){
+    var d = document.createElement("button");
+    d.className = "db-dot" + (idx === 0 ? " is-active" : "");
+    d.type = "button"; d.setAttribute("role","tab");
+    d.setAttribute("aria-label", "Seite " + (idx + 1) + ": " + (p.getAttribute("data-title") || ""));
+    d.setAttribute("aria-selected", idx === 0 ? "true" : "false");
+    d.addEventListener("click", function(){ go(idx); });
+    dotsWrap.appendChild(d); dots.push(d);
+  });
+  function go(n, dir){
+    n = (n + pages.length) % pages.length;
+    if(n === i || animating) return;
+    animating = true;
+    dir = dir || (n > i ? 1 : -1);
+    var cur = pages[i], nxt = pages[n];
+    nxt.classList.add("pre"); nxt.classList.toggle("pre-left", dir < 0);
+    void nxt.offsetWidth;
+    nxt.classList.remove("pre","pre-left"); nxt.classList.add("is-active");
+    cur.classList.remove("is-active");
+    cur.classList.add("leaving", dir > 0 ? "to-left" : "to-right");
+    dots[i].classList.remove("is-active"); dots[i].setAttribute("aria-selected","false");
+    dots[n].classList.add("is-active"); dots[n].setAttribute("aria-selected","true");
+    window.setTimeout(function(){ cur.classList.remove("leaving","to-left","to-right"); animating = false; }, 560);
+    i = n;
+  }
+  prev.addEventListener("click", function(){ go(i - 1, -1); });
+  next.addEventListener("click", function(){ go(i + 1, 1); });
+  book.addEventListener("keydown", function(e){ if(e.key === "ArrowLeft"){ go(i - 1, -1); } else if(e.key === "ArrowRight"){ go(i + 1, 1); } });
+})();
+</script>
 
 <!-- Bewegung: dezente Scroll-Reveals (GSAP), respektiert prefers-reduced-motion -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
@@ -351,25 +428,48 @@
 (function(){
   if(!window.gsap || !window.ScrollTrigger) return; // Fällt das CDN aus, bleibt alles sichtbar
   gsap.registerPlugin(ScrollTrigger);
+
+  // Robustes Refresh: Instagram-Embeds & Bilder ändern die Seitenhöhe ERST nach
+  // dem Laden. Ohne Neuvermessung bleiben die Trigger-Positionen darunter veraltet
+  // und Sektionen nach Instagram würden nie eingeblendet. Daher bei jeder
+  // Layout-Änderung neu vermessen.
+  var rafId;
+  function refresh(){ cancelAnimationFrame(rafId); rafId = requestAnimationFrame(function(){ ScrollTrigger.refresh(); }); }
+
   var mm = gsap.matchMedia();
   mm.add("(prefers-reduced-motion: no-preference)", function(){
     gsap.from(".hero .wrap > *", {autoAlpha:0, y:22, duration:.8, ease:"power3.out", stagger:.1});
 
-    var singles = gsap.utils.toArray(".about .two > div, .celebrate .two > div, .feat > .wrap > div:first-child, .menu > .wrap > div:first-child, .gal > .wrap > div:first-child, .insta > .wrap > div:first-child, .press blockquote, .cta > .wrap");
-    gsap.set(singles, {autoAlpha:0, y:28});
+    var singles = gsap.utils.toArray(".about .two > div, .celebrate .two > div, .feat > .wrap > div:first-child, .menu > .wrap > div:first-child, .dbook, .gal > .wrap > div:first-child, .insta > .wrap > div:first-child, .press blockquote, .cta > .wrap");
+    var groups = gsap.utils.toArray(".feat .card, .gal figure, .info .panel, .ig-card");
+    var all = singles.concat(groups);
+    gsap.set(all, {autoAlpha:0, y:26});
+
     singles.forEach(function(el){
-      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out"}); }});
+      ScrollTrigger.create({trigger:el, start:"top 88%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out"}); }});
     });
+    ScrollTrigger.batch(groups, {start:"top 90%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.09, overwrite:true}); }});
 
-    var groups = gsap.utils.toArray(".feat .card, .gal figure, .info .panel, .menu .mcat");
-    gsap.set(groups, {autoAlpha:0, y:24});
-    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.09, overwrite:true}); }});
+    // Fail-safe: sollte ein Trigger durch Layout-Sprünge je übersprungen werden,
+    // bleibt nichts unsichtbar – sichtbare Reste werden nachträglich eingeblendet.
+    function rescue(){
+      all.forEach(function(el){
+        if(parseFloat(getComputedStyle(el).opacity) < 0.05){
+          var r = el.getBoundingClientRect();
+          if(r.top < window.innerHeight && r.bottom > 0){ gsap.to(el, {autoAlpha:1, y:0, duration:.5, ease:"power2.out"}); }
+        }
+      });
+    }
+    window.addEventListener("scroll", rescue, {passive:true});
+    setTimeout(rescue, 6000);
 
-    return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
+    return function(){ gsap.set(all, {clearProps:"all"}); };
   });
-  // Layout nach Bild-/Embed-Laden neu vermessen
-  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
-  setTimeout(function(){ ScrollTrigger.refresh(); }, 2200);
+
+  // Neuvermessung bei jeder Größenänderung (Embeds/Bilder) + nach dem Laden.
+  if(window.ResizeObserver){ new ResizeObserver(refresh).observe(document.body); }
+  window.addEventListener("load", refresh);
+  [800,1800,3200,5000].forEach(function(t){ setTimeout(refresh, t); });
 })();
 </script>
 </body>

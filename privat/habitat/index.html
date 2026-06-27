@@ -17,8 +17,8 @@
     --paper:#fcfcff; --muted:#777b96;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased}
+  html{scroll-behavior:smooth;overflow-x:clip}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--paper);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:clip}
   h1,h2,h3{font-family:'Fraunces',serif;font-weight:500;line-height:1.08;letter-spacing:-.01em}
   .wrap{max-width:1080px;margin:0 auto;padding:0 30px}
   a{color:inherit;text-decoration:none}
@@ -36,7 +36,7 @@
   @media(max-width:760px){.navlinks{display:none}}
 
   .hero{position:relative;min-height:86vh;display:flex;align-items:center;
-     background:linear-gradient(160deg,rgba(25,30,94,.78),rgba(15,18,64,.9)),url('img/hero.webp') center/cover no-repeat;color:#fff}
+     background:linear-gradient(160deg,rgba(25,30,94,.74),rgba(15,18,64,.9)),url('img/4.webp') center/cover no-repeat;color:#fff}
   .hero .wrap{padding:120px 30px 96px}
   .hero .eyebrow{display:inline-block;font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:#b9c0f0;font-weight:600;margin-bottom:22px}
   .hero h1{font-size:clamp(2.7rem,6.4vw,4.8rem);max-width:16ch;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.3)}
@@ -55,11 +55,16 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
   @media(max-width:820px){.grid2{grid-template-columns:1fr}}
   .big{border-radius:22px;padding:44px 40px;color:#fff;position:relative;overflow:hidden;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end}
-  .big.cafe{background:linear-gradient(180deg,rgba(37,44,132,.35),rgba(25,30,94,.88)),url('img/coffee.webp') center/cover no-repeat}
-  .big.move{background:linear-gradient(180deg,rgba(25,30,94,.4),rgba(15,18,64,.9)),url('img/yoga.webp') center/cover no-repeat}
+  .big.cafe{background:linear-gradient(180deg,rgba(37,44,132,.3),rgba(25,30,94,.9)),url('img/6.webp') center/cover no-repeat}
+  .big.move{background:linear-gradient(180deg,rgba(25,30,94,.4),rgba(15,18,64,.92)),url('img/1.webp') center/cover no-repeat}
   .big .lead{color:#c3c9f5}
   .big h3{font-size:1.9rem;color:#fff;margin:10px 0 8px}
   .big p{color:rgba(255,255,255,.92);font-size:1rem;max-width:34ch}
+  .big .cta{display:inline-flex;align-items:center;gap:8px;margin-top:20px;align-self:flex-start;background:#fff;color:var(--navy);padding:11px 22px;border-radius:100px;font-weight:600;font-size:.9rem;transition:transform .15s,background .2s}
+  .big .cta:hover{transform:translateY(-2px);background:var(--mist)}
+  .big .cta svg{width:16px;height:16px}
+  /* Numeralen statt Icon-Symbole (Angebot) */
+  .val3 .vnum{font-family:'Fraunces',serif;font-style:italic;font-size:1.9rem;color:var(--navy);line-height:1;margin-bottom:10px}
 
   /* story */
   .two{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
@@ -114,6 +119,74 @@
 
   .val3 .ic{line-height:0}
   .val3 .ic svg{width:36px;height:36px;color:var(--navy)}
+  .val3{transition:transform .2s,box-shadow .2s}
+  .val3:hover{transform:translateY(-4px);box-shadow:0 26px 50px -34px rgba(31,34,64,.5)}
+
+  /* ---- Umherfliegende dekorative Grafiken ---- */
+  .hero,section{position:relative}
+  /* durchgehende Leinwand: helle Sektionen transparent, Formen übergreifen */
+  .sched,.menuS,.insta{background:transparent}
+  .wrap{position:relative;z-index:2}
+  .fly{position:absolute;z-index:0;pointer-events:none}
+  /* Weiche Gradient-Orbs (abstrakte Deko, keine Symbole) */
+  .orb{border-radius:58% 42% 55% 45% / 52% 48% 52% 48%;filter:blur(36px)}
+  .orb.b1{border-radius:62% 38% 55% 45% / 55% 52% 48% 45%}
+  .orb.b2{border-radius:42% 58% 48% 52% / 60% 42% 58% 40%}
+
+  /* Moderne Speisekarte (Tabs) */
+  .menuS{background:var(--paper)}
+  .mtabs{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:38px}
+  .mtab{font-family:'Inter';font-weight:600;font-size:.92rem;color:var(--muted);background:#fff;border:1px solid #e2e5f4;padding:11px 22px;border-radius:100px;cursor:pointer;transition:color .2s,background .2s,border-color .2s,transform .15s}
+  .mtab:hover{color:var(--navy);border-color:#c7ccea}
+  .mtab.is-active{background:var(--navy);color:#fff;border-color:var(--navy);transform:translateY(-1px)}
+  .mpanels{max-width:760px;margin:30px auto 0;background:#fff;border:2px solid var(--navy);border-radius:24px;padding:18px 14px;box-shadow:0 44px 90px -56px rgba(31,34,64,.5);overflow:hidden;position:relative}
+  .mpanels::before{content:"";position:absolute;inset:6px;border:1px solid rgba(37,44,132,.18);border-radius:18px;pointer-events:none}
+  .mpanel{display:none;padding:22px 30px}
+  .mpanel.is-active{display:block;animation:fadeUp .5s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.mpanel.is-active{animation:none}}
+  .mpanel .ph{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .mpanel .ph .ln{flex:1;height:1px;background:#e6e8f4}
+  .mpanel .ph span{font-family:'Fraunces';font-style:italic;color:var(--navy);font-size:1.15rem}
+  .mline{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:15px 0;border-bottom:1px solid #edeff8}
+  .mline:last-child{border-bottom:none}
+  .mline h4{font-family:'Fraunces';font-weight:500;font-size:1.2rem}
+  .mline small{display:block;color:var(--muted);font-size:.85rem;margin-top:2px;font-weight:400}
+  .mline .dot{flex:1;border-bottom:1px dotted #cfd3ea;margin:0 8px;transform:translateY(-5px)}
+  .mline .pr{font-family:'Fraunces';font-weight:600;color:var(--navy);font-size:1.15rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .mtag{display:inline-block;font-size:.66rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);background:var(--mist);border-radius:100px;padding:2px 9px;margin-left:6px;vertical-align:middle}
+
+  /* Moderne Besuch-Sektion */
+  .visit3{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:46px}
+  @media(max-width:820px){.visit3{grid-template-columns:1fr}}
+  .vc{border-radius:22px;padding:40px 36px;position:relative;overflow:hidden}
+  .vc.light{background:#fff;border:1px solid #e6e8f4}
+  .vc.dark{background:linear-gradient(150deg,var(--navy),var(--deepnavy));color:#fff}
+  .vc h3{font-size:1.55rem;margin-bottom:18px}
+  .vc.dark h3{color:#fff}
+  .vrw{display:flex;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid #e6e8f4;font-size:.97rem}
+  .vc.dark .vrw{border-color:rgba(255,255,255,.16)}
+  .vrw:last-child{border-bottom:none}
+  .vrw .k{color:var(--muted)}
+  .vc.dark .vrw .k{color:#b9c0f0}
+  .vrw b{font-weight:600}
+  .vc.dark .btn{background:#fff;color:var(--navy);margin-top:24px}
+  .vc.light .btn{margin-top:24px}
+
+  /* Instagram */
+  .insta{background:var(--mist)}
+  .ig-handle{display:inline-flex;align-items:center;gap:10px;margin-top:14px;font-family:'Fraunces';font-style:italic;font-size:1.25rem;color:var(--navy)}
+  .ig-handle svg{width:22px;height:22px;flex:none}
+  .ig-handle:hover{color:var(--deepnavy)}
+  .ig-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-top:42px}
+  .ig-card{position:relative;display:block;flex:1 1 calc(33.333% - 11px);max-width:calc(33.333% - 11px);aspect-ratio:1;border-radius:18px;overflow:hidden;background:#dfe3f6}
+  @media(max-width:760px){.ig-card{flex-basis:calc(50% - 8px);max-width:calc(50% - 8px)}}
+  @media(max-width:430px){.ig-card{flex-basis:100%;max-width:100%}}
+  .ig-card img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+  .ig-card:hover img{transform:scale(1.06)}
+  .ig-ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(transparent,rgba(25,30,94,.55));opacity:0;transition:opacity .3s ease}
+  .ig-card:hover .ig-ov,.ig-card:focus-visible .ig-ov{opacity:1}
+  .ig-ov svg{width:34px;height:34px;color:#fff}
 
   /* Quality-Floor: Tastatur-Fokus sichtbar + Bewegung respektieren */
   a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid currentColor;outline-offset:3px;border-radius:3px}
@@ -143,14 +216,18 @@
 </head>
 <body>
 <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+
 <nav><div class="wrap">
   <a class="logo" href="#"><img src="img/logo.png" alt="Habitat Logo"><span>Habitat</span></a>
-  <div class="navlinks"><a href="#story">Idee</a><a href="#angebot">Angebot</a><a href="#kurse">Kursplan</a><a href="#buchen">Buchen</a><a href="#finden">Finden</a></div>
-  <a href="#buchen" class="btn">Kurs buchen</a>
+  <div class="navlinks"><a href="#story">Idee</a><a href="#angebot">Angebot</a><a href="#karte">Karte</a><a href="#kurse">Kursplan</a><a href="#finden">Finden</a></div>
+  <a href="buchen.html" class="btn">Kurs buchen</a>
 <button class="mnav-burger" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span><span></span></button>
 </div></nav>
 
-<header class="hero" id="inhalt"><div class="wrap">
+<header class="hero" id="inhalt">
+  <div class="fly orb b1" data-speed="0.3" style="top:4%;right:4%;width:320px;height:320px;opacity:.4;background:radial-gradient(circle at 40% 35%, rgba(195,201,245,.6), rgba(195,201,245,0) 70%)"></div>
+  <div class="fly orb" data-speed="0.5" style="bottom:6%;left:3%;width:260px;height:260px;opacity:.32;background:radial-gradient(circle at 38% 32%, rgba(150,160,230,.6), rgba(150,160,230,0) 70%)"></div>
+  <div class="wrap" style="padding:120px 30px 96px">
   <span class="eyebrow">Schwachhausen · Bremen</span>
   <h1>Kaffee &amp; Bewegung <em>unter einem Dach.</em></h1>
   <p>Habitat ist Café und Studio zugleich – für Yoga, Pilates, Sound Baths und Kakao-Zeremonien. Ein Ort, der gut tut.</p>
@@ -160,8 +237,10 @@
   </div>
 </div></header>
 
-<section id="story" class="about"><div class="wrap two">
-  <div class="photo"><img loading="lazy" src="img/wellness.webp" alt="Habitat – Raum für Bewegung"></div>
+<section id="story" class="about">
+  <div class="fly orb b1" data-speed="0.36" style="bottom:-60px;left:-50px;width:250px;height:250px;opacity:.4;background:radial-gradient(circle at 40% 35%, rgba(150,160,230,.45), rgba(150,160,230,0) 70%)"></div>
+  <div class="wrap two">
+  <div class="photo"><img loading="lazy" src="img/5.webp" alt="Ruhiger Innenraum von Habitat mit Tischen und Pflanzen"></div>
   <div>
     <span class="lead">Die Idee</span>
     <h2>Ein Zuhause für <em>Körper &amp; Pause.</em></h2>
@@ -170,24 +249,70 @@
   </div>
 </div></section>
 
-<section id="dach"><div class="wrap">
+<section id="dach">
+  <div class="fly orb b1" data-speed="0.3" style="top:-10px;left:-30px;width:220px;height:220px;opacity:.4;background:radial-gradient(circle at 40% 35%, rgba(140,150,225,.4), rgba(140,150,225,0) 70%)"></div>
+  <div class="wrap">
   <div class="center"><span class="lead">Zwei Welten</span><h2>Ein Ort, <em>zwei Rituale.</em></h2></div>
   <div class="grid2">
-    <div class="big cafe"><span class="lead">Das Café</span><h3>Erst ankommen.</h3><p>Specialty Coffee, hausgemachte Kleinigkeiten und ein Platz, an dem du einfach sein darfst.</p></div>
-    <div class="big move"><span class="lead">Das Studio</span><h3>Dann bewegen.</h3><p>Yoga, Pilates, Sound Baths &amp; Kakao-Zeremonien – in kleinen Gruppen, achtsam angeleitet.</p></div>
+    <div class="big cafe"><span class="lead">Das Café</span><h3>Erst ankommen.</h3><p>Specialty Coffee, hausgemachte Kleinigkeiten und ein Platz, an dem du einfach sein darfst.</p><a href="#karte" class="cta">Unsere Karte →</a></div>
+    <div class="big move"><span class="lead">Das Studio</span><h3>Dann bewegen.</h3><p>Yoga, Pilates, Sound Baths &amp; Kakao-Zeremonien – in kleinen Gruppen, achtsam angeleitet.</p><a href="#kurse" class="cta">Zum Kursplan →</a></div>
   </div>
 </div></section>
 
-<section id="angebot" class="vals"><div class="wrap">
+<section id="angebot" class="vals">
+  <div class="fly orb b2" data-speed="0.34" style="top:-10px;right:-40px;width:230px;height:230px;opacity:.42;background:radial-gradient(circle at 42% 38%, rgba(150,160,230,.4), rgba(150,160,230,0) 72%)"></div>
+  <div class="wrap">
   <div class="center" style="max-width:36ch"><span class="lead">Auf der Matte</span><h2>Was dich bei Habitat <em>erwartet</em></h2></div>
   <div class="row3">
-    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5.4" r="2"/><path d="M12 8.2c-1 1.8-1.1 3.3-1.1 5.1M12 8.2c1 1.8 1.1 3.3 1.1 5.1"/><path d="M4.5 18.5c2.2-1.1 4.6-1.7 7.5-1.7s5.3.6 7.5 1.7"/><path d="M7 18.5l4-4.6M17 18.5l-4-4.6"/></svg></div><h3>Yoga &amp; Pilates</h3><p>Vom Morning Flow bis Slow &amp; Restore – kräftigend oder sanft, immer in kleinen Gruppen.</p></div>
-    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M8.6 8.6a5 5 0 0 0 0 6.8M15.4 8.6a5 5 0 0 1 0 6.8"/><path d="M6 6a8.5 8.5 0 0 0 0 12M18 6a8.5 8.5 0 0 1 0 12"/></svg></div><h3>Sound Baths</h3><p>Klangreisen zum Loslassen – tief durchatmen und den Kopf einmal leer werden lassen.</p></div>
-    <div class="val3"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 9h11v5.5a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4Z"/><path d="M16 10h2.4a2 2 0 0 1 0 4H16"/><path d="M8 3.6c-.5.7-.5 1.3 0 2M11.5 3.6c-.5.7-.5 1.3 0 2"/></svg></div><h3>Kakao-Zeremonien</h3><p>Wärmend &amp; verbindend – Achtsamkeit zum Anfassen, gemeinsam in der Runde.</p></div>
+    <div class="val3"><div class="vnum">i</div><h3>Yoga &amp; Pilates</h3><p>Vom Morning Flow bis Slow &amp; Restore – kräftigend oder sanft, immer in kleinen Gruppen.</p></div>
+    <div class="val3"><div class="vnum">ii</div><h3>Sound Baths</h3><p>Klangreisen zum Loslassen – tief durchatmen und den Kopf einmal leer werden lassen.</p></div>
+    <div class="val3"><div class="vnum">iii</div><h3>Kakao-Zeremonien</h3><p>Wärmend &amp; verbindend – Achtsamkeit zum Anfassen, gemeinsam in der Runde.</p></div>
   </div>
 </div></section>
 
-<section id="kurse" class="sched"><div class="wrap">
+<section id="karte" class="menuS">
+  <div class="fly orb b1" data-speed="0.4" style="bottom:-60px;left:-50px;width:260px;height:260px;opacity:.4;background:radial-gradient(circle at 40% 35%, rgba(150,160,230,.4), rgba(150,160,230,0) 70%)"></div>
+  <div class="wrap">
+  <div class="center" style="max-width:34ch"><span class="lead">Aus dem Café</span><h2>Unsere <em>Karte</em></h2></div>
+  <div class="mtabs" role="tablist" aria-label="Speisekarte-Kategorien">
+    <button class="mtab is-active" type="button" data-panel="p1" role="tab" aria-selected="true">Kaffee &amp; Matcha</button>
+    <button class="mtab" type="button" data-panel="p2" role="tab" aria-selected="false">Süßes &amp; Gebäck</button>
+    <button class="mtab" type="button" data-panel="p3" role="tab" aria-selected="false">Bowls &amp; Herzhaft</button>
+    <button class="mtab" type="button" data-panel="p4" role="tab" aria-selected="false">Tee &amp; Kakao</button>
+  </div>
+  <div class="mpanels">
+    <div class="mpanel is-active" id="p1" role="tabpanel">
+      <div class="ph"><span>Kaffee &amp; Matcha</span><span class="ln"></span></div>
+      <div class="mline"><div><h4>Flat White · Cappuccino</h4><small>Specialty Coffee, auch mit Pflanzendrink</small></div><div class="dot"></div><div class="pr">3,8</div></div>
+      <div class="mline"><div><h4>Filterkaffee</h4><small>handgebrüht, wechselnde Röstung</small></div><div class="dot"></div><div class="pr">3,2</div></div>
+      <div class="mline"><div><h4>Ceremonial Matcha Latte <span class="mtag">beliebt</span></h4><small>steingemahlen, leuchtend grün</small></div><div class="dot"></div><div class="pr">5,2</div></div>
+      <div class="mline"><div><h4>Chai Latte</h4><small>hausgemachte Gewürzmischung</small></div><div class="dot"></div><div class="pr">4,5</div></div>
+    </div>
+    <div class="mpanel" id="p2" role="tabpanel">
+      <div class="ph"><span>Süßes &amp; Gebäck</span><span class="ln"></span></div>
+      <div class="mline"><div><h4>Hausgemachter Kuchen</h4><small>täglich wechselnd</small></div><div class="dot"></div><div class="pr">4,2</div></div>
+      <div class="mline"><div><h4>Zimtschnecke</h4><small>warm, frisch gebacken</small></div><div class="dot"></div><div class="pr">4,2</div></div>
+      <div class="mline"><div><h4>Cookies <span class="mtag">oft vegan</span></h4><small>knusprig &amp; weich zugleich</small></div><div class="dot"></div><div class="pr">3,2</div></div>
+    </div>
+    <div class="mpanel" id="p3" role="tabpanel">
+      <div class="ph"><span>Bowls &amp; Herzhaft</span><span class="ln"></span></div>
+      <div class="mline"><div><h4>Frühstücksbowl</h4><small>Joghurt, Granola, frisches Obst</small></div><div class="dot"></div><div class="pr">8,5</div></div>
+      <div class="mline"><div><h4>Avocado Bread</h4><small>Sauerteig, Avocado, pochiertes Ei</small></div><div class="dot"></div><div class="pr">9,5</div></div>
+      <div class="mline"><div><h4>Bagel des Tages</h4><small>frisch belegt, knusprig getoastet</small></div><div class="dot"></div><div class="pr">6,8</div></div>
+    </div>
+    <div class="mpanel" id="p4" role="tabpanel">
+      <div class="ph"><span>Tee &amp; Kakao</span><span class="ln"></span></div>
+      <div class="mline"><div><h4>Zeremonieller Kakao</h4><small>wärmend &amp; verbindend</small></div><div class="dot"></div><div class="pr">5,5</div></div>
+      <div class="mline"><div><h4>Bio-Tee Auswahl</h4><small>wechselnde Sorten</small></div><div class="dot"></div><div class="pr">3,5</div></div>
+      <div class="mline"><div><h4>Goldene Milch</h4><small>Kurkuma, Ingwer, Pflanzendrink</small></div><div class="dot"></div><div class="pr">4,8</div></div>
+    </div>
+  </div>
+  <p class="note">Beispielkarte zum Konzept · vegane &amp; glutenfreie Optionen · Preise bitte final bestätigen</p>
+</div></section>
+
+<section id="kurse" class="sched">
+  <div class="fly orb b2" data-speed="0.32" style="top:-10px;left:-30px;width:220px;height:220px;opacity:.4;background:radial-gradient(circle at 42% 38%, rgba(150,160,230,.38), rgba(150,160,230,0) 72%)"></div>
+  <div class="wrap">
   <div class="center" style="max-width:40ch"><span class="lead">Diese Woche</span><h2>Kursplan &amp; <em>Stundenplan</em></h2></div>
   <div class="table">
     <div class="trow"><div class="t">08:00</div><div class="c"><h4>Morning Flow Yoga</h4><span>60 Min · alle Level · Lisa</span></div><div class="b">Plätze frei</div></div>
@@ -196,40 +321,63 @@
     <div class="trow"><div class="t">19:30</div><div class="c"><h4>Sound Bath</h4><span>60 Min · Klangreise</span></div><div class="b">Anmeldung</div></div>
   </div>
   <p class="note">Beispiel-Stundenplan · der echte Wochenplan wird hier live gepflegt – mit Klick direkt zur Buchung.</p>
+  <div style="text-align:center;margin-top:32px"><a class="btn" href="buchen.html">Kurs buchen</a></div>
 </div></section>
 
-<section id="buchen" class="booking"><div class="wrap">
+<section id="buchen" class="booking">
+  <div class="fly orb b1" data-speed="0.32" style="top:6%;left:5%;width:250px;height:250px;opacity:.26;background:radial-gradient(circle at 40% 35%, rgba(195,201,245,.6), rgba(195,201,245,0) 70%)"></div>
+  <div class="wrap">
   <span class="lead">Schluss mit Buchen per DM</span>
   <h2 style="margin-top:12px">Deinen Platz sicherst du in <em>10 Sekunden.</em></h2>
   <p>Kurs auswählen, Platz buchen, fertig. Keine Nachrichten hin und her – Habitat kümmert sich um den Rest.</p>
-  <a href="#finden" class="btn">Kurs &amp; Termin wählen</a>
+  <a href="buchen.html" class="btn">Kurs &amp; Termin wählen</a>
 </div></section>
 
-<section class="press"><div class="wrap">
+<section class="press">
+  <div class="fly orb" data-speed="0.3" style="top:30%;left:2%;width:220px;height:220px;opacity:.34;background:radial-gradient(circle at 40% 35%, rgba(150,160,230,.38), rgba(150,160,230,0) 70%)"></div>
+  <div class="wrap">
   <blockquote>„Kaffee &amp; Bewegung unter einem Dach – ein Ort, der gut tut."</blockquote>
-  <div class="src">
-    <span>Mehr auf</span>
-    <a href="https://www.instagram.com/hihabitat/" target="_blank" rel="noopener">@hihabitat</a>
-    <a href="https://www.google.com/maps/search/?api=1&query=Habitat+Schwachhauser+Heerstraße+12+Bremen" target="_blank" rel="noopener">Google</a>
-  </div>
 </div></section>
 
-<section id="finden"><div class="wrap">
+<section id="instagram" class="insta">
+  <div class="fly orb b1" data-speed="0.36" style="bottom:-60px;right:-50px;width:240px;height:240px;opacity:.4;background:radial-gradient(circle at 40% 35%, rgba(150,160,230,.4), rgba(150,160,230,0) 70%)"></div>
+  <div class="wrap">
+  <div class="center" style="max-width:32ch"><span class="lead">Folge uns</span><h2>Frisch von <em>Instagram</em></h2>
+    <a class="ig-handle" href="https://www.instagram.com/hihabitat/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>
+      @hihabitat
+    </a>
+  </div>
+  <div class="ig-grid">
+    <a class="ig-card" href="https://www.instagram.com/p/DYt5mH6i_W7/" target="_blank" rel="noopener"><img loading="lazy" src="img/1.webp" alt="Beitrag von Habitat auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DZFYH0ziSNo/" target="_blank" rel="noopener"><img loading="lazy" src="img/3.webp" alt="Beitrag von Habitat auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DYhgvT5gkkN/" target="_blank" rel="noopener"><img loading="lazy" src="img/6.webp" alt="Beitrag von Habitat auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DXg8sy1jDVB/" target="_blank" rel="noopener"><img loading="lazy" src="img/4.webp" alt="Beitrag von Habitat auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DWqmcX7DO93/" target="_blank" rel="noopener"><img loading="lazy" src="img/2.webp" alt="Beitrag von Habitat auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DVYK9oVDBOR/" target="_blank" rel="noopener"><img loading="lazy" src="img/5.webp" alt="Beitrag von Habitat auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+    <a class="ig-card" href="https://www.instagram.com/p/DUwA-ipjPHt/" target="_blank" rel="noopener"><img loading="lazy" src="img/3.webp" alt="Beitrag von Habitat auf Instagram"><span class="ig-ov"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></span></a>
+  </div>
+  <div style="text-align:center;margin-top:40px"><a class="btn" href="https://www.instagram.com/hihabitat/" target="_blank" rel="noopener">Auf Instagram folgen</a></div>
+</div></section>
+
+<section id="finden">
+  <div class="fly orb" data-speed="0.3" style="top:-10px;right:0;width:210px;height:210px;opacity:.36;background:radial-gradient(circle at 42% 38%, rgba(170,178,235,.4), rgba(170,178,235,0) 72%)"></div>
+  <div class="wrap">
   <div class="center"><span class="lead">Besuch</span><h2>Öffnungszeiten &amp; <em>Anfahrt</em></h2></div>
-  <div class="info">
-    <div>
+  <div class="visit3">
+    <div class="vc dark">
       <h3>Café-Zeiten</h3>
-      <div class="row"><span>Dienstag – Sonntag</span><b>09:00 – 18:00</b></div>
-      <div class="row"><span>Montag</span><b>Ruhetag</b></div>
-      <div class="row"><span>Kurse</span><b>siehe Kursplan</b></div>
-      <p style="margin-top:14px;font-size:.84rem;color:var(--muted)">Stand laut öffentlichen Angaben – bitte bestätigen.</p>
+      <div class="vrw"><span class="k">Dienstag – Sonntag</span><b>09:00 – 18:00</b></div>
+      <div class="vrw"><span class="k">Montag</span><b>Ruhetag</b></div>
+      <div class="vrw"><span class="k">Kurse</span><b>siehe Kursplan</b></div>
+      <p style="margin-top:16px;font-size:.84rem;color:#aab1e0">Stand laut öffentlichen Angaben – bitte bestätigen.</p>
     </div>
-    <div>
+    <div class="vc light">
       <h3>So findest du uns</h3>
-      <div class="row"><span>Adresse</span><b>Schwachhauser Heerstr. 12–14</b></div>
-      <div class="row"><span>Stadtteil</span><b>28203 Bremen</b></div>
-      <div class="row"><span>Instagram</span><b>@hihabitat</b></div>
-      <a href="https://www.google.com/maps/search/?api=1&query=Habitat+Schwachhauser+Heerstraße+12+Bremen" target="_blank" class="btn" style="margin-top:22px">In Maps öffnen</a>
+      <div class="vrw"><span class="k">Adresse</span><b>Schwachhauser Heerstr. 12–14</b></div>
+      <div class="vrw"><span class="k">Stadtteil</span><b>28203 Bremen · Schwachhausen</b></div>
+      <div class="vrw"><span class="k">Instagram</span><b>@hihabitat</b></div>
+      <a href="https://www.google.com/maps/search/?api=1&query=Habitat+Schwachhauser+Heerstraße+12+Bremen" target="_blank" rel="noopener" class="btn">In Maps öffnen</a>
     </div>
   </div>
 </div></section>
@@ -245,26 +393,54 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
 <script>
+// Speisekarte – Tabs
+(function(){
+  var tabs = [].slice.call(document.querySelectorAll(".mtab"));
+  var panels = [].slice.call(document.querySelectorAll(".mpanel"));
+  if(!tabs.length) return;
+  tabs.forEach(function(tab){
+    tab.addEventListener("click", function(){
+      var id = tab.getAttribute("data-panel");
+      tabs.forEach(function(t){ var on = t === tab; t.classList.toggle("is-active", on); t.setAttribute("aria-selected", on ? "true" : "false"); });
+      panels.forEach(function(p){ p.classList.toggle("is-active", p.id === id); });
+    });
+  });
+})();
+
+// Scroll-Reveals + umherfliegende Grafiken (Parallax)
 (function(){
   if(!window.gsap || !window.ScrollTrigger) return;
   gsap.registerPlugin(ScrollTrigger);
+  var rafId;
+  function refresh(){ cancelAnimationFrame(rafId); rafId = requestAnimationFrame(function(){ ScrollTrigger.refresh(); }); }
   var mm = gsap.matchMedia();
   mm.add("(prefers-reduced-motion: no-preference)", function(){
-    gsap.from(".hero .eyebrow, .hero h1, .hero p, .hero .actions", {autoAlpha:0, y:24, duration:.8, ease:"power3.out", stagger:.1});
+    gsap.from(".hero .eyebrow, .hero h1, .hero p, .hero .actions", {autoAlpha:0, y:24, duration:.85, ease:"power3.out", stagger:.1});
 
-    var singles = gsap.utils.toArray(".about .two > div, .center, .press blockquote, .press .src, .booking .lead, .booking h2, .booking p, .booking .btn, #finden .info > div");
-    gsap.set(singles, {autoAlpha:0, y:28});
-    singles.forEach(function(el){
-      ScrollTrigger.create({trigger:el, start:"top 86%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.7, ease:"power2.out", clearProps:"transform"}); }});
+    gsap.utils.toArray(".fly").forEach(function(el){
+      var host = el.parentElement;
+      var sp = parseFloat(el.getAttribute("data-speed") || "0.3");
+      gsap.fromTo(el, {yPercent:-sp*60}, {yPercent:sp*60, ease:"none",
+        scrollTrigger:{trigger:host, start:"top bottom", end:"bottom top", scrub:1}});
+      gsap.fromTo(el, {scale:0.9}, {scale:1.12, ease:"none",
+        scrollTrigger:{trigger:host, start:"top bottom", end:"bottom top", scrub:1.4}});
     });
 
-    var groups = gsap.utils.toArray(".big, .val3, .trow");
+    var singles = gsap.utils.toArray(".about .two > div, .center, .mtabs, .mpanels, .press blockquote, .press .src, .booking .lead, .booking h2, .booking p, .booking .btn, .ig-handle, .visit3 .vc");
+    gsap.set(singles, {autoAlpha:0, y:28});
+    singles.forEach(function(el){
+      ScrollTrigger.create({trigger:el, start:"top 88%", once:true, onEnter:function(){ gsap.to(el, {autoAlpha:1, y:0, duration:.75, ease:"power2.out", clearProps:"transform"}); }});
+    });
+
+    var groups = gsap.utils.toArray(".big, .val3, .trow, .ig-card");
     gsap.set(groups, {autoAlpha:0, y:24});
-    ScrollTrigger.batch(groups, {start:"top 88%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.6, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
+    ScrollTrigger.batch(groups, {start:"top 90%", onEnter:function(b){ gsap.to(b, {autoAlpha:1, y:0, duration:.65, ease:"power2.out", stagger:.08, overwrite:true, clearProps:"transform"}); }});
 
     return function(){ gsap.set(singles.concat(groups), {clearProps:"all"}); };
   });
-  window.addEventListener("load", function(){ ScrollTrigger.refresh(); });
+  if(window.ResizeObserver){ new ResizeObserver(refresh).observe(document.body); }
+  window.addEventListener("load", refresh);
+  [800,1800,3200].forEach(function(t){ setTimeout(refresh, t); });
 })();
 </script>
 </body>
