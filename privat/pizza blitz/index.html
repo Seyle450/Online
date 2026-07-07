@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pizza Blitz Bremen — Blitzschnell. Handgemacht.</title>
+<meta name="description" content="Pizza Blitz in Bremen Horn-Lehe: hausgemachter Teig, frische Zutaten und Soßen nach eigenem Rezept. Seit 1999. Lieferung & Abholung, Ø 32 Minuten. Jetzt bestellen.">
+<!-- Domain ist ein Platzhalter (pizzablitz-bremen.de) — vor Live-Schaltung auf die echte Domain anpassen (hier + Impressum/Datenschutz). -->
+<link rel="canonical" href="https://www.pizzablitz-bremen.de/">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<!-- Open Graph / Social-Vorschau -->
+<meta property="og:type" content="restaurant.restaurant">
+<meta property="og:site_name" content="Pizza Blitz Bremen">
+<meta property="og:title" content="Pizza Blitz Bremen — Blitzschnell. Handgemacht.">
+<meta property="og:description" content="Hausgemachter Teig, frische Zutaten und Soßen nach eigenem Rezept. Seit 1999 in Bremen Horn-Lehe.">
+<meta property="og:image" content="https://www.pizzablitz-bremen.de/assets/hero.webp">
+<meta property="og:url" content="https://www.pizzablitz-bremen.de/">
+<meta property="og:locale" content="de_DE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pizza Blitz Bremen — Blitzschnell. Handgemacht.">
+<meta name="twitter:description" content="Hausgemachter Teig, frische Zutaten und Soßen nach eigenem Rezept. Seit 1999 in Bremen Horn-Lehe.">
+<meta name="twitter:image" content="https://www.pizzablitz-bremen.de/assets/hero.webp">
+
+<!-- Strukturierte Daten (schema.org) für Google-Suchergebnisse (Sterne, Öffnungszeiten, Adresse) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Pizza Blitz Bremen",
+  "image": "https://www.pizzablitz-bremen.de/assets/hero.webp",
+  "url": "https://www.pizzablitz-bremen.de/",
+  "telephone": "+49-421-274080",
+  "servesCuisine": ["Pizza", "Italienisch"],
+  "priceRange": "€€",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Edisonstraße 6",
+    "postalCode": "28357",
+    "addressLocality": "Bremen",
+    "addressCountry": "DE"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 53.1180, "longitude": 8.9067 },
+  "_comment_geo": "Koordinaten sind Bremen-Zentrum, ungefähr — vor Live-Schaltung durch exakte Koordinaten für Edisonstraße 6 ersetzen (JSON-LD ignoriert unbekannte Felder wie diesen).",
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], "opens": "11:00", "closes": "22:00" }
+  ],
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.7", "reviewCount": "9" },
+  "acceptsReservations": "False"
+}
+</script>
+
+<script src="https://elyesferchichi.com/analytics/tracker.js" defer></script>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="#start" class="brand" aria-label="Pizza Blitz — zur Startseite">
+      <img src="assets/logo.png" alt="Pizza Blitz Bremen" width="128" height="58">
+    </a>
+    <nav class="nav-desktop" aria-label="Hauptnavigation">
+      <a href="#start" class="nav-link">Start</a>
+      <a href="#speisekarte" class="nav-link">Speisekarte</a>
+      <a href="#highlights" class="nav-link">Highlights</a>
+      <a href="#ueber-uns" class="nav-link">Über uns</a>
+      <a href="#tracker" class="nav-link">Blitz-Tracker</a>
+      <a href="#bewertungen" class="nav-link">Bewertungen</a>
+      <a href="#kontakt" class="nav-link">Kontakt</a>
+    </nav>
+    <div class="header-cta">
+      <a href="tel:0421274080" class="header-phone">0421 274080</a>
+      <a href="#speisekarte" class="btn btn-primary btn-sm">Bestellen</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ MOBILE NAV ============ -->
+<div class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <nav aria-label="Mobile Navigation">
+    <a href="#start" class="m-link">Start</a>
+    <a href="#speisekarte" class="m-link">Speisekarte</a>
+    <a href="#highlights" class="m-link">Highlights</a>
+    <a href="#ueber-uns" class="m-link">Über uns</a>
+    <a href="#tracker" class="m-link">Blitz-Tracker</a>
+    <a href="#bewertungen" class="m-link">Bewertungen</a>
+    <a href="#kontakt" class="m-link">Kontakt</a>
+    <a href="tel:0421274080" class="m-phone">0421 274080 anrufen</a>
+  </nav>
+</div>
+<div class="scrim" id="scrim" hidden></div>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="start">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <span class="bolt-bg" aria-hidden="true"></span>
+  <svg class="hero-curve" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,0 C0,100 1440,100 1440,0 L1440,100 L0,100 Z"/>
+  </svg>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="badge"><span class="badge-dot"></span>Horn-Lehe · Lehesterdeich</span>
+      <h1>Blitzschnell.<br>Handgemacht.<br>
+        <span class="hl-word">Seit über 25 Jahren
+          <svg class="underline" viewBox="0 0 320 14" preserveAspectRatio="none" aria-hidden="true"><path d="M4 10 C 60 4, 140 11, 200 6 S 300 5, 316 8" fill="none" stroke="#ffd500" stroke-width="5" stroke-linecap="round"/></svg>
+        </span> in Bremen.
+      </h1>
+      <p class="hero-sub">Hausgemachter Teig, frische Zutaten und Soßen nach eigenem Rezept — geliefert, bevor der Hunger richtig groß wird.</p>
+      <div class="hero-actions">
+        <a href="#speisekarte" class="btn btn-primary">Jetzt bestellen</a>
+        <a href="#speisekarte" class="btn btn-ghost">Speisekarte ansehen</a>
+      </div>
+      <p class="hero-trust">Edisonstraße 6, 28357 Bremen · Lieferung &amp; Abholung · Barzahlung möglich</p>
+    </div>
+  </div>
+  <div class="hero-pizza-wrap" aria-hidden="true">
+    <!-- Effekte um die Pizza — vorerst ausgeblendet (bei Bedarf wieder einkommentieren)
+    <div class="steam"><span></span><span></span><span></span></div>
+    <span class="float-deco deco-basil"></span>
+    <span class="float-deco deco-tomato"></span>
+    <span class="float-deco deco-bolt"></span>
+    -->
+    <img class="hero-pizza" id="heroPizza" src="assets/hero.webp" alt="Frisch gebackene Pizza Blitz aus dem Steinofen" width="1024" height="1024">
+  </div>
+</section>
+
+<!-- ============ STATS + TICKER ============ -->
+<section class="stats-band">
+  <div class="stats wrap" id="stats">
+    <div class="stat"><span class="stat-num" data-to="25" data-suffix="+">0</span><span class="stat-label">Jahre in Bremen</span></div>
+    <div class="stat"><span class="stat-num" data-to="100" data-suffix="%">0</span><span class="stat-label">hausgemachter Teig</span></div>
+    <div class="stat"><span class="stat-num" data-to="60" data-suffix="+">0</span><span class="stat-label">Gerichte auf der Karte</span></div>
+    <div class="stat"><span class="stat-num" data-to="4.7" data-suffix="★" data-decimals="1">0</span><span class="stat-label">Kundenbewertung</span></div>
+  </div>
+</section>
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<!-- ============ HIGHLIGHTS ============ -->
+<section class="section highlights" id="highlights">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Beliebt bei unseren Gästen</span>
+      <h2>Unsere Highlights</h2>
+      <p class="section-lead">Drei Klassiker, die bei uns nie aus dem Ofen kommen, ohne bestellt zu werden. Scroll — und lass sie sich drehen.</p>
+    </header>
+    <div class="highlight-grid" id="highlightGrid"></div>
+    <a href="#speisekarte" class="scroll-hint reveal">
+      <span>Zur ganzen Speisekarte</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m0 0-6-6m6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section steps-section">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">So funktioniert's</span>
+      <h2>In drei Schritten zur heißen Pizza</h2>
+    </header>
+    <div class="steps">
+      <svg class="steps-line" viewBox="0 0 1000 4" preserveAspectRatio="none" aria-hidden="true"><path d="M0 2 H1000" stroke="#ffd500" stroke-width="3" stroke-dasharray="1000" stroke-dashoffset="1000" fill="none"/></svg>
+      <div class="step reveal"><span class="step-num">1</span><h3>Aussuchen &amp; bestellen</h3><p>Online, per Telefon oder direkt im Laden — such dir deine Favoriten aus.</p></div>
+      <div class="step reveal"><span class="step-num">2</span><h3>Frisch gebacken</h3><p>Teig ausrollen, belegen, ab in den 400&nbsp;°C heißen Steinofen.</p></div>
+      <div class="step reveal"><span class="step-num">3</span><h3>Blitz-Lieferung</h3><p>Im Schnitt nach 32 Minuten klingelt es an deiner Tür — heiß und knusprig.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section class="section menu-section" id="speisekarte">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Speisekarte</span>
+      <h2>Alles frisch aus unserem Ofen</h2>
+      <p class="section-lead">Über 60 Gerichte — Pizza, Calzone, Aufläufe, Rollos, Pasta, Salate und mehr.</p>
+    </header>
+    <div class="menu-toolbar reveal">
+      <div class="diet-filters" id="dietFilters" role="group" aria-label="Ernährung filtern">
+        <button class="chip is-active" data-diet="alle">Alle</button>
+        <button class="chip" data-diet="veg">Vegetarisch</button>
+        <button class="chip" data-diet="vegan">Vegan</button>
+      </div>
+      <div class="menu-search">
+        <input type="search" id="menuSearch" placeholder="Gericht suchen …" aria-label="Gericht suchen">
+      </div>
+    </div>
+    <div class="cat-chips" id="catChips" aria-label="Kategorien"></div>
+    <div class="menu-list" id="menuList"></div>
+    <p class="menu-empty" id="menuEmpty" hidden>Keine Gerichte gefunden. Versuch einen anderen Suchbegriff.</p>
+    <p class="allergen-legend" id="allergenLegend"></p>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="section about-section" id="ueber-uns">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Über uns</span>
+      <h2>Seit 1999 für Horn-Lehe und den Lehesterdeich</h2>
+      <p class="section-lead">Ein Familienbetrieb, den viele unserer Gäste kennen, seit sie Kinder waren — heute bestellen sie mit ihren eigenen Familien.</p>
+    </header>
+    <div class="about-oven-wrap reveal">
+      <span class="oven-seal" aria-hidden="true">
+        <svg viewBox="0 0 88 88">
+          <circle cx="44" cy="44" r="40" fill="#ffd500"/>
+          <circle cx="44" cy="44" r="33" fill="none" stroke="#23201b" stroke-width="1.3" stroke-dasharray="3 3.6"/>
+          <text x="44" y="39" text-anchor="middle" font-family="'Instrument Sans',sans-serif" font-size="9.5" font-weight="700" fill="#23201b" letter-spacing="2">SEIT</text>
+          <text x="44" y="60" text-anchor="middle" font-family="'Source Serif 4',Georgia,serif" font-size="20" font-weight="700" fill="#23201b">1999</text>
+        </svg>
+      </span>
+      <div class="about-oven">
+        <div class="about-facts">
+          <div class="about-fact">
+            <span class="about-fact-mark" aria-hidden="true"></span>
+            <h3>Über 25 Jahre Tradition</h3>
+            <p>Seit 1999 beliefern wir Horn-Lehe und den Lehesterdeich. Viele unserer Gäste bestellen bei uns, seit sie Kinder waren — heute mit ihren eigenen Familien.</p>
+          </div>
+          <div class="about-fact">
+            <span class="about-fact-mark" aria-hidden="true"></span>
+            <h3>Hausgemachte Soßen &amp; Teig</h3>
+            <p>Unser Pizzateig ruht über Nacht, die Tomatensoße kochen wir nach eigenem Rezept, und die Pizzabrötchen kommen frisch aus unserem Ofen — nichts davon aus dem Karton.</p>
+          </div>
+          <div class="about-fact">
+            <span class="about-fact-mark" aria-hidden="true"></span>
+            <h3>Frische Zutaten</h3>
+            <p>Gemüse, Käse und Fleisch beziehen wir von regionalen Händlern und schneiden täglich frisch — was morgens nicht überzeugt, kommt mittags nicht auf die Pizza.</p>
+          </div>
+          <div class="about-fact">
+            <span class="about-fact-mark" aria-hidden="true"></span>
+            <h3>Ein eingespieltes Team</h3>
+            <p>Vom Pizzabäcker bis zum Fahrer: Viele im Team sind seit über zehn Jahren dabei. Freundlich am Telefon, zuverlässig an der Tür.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLITZ-TRACKER ============ -->
+<section class="section tracker-section" id="tracker">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Live-Demo</span>
+      <h2 id="trackerHeadline">So läuft deine Bestellung</h2>
+      <p class="section-lead" id="trackerSub">Live-Demo mit simulierten Daten — starte den Tracker und schau zu.</p>
+    </header>
+    <div class="tracker-card reveal">
+      <div class="tracker-status">
+        <span class="status-dot" id="statusDot"></span>
+        <div><strong id="statusTitle">Bereit für die Demo</strong><span id="statusText">Klick auf „Demo starten", um den Blitz auf die Reise zu schicken.</span></div>
+      </div>
+      <div class="tracker-rail">
+        <div class="rail-bg"></div>
+        <div class="rail-fill" id="railFill"></div>
+        <div class="rail-token" id="railToken" aria-hidden="true"></div>
+        <div class="stations" id="stations"></div>
+      </div>
+      <button class="btn btn-primary" id="trackerBtn">Demo starten</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="section reviews-section" id="bewertungen">
+  <div class="wrap">
+    <header class="section-head reveal">
+      <span class="eyebrow">Bewertungen</span>
+      <h2>4,7 ★ von unseren Stammgästen</h2>
+      <p class="section-lead">Echte Stimmen aus dem Viertel — gesammelt über die Jahre.</p>
+    </header>
+    <div class="review-grid" id="reviewGrid"></div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section contact-section" id="kontakt">
+  <div class="wrap contact-grid">
+    <div class="contact-info reveal">
+      <span class="eyebrow">Kontakt &amp; Standort</span>
+      <h2>Vorbeikommen oder anrufen</h2>
+      <ul class="contact-list">
+        <li><strong>Adresse</strong>Edisonstraße 6, 28357 Bremen</li>
+        <li><strong>Telefon</strong><a href="tel:0421274080">0421 274080</a></li>
+        <li><strong>Öffnungszeiten</strong>Mo–So 11:00–22:00 Uhr <em>(Beispielzeiten)</em></li>
+        <li><strong>Gut zu wissen</strong>Lieferung &amp; Abholung · Barzahlung möglich · barrierefrei</li>
+      </ul>
+      <div class="map-card">
+        <iframe class="map-frame" title="Karte: Pizza Blitz, Edisonstraße 6, 28357 Bremen"
+          src="https://maps.google.com/maps?q=Edisonstra%C3%9Fe%206%2C%2028357%20Bremen&z=15&hl=de&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <span class="map-pin-label">Pizza Blitz · Edisonstraße 6</span>
+      </div>
+    </div>
+    <form class="contact-form reveal" id="contactForm" novalidate>
+      <h3>Schreib uns</h3>
+      <label>Dein Name<input type="text" name="name" required autocomplete="name"></label>
+      <label>E-Mail<input type="email" name="email" placeholder="du@beispiel.de" required autocomplete="email"></label>
+      <label>Nachricht<textarea name="message" rows="4" required placeholder="Worum geht's? Catering-Anfrage, Feedback, Fragen …"></textarea></label>
+      <button type="submit" class="btn btn-primary">Nachricht senden</button>
+      <p class="form-success" id="formSuccess" hidden>Danke! Wir melden uns so schnell wie möglich.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <img src="assets/logo.png" alt="Pizza Blitz Bremen" width="120" height="55">
+      <p>Blitzschnell. Handgemacht. Seit 1999 in Bremen Horn-Lehe.</p>
+    </div>
+    <div class="footer-col">
+      <strong>Kontakt</strong>
+      <p>Edisonstraße 6<br>28357 Bremen</p>
+      <p><a href="tel:0421274080">0421 274080</a></p>
+    </div>
+    <div class="footer-col">
+      <strong>Schnellzugriff</strong>
+      <a href="#speisekarte">Speisekarte</a>
+      <a href="#tracker">Blitz-Tracker</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> Pizza Blitz Bremen · Konzept-Website</span>
+    <nav class="footer-legal" aria-label="Rechtliches">
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+    </nav>
+    <span class="footer-note">Gericht-Grafiken sind Illustrationen und können durch echte Fotos ersetzt werden.</span>
+  </div>
+</footer>
+
+<!-- ============ GRÖSSENWAHL (Pizza) ============ -->
+<div class="size-backdrop" id="sizeBackdrop" hidden></div>
+<div class="size-modal" id="sizeModal" role="dialog" aria-modal="true" aria-labelledby="sizeTitle" aria-hidden="true">
+  <h3 id="sizeTitle">Größe wählen</h3>
+  <p class="size-item" id="sizeItemName"></p>
+  <div class="size-options" id="sizeOptions"></div>
+  <button class="size-cancel" id="sizeCancel">Abbrechen</button>
+</div>
+
+<!-- ============ PRODUKT-DETAIL ============ -->
+<div class="product-backdrop" id="productBackdrop" hidden></div>
+<div class="product-modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productTitle" aria-hidden="true">
+  <button class="product-close" id="productClose" aria-label="Schließen">×</button>
+  <div class="product-media">
+    <img id="productImg" src="" alt="">
+  </div>
+  <div class="product-body">
+    <div class="product-tags" id="productTags"></div>
+    <h3 id="productTitle"></h3>
+    <p class="product-desc" id="productDesc"></p>
+    <p class="product-alg" id="productAlg"></p>
+    <div class="product-foot">
+      <span class="product-price" id="productPrice"></span>
+      <button class="btn btn-primary" id="productAddBtn">In den Warenkorb</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CART ============ -->
+<button class="cart-fab" id="cartFab" hidden aria-label="Warenkorb öffnen">
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 6h15l-1.5 9h-12L6 6Zm0 0L5 3H2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="20" r="1.6" fill="currentColor"/><circle cx="18" cy="20" r="1.6" fill="currentColor"/></svg>
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<aside class="cart-drawer" id="cartDrawer" aria-hidden="true" aria-label="Warenkorb">
+  <div class="cart-head"><h3>Dein Warenkorb</h3><button class="cart-close" id="cartClose" aria-label="Schließen">×</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <p class="cart-empty-msg" id="cartEmptyMsg">Noch nichts drin — leg los in der Speisekarte!</p>
+  <div class="cart-summary" id="cartSummary" hidden>
+    <div class="mode-toggle" role="group" aria-label="Liefermodus">
+      <button class="mode-btn is-active" data-mode="lieferung">Lieferung</button>
+      <button class="mode-btn" data-mode="abholung">Abholung</button>
+    </div>
+    <div class="sum-row"><span>Zwischensumme</span><span id="sumSubtotal">0,00 €</span></div>
+    <div class="sum-row"><span>Lieferung</span><span id="sumDelivery">kostenlos</span></div>
+    <div class="sum-row sum-total"><span>Gesamt</span><span id="sumTotal">0,00 €</span></div>
+    <p class="min-note" id="minNote" hidden>Mindestbestellwert für Lieferung: 12,00 €</p>
+    <button class="btn btn-primary btn-block" id="checkoutBtn">Bestellen</button>
+  </div>
+</aside>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="script.js"></script></body>
+</html>
