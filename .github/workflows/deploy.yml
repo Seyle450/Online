@@ -10,7 +10,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy via SFTP
+      # Lädt das Datei-Hash-Manifest vom letzten erfolgreichen Deploy (falls vorhanden).
+      # restore-keys mit Prefix greift auf den jüngsten Cache-Eintrag zu, auch wenn der
+      # exakte run_id-Key noch nie existierte — so baut sich die Historie fortlaufend fort.
+      - name: Vorheriges Deploy-Manifest laden
+        uses: actions/cache/restore@v4
+        with:
+          path: .ftp-deploy-sync-state.json
+          key: ftp-deploy-manifest-${{ github.run_id }}
+          restore-keys: |
+            ftp-deploy-manifest-
+
+      - name: Deploy via SFTP (nur geänderte Dateien)
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
@@ -18,49 +29,98 @@ jobs:
         run: |
           pip install paramiko --quiet
           python3 - << 'EOF'
-          import paramiko, os
+          import paramiko, os, json, hashlib
 
           host = os.environ['FTP_SERVER']
           user = os.environ['FTP_USERNAME']
           pwd  = os.environ['FTP_PASSWORD']
 
           REMOTE_ROOT = '/www'
+          MANIFEST_PATH = '.ftp-deploy-sync-state.json'
 
           SKIP = {'.git', '.github', '.gitignore', '.gitattributes',
                   'worker', 'README.md', 'ANALYTICS_SETUP.md', 'CNAME',
-                  '.ftp-deploy-sync-state.json'}
+                  MANIFEST_PATH}
 
-          t = paramiko.Transport((host, 22))
-          t.connect(username=user, password=pwd)
-          sftp = paramiko.SFTPClient.from_transport(t)
+          def file_hash(path):
+              h = hashlib.sha256()
+              with open(path, 'rb') as f:
+                  for chunk in iter(lambda: f.read(65536), b''):
+                      h.update(chunk)
+              return h.hexdigest()
 
-          def ensure_dir(path):
-              try: sftp.mkdir(path)
-              except: pass
-              try: sftp.chmod(path, 0o755)
-              except: pass
+          old_manifest = {}
+          if os.path.exists(MANIFEST_PATH):
+              try:
+                  with open(MANIFEST_PATH) as f:
+                      old_manifest = json.load(f)
+              except Exception:
+                  old_manifest = {}
 
-          def upload(local, remote):
-              for name in os.listdir(local):
+          # Repo einmal einlesen: Hash je Datei berechnen, mit dem alten Manifest
+          # vergleichen. Nur was sich geändert hat (oder neu ist) landet in `changed`.
+          new_manifest = {}
+          changed = []
+
+          def scan(local):
+              for name in sorted(os.listdir(local)):
                   if name in SKIP:
                       continue
                   lp = os.path.join(local, name)
-                  rp = f"{remote}/{name}"
+                  rel = os.path.relpath(lp, '.').replace(os.sep, '/')
                   if os.path.isdir(lp):
-                      ensure_dir(rp)
-                      upload(lp, rp)
+                      scan(lp)
                   else:
-                      print(f'→ {rp}')
-                      sftp.put(lp, rp)
-                      try: sftp.chmod(rp, 0o644)
-                      except: pass
+                      h = file_hash(lp)
+                      new_manifest[rel] = h
+                      if old_manifest.get(rel) != h:
+                          changed.append(rel)
 
-          ensure_dir(REMOTE_ROOT)
-          upload('.', REMOTE_ROOT)
-          sftp.close()
-          t.close()
+          scan('.')
+          print(f'{len(new_manifest)} Dateien insgesamt, {len(changed)} geändert seit letztem Deploy.')
+
+          # Hinweis: entfernt gelöschte Dateien NICHT vom Server (bewusst konservativ,
+          # um kein versehentliches Löschen auf der Live-Seite zu riskieren). Wurde eine
+          # Datei umbenannt/gelöscht, muss das aktuell noch manuell auf IONOS nachgezogen werden.
+          if changed:
+              t = paramiko.Transport((host, 22))
+              t.connect(username=user, password=pwd)
+              sftp = paramiko.SFTPClient.from_transport(t)
+
+              def ensure_dir(remote_path):
+                  parts = remote_path.strip('/').split('/')
+                  cur = ''
+                  for p in parts:
+                      cur += '/' + p
+                      try: sftp.mkdir(cur)
+                      except Exception: pass
+
+              for rel in changed:
+                  remote = f"{REMOTE_ROOT}/{rel.replace(os.sep, '/')}"
+                  ensure_dir(os.path.dirname(remote))
+                  print(f'→ {remote}')
+                  sftp.put(rel, remote)
+                  try: sftp.chmod(remote, 0o644)
+                  except Exception: pass
+
+              sftp.close()
+              t.close()
+          else:
+              print('Keine Änderungen — Upload übersprungen.')
+
+          with open(MANIFEST_PATH, 'w') as f:
+              json.dump(new_manifest, f)
           print('Done!')
           EOF
+
+      # Manifest für den nächsten Run sichern — läuft auch bei Fehlschlag, damit ein
+      # abgebrochener Deploy den Fortschritt (bereits hochgeladene Dateien) nicht verliert.
+      - name: Deploy-Manifest sichern
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .ftp-deploy-sync-state.json
+          key: ftp-deploy-manifest-${{ github.run_id }}
 
       - name: Telegram Benachrichtigung
         if: always()
