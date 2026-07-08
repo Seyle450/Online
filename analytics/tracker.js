@@ -7,6 +7,16 @@
   var WORKER_URL = 'https://portfolio-analytics.seyle450.workers.dev';
   var CONSENT_KEY = 'analytics_consent';
 
+  // ── Eigene / Test-Geräte dauerhaft vom Tracking ausnehmen ──────────────────
+  // Einmal irgendeine Seite mit  ?notrack=1  aufrufen → dieses Gerät wird ab
+  // dann NIE mehr gezählt (auch nicht anonym). Rückgängig mit  ?notrack=0 .
+  try {
+    var _ns = location.search;
+    if (_ns.indexOf('notrack=1') > -1) localStorage.setItem('_notrack', '1');
+    if (_ns.indexOf('notrack=0') > -1) localStorage.removeItem('_notrack');
+    if (localStorage.getItem('_notrack') === '1') return; // Tracker komplett aus
+  } catch (e) {}
+
   // ── Consent (cookie with parent domain so all subdomains share it) ────────
   function cookieDomain() {
     var h = location.hostname;

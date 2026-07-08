@@ -198,6 +198,18 @@
   .card .btn{margin-top:auto;width:100%;}
   .card.feat li::before{background:#9bb0ff;}
 
+  /* ---------- leistungen ---------- */
+  .svc-grid{display:flex;flex-direction:column;gap:16px;margin-top:38px;}
+  .svc{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:24px 22px;}
+  .svc h3{font-family:var(--head);font-size:18px;font-weight:600;letter-spacing:-.01em;margin-bottom:15px;display:flex;align-items:center;gap:10px;}
+  .svc h3::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--cobalt);flex:none;}
+  .svc ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+  .svc li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;line-height:1.45;color:#3a3a42;}
+  .svc li::before{content:"";flex:none;width:17px;height:17px;border-radius:50%;margin-top:1px;background:var(--cobalt);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/12px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/12px no-repeat;}
+  .svc-note{margin-top:24px;font-size:15px;color:var(--neutral);}
+  .svc-note a{color:var(--cobalt);font-weight:600;}
+  @media(min-width:720px){ .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;} }
+
   /* ---------- beispiele ---------- */
   .work-grid{display:flex;flex-direction:column;gap:28px;margin-top:38px;}
   .work-item .frame{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--white);}
@@ -758,11 +770,64 @@
   </div>
 </section>
 
+<!-- ===== LEISTUNGEN ===== -->
+<section id="leistungen">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="sec-no" aria-hidden="true">04</span>
+      <span class="eyebrow">Leistungen</span>
+      <h2>Alles aus einer Hand — von der Idee bis online.</h2>
+      <p class="lede">Ob einfache Seite oder Shop mit Extras: Ich baue, was Ihr Betrieb wirklich braucht – und kümmere mich auf Wunsch auch danach um alles Technische.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc reveal">
+        <h3>Website &amp; Design</h3>
+        <ul>
+          <li>Individuelle Website – One-Pager oder mehrseitig</li>
+          <li>Für Handy, Tablet &amp; Desktop optimiert</li>
+          <li>Texte, Bildauswahl &amp; Feinschliff inklusive</li>
+          <li>Logo &amp; einfaches Branding</li>
+        </ul>
+      </div>
+      <div class="svc reveal reveal-d1">
+        <h3>Funktionen &amp; Shop</h3>
+        <ul>
+          <li>Online-Shop &amp; Zahlungsanbindung</li>
+          <li>Bestell- &amp; Liefersystem</li>
+          <li>Terminbuchung &amp; Reservierung</li>
+          <li>Treuepunkte- &amp; Bonus-System</li>
+          <li>Kontaktformular &amp; Anfrage-Funktionen</li>
+          <li>Mehrsprachige Seiten</li>
+        </ul>
+      </div>
+      <div class="svc reveal reveal-d2">
+        <h3>Gefunden werden</h3>
+        <ul>
+          <li>SEO – damit Google Sie findet</li>
+          <li>Google-Unternehmensprofil einrichten</li>
+          <li>Verknüpfung mit Instagram &amp; Co.</li>
+          <li>Besucher-Statistiken für Ihre Seite</li>
+        </ul>
+      </div>
+      <div class="svc reveal reveal-d3">
+        <h3>Hosting &amp; Betreuung</h3>
+        <ul>
+          <li>Hosting &amp; Domain – ich richte alles ein</li>
+          <li>Laufende Wartung, Updates &amp; Änderungen</li>
+          <li>Schnelle Ladezeiten &amp; SSL-Sicherheit</li>
+          <li>Fester Ansprechpartner, schnelle Reaktion</li>
+        </ul>
+      </div>
+    </div>
+    <p class="svc-note reveal">Etwas nicht dabei, das Sie brauchen? <a href="#kontakt">Fragen Sie einfach</a> – fast alles lässt sich individuell umsetzen.</p>
+  </div>
+</section>
+
 <!-- ===== BEISPIELE ===== -->
 <section id="arbeiten" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
   <div class="container">
     <div class="sec-head reveal">
-      <span class="sec-no" aria-hidden="true">04</span>
+      <span class="sec-no" aria-hidden="true">05</span>
       <span class="eyebrow">Ausgewählte Arbeiten</span>
       <h2>Echte Konzepte für echte Unternehmen.</h2>
       <p class="lede">Alle Projekte sind vollständige Webdesign-Konzepte – von Grund auf selbst entworfen und gebaut.</p>
@@ -842,7 +907,7 @@
 <section class="ablauf" id="ablauf">
   <div class="container">
     <div class="sec-head reveal">
-      <span class="sec-no" aria-hidden="true">05</span>
+      <span class="sec-no" aria-hidden="true">06</span>
       <span class="eyebrow">So läuft's ab</span>
       <h2>In vier einfachen Schritten zur fertigen Seite.</h2>
       <p class="lede">Kein technisches Blabla. Sie kümmern sich um Ihr Geschäft, ich kümmere mich um die Website.</p>
@@ -872,7 +937,7 @@
 <section id="faq">
   <div class="container">
     <div class="sec-head reveal">
-      <span class="sec-no" aria-hidden="true">06</span>
+      <span class="sec-no" aria-hidden="true">07</span>
       <span class="eyebrow">Häufige Fragen</span>
       <h2>Was Sie vielleicht noch wissen wollen.</h2>
     </div>
@@ -905,7 +970,7 @@
 <section id="ueber" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
   <div class="container">
     <div class="sec-head reveal">
-      <span class="sec-no" aria-hidden="true">07</span>
+      <span class="sec-no" aria-hidden="true">08</span>
       <span class="eyebrow">Über mich</span>
       <h2>Eine Person. Direkt. Ohne Agentur-Pingpong.</h2>
     </div>
