@@ -59,7 +59,7 @@ export async function verifyPassword(password, stored) {
 // Fester, gültiger Hash eines Zufallswerts. Wird geprüft, wenn der Username nicht
 // existiert, damit ein fehlgeschlagener Login timing-neutral bleibt (kein
 // User-Enumeration über Antwortzeiten).
-const DUMMY_HASH = 'pbkdf2$210000$VMF8qy++Cl/nfackvC+EzQ==$p4qOnrkGPknaNewskY6R3W8TWp5CFwx0Xnv1L487pMM=';
+const DUMMY_HASH = 'pbkdf2$100000$MgQhDnrodrdIHIV/mixReQ==$JvKVib2ohwvund2hhfMsTzuKOZ0zlhGeHmHa8mFMx1U=';
 
 export function findUser(username) {
   const u = String(username || '').trim().toLowerCase();

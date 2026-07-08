@@ -17,7 +17,10 @@
 import { pbkdf2Sync, randomBytes } from 'node:crypto';
 import { createInterface } from 'node:readline';
 
-const ITERATIONS = 210000;   // OWASP-Empfehlung 2023 für PBKDF2-HMAC-SHA256
+// Cloudflare Workers begrenzt PBKDF2 in der Produktion auf max. 100.000 Iterationen
+// (lokal/wrangler dev wird das nicht erzwungen). Höhere Werte lassen deriveBits()
+// live werfen → Login schlägt für ALLE fehl. 100.000 ist zugleich OWASP-konform.
+const ITERATIONS = 100000;
 const KEYLEN     = 32;       // 256-bit abgeleiteter Schlüssel
 const DIGEST     = 'sha256';
 

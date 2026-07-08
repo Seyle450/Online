@@ -44,14 +44,14 @@ export const USERS = [
   {
     // Master = du. Sieht alle Sites, mit Umschalter im Dashboard.
     username: 'elyes',
-    hash:     'pbkdf2$210000$uWLxZ/coe6IpnSrbHOaICg==$3XZY5gfFQ/j6mGVmg6eIjsQhb0b7uQpf9Ao26TeU1YA=', // DEMO-Passwort: master-demo-123
+    hash:     'pbkdf2$100000$CiKOQJ6J/4qXcHnUp8lCYw==$gTx3eSTTrKhu6Y7imItjfvlm8mEEvttrPpY1xUhJP0Q=', // DEMO-Passwort: master-demo-123
     role:     'master',
     site:     null,
   },
   {
     // Beispiel-Kunde: sieht ausschließlich die Site 'pizza-blitz'.
     username: 'pizza-blitz',
-    hash:     'pbkdf2$210000$wZpIeDlb1wBQTT9zT8eLWg==$8WEJ7fX2QdZedT/WpPlw+5pfsfUuYGbtf1ccwC7lzC4=', // DEMO-Passwort: pizza-demo-123
+    hash:     'pbkdf2$100000$F4ORsroolyYx17rowTCrrg==$NpZrmUyF4dIUfyCHCB18rmTz6JtuoEGXuJJYsKV4pG8=', // DEMO-Passwort: pizza-demo-123
     role:     'user',
     site:     'pizza-blitz',
   },

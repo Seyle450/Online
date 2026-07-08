@@ -4,8 +4,9 @@ Kunden loggen sich mit eigenen Zugangsdaten ins Analytics-Dashboard ein und sehe
 **nur die Daten ihrer eigenen Website**. Du (Master) siehst alle Sites und kannst
 im Dashboard oben zwischen ihnen umschalten.
 
-- **Passwörter**: nie im Klartext gespeichert – PBKDF2-HMAC-SHA256 (Salt + 210 000
-  Iterationen). Im Repo liegen nur Hashes.
+- **Passwörter**: nie im Klartext gespeichert – PBKDF2-HMAC-SHA256 (Salt + 100 000
+  Iterationen; das ist das Maximum, das Cloudflare Workers in der Produktion
+  erlaubt). Im Repo liegen nur Hashes.
 - **Sessions**: zufällige, serverseitig widerrufbare Tokens in KV. Kein Passwort im
   Browser, nichts Sensibles im Token. TTL 12 h.
 - **Trennung serverseitig erzwungen**: Ein Kunde kann per URL-Trick keine fremde
