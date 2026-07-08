@@ -2,3 +2,6 @@
 .wrangler/
 worker/.wrangler/
 worker/.dev.vars
+
+# Internes Angebots-/Kalkulationsdokument – nicht öffentlich
+privat/pizza blitz/Pizza-Blitz-Erweiterungsangebot.pdf
