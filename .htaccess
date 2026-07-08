@@ -6,12 +6,20 @@ RewriteEngine On
 # bens.elyesferchichi.com  → /Webdesign Agentur/bens/
 # usw. — wird über IONOS Control Panel gesteuert
 
-# Weiterleitungen für alte GitHub-Pages-Pfade falls jemand die direkt aufgerufen hat
+# Lange Ordner-Pfade auf die schönen Subdomains umleiten – ABER nur, wenn der
+# Aufruf über die Hauptdomain kommt. Wichtig: RewriteCond gilt in Apache nur für
+# die EINE direkt folgende RewriteRule → daher die Bedingung vor JEDER Regel
+# wiederholen. Ohne das feuert die Regel auch auf der Subdomain selbst
+# (bens.… → bens.…) und erzeugt ERR_TOO_MANY_REDIRECTS.
 RewriteCond %{HTTP_HOST} ^elyesferchichi\.com$ [NC]
 RewriteRule ^Webdesign-Agentur/antepli-baklava(/.*)?$ https://antepli.elyesferchichi.com$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^elyesferchichi\.com$ [NC]
 RewriteRule ^Webdesign-Agentur/hevis(/.*)?$ https://hevis.elyesferchichi.com$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^elyesferchichi\.com$ [NC]
 RewriteRule ^Webdesign-Agentur/bens(/.*)?$ https://bens.elyesferchichi.com$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^elyesferchichi\.com$ [NC]
 RewriteRule ^Webdesign-Agentur/lokma-lovers(/.*)?$ https://lokma.elyesferchichi.com$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^elyesferchichi\.com$ [NC]
 RewriteRule ^Webdesign-Agentur/cafe-niki(/.*)?$ https://niki.elyesferchichi.com$1 [R=301,L]
 
 # webdesign-bremen/ → root (subdomain wurde gelöscht)
