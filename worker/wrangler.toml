@@ -37,9 +37,21 @@ type = "ratelimit"
 namespace_id = "1002"
 simple = { limit = 5, period = 60 }      # /contact: 5 Anfragen/Min/IP
 
+[[unsafe.bindings]]
+name = "LOGIN_LIMITER"
+type = "ratelimit"
+namespace_id = "1003"
+simple = { limit = 5, period = 60 }      # /login: 5 Versuche/Min/IP (Brute-Force-Schutz)
+
 [vars]
 # Secrets per `wrangler secret put <NAME>` setzen (NICHT hier eintragen):
-#   AUTH_TOKEN        – Bearer-Token für /data und /summary
+#   SESSION_SECRET    – Zufalls-Geheimnis für die Login-Sessions (PFLICHT für das
+#                       Login-System). Erzeugen z. B. mit:
+#                         node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+#                       dann:  wrangler secret put SESSION_SECRET
+#   AUTH_TOKEN        – Alt-Token, jetzt nur noch für interne Admin-Endpunkte
+#                       (/test-notify, /debug-kv, /migrate-kv-to-d1). Für das
+#                       Dashboard-Login NICHT mehr nötig.
 #   TURNSTILE_SECRET  – Secret-Key des Cloudflare-Turnstile-Widgets (Bot-Schutz
 #                       fürs Formular). Solange nicht gesetzt, bleibt das Formular
 #                       wie bisher offen (Turnstile wird dann nicht erzwungen).

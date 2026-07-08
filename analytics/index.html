@@ -501,6 +501,10 @@ body { min-height: 100svh; }
     <h1>Analytics <span style="color:var(--accent)">·</span> Portfolio</h1>
     <p>Melde dich an, um deine Besucherdaten zu sehen.</p>
     <div class="form-group">
+      <label for="userInput">Benutzername</label>
+      <input type="text" id="userInput" placeholder="benutzername" autocomplete="username" autocapitalize="none" spellcheck="false">
+    </div>
+    <div class="form-group">
       <label for="pwInput">Passwort</label>
       <input type="password" id="pwInput" placeholder="••••••••" autocomplete="current-password">
     </div>
@@ -517,6 +521,10 @@ body { min-height: 100svh; }
       <h1>Analytics <span>· Portfolio</span></h1>
     </div>
     <div class="header-controls">
+      <!-- Mandanten-Umschalter: nur für den Master sichtbar -->
+      <select class="range-select" id="tenantSelect" style="display:none" title="Website auswählen"></select>
+      <!-- Feste Site-Anzeige: nur für Kunden-Accounts sichtbar -->
+      <span id="tenantLabel" style="display:none;font-size:.8rem;font-weight:600;color:var(--accent);padding:.3rem .6rem;border:1px solid var(--border,rgba(255,255,255,.12));border-radius:.5rem"></span>
       <select class="range-select" id="rangeSelect">
         <option value="7">Letzte 7 Tage</option>
         <option value="30" selected>Letzte 30 Tage</option>
@@ -862,7 +870,8 @@ body { min-height: 100svh; }
       </div>
     </div>
 
-    <!-- Visitor Profiles -->
+    <!-- Visitor Profiles (site-übergreifendes CRM → nur Master) -->
+    <div id="profilesPanel">
     <div class="section-label">Besucher-Profile <span class="scope scope-consent">mit Einwilligung</span></div>
     <div class="panel full" style="margin-bottom:2rem">
       <div class="panel-header">
@@ -893,14 +902,15 @@ body { min-height: 100svh; }
         </table>
       </div>
     </div>
+    </div><!-- /#profilesPanel -->
   </main>
 </div>
 
 <script>
 // ── Konfiguration ─────────────────────────────────────────────────────────────
 var WORKER_URL    = 'https://portfolio-analytics.seyle450.workers.dev';
-// Das Passwort IST das Zugangscredential: Es wird direkt gegen den Worker geprüft.
-// Kein Token/Hash im Quelltext mehr – nichts Verwertbares liegt offen.
+// API_TOKEN hält jetzt das per Login erhaltene Session-Token (kein Passwort).
+// Es wird beim Login gesetzt (saveAuth) bzw. beim Reload wiederhergestellt (restoreAuth).
 var API_TOKEN     = '';
 try { API_TOKEN = sessionStorage.getItem('_at') || ''; } catch (e) {}
 
@@ -1011,55 +1021,143 @@ function avatarInitial(alias) {
   return alias.trim()[0].toUpperCase();
 }
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
-async function sha256hex(str) {
-  var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
+// ── Auth (Multi-Tenant-Session) ───────────────────────────────────────────────
+// API_TOKEN ist jetzt ein Session-Token (kein Passwort mehr). Rolle + zugewiesene
+// Site + (für Master) die Site-Liste werden mitgespeichert.
+var USER_ROLE   = '';
+var USER_SITE   = null;   // Kunde: fester Slug · Master: null
+var USER_SITES  = [];     // Master: [{slug,label}, …]
+var currentTenant = '';   // aktuell gewählte Site (Master-Umschalter); '' = alle
+
+function getToken()  { return sessionStorage.getItem('_at'); }
+function saveAuth(d) {
+  sessionStorage.setItem('_at', d.token);
+  sessionStorage.setItem('_role', d.role || 'user');
+  sessionStorage.setItem('_site', d.site || '');
+  sessionStorage.setItem('_sites', JSON.stringify(d.sites || []));
+  API_TOKEN = d.token; USER_ROLE = d.role || 'user';
+  USER_SITE = d.site || null; USER_SITES = d.sites || [];
 }
-function getToken()    { return sessionStorage.getItem('_at'); }
-function setToken(t)   { sessionStorage.setItem('_at', t); }
-function clearSession(){ sessionStorage.removeItem('_at'); }
+function restoreAuth() {
+  API_TOKEN  = sessionStorage.getItem('_at') || '';
+  USER_ROLE  = sessionStorage.getItem('_role') || '';
+  USER_SITE  = sessionStorage.getItem('_site') || null;
+  try { USER_SITES = JSON.parse(sessionStorage.getItem('_sites') || '[]'); } catch (e) { USER_SITES = []; }
+}
+function clearSession() {
+  ['_at','_role','_site','_sites'].forEach(function (k) { sessionStorage.removeItem(k); });
+  API_TOKEN = ''; USER_ROLE = ''; USER_SITE = null; USER_SITES = [];
+}
+// Aktive Mandanten-Site für Datenabfragen: Master → Auswahl (leer = alle),
+// Kunde → serverseitig ohnehin erzwungen, wir senden nichts mit.
+function tenantParam() {
+  if (USER_ROLE === 'master' && currentTenant) return '&site=' + encodeURIComponent(currentTenant);
+  return '';
+}
 
 var $overlay  = document.getElementById('loginOverlay');
 var $app      = document.getElementById('app');
 var $loginBtn = document.getElementById('loginBtn');
+var $userInput= document.getElementById('userInput');
 var $pwInput  = document.getElementById('pwInput');
 var $errorEl  = document.getElementById('loginError');
 var lockUntil = 0;
 
+// Master bekommt den Site-Umschalter, Kunde nur ein festes Site-Label.
+function setupRoleUI() {
+  var sel = document.getElementById('tenantSelect');
+  var lbl = document.getElementById('tenantLabel');
+  var profilesPanel = document.getElementById('profilesPanel');
+  if (USER_ROLE === 'master') {
+    sel.innerHTML = '<option value="">Alle Websites</option>' +
+      USER_SITES.map(function (s) { return '<option value="' + esc(s.slug) + '">' + esc(s.label) + '</option>'; }).join('');
+    sel.value = currentTenant;
+    sel.style.display = '';
+    lbl.style.display = 'none';
+    if (profilesPanel) profilesPanel.style.display = '';
+  } else {
+    var mine = null;
+    for (var i = 0; i < USER_SITES.length; i++) { /* Kunde hat keine Liste */ }
+    lbl.textContent = USER_SITE || '—';
+    lbl.style.display = '';
+    sel.style.display = 'none';
+    // Besucher-CRM ist Master-only → für Kunden ausblenden.
+    if (profilesPanel) profilesPanel.style.display = 'none';
+  }
+}
+
+document.getElementById('tenantSelect').addEventListener('change', function (e) {
+  currentTenant = e.target.value || '';
+  rawSummary = null; rawEvents = []; rawProfiles = [];
+  try { Object.keys(sessionStorage).forEach(function (k) { if (k.indexOf('ac:') === 0) sessionStorage.removeItem(k); }); } catch (e2) {}
+  loadAll();
+});
+
 async function tryLogin() {
   if (Date.now() < lockUntil) return;
-  var pw = $pwInput.value;
-  if (!pw) return;
+  var user = ($userInput.value || '').trim();
+  var pw   = $pwInput.value || '';
+  if (!user || !pw) { $errorEl.textContent = 'Bitte Benutzername und Passwort eingeben.'; return; }
   $loginBtn.disabled = true;
   var prev = $loginBtn.textContent;
   $loginBtn.textContent = 'Prüfe…';
   $errorEl.textContent = '';
-  var ok = false;
   try {
-    var r = await fetch(WORKER_URL + '/summary?days=1', { headers: { 'Authorization': 'Bearer ' + pw } });
-    ok = r.ok;
-  } catch (e) { ok = false; }
-  if (ok) {
-    API_TOKEN = pw;
-    setToken(pw);
-    $overlay.style.display = 'none';
-    $app.classList.add('visible');
-    $loginBtn.textContent = prev;
-    $loginBtn.disabled = false;
-    loadAll();
-  } else {
+    var r = await fetch(WORKER_URL + '/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: user, password: pw }),
+    });
+    if (r.ok) {
+      var d = await r.json();
+      saveAuth(d);
+      currentTenant = '';
+      $pwInput.value = '';
+      $overlay.style.display = 'none';
+      $app.classList.add('visible');
+      $loginBtn.textContent = prev;
+      $loginBtn.disabled = false;
+      setupRoleUI();
+      loadAll();
+      return;
+    }
+    // Generisch – nie verraten, ob Username oder Passwort falsch war.
     lockUntil = Date.now() + 3000;
-    $errorEl.textContent = 'Falsches Passwort. Bitte warte 3 Sekunden.';
-    $loginBtn.textContent = prev;
-    setTimeout(function () { $loginBtn.disabled = false; $errorEl.textContent = ''; }, 3000);
+    $errorEl.textContent = (r.status === 429)
+      ? 'Zu viele Versuche. Bitte kurz warten.'
+      : 'Zugangsdaten ungültig.';
+  } catch (e) {
+    $errorEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
   }
+  $loginBtn.textContent = prev;
+  setTimeout(function () { $loginBtn.disabled = false; }, 1200);
 }
 $loginBtn.addEventListener('click', tryLogin);
 $pwInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') tryLogin(); });
-document.getElementById('logoutBtn').addEventListener('click', function () { clearSession(); location.reload(); });
+$userInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') $pwInput.focus(); });
+document.getElementById('logoutBtn').addEventListener('click', async function () {
+  try { await fetch(WORKER_URL + '/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + API_TOKEN } }); } catch (e) {}
+  clearSession();
+  location.reload();
+});
 
-if (getToken()) { $overlay.style.display = 'none'; $app.classList.add('visible'); }
+// Bestehende Session wiederherstellen (Reload). /me bestätigt, dass das Token
+// noch gültig ist, und liefert Rolle/Site/Sites frisch.
+if (getToken()) {
+  restoreAuth();
+  fetch(WORKER_URL + '/me', { headers: { 'Authorization': 'Bearer ' + API_TOKEN } })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+    .then(function (d) {
+      USER_ROLE = d.role || 'user'; USER_SITE = d.site || null; USER_SITES = d.sites || [];
+      sessionStorage.setItem('_role', USER_ROLE);
+      sessionStorage.setItem('_site', USER_SITE || '');
+      sessionStorage.setItem('_sites', JSON.stringify(USER_SITES));
+      $overlay.style.display = 'none';
+      $app.classList.add('visible');
+      setupRoleUI();
+      loadAll();
+    })
+    .catch(function () { clearSession(); });
+}
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 var charts = {};
@@ -1077,8 +1175,8 @@ async function loadAll() {
   var errBox = document.getElementById('errorBox');
   errBox.classList.remove('visible');
 
-  // Show cached data immediately for instant perceived load
-  var cacheKey = 'ac:' + rq + ':' + (showExcluded ? '1' : '0');
+  // Show cached data immediately for instant perceived load (getrennt pro Mandant)
+  var cacheKey = 'ac:' + (currentTenant || 'all') + ':' + rq + ':' + (showExcluded ? '1' : '0');
   try {
     var cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null');
     if (cached && !rawSummary) {
@@ -1087,15 +1185,21 @@ async function loadAll() {
     }
   } catch {}
 
-  // Fetch all 3 endpoints in parallel
+  // Endpunkte parallel laden. site-Param nur relevant für Master (Kunde wird serverseitig erzwungen).
   var hdr = { 'Authorization': 'Bearer ' + API_TOKEN };
   var exc = showExcluded ? '&include_excluded=1' : '';
+  var st  = tenantParam();
   document.getElementById('profilesLoading').style.display = 'flex';
 
+  // Besucher-Profile (CRM) nur für den Master abrufen – Kunden sehen sie nicht.
+  var profilesFetch = (USER_ROLE === 'master')
+    ? fetch(WORKER_URL + '/profiles', { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; })
+    : Promise.resolve(null);
+
   var [sr, er, pr] = await Promise.allSettled([
-    fetch(WORKER_URL + '/summary?' + rq + exc, { headers: hdr }).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }),
-    fetch(WORKER_URL + '/data?'    + rq + exc, { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; }),
-    fetch(WORKER_URL + '/profiles',                   { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; }),
+    fetch(WORKER_URL + '/summary?' + rq + exc + st, { headers: hdr }).then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); }),
+    fetch(WORKER_URL + '/data?'    + rq + exc + st, { headers: hdr }).then(function(r){ return r.ok ? r.json() : null; }),
+    profilesFetch,
   ]);
 
   if (sr.status === 'rejected' && sr.reason === 401) {
@@ -2062,7 +2166,7 @@ document.getElementById('liveBtn').addEventListener('click', function() {
     ts.textContent = 'Startet…';
     _liveInterval = setInterval(async function() {
       try {
-        var r = await fetch(WORKER_URL + '/data?' + rangeQuery(), { headers: { 'Authorization': 'Bearer ' + API_TOKEN } });
+        var r = await fetch(WORKER_URL + '/data?' + rangeQuery() + tenantParam(), { headers: { 'Authorization': 'Bearer ' + API_TOKEN } });
         if (r.ok) { var d = await r.json(); rawEvents = d.events || []; renderEventsTable(rawEvents); }
         document.getElementById('liveTs').textContent = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       } catch {}

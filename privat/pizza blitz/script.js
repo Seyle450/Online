@@ -76,7 +76,7 @@
     { name:'Lena P.', stars:4, when:'vor 6 Monaten', text:'Vegane Optionen wie der Falafel-Rollo sind wirklich gut gewürzt. Gerne noch mehr davon auf die Karte!' }
   ];
 
-  var TICKER = ['Blitzschnell geliefert','Hausgemachter Teig','Seit 1999 in Bremen','Frische Zutaten','Steinofen · 400 °C','Catering für jedes Fest'];
+  var TICKER = ['Blitzschnell geliefert','Hausgemachter Teig','Seit 1990 in Bremen','Frische Zutaten','Steinofen · 400 °C','Catering für jedes Fest'];
 
   var STATIONS = [
     { label:'Bestellt', sub:'Bestellung eingegangen' },

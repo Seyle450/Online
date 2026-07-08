@@ -178,7 +178,18 @@
   .card .badge{position:absolute;top:24px;right:22px;background:var(--cobalt);color:var(--paper);font-family:var(--head);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:100px;}
   .card .price{font-family:var(--head);font-weight:700;font-size:44px;letter-spacing:-.03em;margin-top:16px;line-height:1;}
   .card .price span{font-size:16px;font-weight:400;color:var(--neutral);letter-spacing:0;}
+  .card .price.req{font-size:30px;color:var(--cobalt);}
   .card.feat .price span{color:#b9c4ed;}
+
+  /* Pflege-Add-on: schmaler, gestrichelter Rahmen, kein Preis-Card-Look → klar als Zusatz erkennbar */
+  .addon{margin-top:18px;background:var(--white);border:1px dashed rgba(43,80,226,.4);border-radius:var(--r);padding:22px 24px;display:flex;flex-direction:column;gap:18px;}
+  .addon-label{font-family:var(--head);font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cobalt);display:block;margin-bottom:8px;}
+  .addon-main h3{font-family:var(--head);font-size:19px;font-weight:600;letter-spacing:-.01em;}
+  .addon-main p{font-size:14.5px;color:#4a4a52;line-height:1.55;margin-top:7px;max-width:60ch;}
+  .addon-side{display:flex;flex-direction:column;gap:12px;align-items:flex-start;}
+  .addon-price{font-family:var(--head);font-weight:700;font-size:26px;letter-spacing:-.02em;line-height:1;white-space:nowrap;}
+  .addon-price span{font-size:14px;font-weight:400;color:var(--neutral);}
+  .addon .btn{white-space:nowrap;}
   .card .ptag{font-size:15px;color:#4a4a52;margin-top:14px;line-height:1.55;}
   .card.feat .ptag{color:#c7c7c9;}
   .card ul{list-style:none;margin:22px 0 26px;display:flex;flex-direction:column;gap:11px;}
@@ -331,6 +342,9 @@
     .cards{flex-direction:row;align-items:stretch;}
     .card{flex:1;min-width:0;}
     .card.feat{transform:translateY(-12px);}
+    .addon{flex-direction:row;align-items:center;justify-content:space-between;gap:32px;padding:24px 28px;}
+    .addon-main{flex:1;min-width:0;}
+    .addon-side{flex-direction:row;align-items:center;gap:20px;flex:none;}
     .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px 26px;}
     .work-item.wide{grid-column:1 / -1;}
     .work-item.wide .work-thumb{height:380px;}
@@ -715,16 +729,30 @@
         <a href="#kontakt" class="btn btn-primary" data-track="Paket: Komplett (490€)">Komplett anfragen</a>
       </div>
       <div class="card reveal reveal-d2">
-        <span class="tier">Pflege</span>
-        <div class="price">39 €<span> / Monat</span></div>
-        <p class="ptag">Ich übernehme das Hosting für Sie und halte Ihre Seite aktuell – Sie kümmern sich um nichts.</p>
+        <span class="tier">Extra / Individuell</span>
+        <div class="price req">Auf Anfrage</div>
+        <p class="ptag">Für alles, was über die Pakete hinausgeht – individuell geplant und nach Ihren Wünschen umgesetzt.</p>
         <ul>
-          <li>Änderungen an Inhalten & Zeiten</li>
-          <li>Technische Wartung & Updates</li>
-          <li>Hosting & Domain – ich übernehme alles</li>
-          <li>Fester Ansprechpartner, schnelle Reaktion</li>
+          <li>Eigenes Bestell- oder Buchungssystem</li>
+          <li>Online-Shop & Zahlungsanbindung</li>
+          <li>Mehrsprachigkeit & Sonderfunktionen</li>
+          <li>Schnittstellen & individuelle Integrationen</li>
+          <li>Preis nach Aufwand – transparent vorab</li>
         </ul>
-        <a href="#kontakt" class="btn btn-ghost" data-track="Paket: Pflege (39€/Mon)">Pflege dazubuchen</a>
+        <a href="#kontakt" class="btn btn-ghost" data-track="Paket: Extra/Individuell (Anfrage)">Individuelle Anfrage stellen</a>
+      </div>
+    </div>
+
+    <!-- Pflege: bewusst KEINE vierte Preiskategorie, sondern klar abgesetztes Add-on -->
+    <div class="addon reveal">
+      <div class="addon-main">
+        <span class="addon-label">+ Optionales Add-on</span>
+        <h3>Pflege &amp; Hosting</h3>
+        <p>Zu jedem Paket dazubuchbar: Ich übernehme Hosting &amp; Domain, halte Ihre Seite aktuell und bin Ihr fester Ansprechpartner – Sie kümmern sich um nichts.</p>
+      </div>
+      <div class="addon-side">
+        <div class="addon-price">39 €<span> / Monat</span></div>
+        <a href="#kontakt" class="btn btn-ghost" data-track="Add-on: Pflege (39€/Mon)">Pflege dazubuchen</a>
       </div>
     </div>
   </div>
@@ -1006,13 +1034,14 @@
               <option value="">Bitte wählen…</option>
               <option>Starter (290 €)</option>
               <option>Komplett (490 €)</option>
+              <option>Extra / Individuell (auf Anfrage)</option>
               <option>Weiß ich noch nicht</option>
             </select>
           </div>
         </div>
 
         <div class="fld">
-          <label class="chk"><input type="checkbox" id="qfPflege" name="pflege" value="ja"> Pflege-Paket dazu (39 € / Monat)</label>
+          <label class="chk"><input type="checkbox" id="qfPflege" name="pflege" value="ja"> Pflege &amp; Hosting dazu (39 € / Monat)</label>
         </div>
 
         <div class="fld">

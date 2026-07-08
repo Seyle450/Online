@@ -76,7 +76,7 @@ body.nav-open .scrim{opacity:1;pointer-events:auto}
 /* Echte SVG-Bezierkurve statt border-radius-Ellipse — an beiden Rändern exakt
    vertikal verankert (Kontrollpunkte auf gleicher x-Position wie die Endpunkte),
    dadurch garantiert glatt statt von der Ellipsen-Näherung des Browsers abhängig. */
-.hero-curve{position:absolute;left:0;right:0;bottom:0;width:100%;;display:block;z-index:2}
+.hero-curve{position:absolute;left:0;right:0;bottom:-1%;width:100%;;display:block;z-index:2}
 /* z-index:2, höher als .hero-pizza-wrap (1): die Welle muss ÜBER der Pizza malen,
    sonst deckt die Pizza die Welle zu und wird nur noch gerade (nicht wellenförmig)
    von hero's overflow:hidden abgeschnitten — dadurch stand sie sichtbar über. */
@@ -237,7 +237,7 @@ body.nav-open .scrim{opacity:1;pointer-events:auto}
 }
 
 /* ---- About: "Ofenbogen" — die vier Fakten liegen wie im Steinofen-Mund,
-   eine "Seit 1999"-Plakette sitzt als Schlussstein auf dem Bogenscheitel ---- */
+   eine "Seit 1990"-Plakette sitzt als Schlussstein auf dem Bogenscheitel ---- */
 .about-section{background:#fff}
 
 .about-oven-wrap{position:relative;max-width:900px;margin:64px auto 0}

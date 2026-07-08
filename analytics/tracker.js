@@ -38,6 +38,7 @@
   function getSiteKey() {
     var h = location.hostname.toLowerCase();
     var p = location.pathname.toLowerCase();
+    if ((h.includes('pizza') && h.includes('blitz')) || p.includes('pizza%20blitz') || p.includes('pizza blitz') || p.includes('pizza-blitz')) return 'pizza-blitz';
     if (h.includes('antepli')   || p.includes('antepli'))   return 'antepli';
     if (h.includes('hevis')     || p.includes('hevi'))      return 'hevis';
     if (h.includes('bens')      || p.includes('/bens'))     return 'bens';
@@ -46,6 +47,13 @@
     if (h.includes('starscape') || p.includes('starscape')) return 'starscape';
     if (p.includes('freelance'))                            return 'freelance';
     return '';
+  }
+
+  // Mandant/Site-Slug für die Analytics-Trennung: wie getSiteKey, aber liefert für
+  // die Hauptseite (kein Projekt-Match) den Default 'elyesferchichi' statt ''.
+  // Muss zu den Slugs in ../worker/auth-config.js passen.
+  function getSite() {
+    return getSiteKey() || 'elyesferchichi';
   }
 
   function datenschutzUrl() {
@@ -182,6 +190,7 @@
       userAgent: navigator.userAgent, screenWidth: screen.width,
       language: navigator.language || '', timestamp: now,
       sessionId: sid, visitorId: getVisitorId(),
+      site: getSite(),
       utm: utm || undefined,
     });
   }
@@ -260,7 +269,7 @@
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         type: 'click', label: label, category: category,
-        href: (href || '').slice(0, 200), page: page,
+        href: (href || '').slice(0, 200), page: page, site: getSite(),
         sessionId: getSessionId(), visitorId: getVisitorId(), timestamp: Date.now(),
       }),
       keepalive: true,
@@ -289,7 +298,7 @@
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         type: 'scroll', category: 'scroll', depth: depth,
-        label: 'Scroll ' + depth + '%', page: page,
+        label: 'Scroll ' + depth + '%', page: page, site: getSite(),
         sessionId: getSessionId(), visitorId: getVisitorId(), timestamp: Date.now(),
       }),
       keepalive: true,

@@ -9,6 +9,11 @@
  *   ANALYTICS   – gebunden in wrangler.toml
  */
 
+import {
+  authenticate, createSession, getSession, destroySession, bearerToken,
+  effectiveSite, deriveSite, sanitizeSite, siteList,
+} from './auth.js';
+
 const CORS_ORIGIN = 'https://elyesferchichi.com';
 
 // ─── Hilfsfunktionen ────────────────────────────────────────────────────────
@@ -45,6 +50,56 @@ function unauthorized(origin) {
 function isAuthorized(request, env) {
   const auth = request.headers.get('Authorization') || '';
   return auth === `Bearer ${(env.AUTH_TOKEN || '').trim()}`;
+}
+
+// ── Session-Auth (Multi-Tenant-Login) ─────────────────────────────────────────
+// Dashboard-Datenendpunkte nutzen diese Session-Prüfung statt des alten
+// gemeinsamen AUTH_TOKEN. Der AUTH_TOKEN bleibt nur noch für interne
+// Admin-Endpunkte (/test-notify, /debug-kv, /migrate-kv-to-d1).
+function sessionFor(request, env) {
+  return getSession(env, bearerToken(request));
+}
+
+async function handleLogin(request, env) {
+  const origin = request.headers.get('Origin') || '';
+  if (!env.SESSION_SECRET) {
+    // Fehlt das Secret, kann keine Session erstellt werden → klarer 500.
+    return json({ error: 'Server nicht konfiguriert (SESSION_SECRET fehlt).' }, 500, origin);
+  }
+  // Brute-Force-Schutz (Binding optional; lokal ohne Limiter kein Problem)
+  if (env.LOGIN_LIMITER) {
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+    const { success } = await env.LOGIN_LIMITER.limit({ key: ip });
+    if (!success) return json({ error: 'Zu viele Versuche. Bitte kurz warten.' }, 429, origin);
+  }
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Zugangsdaten ungültig' }, 400, origin); }
+  const user = await authenticate(body.username, body.password);
+  // Bewusst generisch – nie verraten, ob Username oder Passwort falsch war.
+  if (!user) return json({ error: 'Zugangsdaten ungültig' }, 401, origin);
+  const token = await createSession(env, user);
+  return json({
+    token,
+    role: user.role,
+    site: user.site || null,
+    sites: user.role === 'master' ? siteList() : null,
+  }, 200, origin);
+}
+
+async function handleLogout(request, env) {
+  const origin = request.headers.get('Origin') || '';
+  await destroySession(env, bearerToken(request));
+  return json({ ok: true }, 200, origin);
+}
+
+async function handleMe(request, env) {
+  const origin = request.headers.get('Origin') || '';
+  const s = await sessionFor(request, env);
+  if (!s) return unauthorized(origin);
+  return json({
+    username: s.u, role: s.role, site: s.site || null,
+    sites: s.role === 'master' ? siteList() : null,
+  }, 200, origin);
 }
 
 /** Einfacher FNV-1a Hash → kurzer Hex-String (für visitorId aus IP+UA) */
@@ -206,6 +261,9 @@ async function handleTrack(request, env, ctx) {
   const visitorId = body.visitorId || deriveVisitorId(request);
   const dev = deviceType(screenWidth);
   const country = request.headers.get('CF-IPCountry') || '';
+  // Mandant/Site: bevorzugt das vom Tracker gesendete site-Feld (validiert),
+  // sonst serverseitig aus dem page-Feld ableiten (Rückwärtskompatibilität).
+  const site = sanitizeSite(body.site) || deriveSite(page);
   const utm = (body.utm && typeof body.utm === 'object') ? {
     source:   String(body.utm.source   || '').slice(0, 100),
     medium:   String(body.utm.medium   || '').slice(0, 100),
@@ -228,12 +286,13 @@ async function handleTrack(request, env, ctx) {
   // ── Event in D1 (primäre Auswertungsquelle für /summary & /data) ──────────
   if (env.DB) {
     ctx.waitUntil(env.DB.prepare(
-      `INSERT INTO events (ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+      `INSERT INTO events (ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign,site)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
     ).bind(
       timestamp, page, previousPage, pageIndex, referrer, screenWidth || 0, language,
       sessionId, visitorId, dev, country, profile.returning ? 1 : 0,
-      (utm && utm.source) || null, (utm && utm.medium) || null, (utm && utm.campaign) || null
+      (utm && utm.source) || null, (utm && utm.medium) || null, (utm && utm.campaign) || null,
+      site
     ).run().catch(() => {}));
   }
 
@@ -280,14 +339,17 @@ async function handleTrack(request, env, ctx) {
     }
   }
 
-  // Invalidate summary/data caches in background (don't slow down the tracker response)
+  // Invalidate summary/data caches in background (don't slow down the tracker response).
+  // Cache-Keys sind jetzt site-getaggt: die Site dieses Events + die Master-Gesamtansicht ('all').
   ctx.waitUntil(Promise.all(
-    ['7','30','90'].flatMap(d => [
-      env.ANALYTICS.delete('cache:summary:' + d),
-      env.ANALYTICS.delete('cache:summary:' + d + ':all'),
-      env.ANALYTICS.delete('cache:data:'    + d),
-      env.ANALYTICS.delete('cache:data:'    + d + ':all'),
-    ])
+    ['7','30','90'].flatMap(d =>
+      [site, 'all'].flatMap(tag => [
+        env.ANALYTICS.delete('cache:summary:' + tag + ':' + d),
+        env.ANALYTICS.delete('cache:summary:' + tag + ':' + d + ':all'),
+        env.ANALYTICS.delete('cache:data:'    + tag + ':' + d),
+        env.ANALYTICS.delete('cache:data:'    + tag + ':' + d + ':all'),
+      ])
+    )
   ));
 
   return json({ ok: true }, 200, origin);
@@ -409,6 +471,7 @@ async function handleEvent(request, env, ctx) {
   if (!lbl) return json({ ok: true }, 200, origin);
   const cat = String(category).slice(0, 20);
   const depth = body.depth != null ? (parseInt(body.depth, 10) || null) : null;
+  const site = sanitizeSite(body.site) || deriveSite(page);
 
   const randId = Math.random().toString(36).slice(2, 8);
   await env.ANALYTICS.put(`click:${timestamp}:${randId}`, JSON.stringify({
@@ -420,18 +483,20 @@ async function handleEvent(request, env, ctx) {
   // ── In D1 (primäre Auswertungsquelle) ─────────────────────────────────────
   if (env.DB) {
     ctx.waitUntil(env.DB.prepare(
-      `INSERT INTO clicks (ts,type,label,category,depth,href,page,session_id,visitor_id)
-       VALUES (?,?,?,?,?,?,?,?,?)`
+      `INSERT INTO clicks (ts,type,label,category,depth,href,page,session_id,visitor_id,site)
+       VALUES (?,?,?,?,?,?,?,?,?,?)`
     ).bind(timestamp, cat === 'scroll' ? 'scroll' : (type || 'click'), lbl, cat, depth,
-      String(href).slice(0, 200), page, sessionId, visitorId).run().catch(() => {}));
+      String(href).slice(0, 200), page, sessionId, visitorId, site).run().catch(() => {}));
   }
 
-  // Summary-Caches invalidieren (Klicks fließen in /summary ein)
+  // Summary-Caches invalidieren (Klicks fließen in /summary ein) – site-getaggt + 'all'
   ctx.waitUntil(Promise.all(
-    ['7', '30', '90'].flatMap(d => [
-      env.ANALYTICS.delete('cache:summary:' + d),
-      env.ANALYTICS.delete('cache:summary:' + d + ':all'),
-    ])
+    ['7', '30', '90'].flatMap(d =>
+      [site, 'all'].flatMap(tag => [
+        env.ANALYTICS.delete('cache:summary:' + tag + ':' + d),
+        env.ANALYTICS.delete('cache:summary:' + tag + ':' + d + ':all'),
+      ])
+    )
   ));
 
   return json({ ok: true }, 200, origin);
@@ -524,15 +589,16 @@ async function handleContact(request, env, ctx) {
   const sessionId = clean(body.sessionId, 60);
   if (sessionId) {
     const convPage = clean(body.page, 200) || '/';
+    const convSite = sanitizeSite(body.site) || deriveSite(convPage);
     await env.ANALYTICS.put(`click:${ts}:${randId}`, JSON.stringify({
       label: 'Formular: Anfrage gesendet', category: 'form', href: '',
       page: convPage, sessionId, visitorId, timestamp: ts,
     }), { expirationTtl: 60 * 60 * 24 * 90 });
     if (env.DB) {
       ctx.waitUntil(env.DB.prepare(
-        `INSERT INTO clicks (ts,type,label,category,depth,href,page,session_id,visitor_id)
-         VALUES (?,?,?,?,?,?,?,?,?)`
-      ).bind(ts, 'click', 'Formular: Anfrage gesendet', 'form', null, '', convPage, sessionId, visitorId).run().catch(() => {}));
+        `INSERT INTO clicks (ts,type,label,category,depth,href,page,session_id,visitor_id,site)
+         VALUES (?,?,?,?,?,?,?,?,?,?)`
+      ).bind(ts, 'click', 'Formular: Anfrage gesendet', 'form', null, '', convPage, sessionId, visitorId, convSite).run().catch(() => {}));
     }
   }
 
@@ -551,7 +617,10 @@ async function handleContact(request, env, ctx) {
 
 async function handleProfiles(request, env) {
   const origin = request.headers.get('Origin') || '';
-  if (!isAuthorized(request, env)) return unauthorized(origin);
+  // Besucher-Profile sind eine site-übergreifende CRM-Ansicht (nach IP+UA, nicht
+  // pro Site trennbar) → ausschließlich für den Master. Kunden sehen sie nicht.
+  const session = await sessionFor(request, env);
+  if (!session || session.role !== 'master') return unauthorized(origin);
 
   // Return cached profiles if fresh (5 min TTL)
   const profCached = await env.ANALYTICS.get('cache:profiles');
@@ -583,7 +652,9 @@ async function handleProfiles(request, env) {
 
 async function handleVisitorUpdate(request, env, visitorId) {
   const origin = request.headers.get('Origin') || '';
-  if (!isAuthorized(request, env)) return unauthorized(origin);
+  // Besucher bearbeiten (Alias/Notiz/mute/exclude) ist Teil der Master-CRM-Ansicht.
+  const session = await sessionFor(request, env);
+  if (!session || session.role !== 'master') return unauthorized(origin);
 
   let body;
   try { body = await request.json(); } catch { return json({ error: 'Invalid JSON' }, 400, origin); }
@@ -628,14 +699,17 @@ async function loadExcludedIds(env) {
 
 async function handleData(request, env) {
   const origin = request.headers.get('Origin') || '';
-  if (!isAuthorized(request, env)) return unauthorized(origin);
+  const session = await sessionFor(request, env);
+  if (!session) return unauthorized(origin);
 
   const url = new URL(request.url);
   const { since, until, suffix } = parseRange(url);
   const includeExcluded = url.searchParams.get('include_excluded') === '1';
+  const site = effectiveSite(session, url); // slug → filtern, null → alle (nur Master)
 
-  // Return cached data if fresh (2 min TTL) — separate cache per exclusion mode + range
-  const dataCacheKey = 'cache:data:' + suffix + (includeExcluded ? ':all' : '');
+  // Cache pro Site getrennt (sonst würde ein Kunde fremde Daten aus dem Cache sehen!)
+  const siteTag = site || 'all';
+  const dataCacheKey = 'cache:data:' + siteTag + ':' + suffix + (includeExcluded ? ':all' : '');
   const dataCached = await env.ANALYTICS.get(dataCacheKey);
   if (dataCached) {
     return new Response(dataCached, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
@@ -643,14 +717,14 @@ async function handleData(request, env) {
 
   const excludedIds = includeExcluded ? new Set() : await loadExcludedIds(env);
 
-  // Events aus D1 laden (eine SQL-Query statt KV-Scan)
+  // Events aus D1 laden (eine SQL-Query statt KV-Scan) – serverseitig auf die Site gefiltert
   const events = [];
   if (env.DB) {
     try {
-      const res = await env.DB.prepare(
-        `SELECT ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign
-         FROM events WHERE ts >= ? AND ts <= ? ORDER BY ts DESC LIMIT 5000`
-      ).bind(since, until).all();
+      const sql = `SELECT ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign
+         FROM events WHERE ts >= ? AND ts <= ?` + (site ? ' AND site = ?' : '') + ` ORDER BY ts DESC LIMIT 5000`;
+      const binds = site ? [since, until, site] : [since, until];
+      const res = await env.DB.prepare(sql).bind(...binds).all();
       for (const r of (res.results || [])) {
         if (!includeExcluded && excludedIds.has(r.visitor_id)) continue;
         events.push(rowToEvent(r));
@@ -902,14 +976,20 @@ function rowToEvent(r) {
 
 async function handleSummary(request, env) {
   const origin = request.headers.get('Origin') || '';
-  if (!isAuthorized(request, env)) return unauthorized(origin);
+  const session = await sessionFor(request, env);
+  if (!session) return unauthorized(origin);
 
   const url = new URL(request.url);
   const { since, until, dateRange, days, suffix } = parseRange(url);
   const includeExcluded = url.searchParams.get('include_excluded') === '1';
+  const site = effectiveSite(session, url); // slug → filtern, null → alle (nur Master)
+  // Anonyme (einwilligungsfreie) Tages-Aggregate sind NICHT site-getaggt →
+  // nur zeigen, wenn kein Site-Filter aktiv ist (Master-Gesamtansicht).
+  const showAnon = site === null;
 
-  // Return cached summary if fresh (3 min TTL) — separate cache per exclusion mode + range
-  const sumCacheKey = 'cache:summary:' + suffix + (includeExcluded ? ':all' : '');
+  // Cache pro Site getrennt (sonst Datenleck zwischen Kunden über den Cache!)
+  const siteTag = site || 'all';
+  const sumCacheKey = 'cache:summary:' + siteTag + ':' + suffix + (includeExcluded ? ':all' : '');
   const sumCached = await env.ANALYTICS.get(sumCacheKey);
   if (sumCached) {
     return new Response(sumCached, { status: 200, headers: { 'Content-Type': 'application/json', ...corsHeaders(origin) } });
@@ -941,7 +1021,9 @@ async function handleSummary(request, env) {
   const anonPages = {}, anonRefs = {}, anonCountries = {};
   const anonDevices = {}, anonBrowsers = {}, anonLangs = {}, anonClicks = {};
   const mergeCounts = (src, dst) => { if (src) for (const k in src) dst[k] = (dst[k] || 0) + src[k]; };
-  for (const date of dateRange) {
+  // Nur laden, wenn keine Site-Filterung aktiv ist (Anon-Aggregate sind nicht
+  // site-getaggt → würden sonst kundenübergreifend gemischt).
+  for (const date of (showAnon ? dateRange : [])) {
     const raw = await env.ANALYTICS.get('anon:' + date);
     if (raw) anonymousVisits += parseInt(raw, 10) || 0;
     const aggRaw = await env.ANALYTICS.get('anonagg:' + date);
@@ -973,10 +1055,9 @@ async function handleSummary(request, env) {
   const allEvents = [];
   if (env.DB) {
     try {
-      const res = await env.DB.prepare(
-        `SELECT ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign
-         FROM events WHERE ts >= ? AND ts <= ? ORDER BY ts ASC`
-      ).bind(since, until).all();
+      const sql = `SELECT ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign
+         FROM events WHERE ts >= ? AND ts <= ?` + (site ? ' AND site = ?' : '') + ` ORDER BY ts ASC`;
+      const res = await env.DB.prepare(sql).bind(...(site ? [since, until, site] : [since, until])).all();
       for (const r of (res.results || [])) {
         if (!includeExcluded && excludedIds.has(r.visitor_id)) continue;
         allEvents.push(rowToEvent(r));
@@ -993,9 +1074,8 @@ async function handleSummary(request, env) {
   let totalClicks = 0;
   if (env.DB) {
     try {
-      const res = await env.DB.prepare(
-        `SELECT ts,type,label,category,depth,session_id,visitor_id FROM clicks WHERE ts >= ? AND ts <= ?`
-      ).bind(since, until).all();
+      const sql = `SELECT ts,type,label,category,depth,session_id,visitor_id FROM clicks WHERE ts >= ? AND ts <= ?` + (site ? ' AND site = ?' : '');
+      const res = await env.DB.prepare(sql).bind(...(site ? [since, until, site] : [since, until])).all();
       for (const c of (res.results || [])) {
         if (!includeExcluded && excludedIds.has(c.visitor_id)) continue;
         // Scroll-Tiefe getrennt zählen (kein "Klick")
@@ -1201,12 +1281,13 @@ async function handleMigrate(request, env) {
       if (!raw) continue;
       let ev; try { ev = JSON.parse(raw); } catch { continue; }
       stmts.push(env.DB.prepare(
-        `INSERT INTO events (ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign)
-         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+        `INSERT INTO events (ts,page,previous_page,page_index,referrer,screen_width,language,session_id,visitor_id,device,country,is_returning,utm_source,utm_medium,utm_campaign,site)
+         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
       ).bind(ev.timestamp, ev.page || '/', ev.previousPage || '', ev.pageIndex || 1, ev.referrer || '',
         ev.screenWidth || 0, ev.language || '', ev.sessionId || '', ev.visitorId || '', ev.device || '',
         ev.country || '', ev.returning ? 1 : 0,
-        (ev.utm && ev.utm.source) || null, (ev.utm && ev.utm.medium) || null, (ev.utm && ev.utm.campaign) || null));
+        (ev.utm && ev.utm.source) || null, (ev.utm && ev.utm.medium) || null, (ev.utm && ev.utm.campaign) || null,
+        deriveSite(ev.page)));
     }
     if (stmts.length) { await env.DB.batch(stmts); evCount += stmts.length; }
   } while (cursor);
@@ -1221,10 +1302,11 @@ async function handleMigrate(request, env) {
       if (!raw) continue;
       let c; try { c = JSON.parse(raw); } catch { continue; }
       stmts.push(env.DB.prepare(
-        `INSERT INTO clicks (ts,type,label,category,depth,href,page,session_id,visitor_id)
-         VALUES (?,?,?,?,?,?,?,?,?)`
+        `INSERT INTO clicks (ts,type,label,category,depth,href,page,session_id,visitor_id,site)
+         VALUES (?,?,?,?,?,?,?,?,?,?)`
       ).bind(c.timestamp, c.category === 'scroll' ? 'scroll' : 'click', c.label || '', c.category || 'link',
-        c.depth != null ? c.depth : null, c.href || '', c.page || '/', c.sessionId || '', c.visitorId || ''));
+        c.depth != null ? c.depth : null, c.href || '', c.page || '/', c.sessionId || '', c.visitorId || '',
+        deriveSite(c.page)));
     }
     if (stmts.length) { await env.DB.batch(stmts); clkCount += stmts.length; }
   } while (cursor);
@@ -1267,6 +1349,17 @@ export default {
         const { success } = await env.CONTACT_LIMITER.limit({ key: ip });
         if (!success) return json({ error: 'Zu viele Anfragen. Bitte später erneut versuchen.' }, 429, origin);
       }
+    }
+
+    // ── Auth (Multi-Tenant-Login) ─────────────────────────────────────────────
+    if (url.pathname === '/login' && request.method === 'POST') {
+      return handleLogin(request, env);
+    }
+    if (url.pathname === '/logout' && request.method === 'POST') {
+      return handleLogout(request, env);
+    }
+    if (url.pathname === '/me' && request.method === 'GET') {
+      return handleMe(request, env);
     }
 
     if (url.pathname === '/track' && request.method === 'POST') {
