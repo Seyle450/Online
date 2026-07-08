@@ -28,13 +28,22 @@
 export const SITES = {
   'elyesferchichi': 'Elyes Ferchichi (Hauptseite)',
   'pizza-blitz':    'Pizza Blitz Bremen',
-  'antepli':        'Antepli',
-  'hevis':          'Hevis',
-  'bens':           "Ben's",
+  'hochzeit':       'Hochzeit',
+  'antepli':        'Antepli Baklava',
+  'hevis':          "Hevi's Café",
+  'bens':           "Ben's Catering",
   'cafeniki':       'Café Niki',
-  'lokma':          'Lokma',
+  'lokma':          'Lokma Lovers',
   'starscape':      'Starscape',
   'freelance':      'Freelance',
+  'bay':            'bay.',
+  'cafe-petit':     'Café Petit',
+  'coffee-corner':  'Coffee Corner',
+  'dilans':         "Dilan's Café",
+  'farfalla':       'Farfalla',
+  'habitat':        'Habitat',
+  'kleiner-olymp':  'Kleiner Olymp',
+  'grundschule':    'Grundschule am Halmerweg',
 };
 
 // ⚠️ Die beiden Einträge unten sind DEMO-Zugänge zum lokalen Testen.

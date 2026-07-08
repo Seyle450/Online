@@ -135,13 +135,22 @@ export function sanitizeSite(slug) {
 export function deriveSite(page) {
   const p = String(page || '').toLowerCase();
   if (p.includes('pizza') && p.includes('blitz')) return 'pizza-blitz';
+  if (p.includes('hochzeit')) return 'hochzeit';
   if (p.includes('antepli')) return 'antepli';
   if (p.includes('hevi')) return 'hevis';
-  if (p.includes('bens')) return 'bens';
+  if (p.includes('bens') || p.includes("ben's")) return 'bens';
   if (p.includes('niki')) return 'cafeniki';
   if (p.includes('lokma')) return 'lokma';
   if (p.includes('starscape')) return 'starscape';
   if (p.includes('freelance')) return 'freelance';
+  if (p.includes('cafe-petit') || p.includes('café-petit')) return 'cafe-petit';
+  if (p.includes('coffee-corner')) return 'coffee-corner';
+  if (p.includes('dilan')) return 'dilans';
+  if (p.includes('farfalla')) return 'farfalla';
+  if (p.includes('habitat')) return 'habitat';
+  if (p.includes('olymp')) return 'kleiner-olymp';
+  if (p.includes('halmerweg') || p.includes('grundschule')) return 'grundschule';
+  if (p.includes('/bay')) return 'bay';
   return 'elyesferchichi';
 }
 

@@ -39,13 +39,22 @@
     var h = location.hostname.toLowerCase();
     var p = location.pathname.toLowerCase();
     if ((h.includes('pizza') && h.includes('blitz')) || p.includes('pizza%20blitz') || p.includes('pizza blitz') || p.includes('pizza-blitz')) return 'pizza-blitz';
+    if (h.includes('hochzeit')  || p.includes('hochzeit'))  return 'hochzeit';
     if (h.includes('antepli')   || p.includes('antepli'))   return 'antepli';
     if (h.includes('hevis')     || p.includes('hevi'))      return 'hevis';
-    if (h.includes('bens')      || p.includes('/bens'))     return 'bens';
+    if (h.includes('bens')      || p.includes('/bens') || p.includes("ben's")) return 'bens';
     if (h.includes('niki')      || p.includes('niki'))      return 'cafeniki';
     if (h.includes('lokma')     || p.includes('lokma'))     return 'lokma';
     if (h.includes('starscape') || p.includes('starscape')) return 'starscape';
     if (p.includes('freelance'))                            return 'freelance';
+    if (p.includes('cafe-petit') || p.includes('café-petit')) return 'cafe-petit';
+    if (p.includes('coffee-corner'))                        return 'coffee-corner';
+    if (p.includes('dilan'))                                return 'dilans';
+    if (p.includes('farfalla'))                             return 'farfalla';
+    if (p.includes('habitat'))                              return 'habitat';
+    if (p.includes('olymp'))                                return 'kleiner-olymp';
+    if (p.includes('halmerweg') || p.includes('grundschule')) return 'grundschule';
+    if (p.includes('/bay'))                                 return 'bay';
     return '';
   }
 
