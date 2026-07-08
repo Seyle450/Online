@@ -916,18 +916,31 @@ try { API_TOKEN = sessionStorage.getItem('_at') || ''; } catch (e) {}
 
 // ── Seiten-Label-System ───────────────────────────────────────────────────────
 var PAGE_SITES = {
-  webdesign:  { label: 'Webdesign Bremen',   bg: '#2B50E2', text: '#fff' },
-  portfolio:  { label: 'Portfolio (CV)',     bg: '#4f46e5', text: '#fff' },
-  freelance:  { label: 'Freelance',          bg: '#6366f1', text: '#fff' },
-  starscape:  { label: 'Starscape',          bg: '#009fad', text: '#fff' },
-  bens:       { label: "Ben's Catering",     bg: '#222',    text: '#f0ece4' },
-  hevis:      { label: "Hevi's Café",        bg: '#5c7d43', text: '#fff' },
-  cafeniki:   { label: 'Café Niki',          bg: '#9A7B4F', text: '#fff' },
-  lokma:      { label: 'Lokma Lovers',       bg: '#c8860a', text: '#fff' },
-  antepli:    { label: 'Antepli Baklava',    bg: '#d0a93d', text: '#18230f' },
-  impressum:  { label: 'Impressum',          bg: '#64748b', text: '#fff' },
-  datenschutz:{ label: 'Datenschutz',        bg: '#475569', text: '#fff' },
-  analytics:  { label: 'Analytics',          bg: '#7c3aed', text: '#fff' },
+  // Hauptseite & Bereiche
+  webdesign:      { label: 'Webdesign Bremen',   bg: '#2B50E2', text: '#fff' },
+  portfolio:      { label: 'Portfolio (CV)',     bg: '#4f46e5', text: '#fff' },
+  code:           { label: 'Code-Projekte',      bg: '#3b3b6d', text: '#fff' },
+  freelance:      { label: 'Freelance',          bg: '#6366f1', text: '#fff' },
+  impressum:      { label: 'Impressum',          bg: '#64748b', text: '#fff' },
+  datenschutz:    { label: 'Datenschutz',        bg: '#475569', text: '#fff' },
+  analytics:      { label: 'Analytics',          bg: '#7c3aed', text: '#fff' },
+  // Konzept-/Kundenseiten
+  'pizza-blitz':  { label: 'Pizza Blitz',        bg: '#d93a2b', text: '#fff' },
+  hochzeit:       { label: 'Hochzeit',           bg: '#a8501f', text: '#fff' },
+  starscape:      { label: 'Starscape',          bg: '#009fad', text: '#fff' },
+  bens:           { label: "Ben's Catering",     bg: '#222',    text: '#f0ece4' },
+  hevis:          { label: "Hevi's Café",        bg: '#5c7d43', text: '#fff' },
+  cafeniki:       { label: 'Café Niki',          bg: '#9A7B4F', text: '#fff' },
+  lokma:          { label: 'Lokma Lovers',       bg: '#c8860a', text: '#fff' },
+  antepli:        { label: 'Antepli Baklava',    bg: '#d0a93d', text: '#18230f' },
+  'cafe-petit':   { label: 'Café Petit',         bg: '#b07a52', text: '#fff' },
+  'coffee-corner':{ label: 'Coffee Corner',      bg: '#7a5230', text: '#fff' },
+  dilans:         { label: "Dilan's Café",       bg: '#6b8e4e', text: '#fff' },
+  farfalla:       { label: 'Farfalla',           bg: '#9c3b3b', text: '#fff' },
+  habitat:        { label: 'Habitat',            bg: '#3f6fa3', text: '#fff' },
+  'kleiner-olymp':{ label: 'Kleiner Olymp',      bg: '#b3873f', text: '#fff' },
+  grundschule:    { label: 'Grundschule Halmerweg', bg: '#2f74b5', text: '#fff' },
+  bay:            { label: 'bay.',               bg: '#7d8f5a', text: '#fff' },
 };
 
 var STARSCAPE_SUBS = {
@@ -937,21 +950,32 @@ var STARSCAPE_SUBS = {
 
 function getSiteKey(path) {
   var p = decodeURIComponent(path || '').toLowerCase();
-  // Projekte / Subdomains zuerst (Hostname-Präfix enthält den Namen)
-  if (p.includes('starscape'))   return 'starscape';
-  if (p.includes("ben"))         return 'bens';
-  if (p.includes("hevi"))        return 'hevis';
-  if (p.includes("niki"))        return 'cafeniki';
-  if (p.includes("lokma"))       return 'lokma';
-  if (p.includes("antepli"))     return 'antepli';
-  // Hauptseiten
-  if (p.includes('portfolio'))   return 'portfolio';
-  if (p.includes('impressum'))   return 'impressum';
-  if (p.includes('datenschutz')) return 'datenschutz';
-  if (p.includes('analytics'))   return 'analytics';
-  if (p.includes('freelance'))   return 'freelance';
+  // Konzept-/Kundenseiten zuerst (spezifisch); Reihenfolge = erst eindeutigste Treffer
+  if (p.includes('pizza') && p.includes('blitz'))          return 'pizza-blitz';
+  if (p.includes('hochzeit'))                              return 'hochzeit';
+  if (p.includes('starscape'))                             return 'starscape';
+  if (p.includes('antepli'))                               return 'antepli';
+  if (p.includes('hevi'))                                  return 'hevis';
+  if (p.includes("ben's") || p.includes('bens.') || p.includes('/bens')) return 'bens';
+  if (p.includes('niki'))                                  return 'cafeniki';
+  if (p.includes('lokma'))                                 return 'lokma';
+  if (p.includes('cafe-petit') || p.includes('café-petit')) return 'cafe-petit';
+  if (p.includes('coffee-corner'))                         return 'coffee-corner';
+  if (p.includes('dilan'))                                 return 'dilans';
+  if (p.includes('farfalla'))                              return 'farfalla';
+  if (p.includes('habitat'))                               return 'habitat';
+  if (p.includes('olymp'))                                 return 'kleiner-olymp';
+  if (p.includes('halmerweg') || p.includes('grundschule')) return 'grundschule';
+  if (p.includes('/bay'))                                  return 'bay';
+  // Hauptseiten-Bereiche (freelance vor portfolio: /Portfolio/Freelance.html)
+  if (p.includes('freelance'))                             return 'freelance';
+  if (p.includes('portfolio'))                             return 'portfolio';
+  if (p.includes('impressum'))                             return 'impressum';
+  if (p.includes('datenschutz'))                           return 'datenschutz';
+  if (p.includes('analytics'))                             return 'analytics';
+  if (p.includes('code.html') || p.endsWith('/code'))      return 'code';
   // Wurzel → Webdesign-Bremen-Startseite
-  if (p === '/' || p === '' || p.endsWith('/index.html')) return 'webdesign';
+  if (p === '/' || p === '' || p.endsWith('/index.html'))  return 'webdesign';
   return null;
 }
 
@@ -966,17 +990,28 @@ function labelPage(path) {
     }
     return 'Starscape';
   }
-  if (lower.includes("ben"))     return "Ben's Catering";
-  if (lower.includes("hevi"))    return "Hevi's Café";
-  if (lower.includes("niki"))    return "Café Niki";
-  if (lower.includes("lokma"))   return "Lokma Lovers";
-  if (lower.includes("antepli")) return "Antepli Baklava";
+  if (lower.includes('pizza') && lower.includes('blitz')) return 'Pizza Blitz';
+  if (lower.includes('hochzeit'))   return 'Hochzeit';
+  if (lower.includes('antepli'))    return 'Antepli Baklava';
+  if (lower.includes('hevi'))       return "Hevi's Café";
+  if (lower.includes("ben's") || lower.includes('bens.') || lower.includes('/bens')) return "Ben's Catering";
+  if (lower.includes('niki'))       return 'Café Niki';
+  if (lower.includes('lokma'))      return 'Lokma Lovers';
+  if (lower.includes('cafe-petit') || lower.includes('café-petit')) return 'Café Petit';
+  if (lower.includes('coffee-corner')) return 'Coffee Corner';
+  if (lower.includes('dilan'))      return "Dilan's Café";
+  if (lower.includes('farfalla'))   return 'Farfalla';
+  if (lower.includes('habitat'))    return 'Habitat';
+  if (lower.includes('olymp'))      return 'Kleiner Olymp';
+  if (lower.includes('halmerweg') || lower.includes('grundschule')) return 'Grundschule am Halmerweg';
+  if (lower.includes('/bay'))       return 'bay.';
 
+  if (lower.includes('freelance'))   return 'Freelance';
   if (lower.includes('portfolio'))   return 'Portfolio (CV)';
   if (lower.includes('impressum'))   return 'Impressum';
   if (lower.includes('datenschutz')) return 'Datenschutz';
   if (lower.includes('analytics'))   return 'Analytics';
-  if (lower.includes('freelance'))   return 'Freelance';
+  if (lower.includes('code.html') || lower.endsWith('/code')) return 'Code-Projekte';
   if (lower === '/' || lower === '' || lower.endsWith('/index.html')) return 'Webdesign Bremen';
 
   var parts = p.replace(/\.html$/i, '').split('/').filter(Boolean);
@@ -1069,8 +1104,14 @@ function setupRoleUI() {
   var lbl = document.getElementById('tenantLabel');
   var profilesPanel = document.getElementById('profilesPanel');
   if (USER_ROLE === 'master') {
+    // Sortiert: Hauptseite (elyesferchichi) zuerst, dann alphabetisch nach Anzeigename.
+    var sorted = USER_SITES.slice().sort(function (a, b) {
+      if (a.slug === 'elyesferchichi') return -1;
+      if (b.slug === 'elyesferchichi') return 1;
+      return a.label.localeCompare(b.label, 'de');
+    });
     sel.innerHTML = '<option value="">Alle Websites</option>' +
-      USER_SITES.map(function (s) { return '<option value="' + esc(s.slug) + '">' + esc(s.label) + '</option>'; }).join('');
+      sorted.map(function (s) { return '<option value="' + esc(s.slug) + '">' + esc(s.label) + '</option>'; }).join('');
     sel.value = currentTenant;
     sel.style.display = '';
     lbl.style.display = 'none';
