@@ -110,7 +110,7 @@ export function buildOrder(body) {
     };
     if (!address.street || !address.zip) return { error: 'Lieferadresse ist unvollständig.' };
     if (subtotal < CONFIG.minOrder) {
-      return { error: 'Mindestbestellwert für Lieferung: ' + CONFIG.minOrder.toFixed(2) + ' €' };
+      return { error: 'Mindestbestellwert für Lieferung: ' + CONFIG.minOrder.toFixed(2).replace('.', ',') + ' €' };
     }
     deliveryCents = subtotalCents >= euroToCents(CONFIG.freeFrom) ? 0 : euroToCents(CONFIG.deliveryFee);
   }

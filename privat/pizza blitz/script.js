@@ -160,6 +160,7 @@
   /* ---------- Helpers ---------- */
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fmt = function (n) { return n.toFixed(2).replace('.', ',') + ' €'; };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); };
 
@@ -253,7 +254,13 @@
   var ORDER_API = 'https://pizza-blitz-orders.seyle450.workers.dev';
   var cart = {}, mode = 'lieferung';
   // Warenkorb übersteht den Stripe-Redirect (localStorage)
-  try { var _c = JSON.parse(localStorage.getItem('pb_cart') || '{}'); if (_c && typeof _c === 'object') cart = _c; } catch (e) {}
+  try {
+    var _c = JSON.parse(localStorage.getItem('pb_cart') || '{}');
+    if (_c && typeof _c === 'object') {
+      // verwaiste Keys (Gericht existiert nicht mehr) still entfernen
+      for (var _k in _c) { if (ALL[String(_k).split('|')[0]]) cart[_k] = _c[_k]; }
+    }
+  } catch (e) {}
   function saveCart() { try { localStorage.setItem('pb_cart', JSON.stringify(cart)); } catch (e) {} }
 
   function cartCount() { var n = 0; for (var k in cart) n += cart[k]; return n; }
@@ -283,13 +290,13 @@
     });
     $('#sizeOptions').innerHTML = html;
     $('#sizeBackdrop').hidden = false;
-    $('#sizeModal').setAttribute('aria-hidden', 'false');
+    setDialog('#sizeModal', true);
     var first = $('.size-opt'); if (first) first.focus();
   }
   function closeSizeModal() {
     pendingSizeId = null;
     $('#sizeBackdrop').hidden = true;
-    $('#sizeModal').setAttribute('aria-hidden', 'true');
+    setDialog('#sizeModal', false);
   }
 
   /* ---------- Produkt-Detail ---------- */
@@ -312,12 +319,13 @@
     $('#productAlg').textContent = algNames.length ? 'Allergene: ' + algNames.join(', ') : '';
     $('#productPrice').textContent = it.cat === 'pizza' ? 'ab ' + fmt(it.price) : fmt(it.price);
     $('#productBackdrop').hidden = false;
-    $('#productModal').setAttribute('aria-hidden', 'false');
+    setDialog('#productModal', true);
+    $('#productClose').focus();
   }
   function closeProductModal() {
     pendingViewId = null;
     $('#productBackdrop').hidden = true;
-    $('#productModal').setAttribute('aria-hidden', 'true');
+    setDialog('#productModal', false);
   }
 
   /* ---------- Checkout (Kasse → Stripe) ---------- */
@@ -328,7 +336,7 @@
   }
   function openCheckout() {
     var st = shopStatus();
-    if (!st.open) { alert(closedMsg(st)); return; }
+    if (!st.open) { renderCart(); openCart(); return; } // zeigt closedNote im Warenkorb
     var t = checkoutTotals();
     $('#coMode').textContent = t.isLief ? 'Lieferung' : 'Abholung';
     $('#coDelivery').style.display = t.isLief ? '' : 'none';
@@ -339,11 +347,12 @@
     $('#coPayBtn').textContent = 'Jetzt bezahlen · ' + fmt(t.total);
     $('#coError').hidden = true;
     $('#checkoutBackdrop').hidden = false;
-    $('#checkoutModal').setAttribute('aria-hidden', 'false');
+    setDialog('#checkoutModal', true);
+    var firstInput = $('#checkoutForm input'); if (firstInput) firstInput.focus();
   }
   function closeCheckout() {
     $('#checkoutBackdrop').hidden = true;
-    $('#checkoutModal').setAttribute('aria-hidden', 'true');
+    setDialog('#checkoutModal', false);
   }
   function coError(msg) { var e = $('#coError'); e.textContent = msg; e.hidden = false; }
   async function submitCheckout(e) {
@@ -421,8 +430,8 @@
     btn.textContent = st.open ? 'Zur Kasse' : 'Geschlossen';
   }
 
-  function openCart() { document.body.classList.add('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'false'); }
-  function closeCart() { document.body.classList.remove('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'true'); }
+  function openCart() { document.body.classList.add('cart-open'); setDialog('#cartDrawer', true); $('#scrim').hidden = false; }
+  function closeCart() { document.body.classList.remove('cart-open'); setDialog('#cartDrawer', false); if (!document.body.classList.contains('nav-open')) $('#scrim').hidden = true; }
 
   /* ---------- Render menu ---------- */
   var currentDiet = 'alle', currentSearch = '';
@@ -536,7 +545,7 @@
     var t = TRACKS[trackerMode];
     $('#statusTitle').textContent = t.titles[step];
     $('#statusText').textContent = t.texts[step];
-    $('#statusDot').style.background = pos >= 99 ? '#1c9d57' : '#f0a323';
+    $('#statusDot').style.background = pos >= 99 ? '#177a45' : '#f0a323';
   }
 
   function showTrackerState(state) { // 'lookup' | 'card'
@@ -579,6 +588,17 @@
       .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
       .then(function (d) {
         if (!d || !d.id) return Promise.reject('bad');
+        // Nicht bezahlte Bestellungen (Checkout abgebrochen) nicht als "in Arbeit" zeigen —
+        // die Küche weiß von denen nichts. Ausnahme: frisch bezahlte Bestellung, deren
+        // Stripe-Webhook noch unterwegs ist → in 20 s erneut prüfen statt verwerfen.
+        if (d.status !== 'paid') {
+          var recent = d.createdAt && (Date.now() - d.createdAt) < 15 * 60000;
+          if (fromUser) trackerError('Diese Bestellung wurde noch nicht bezahlt und ist deshalb nicht bei uns in Arbeit. Bitte schließe die Bestellung erst ab.');
+          else if (recent) setTimeout(function () { loadOrder(id, false); }, 20000);
+          else { try { localStorage.removeItem(ORDER_KEY); } catch (e) {} }
+          showTrackerState('lookup');
+          return;
+        }
         var mode = d.mode === 'lieferung' ? 'lieferung' : 'abholung';
         var start = d.paidAt || d.createdAt || Date.now();
         activeOrder = {
@@ -623,9 +643,53 @@
     else showTrackerState('lookup');
   }
 
+  /* ---------- Dialog-Helfer: aria-hidden + inert + Scroll-Lock zentral ----------
+     inert nimmt geschlossene Off-Canvas-Elemente/Modals aus der Tab-Reihenfolge
+     (aria-hidden allein lässt sie fokussierbar). Scroll-Lock, solange irgendein
+     Overlay offen ist. */
+  var DIALOG_IDS = ['#mobileNav', '#cartDrawer', '#sizeModal', '#productModal', '#checkoutModal', '#confirmModal', '#conceptModal'];
+  function setDialog(sel, open) {
+    var el = $(sel);
+    if (!el) return;
+    el.setAttribute('aria-hidden', open ? 'false' : 'true');
+    try { el.inert = !open; } catch (e) {}
+    updateScrollLock();
+  }
+  function updateScrollLock() {
+    var anyOpen = document.body.classList.contains('nav-open') || document.body.classList.contains('cart-open')
+      || DIALOG_IDS.some(function (s) { var el = $(s); return el && el.getAttribute('aria-hidden') === 'false'; });
+    document.body.style.overflow = anyOpen ? 'hidden' : '';
+  }
+
+  /* ---------- Konzept-Hinweis (Demo-Overlay nach 15 s, einmal pro Sitzung) ---------- */
+  function openConceptNote() {
+    $('#conceptBackdrop').hidden = false;
+    setDialog('#conceptModal', true);
+    $('#conceptClose').focus();
+  }
+  function closeConceptNote() {
+    if ($('#conceptModal').getAttribute('aria-hidden') !== 'false') return;
+    $('#conceptBackdrop').hidden = true;
+    setDialog('#conceptModal', false);
+  }
+  function initConceptNote() {
+    var seen = false;
+    try { seen = sessionStorage.getItem('pb_concept_seen') === '1'; } catch (e) {}
+    if (seen) return;
+    function attempt() {
+      // Nicht in einen offenen Dialog/Warenkorb hineinplatzen — später erneut versuchen
+      var busy = document.body.classList.contains('cart-open') || document.body.classList.contains('nav-open')
+        || DIALOG_IDS.some(function (s) { var el = $(s); return el && el.getAttribute('aria-hidden') === 'false'; });
+      if (busy) { setTimeout(attempt, 15000); return; }
+      try { sessionStorage.setItem('pb_concept_seen', '1'); } catch (e) {}
+      openConceptNote();
+    }
+    setTimeout(attempt, 15000);
+  }
+
   /* ---------- Mobile nav ---------- */
-  function openNav() { document.body.classList.add('nav-open'); $('#navToggle').setAttribute('aria-expanded', 'true'); $('#mobileNav').setAttribute('aria-hidden', 'false'); $('#scrim').hidden = false; }
-  function closeNav() { document.body.classList.remove('nav-open'); $('#navToggle').setAttribute('aria-expanded', 'false'); $('#mobileNav').setAttribute('aria-hidden', 'true'); $('#scrim').hidden = true; }
+  function openNav() { document.body.classList.add('nav-open'); $('#navToggle').setAttribute('aria-expanded', 'true'); setDialog('#mobileNav', true); $('#scrim').hidden = false; }
+  function closeNav() { document.body.classList.remove('nav-open'); $('#navToggle').setAttribute('aria-expanded', 'false'); setDialog('#mobileNav', false); if (!document.body.classList.contains('cart-open')) $('#scrim').hidden = true; }
 
   /* ---------- Wire up events ---------- */
   function bindEvents() {
@@ -635,7 +699,7 @@
       var so = e.target.closest('.size-opt'); if (so && pendingSizeId) { addKey(pendingSizeId + '|' + so.getAttribute('data-size')); closeSizeModal(); return; }
       var inc = e.target.closest('[data-inc]'); if (inc) { changeQty(inc.getAttribute('data-inc'), 1); return; }
       var dec = e.target.closest('[data-dec]'); if (dec) { changeQty(dec.getAttribute('data-dec'), -1); return; }
-      var cat = e.target.closest('[data-cat]'); if (cat) { var el = document.getElementById(cat.getAttribute('data-cat')); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 96, behavior: 'smooth' }); return; }
+      var cat = e.target.closest('[data-cat]'); if (cat) { var el = document.getElementById(cat.getAttribute('data-cat')); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 96, behavior: reduceMotion ? 'auto' : 'smooth' }); return; }
       var view = e.target.closest('[data-view]'); if (view) { openProductModal(view.getAttribute('data-view')); return; }
     });
     $('#sizeCancel').addEventListener('click', closeSizeModal);
@@ -683,6 +747,8 @@
     $('#checkoutForm').addEventListener('submit', submitCheckout);
     $('#confirmClose').addEventListener('click', closeConfirm);
     $('#confirmBackdrop').addEventListener('click', closeConfirm);
+    $('#conceptClose').addEventListener('click', closeConceptNote);
+    $('#conceptBackdrop').addEventListener('click', closeConceptNote);
 
     // tracker: Bestellnummer nachschlagen + zurücksetzen
     $('#trackerForm').addEventListener('submit', function (e) {
@@ -690,6 +756,22 @@
       loadOrder($('#trackerInput').value, true);
     });
     $('#trackerReset').addEventListener('click', resetTracker);
+
+    // Google Maps erst nach Einwilligung laden (DSGVO-Zwei-Klick)
+    var mapBtn = $('#mapLoadBtn');
+    if (mapBtn) {
+      mapBtn.addEventListener('click', function () {
+        var f = document.createElement('iframe');
+        f.className = 'map-frame';
+        f.title = 'Karte: Pizza Blitz, Edisonstraße 6, 28357 Bremen';
+        f.src = this.getAttribute('data-map-src');
+        f.setAttribute('loading', 'lazy');
+        f.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+        f.setAttribute('allowfullscreen', '');
+        var c = $('#mapConsent');
+        c.parentNode.replaceChild(f, c);
+      });
+    }
 
     // contact form
     $('#contactForm').addEventListener('submit', function (e) {
@@ -701,7 +783,7 @@
     // mobile nav
     $('#navToggle').addEventListener('click', function () { document.body.classList.contains('nav-open') ? closeNav() : openNav(); });
     $$('#mobileNav a').forEach(function (a) { a.addEventListener('click', closeNav); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeNav(); closeCart(); closeSizeModal(); closeProductModal(); closeCheckout(); closeConfirm(); } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeNav(); closeCart(); closeSizeModal(); closeProductModal(); closeCheckout(); closeConfirm(); closeConceptNote(); } });
 
     // header shadow
     var header = $('#siteHeader');
@@ -802,8 +884,11 @@
     bindEvents();
     initScrollSpy();
     initAnimations();
+    // geschlossene Overlays initial aus der Tab-Reihenfolge nehmen
+    DIALOG_IDS.forEach(function (s) { var el = $(s); if (el && el.getAttribute('aria-hidden') !== 'false') { try { el.inert = true; } catch (e) {} } });
     handleOrderReturn();  // ?bestellung=ok speichert die Bestellnummer
     initTracker();        // gespeicherte Bestellung fortsetzen / Eingabe zeigen
+    initConceptNote();    // Konzept-Hinweis nach 15 s (einmal pro Sitzung)
   }
 
   // Artikelliste einer Bestellung in ein <ul> rendern (Bezahlt-Screen & Tracker)
@@ -829,7 +914,8 @@
     $('#confirmStatus').textContent = 'bezahlt';
     renderOrderItems($('#confirmItems'), null);
     $('#confirmBackdrop').hidden = false;
-    $('#confirmModal').setAttribute('aria-hidden', 'false');
+    setDialog('#confirmModal', true);
+    $('#confirmClose').focus();
     // Details live nachladen (Artikel, Betrag, Modus, Status)
     if (oid) {
       fetch(ORDER_API + '/order/' + encodeURIComponent(oid))
@@ -848,7 +934,7 @@
   function closeConfirm() {
     if ($('#confirmModal').getAttribute('aria-hidden') === 'true') return;
     $('#confirmBackdrop').hidden = true;
-    $('#confirmModal').setAttribute('aria-hidden', 'true');
+    setDialog('#confirmModal', false);
     // Zum Live-Tracker scrollen (Verfolgung läuft bereits über initTracker/loadOrder)
     var el = $('#tracker');
     if (el) {
