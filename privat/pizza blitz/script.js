@@ -120,19 +120,42 @@
 
   var TICKER = ['Blitzschnell geliefert','Hausgemachter Teig','Seit 1990 in Bremen','Frische Zutaten','Steinofen · 400 °C','Catering für jedes Fest'];
 
-  var STATIONS = [
-    { label:'Bestellt', sub:'Bestellung eingegangen' },
-    { label:'Im Ofen', sub:'Bei 400 °C im Steinofen' },
-    { label:'Unterwegs', sub:'Der Fahrer ist losgefahren' },
-    { label:'Angekommen', sub:'Guten Appetit!' }
-  ];
-  var STATUS_TITLES = ['Bestellung eingegangen','Deine Pizza ist im Ofen','Dein Fahrer ist unterwegs','Angekommen — guten Appetit!'];
-  var STATUS_TEXTS = [
-    'Wir haben deine Bestellung erhalten und legen gleich los.',
-    'Frisch belegt und bei 400 °C im Steinofen — gleich duftet es.',
-    'Noch wenige Minuten bis zu deiner Haustür.',
-    'Deine Bestellung wurde zugestellt. Lass es dir schmecken!'
-  ];
+  // Blitz-Tracker: eigene Etappen je Bestellart
+  var TRACKS = {
+    lieferung: {
+      stations: [
+        { label:'Bestellt', sub:'Bestellung eingegangen' },
+        { label:'Im Ofen', sub:'Bei 400 °C gebacken' },
+        { label:'Unterwegs', sub:'Fahrer losgefahren' },
+        { label:'Geliefert', sub:'Guten Appetit!' }
+      ],
+      titles: ['Bestellung eingegangen','Deine Pizza ist im Ofen','Dein Fahrer ist unterwegs','Geliefert — guten Appetit!'],
+      texts: [
+        'Wir haben deine Bestellung erhalten und legen gleich los.',
+        'Frisch belegt und bei 400 °C im Steinofen — gleich duftet es.',
+        'Noch wenige Minuten bis zu deiner Haustür.',
+        'Deine Bestellung wurde zugestellt. Lass es dir schmecken!'
+      ],
+      etaMin: 35, etaLabel: 'Voraussichtliche Lieferung'
+    },
+    abholung: {
+      stations: [
+        { label:'Bestellt', sub:'Bestellung eingegangen' },
+        { label:'Zubereitung', sub:'Wird frisch belegt' },
+        { label:'Im Ofen', sub:'Bei 400 °C gebacken' },
+        { label:'Abholbereit', sub:'Bitte abholen' }
+      ],
+      titles: ['Bestellung eingegangen','Wird frisch zubereitet','Deine Pizza ist im Ofen','Abholbereit — bis gleich!'],
+      texts: [
+        'Wir haben deine Bestellung erhalten und legen gleich los.',
+        'Deine Bestellung wird frisch belegt.',
+        'Frisch belegt und bei 400 °C im Steinofen — gleich fertig.',
+        'Deine Bestellung ist fertig — hol sie dir ab. Bis gleich!'
+      ],
+      etaMin: 20, etaLabel: 'Voraussichtlich fertig'
+    }
+  };
+  var trackerMode = 'lieferung';
 
   /* ---------- Helpers ---------- */
   var $ = function (s, r) { return (r || document).querySelector(s); };
@@ -482,44 +505,88 @@
     MENU.forEach(function (sec) { html += '<button class="cat-chip" data-cat="cat-' + sec.id + '">' + esc(sec.name) + '</button>'; });
     $('#catChips').innerHTML = html;
   }
+  var STATION_POS = [0, 33.33, 66.66, 100];
   function renderStations() {
-    var pos = [0, 33.33, 66.66, 100], html = '';
-    STATIONS.forEach(function (s, i) {
-      html += '<div class="station" data-i="' + i + '" style="left:' + pos[i] + '%"><span class="st-dot"></span>'
+    var html = '';
+    TRACKS[trackerMode].stations.forEach(function (s, i) {
+      html += '<div class="station" data-i="' + i + '" style="left:' + STATION_POS[i] + '%"><span class="st-dot"></span>'
         + '<span class="st-label">' + esc(s.label) + '<span class="st-sub">' + esc(s.sub) + '</span></span></div>';
     });
     $('#stations').innerHTML = html;
   }
+  function setTrackerMode(m) {
+    trackerMode = m === 'abholung' ? 'abholung' : 'lieferung';
+    renderStations();
+  }
   /* ---------- Blitz-Tracker ---------- */
-  var trackerRAF = null, trackerPos = 0, trackerRunning = false;
+  var trackerRAF = null, trackerPos = 0, trackerRunning = false, trackerTimers = [];
+  var trackerEtaText = '';
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function stopTracker() { if (trackerRAF) { cancelAnimationFrame(trackerRAF); trackerRAF = null; } }
+  function clearTrackerTimers() { trackerTimers.forEach(clearTimeout); trackerTimers = []; }
   function updateTracker(pos) {
     trackerPos = pos;
     $('#railFill').style.width = pos + '%';
     $('#railToken').style.left = pos + '%';
-    var step = pos >= 100 ? 3 : Math.min(3, Math.floor(pos / 33.4));
+    var step = pos >= 99 ? 3 : pos >= 66 ? 2 : pos >= 33 ? 1 : 0;
     $$('#stations .station').forEach(function (st) {
       var i = +st.getAttribute('data-i');
-      st.classList.toggle('done', pos >= [0, 33.33, 66.66, 100][i] - 0.5);
+      st.classList.toggle('done', pos >= STATION_POS[i] - 0.5);
     });
-    var idle = pos === 0 && !trackerRunning;
-    $('#statusTitle').textContent = idle ? 'Bereit für die Demo' : STATUS_TITLES[step];
-    $('#statusText').textContent = idle ? 'Klick auf „Demo starten", um den Blitz auf die Reise zu schicken.' : STATUS_TEXTS[step];
+    var t = TRACKS[trackerMode], idle = pos === 0 && !trackerRunning;
+    $('#statusTitle').textContent = idle ? 'Bereit für die Demo' : t.titles[step];
+    $('#statusText').textContent = idle ? 'Klick auf „Demo starten", um den Blitz auf die Reise zu schicken.' : t.texts[step];
+    $('#statusEta').textContent = (trackerRunning && pos < 99) ? trackerEtaText : '';
     $('#statusDot').style.background = trackerRunning ? '#3fa653' : (pos >= 100 ? '#d93a2b' : '#a39c8f');
+  }
+  function setTrackerEta() {
+    var cfg = TRACKS[trackerMode], d = new Date(Date.now() + cfg.etaMin * 60000);
+    var hh = d.getHours(), mm = d.getMinutes();
+    trackerEtaText = cfg.etaLabel + ': ca. ' + hh + ':' + (mm < 10 ? '0' : '') + mm + ' Uhr';
+  }
+  // Ein Segment (from→to) weich animieren, dann Callback
+  function animateSegment(from, to, dur, done) {
+    if (reduceMotion) { updateTracker(to); if (done) done(); return; }
+    var start = performance.now();
+    (function tick(now) {
+      var p = Math.min(1, (now - start) / dur);
+      var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOutQuad
+      updateTracker(from + (to - from) * e);
+      if (p < 1) trackerRAF = requestAnimationFrame(tick);
+      else { trackerRAF = null; if (done) done(); }
+    })(start);
   }
   function startTracker() {
     if (trackerRunning) return;
-    stopTracker();
+    stopTracker(); clearTrackerTimers();
     trackerRunning = true;
-    var start = performance.now(), from = trackerPos >= 100 ? 0 : trackerPos, dur = 14000;
+    setTrackerEta();
     $('#trackerBtn').textContent = 'Läuft …';
-    (function tick(now) {
-      var t = Math.min(1, (now - start) / (dur * (1 - from / 100)));
-      var pos = from + (100 - from) * t;
-      updateTracker(pos);
-      if (t >= 1) { trackerRunning = false; trackerRAF = null; $('#trackerBtn').textContent = 'Nochmal abspielen'; updateTracker(100); }
-      else trackerRAF = requestAnimationFrame(tick);
-    })(start);
+    updateTracker(0);
+    var seg = 0;
+    function nextSeg() {
+      if (seg >= 3) {
+        trackerRunning = false;
+        updateTracker(100);
+        $('#trackerBtn').textContent = 'Nochmal abspielen';
+        return;
+      }
+      var from = seg === 0 ? 0 : STATION_POS[seg];
+      animateSegment(from, STATION_POS[seg + 1], reduceMotion ? 0 : 1500, function () {
+        seg++;
+        trackerTimers.push(setTimeout(nextSeg, reduceMotion ? 700 : 2000)); // Verweildauer an der Station
+      });
+    }
+    trackerTimers.push(setTimeout(nextSeg, 500));
+  }
+  // Tracker für eine echte, bezahlte Bestellung starten
+  function startTrackerForOrder(oid, mode) {
+    setTrackerMode(mode);
+    var badge = $('#trackerOrderNo');
+    if (oid) { badge.textContent = 'Bestellung ' + oid; badge.hidden = false; } else { badge.hidden = true; }
+    trackerRunning = false; stopTracker(); clearTrackerTimers();
+    trackerPos = 0; updateTracker(0);
+    startTracker();
   }
 
   /* ---------- Mobile nav ---------- */
@@ -584,7 +651,13 @@
     $('#confirmBackdrop').addEventListener('click', closeConfirm);
 
     // tracker
-    $('#trackerBtn').addEventListener('click', startTracker);
+    $('#trackerBtn').addEventListener('click', function () {
+      if (trackerRunning) return;
+      setTrackerMode(mode);            // Demo im aktuell gewählten Modus (Lieferung/Abholung)
+      $('#trackerOrderNo').hidden = true;
+      trackerPos = 0; updateTracker(0);
+      startTracker();
+    });
 
     // contact form
     $('#contactForm').addEventListener('submit', function (e) {
@@ -702,7 +775,9 @@
   }
 
   // Bestätigungs-Screen nach erfolgreicher Zahlung
+  var paidOid = '', paidMode = 'lieferung';
   function openConfirm(oid) {
+    paidOid = oid || ''; paidMode = 'lieferung';
     $('#confirmOid').textContent = oid || '—';
     $('#confirmModeLabel').textContent = 'Gesamt';
     $('#confirmTotal').textContent = '—';
@@ -714,6 +789,7 @@
       fetch(ORDER_API + '/order/' + encodeURIComponent(oid))
         .then(function (r) { return r.json(); })
         .then(function (d) {
+          if (d && d.mode) paidMode = d.mode === 'lieferung' ? 'lieferung' : 'abholung';
           if (d && typeof d.total === 'number') {
             $('#confirmModeLabel').textContent = d.mode === 'lieferung' ? 'Lieferung' : 'Abholung';
             $('#confirmTotal').textContent = fmt(d.total);
@@ -727,12 +803,11 @@
     if ($('#confirmModal').getAttribute('aria-hidden') === 'true') return;
     $('#confirmBackdrop').hidden = true;
     $('#confirmModal').setAttribute('aria-hidden', 'true');
-    // Danach den Blitz-Tracker starten und hinscrollen
+    // Blitz-Tracker mit der echten Bestellung starten und hinscrollen
     var el = $('#tracker');
     if (el) {
-      $('#trackerSub').textContent = 'Wir bereiten deine Bestellung frisch zu.';
-      trackerPos = 0; updateTracker(0);
-      setTimeout(startTracker, 300);
+      $('#trackerSub').textContent = 'Verfolge deine Bestellung live.';
+      startTrackerForOrder(paidOid, paidMode);
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
