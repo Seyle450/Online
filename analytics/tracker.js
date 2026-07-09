@@ -84,6 +84,7 @@
     if (p.includes('coffee-corner'))                        return 'coffee-corner';
     if (p.includes('dilan'))                                return 'dilans';
     if (p.includes('farfalla'))                             return 'farfalla';
+    if (h.includes('traumclean') || p.includes('traumclean')) return 'traumclean';
     if (p.includes('habitat'))                              return 'habitat';
     if (p.includes('olymp'))                                return 'kleiner-olymp';
     if (p.includes('halmerweg') || p.includes('grundschule')) return 'grundschule';
