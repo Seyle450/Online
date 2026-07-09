@@ -7,6 +7,16 @@
   var WORKER_URL = 'https://portfolio-analytics.seyle450.workers.dev';
   var CONSENT_KEY = 'analytics_consent';
 
+  // ── Lokale Entwicklung / Vorschau NIE tracken ──────────────────────────────
+  // VS Code Live Preview (127.0.0.1 + ?vscode-livepreview), localhost, Live
+  // Server u. Ä. sollen die echte Statistik nicht verfälschen → hier aussteigen.
+  var _host = location.hostname;
+  if (_host === 'localhost' || _host === '127.0.0.1' || _host === '0.0.0.0' ||
+      _host === '[::1]' || _host === '' || /\.local$/.test(_host) ||
+      location.search.indexOf('vscode-livepreview') > -1) {
+    return;
+  }
+
   // ── Eigene / Test-Geräte dauerhaft vom Tracking ausnehmen ──────────────────
   // Einmal irgendeine Seite mit  ?notrack=1  aufrufen → dieses Gerät wird ab dann
   // auf ALLEN elyesferchichi-(Sub)domains NIE mehr gezählt (auch nicht anonym).
