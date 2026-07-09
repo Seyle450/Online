@@ -8,13 +8,26 @@
   var CONSENT_KEY = 'analytics_consent';
 
   // ── Eigene / Test-Geräte dauerhaft vom Tracking ausnehmen ──────────────────
-  // Einmal irgendeine Seite mit  ?notrack=1  aufrufen → dieses Gerät wird ab
-  // dann NIE mehr gezählt (auch nicht anonym). Rückgängig mit  ?notrack=0 .
+  // Einmal irgendeine Seite mit  ?notrack=1  aufrufen → dieses Gerät wird ab dann
+  // auf ALLEN elyesferchichi-(Sub)domains NIE mehr gezählt (auch nicht anonym).
+  // Gespeichert als Cookie auf der Hauptdomain, gilt daher überall. Rückgängig
+  // mit  ?notrack=0 .
   try {
-    var _ns = location.search;
-    if (_ns.indexOf('notrack=1') > -1) localStorage.setItem('_notrack', '1');
-    if (_ns.indexOf('notrack=0') > -1) localStorage.removeItem('_notrack');
-    if (localStorage.getItem('_notrack') === '1') return; // Tracker komplett aus
+    var _q = location.search;
+    var _parts = location.hostname.split('.');
+    var _dom = _parts.length >= 2 ? '.' + _parts.slice(-2).join('.') : location.hostname;
+    var _sec = location.protocol === 'https:' ? '; Secure' : '';
+    if (_q.indexOf('notrack=1') > -1) {
+      document.cookie = '_notrack=1; max-age=' + (60 * 60 * 24 * 3650) + '; domain=' + _dom + '; path=/; SameSite=Lax' + _sec;
+      try { localStorage.setItem('_notrack', '1'); } catch (e) {}
+    }
+    if (_q.indexOf('notrack=0') > -1) {
+      document.cookie = '_notrack=; max-age=0; domain=' + _dom + '; path=/; SameSite=Lax' + _sec;
+      try { localStorage.removeItem('_notrack'); } catch (e) {}
+    }
+    var _nt = document.cookie.indexOf('_notrack=1') > -1;
+    try { if (localStorage.getItem('_notrack') === '1') _nt = true; } catch (e) {}
+    if (_nt) return; // Tracker komplett aus
   } catch (e) {}
 
   // ── Consent (cookie with parent domain so all subdomains share it) ────────
