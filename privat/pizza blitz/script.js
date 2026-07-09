@@ -161,6 +161,11 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Shop-Funnel an den seitenweiten Analytics-Tracker melden (nur falls aktiv/erlaubt).
+  // window.elyTrack existiert nur, wenn der Tracker läuft (nicht auf localhost/notrack).
+  function shopEvent(type, label, value) {
+    try { if (window.elyTrack) window.elyTrack(type, label, value != null ? { value: value } : undefined); } catch (e) {}
+  }
   var fmt = function (n) { return n.toFixed(2).replace('.', ',') + ' €'; };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]; }); };
 
@@ -268,6 +273,8 @@
 
   function addKey(key) {
     cart[key] = (cart[key] || 0) + 1;
+    var info = keyInfo(key);
+    shopEvent('add_to_cart', info.name, info.price);
     renderCart(); bumpFab(); openCart();
   }
   // Pizzen fragen zuerst nach der Größe, alles andere landet direkt im Korb
@@ -307,6 +314,7 @@
     var it = ALL[id];
     if (!it) return;
     pendingViewId = id;
+    shopEvent('product_view', it.name);
     $('#productImg').src = 'assets/menu/' + id + '.png';
     $('#productImg').alt = it.name;
     $('#productTitle').textContent = it.name;
@@ -338,6 +346,7 @@
     var st = shopStatus();
     if (!st.open) { renderCart(); openCart(); return; } // zeigt closedNote im Warenkorb
     var t = checkoutTotals();
+    shopEvent('checkout_start', (t.isLief ? 'Lieferung' : 'Abholung') + ' · ' + cartCount() + ' Artikel', t.total);
     $('#coMode').textContent = t.isLief ? 'Lieferung' : 'Abholung';
     $('#coDelivery').style.display = t.isLief ? '' : 'none';
     $('#coDelLabel').textContent = t.isLief ? 'Lieferung' : 'Abholung';
@@ -376,7 +385,10 @@
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
       var d = await r.json().catch(function () { return {}; });
-      if (r.ok && d.url) { window.location.href = d.url; return; }
+      if (r.ok && d.url) {
+        shopEvent('begin_payment', (isLief ? 'Lieferung' : 'Abholung') + (d.orderId ? ' · ' + d.orderId : ''), checkoutTotals().total);
+        window.location.href = d.url; return;
+      }
       coError(d.error || 'Bestellung fehlgeschlagen. Bitte erneut versuchen.');
     } catch (err) {
       coError('Verbindungsfehler. Bitte erneut versuchen.');
@@ -927,8 +939,12 @@
           }
           if (d && d.status) $('#confirmStatus').textContent = d.status === 'paid' ? 'bezahlt' : d.status;
           if (d && d.lines) renderOrderItems($('#confirmItems'), d.lines);
+          // Kauf-Abschluss ans Analytics melden (mit Bestellwert)
+          shopEvent('purchase', 'Bestellung ' + (oid || '—'), (d && typeof d.total === 'number') ? d.total : undefined);
         })
-        .catch(function () {});
+        .catch(function () { shopEvent('purchase', 'Bestellung ' + (oid || '—')); });
+    } else {
+      shopEvent('purchase', 'Bestellung ' + (oid || '—'));
     }
   }
   function closeConfirm() {
@@ -954,6 +970,7 @@
       if (oid) { try { localStorage.setItem(ORDER_KEY, oid); } catch (e) {} }  // für Tab-Wiederkehr
       openConfirm(oid);
     } else if (b === 'abbruch') {
+      shopEvent('checkout_abort', 'Zahlung abgebrochen');
       // Warenkorb bleibt erhalten – Kasse wieder öffnen, falls noch was drin ist
       if (cartCount() > 0) { openCart(); }
     }

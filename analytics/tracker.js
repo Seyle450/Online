@@ -476,6 +476,44 @@
     };
   }
 
+  // ── Öffentliche API: eigene, strukturierte Events (z. B. Shop-Funnel) ──────
+  // Aufruf von der Seite:
+  //   window.elyTrack('add_to_cart', 'Margherita · Groß', { value: 10.5 })
+  //   window.elyTrack('purchase',    'Bestellung PB-XY',  { value: 24.9 })
+  // - type     : freies Ereignis-Kürzel (z. B. add_to_cart, purchase, checkout_start)
+  // - label    : lesbare Bezeichnung (Produkt / Bestellnummer)
+  // - opts.value (€) wird als Cent-Ganzzahl im depth-Feld gespeichert
+  // - opts.category (Standard 'shop') gruppiert die Events im Dashboard
+  // Respektiert die Einwilligung: mit Consent volles Event (Session+Wert),
+  // ohne Consent nur ein anonymer Label-Zähler (keine ID/Session/Wert).
+  // Auf localhost / notrack ist der Tracker komplett aus → window.elyTrack
+  // existiert dort nicht (die Seite muss `if (window.elyTrack)` prüfen).
+  function customEvent(type, label, opts) {
+    opts = opts || {};
+    var lbl = String(label == null ? type : label).trim().slice(0, 80);
+    if (!lbl) return;
+    var ev = String(type || 'event').trim().slice(0, 30);
+    var category = String(opts.category || 'shop').slice(0, 20);
+    var mainHosts = ['elyesferchichi.com', 'seyle450.github.io', 'localhost', '127.0.0.1'];
+    var isMain = mainHosts.some(function (h) { return location.hostname === h; });
+    var page = (isMain ? '' : location.hostname) + location.pathname;
+    if (hasConsent()) {
+      var payload = {
+        type: ev, label: lbl, category: category,
+        page: page, site: getSite(),
+        sessionId: getSessionId(), visitorId: getVisitorId(), timestamp: Date.now(),
+      };
+      if (opts.value != null && isFinite(opts.value)) payload.depth = Math.round(opts.value * 100);
+      fetch(WORKER_URL + '/event', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload), keepalive: true,
+      }).catch(function () {});
+    } else {
+      sendAnonClick(ev + ': ' + lbl); // anonym, nur Label – kein Wert/ID/Session
+    }
+  }
+  window.elyTrack = customEvent;
+
   // ── Init ─────────────────────────────────────────────────────────────────
   function init() {
     if (hasConsent()) {
