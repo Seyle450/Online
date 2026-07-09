@@ -5,6 +5,48 @@
   /* ---------- Data ---------- */
   var CONFIG = { minOrder: 12, freeFrom: 20, deliveryFee: 1.5 };
 
+  /* Öffnungszeiten (Bremer Ortszeit). MUSS mit order-api/menu.js (HOURS) übereinstimmen.
+     Pro Wochentag (0=So … 6=Sa): Liste von [öffnet, schließt] in Minuten seit Mitternacht.
+     Leeres Array = an dem Tag geschlossen. Letzte Bestellung: lastOrderMin vor Ladenschluss. */
+  var HOURS = {
+    tz: 'Europe/Berlin',
+    lastOrderMin: 15,
+    days: {
+      0: [[11 * 60, 22 * 60]], 1: [[11 * 60, 22 * 60]], 2: [[11 * 60, 22 * 60]],
+      3: [[11 * 60, 22 * 60]], 4: [[11 * 60, 22 * 60]], 5: [[11 * 60, 22 * 60]], 6: [[11 * 60, 22 * 60]]
+    }
+  };
+  var DOW_LABEL = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+  // Bremer Ortszeit als {dow, minutes} — DST-sicher über Intl.
+  function localNow(date) {
+    var f = new Intl.DateTimeFormat('en-US', { timeZone: HOURS.tz, weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false });
+    var p = {}; f.formatToParts(date || new Date()).forEach(function (x) { p[x.type] = x.value; });
+    var map = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+    var hh = parseInt(p.hour, 10); if (hh === 24) hh = 0;
+    return { dow: map[p.weekday], minutes: hh * 60 + parseInt(p.minute, 10) };
+  }
+  // { open, nextOpen? } — nextOpen = {dow, minutes} der nächsten Öffnung (bis 7 Tage voraus).
+  function shopStatus(date) {
+    var now = localNow(date), spans = HOURS.days[now.dow] || [];
+    for (var i = 0; i < spans.length; i++) {
+      if (now.minutes >= spans[i][0] && now.minutes < spans[i][1] - HOURS.lastOrderMin) return { open: true };
+    }
+    for (var d = 0; d < 7; d++) {
+      var dow = (now.dow + d) % 7, ds = HOURS.days[dow] || [];
+      for (var j = 0; j < ds.length; j++) {
+        if (d === 0 && now.minutes >= ds[j][0]) continue; // heutiges Fenster schon vorbei
+        return { open: false, nextOpen: { dow: dow, minutes: ds[j][0], sameDay: d === 0 } };
+      }
+    }
+    return { open: false };
+  }
+  function fmtMin(m) { var h = Math.floor(m / 60), mm = m % 60; return (h < 10 ? '0' : '') + h + ':' + (mm < 10 ? '0' : '') + mm; }
+  function closedMsg(st) {
+    if (!st.nextOpen) return 'Bestellungen sind aktuell nicht möglich.';
+    var n = st.nextOpen, when = n.sameDay ? 'heute' : DOW_LABEL[n.dow];
+    return 'Wir haben gerade geschlossen. Bestellungen wieder ' + when + ' ab ' + fmtMin(n.minutes) + ' Uhr.';
+  }
+
   var MENU = [
     { id:'pizza', name:'Pizza', note:'Ø 26 cm · größere Größen gegen Aufpreis', items:[
       { name:'Margherita', desc:'Tomatensoße, Mozzarella, Basilikum', price:8.0, diet:'veg', alg:['a','g'] },
@@ -184,7 +226,12 @@
   }
 
   /* ---------- Cart state ---------- */
+  // Adresse des Bestell-Backends (Cloudflare Worker). Nach dem Deploy ggf. anpassen.
+  var ORDER_API = 'https://pizza-blitz-orders.seyle450.workers.dev';
   var cart = {}, mode = 'lieferung';
+  // Warenkorb übersteht den Stripe-Redirect (localStorage)
+  try { var _c = JSON.parse(localStorage.getItem('pb_cart') || '{}'); if (_c && typeof _c === 'object') cart = _c; } catch (e) {}
+  function saveCart() { try { localStorage.setItem('pb_cart', JSON.stringify(cart)); } catch (e) {} }
 
   function cartCount() { var n = 0; for (var k in cart) n += cart[k]; return n; }
   function subtotal() { var s = 0; for (var k in cart) s += keyInfo(k).price * cart[k]; return s; }
@@ -249,6 +296,61 @@
     $('#productBackdrop').hidden = true;
     $('#productModal').setAttribute('aria-hidden', 'true');
   }
+
+  /* ---------- Checkout (Kasse → Stripe) ---------- */
+  function checkoutTotals() {
+    var sub = subtotal(), isLief = mode === 'lieferung';
+    var delivery = isLief ? (sub >= CONFIG.freeFrom ? 0 : CONFIG.deliveryFee) : 0;
+    return { sub: sub, isLief: isLief, delivery: delivery, total: sub + delivery };
+  }
+  function openCheckout() {
+    var st = shopStatus();
+    if (!st.open) { alert(closedMsg(st)); return; }
+    var t = checkoutTotals();
+    $('#coMode').textContent = t.isLief ? 'Lieferung' : 'Abholung';
+    $('#coDelivery').style.display = t.isLief ? '' : 'none';
+    $('#coDelLabel').textContent = t.isLief ? 'Lieferung' : 'Abholung';
+    $('#coSub').textContent = fmt(t.sub);
+    $('#coDel').textContent = t.isLief ? (t.delivery === 0 ? 'kostenlos' : fmt(t.delivery)) : '—';
+    $('#coTotal').textContent = fmt(t.total);
+    $('#coPayBtn').textContent = 'Jetzt bezahlen · ' + fmt(t.total);
+    $('#coError').hidden = true;
+    $('#checkoutBackdrop').hidden = false;
+    $('#checkoutModal').setAttribute('aria-hidden', 'false');
+  }
+  function closeCheckout() {
+    $('#checkoutBackdrop').hidden = true;
+    $('#checkoutModal').setAttribute('aria-hidden', 'true');
+  }
+  function coError(msg) { var e = $('#coError'); e.textContent = msg; e.hidden = false; }
+  async function submitCheckout(e) {
+    e.preventDefault();
+    var f = e.target, el = f.elements;
+    var name = el['name'].value.trim(), phone = el['phone'].value.trim();
+    var isLief = mode === 'lieferung';
+    if (!name || !phone) { coError('Bitte Name und Telefon angeben.'); return; }
+    if (isLief && (!el['street'].value.trim() || !el['zip'].value.trim())) { coError('Bitte Straße und PLZ angeben.'); return; }
+    if (cartCount() === 0) { coError('Dein Warenkorb ist leer.'); return; }
+    var payload = {
+      items: cart, mode: mode, time: 'asap',
+      customer: { name: name, phone: phone, email: el['email'].value.trim() },
+      note: el['note'].value.trim()
+    };
+    if (isLief) payload.address = { street: el['street'].value.trim(), zip: el['zip'].value.trim(), city: el['city'].value.trim() };
+    var btn = $('#coPayBtn'), prev = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Weiterleitung …'; $('#coError').hidden = true;
+    try {
+      var r = await fetch(ORDER_API + '/checkout', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      });
+      var d = await r.json().catch(function () { return {}; });
+      if (r.ok && d.url) { window.location.href = d.url; return; }
+      coError(d.error || 'Bestellung fehlgeschlagen. Bitte erneut versuchen.');
+    } catch (err) {
+      coError('Verbindungsfehler. Bitte erneut versuchen.');
+    }
+    btn.disabled = false; btn.textContent = prev;
+  }
   function changeQty(id, d) {
     cart[id] = (cart[id] || 0) + d;
     if (cart[id] <= 0) delete cart[id];
@@ -260,6 +362,7 @@
   }
 
   function renderCart() {
+    saveCart();
     var count = cartCount();
     $('#cartCount').textContent = count;
     $('#cartFab').hidden = count === 0;
@@ -286,7 +389,13 @@
     $('#sumTotal').textContent = fmt(sub + delivery);
     $('#minNote').hidden = !belowMin;
     $('#minNote').textContent = 'Mindestbestellwert für Lieferung: ' + fmt(CONFIG.minOrder) + ' (fehlen ' + fmt(CONFIG.minOrder - sub) + ')';
-    $('#checkoutBtn').disabled = belowMin || count === 0;
+
+    var st = shopStatus();
+    $('#closedNote').hidden = st.open;
+    if (!st.open) $('#closedNote').textContent = closedMsg(st);
+    var btn = $('#checkoutBtn');
+    btn.disabled = belowMin || count === 0 || !st.open;
+    btn.textContent = st.open ? 'Zur Kasse' : 'Geschlossen';
   }
 
   function openCart() { document.body.classList.add('cart-open'); $('#cartDrawer').setAttribute('aria-hidden', 'false'); }
@@ -463,16 +572,16 @@
         b.classList.add('is-active'); mode = b.getAttribute('data-mode'); renderCart();
       });
     });
-    // checkout
+    // checkout → Kasse-Modal öffnen
     $('#checkoutBtn').addEventListener('click', function () {
       if (this.disabled) return;
-      cart = {}; renderCart(); closeCart();
-      var el = $('#tracker'); window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
-      $('#trackerHeadline').textContent = 'Danke für deine Bestellung!';
-      $('#trackerSub').textContent = 'Bestellung #2848 · Wir halten dich hier auf dem Laufenden.';
-      trackerPos = 0; updateTracker(0);
-      setTimeout(startTracker, 600);
+      openCheckout();
     });
+    $('#checkoutClose').addEventListener('click', closeCheckout);
+    $('#checkoutBackdrop').addEventListener('click', closeCheckout);
+    $('#checkoutForm').addEventListener('submit', submitCheckout);
+    $('#confirmClose').addEventListener('click', closeConfirm);
+    $('#confirmBackdrop').addEventListener('click', closeConfirm);
 
     // tracker
     $('#trackerBtn').addEventListener('click', startTracker);
@@ -487,7 +596,7 @@
     // mobile nav
     $('#navToggle').addEventListener('click', function () { document.body.classList.contains('nav-open') ? closeNav() : openNav(); });
     $$('#mobileNav a').forEach(function (a) { a.addEventListener('click', closeNav); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeNav(); closeCart(); closeSizeModal(); closeProductModal(); } });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { closeNav(); closeCart(); closeSizeModal(); closeProductModal(); closeCheckout(); closeConfirm(); } });
 
     // header shadow
     var header = $('#siteHeader');
@@ -589,6 +698,58 @@
     bindEvents();
     initScrollSpy();
     initAnimations();
+    handleOrderReturn();
+  }
+
+  // Bestätigungs-Screen nach erfolgreicher Zahlung
+  function openConfirm(oid) {
+    $('#confirmOid').textContent = oid || '—';
+    $('#confirmModeLabel').textContent = 'Gesamt';
+    $('#confirmTotal').textContent = '—';
+    $('#confirmStatus').textContent = 'bezahlt';
+    $('#confirmBackdrop').hidden = false;
+    $('#confirmModal').setAttribute('aria-hidden', 'false');
+    // Details live nachladen (Betrag, Modus, Status)
+    if (oid) {
+      fetch(ORDER_API + '/order/' + encodeURIComponent(oid))
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d && typeof d.total === 'number') {
+            $('#confirmModeLabel').textContent = d.mode === 'lieferung' ? 'Lieferung' : 'Abholung';
+            $('#confirmTotal').textContent = fmt(d.total);
+          }
+          if (d && d.status) $('#confirmStatus').textContent = d.status === 'paid' ? 'bezahlt' : d.status;
+        })
+        .catch(function () {});
+    }
+  }
+  function closeConfirm() {
+    if ($('#confirmModal').getAttribute('aria-hidden') === 'true') return;
+    $('#confirmBackdrop').hidden = true;
+    $('#confirmModal').setAttribute('aria-hidden', 'true');
+    // Danach den Blitz-Tracker starten und hinscrollen
+    var el = $('#tracker');
+    if (el) {
+      $('#trackerSub').textContent = 'Wir bereiten deine Bestellung frisch zu.';
+      trackerPos = 0; updateTracker(0);
+      setTimeout(startTracker, 300);
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Rückkehr von Stripe: ?bestellung=ok (bezahlt) / =abbruch
+  function handleOrderReturn() {
+    var p = new URLSearchParams(location.search);
+    var b = p.get('bestellung');
+    if (!b) return;
+    if (b === 'ok') {
+      cart = {}; saveCart(); renderCart(); closeCart(); closeCheckout();
+      openConfirm(p.get('oid') || '');
+    } else if (b === 'abbruch') {
+      // Warenkorb bleibt erhalten – Kasse wieder öffnen, falls noch was drin ist
+      if (cartCount() > 0) { openCart(); }
+    }
+    history.replaceState(null, '', location.pathname);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

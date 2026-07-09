@@ -394,9 +394,58 @@
     <div class="sum-row"><span>Lieferung</span><span id="sumDelivery">kostenlos</span></div>
     <div class="sum-row sum-total"><span>Gesamt</span><span id="sumTotal">0,00 €</span></div>
     <p class="min-note" id="minNote" hidden>Mindestbestellwert für Lieferung: 12,00 €</p>
-    <button class="btn btn-primary btn-block" id="checkoutBtn">Bestellen</button>
+    <p class="closed-note" id="closedNote" hidden></p>
+    <button class="btn btn-primary btn-block" id="checkoutBtn">Zur Kasse</button>
   </div>
 </aside>
+
+<!-- ============ CHECKOUT ============ -->
+<div class="size-backdrop" id="checkoutBackdrop" hidden></div>
+<div class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle" aria-hidden="true">
+  <button class="product-close" id="checkoutClose" aria-label="Schließen">×</button>
+  <h3 id="checkoutTitle">Bestellung abschließen</h3>
+  <p class="co-mode" id="coMode">Lieferung</p>
+  <form id="checkoutForm" novalidate>
+    <div class="co-row">
+      <label>Name<input type="text" name="name" autocomplete="name" required></label>
+      <label>Telefon<input type="tel" name="phone" autocomplete="tel" required></label>
+    </div>
+    <label>E-Mail <span class="co-opt">(für die Bestätigung)</span><input type="email" name="email" autocomplete="email"></label>
+    <div class="co-delivery" id="coDelivery">
+      <label>Straße &amp; Hausnummer<input type="text" name="street" autocomplete="street-address"></label>
+      <div class="co-row">
+        <label>PLZ<input type="text" name="zip" inputmode="numeric" autocomplete="postal-code"></label>
+        <label>Ort<input type="text" name="city" value="Bremen" autocomplete="address-level2"></label>
+      </div>
+    </div>
+    <label>Anmerkung <span class="co-opt">(optional)</span><textarea name="note" rows="2" placeholder="z. B. Klingel, ohne Zwiebeln …"></textarea></label>
+    <div class="co-summary">
+      <div class="sum-row"><span>Zwischensumme</span><span id="coSub">0,00 €</span></div>
+      <div class="sum-row"><span id="coDelLabel">Lieferung</span><span id="coDel">–</span></div>
+      <div class="sum-row sum-total"><span>Gesamt</span><span id="coTotal">0,00 €</span></div>
+    </div>
+    <p class="co-error" id="coError" hidden></p>
+    <button type="submit" class="btn btn-primary btn-block" id="coPayBtn">Jetzt bezahlen</button>
+    <p class="co-secure">🔒 Sichere Zahlung über Stripe · Karte, Apple&nbsp;Pay &amp; Google&nbsp;Pay</p>
+  </form>
+</div>
+
+<!-- ============ BESTÄTIGUNG (nach Zahlung) ============ -->
+<div class="size-backdrop" id="confirmBackdrop" hidden></div>
+<div class="checkout-modal confirm-modal" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-hidden="true">
+  <div class="confirm-check" aria-hidden="true">
+    <svg viewBox="0 0 52 52" width="56" height="56"><circle class="cc-circle" cx="26" cy="26" r="24" fill="none"/><path class="cc-tick" fill="none" d="M14 27l8 8 16-18"/></svg>
+  </div>
+  <h3 id="confirmTitle">Bestellung bestätigt</h3>
+  <p class="confirm-sub">Danke! Deine Zahlung ist eingegangen — wir bereiten alles frisch für dich zu.</p>
+  <div class="confirm-details">
+    <div class="cd-row"><span>Bestellnummer</span><strong id="confirmOid">—</strong></div>
+    <div class="cd-row"><span id="confirmModeLabel">Bestellung</span><strong id="confirmTotal">—</strong></div>
+    <div class="cd-row"><span>Status</span><strong id="confirmStatus" class="cd-status">bezahlt</strong></div>
+  </div>
+  <p class="confirm-note">Notier dir deine Bestellnummer — bei Rückfragen einfach angeben. Eine Bestätigung ist an die Küche gegangen.</p>
+  <button class="btn btn-primary btn-block" id="confirmClose">Alles klar</button>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>

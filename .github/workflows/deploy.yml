@@ -39,7 +39,7 @@ jobs:
           MANIFEST_PATH = '.ftp-deploy-sync-state.json'
 
           SKIP = {'.git', '.github', '.gitignore', '.gitattributes',
-                  'worker', 'README.md', 'ANALYTICS_SETUP.md', 'CNAME',
+                  'worker', 'order-api', 'README.md', 'ANALYTICS_SETUP.md', 'CNAME',
                   MANIFEST_PATH}
 
           def file_hash(path):

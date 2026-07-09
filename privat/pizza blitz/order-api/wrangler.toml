@@ -1,0 +1,21 @@
+name = "pizza-blitz-orders"
+main = "index.js"
+compatibility_date = "2024-11-01"
+
+# Bestellungen werden hier zwischengespeichert (14 Tage). Namespace einmalig anlegen:
+#   wrangler kv namespace create ORDERS
+# → die ausgegebene id hier eintragen (ersetzt TODO_KV_NAMESPACE_ID).
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "077efa68f75e40c7bf4666b242ee1406"
+
+[vars]
+# Basis-URL der Pizza-Seite (für Weiterleitung nach Zahlung). Bei eigener Domain anpassen.
+SITE_URL = "https://elyesferchichi.com/privat/pizza%20blitz"
+# WINORDER_EMAIL = "bestellungen@…"   # Phase 3: Postfach, das WinOrder prüft
+
+# Secrets NICHT hier eintragen, sondern:
+#   wrangler secret put STRIPE_SECRET_KEY        (sk_test_… → später sk_live_…)
+#   wrangler secret put STRIPE_WEBHOOK_SECRET    (whsec_… aus dem Webhook-Endpunkt)
+#   wrangler secret put TELEGRAM_BOT_TOKEN       (optional: Bestell-Benachrichtigung)
+#   wrangler secret put TELEGRAM_CHAT_ID         (optional)
