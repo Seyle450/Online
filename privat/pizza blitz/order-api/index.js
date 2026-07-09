@@ -300,12 +300,20 @@ async function handleWebhook(request, env) {
   return new Response(JSON.stringify({ received: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
 }
 
-// ── GET /order/:id  (Status für die Danke-Seite) ──────────────────────────────
+// ── GET /order/:id  (Status + Positionen für Bezahlt-Screen & Live-Tracker) ────
+// Bewusst OHNE Kundendaten (Name/Adresse/Telefon) — nur nicht-personenbezogene Infos.
 async function handleOrderStatus(id, env, origin) {
-  const raw = await env.ORDERS.get('order:' + id);
+  const raw = await env.ORDERS.get('order:' + String(id).slice(0, 40));
   if (!raw) return json({ error: 'Bestellung nicht gefunden.' }, 404, origin);
   const o = JSON.parse(raw);
-  return json({ id: o.id, status: o.status, mode: o.mode, total: o.total, createdAt: o.createdAt }, 200, origin);
+  return json({
+    id: o.id, status: o.status, mode: o.mode,
+    subtotal: o.subtotal, delivery: o.delivery, total: o.total,
+    createdAt: o.createdAt, paidAt: o.paidAt || null,
+    lines: (o.lines || []).map((l) => ({
+      name: l.name, sizeLabel: l.sizeLabel || null, qty: l.qty, unitPrice: l.unitPrice, lineTotal: l.lineTotal,
+    })),
+  }, 200, origin);
 }
 
 export default {

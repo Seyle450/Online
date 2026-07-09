@@ -518,14 +518,14 @@
     trackerMode = m === 'abholung' ? 'abholung' : 'lieferung';
     renderStations();
   }
-  /* ---------- Blitz-Tracker ---------- */
-  var trackerRAF = null, trackerPos = 0, trackerRunning = false, trackerTimers = [];
-  var trackerEtaText = '';
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function stopTracker() { if (trackerRAF) { cancelAnimationFrame(trackerRAF); trackerRAF = null; } }
-  function clearTrackerTimers() { trackerTimers.forEach(clearTimeout); trackerTimers = []; }
+  /* ---------- Blitz-Tracker (echte Bestellung, zeitbasiert) ---------- */
+  var ORDER_KEY = 'pb_order';
+  var activeOrder = null;   // { id, mode, startMs, etaMs, lines, total, status }
+  var trackerInterval = null;
+  var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
+
+  // Nur Schiene/Stationen/Statustext setzen (Fortschritt in %)
   function updateTracker(pos) {
-    trackerPos = pos;
     $('#railFill').style.width = pos + '%';
     $('#railToken').style.left = pos + '%';
     var step = pos >= 99 ? 3 : pos >= 66 ? 2 : pos >= 33 ? 1 : 0;
@@ -533,60 +533,94 @@
       var i = +st.getAttribute('data-i');
       st.classList.toggle('done', pos >= STATION_POS[i] - 0.5);
     });
-    var t = TRACKS[trackerMode], idle = pos === 0 && !trackerRunning;
-    $('#statusTitle').textContent = idle ? 'Bereit für die Demo' : t.titles[step];
-    $('#statusText').textContent = idle ? 'Klick auf „Demo starten", um den Blitz auf die Reise zu schicken.' : t.texts[step];
-    $('#statusEta').textContent = (trackerRunning && pos < 99) ? trackerEtaText : '';
-    $('#statusDot').style.background = trackerRunning ? '#3fa653' : (pos >= 100 ? '#d93a2b' : '#a39c8f');
+    var t = TRACKS[trackerMode];
+    $('#statusTitle').textContent = t.titles[step];
+    $('#statusText').textContent = t.texts[step];
+    $('#statusDot').style.background = pos >= 99 ? '#1c9d57' : '#f0a323';
   }
-  function setTrackerEta() {
-    var cfg = TRACKS[trackerMode], d = new Date(Date.now() + cfg.etaMin * 60000);
-    var hh = d.getHours(), mm = d.getMinutes();
-    trackerEtaText = cfg.etaLabel + ': ca. ' + hh + ':' + (mm < 10 ? '0' : '') + mm + ' Uhr';
+
+  function showTrackerState(state) { // 'lookup' | 'card'
+    $('#trackerLookup').hidden = state !== 'lookup';
+    $('#trackerCard').hidden = state !== 'card';
   }
-  // Ein Segment (from→to) weich animieren, dann Callback
-  function animateSegment(from, to, dur, done) {
-    if (reduceMotion) { updateTracker(to); if (done) done(); return; }
-    var start = performance.now();
-    (function tick(now) {
-      var p = Math.min(1, (now - start) / dur);
-      var e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOutQuad
-      updateTracker(from + (to - from) * e);
-      if (p < 1) trackerRAF = requestAnimationFrame(tick);
-      else { trackerRAF = null; if (done) done(); }
-    })(start);
+  function trackerError(msg) {
+    var e = $('#trackerError');
+    if (!msg) { e.hidden = true; return; }
+    e.textContent = msg; e.hidden = false;
   }
-  function startTracker() {
-    if (trackerRunning) return;
-    stopTracker(); clearTrackerTimers();
-    trackerRunning = true;
-    setTrackerEta();
-    $('#trackerBtn').textContent = 'Läuft …';
-    updateTracker(0);
-    var seg = 0;
-    function nextSeg() {
-      if (seg >= 3) {
-        trackerRunning = false;
-        updateTracker(100);
-        $('#trackerBtn').textContent = 'Nochmal abspielen';
-        return;
-      }
-      var from = seg === 0 ? 0 : STATION_POS[seg];
-      animateSegment(from, STATION_POS[seg + 1], reduceMotion ? 0 : 1500, function () {
-        seg++;
-        trackerTimers.push(setTimeout(nextSeg, reduceMotion ? 700 : 2000)); // Verweildauer an der Station
-      });
+  function stopTrackerInterval() { if (trackerInterval) { clearInterval(trackerInterval); trackerInterval = null; } }
+
+  // Aktuellen Fortschritt aus den Zeitstempeln berechnen und anzeigen
+  function trackerTick() {
+    if (!activeOrder) return;
+    var now = Date.now();
+    var span = activeOrder.etaMs - activeOrder.startMs;
+    var progress = span > 0 ? (now - activeOrder.startMs) / span : 1;
+    progress = Math.max(0, Math.min(1, progress));
+    updateTracker(progress * 100);
+    if (now >= activeOrder.etaMs) {
+      // Voraussichtliche Zeit erreicht/überschritten → Ziel + Anruf-Hinweis
+      $('#statusEta').textContent = '';
+      $('#trackerCall').hidden = false;
+      stopTrackerInterval();
+    } else {
+      var d = new Date(activeOrder.etaMs), cfg = TRACKS[activeOrder.mode];
+      $('#statusEta').textContent = cfg.etaLabel + ': ca. ' + d.getHours() + ':' + pad2(d.getMinutes()) + ' Uhr';
+      $('#trackerCall').hidden = true;
     }
-    trackerTimers.push(setTimeout(nextSeg, 500));
   }
-  // Tracker für eine echte, bezahlte Bestellung starten
-  function startTrackerForOrder(oid, mode) {
-    setTrackerMode(mode);
-    var badge = $('#trackerOrderNo');
-    if (oid) { badge.textContent = 'Bestellung ' + oid; badge.hidden = false; } else { badge.hidden = true; }
-    trackerRunning = false; stopTracker(); clearTrackerTimers();
-    trackerPos = 0; updateTracker(0);
-    startTracker();
+
+  // Bestellung laden (per Nummer) und Verfolgung starten
+  function loadOrder(id, fromUser) {
+    id = String(id || '').trim().toUpperCase();
+    if (!id) { if (fromUser) trackerError('Bitte gib deine Bestellnummer ein.'); return; }
+    trackerError('');
+    fetch(ORDER_API + '/order/' + encodeURIComponent(id))
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+      .then(function (d) {
+        if (!d || !d.id) return Promise.reject('bad');
+        var mode = d.mode === 'lieferung' ? 'lieferung' : 'abholung';
+        var start = d.paidAt || d.createdAt || Date.now();
+        activeOrder = {
+          id: d.id, mode: mode, startMs: start,
+          etaMs: start + TRACKS[mode].etaMin * 60000,
+          lines: d.lines || [], total: d.total, status: d.status,
+        };
+        try { localStorage.setItem(ORDER_KEY, d.id); } catch (e) {}
+        setTrackerMode(mode);
+        $('#trackerOrderNo').textContent = 'Bestellung ' + d.id;
+        renderOrderItems($('#trackerItems'), activeOrder.lines);
+        $('#trackerCall').hidden = true;
+        showTrackerState('card');
+        stopTrackerInterval();
+        trackerTick();
+        trackerInterval = setInterval(trackerTick, 10000);
+      })
+      .catch(function (err) {
+        if (err === 404 || err === 'bad') {
+          if (fromUser) trackerError('Keine Bestellung mit dieser Nummer gefunden. Bitte prüfe die Eingabe.');
+          else { try { localStorage.removeItem(ORDER_KEY); } catch (e) {} }
+        } else if (fromUser) {
+          trackerError('Verbindungsfehler. Bitte versuch es gleich nochmal.');
+        }
+      });
+  }
+
+  function resetTracker() {
+    stopTrackerInterval();
+    activeOrder = null;
+    try { localStorage.removeItem(ORDER_KEY); } catch (e) {}
+    $('#trackerInput').value = '';
+    trackerError('');
+    showTrackerState('lookup');
+  }
+
+  // Beim Laden: gespeicherte Bestellung fortsetzen, sonst Eingabe zeigen
+  function initTracker() {
+    var saved = '';
+    try { saved = localStorage.getItem(ORDER_KEY) || ''; } catch (e) {}
+    if (saved) loadOrder(saved, false);
+    else showTrackerState('lookup');
   }
 
   /* ---------- Mobile nav ---------- */
@@ -650,14 +684,12 @@
     $('#confirmClose').addEventListener('click', closeConfirm);
     $('#confirmBackdrop').addEventListener('click', closeConfirm);
 
-    // tracker
-    $('#trackerBtn').addEventListener('click', function () {
-      if (trackerRunning) return;
-      setTrackerMode(mode);            // Demo im aktuell gewählten Modus (Lieferung/Abholung)
-      $('#trackerOrderNo').hidden = true;
-      trackerPos = 0; updateTracker(0);
-      startTracker();
+    // tracker: Bestellnummer nachschlagen + zurücksetzen
+    $('#trackerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      loadOrder($('#trackerInput').value, true);
     });
+    $('#trackerReset').addEventListener('click', resetTracker);
 
     // contact form
     $('#contactForm').addEventListener('submit', function (e) {
@@ -766,35 +798,49 @@
     renderReviews();
     renderTicker();
     renderStations();
-    updateTracker(0);
     renderCart();
     bindEvents();
     initScrollSpy();
     initAnimations();
-    handleOrderReturn();
+    handleOrderReturn();  // ?bestellung=ok speichert die Bestellnummer
+    initTracker();        // gespeicherte Bestellung fortsetzen / Eingabe zeigen
+  }
+
+  // Artikelliste einer Bestellung in ein <ul> rendern (Bezahlt-Screen & Tracker)
+  function renderOrderItems(ul, lines) {
+    if (!ul) return;
+    if (!lines || !lines.length) { ul.innerHTML = ''; ul.hidden = true; return; }
+    ul.innerHTML = lines.map(function (l) {
+      var name = esc(l.name) + (l.sizeLabel ? ' · ' + esc(l.sizeLabel) : '');
+      return '<li class="oi-row"><span class="oi-qty">' + l.qty + '×</span>'
+        + '<span class="oi-name">' + name + '</span>'
+        + '<span class="oi-price">' + fmt(l.lineTotal) + '</span></li>';
+    }).join('');
+    ul.hidden = false;
   }
 
   // Bestätigungs-Screen nach erfolgreicher Zahlung
-  var paidOid = '', paidMode = 'lieferung';
+  var paidOid = '';
   function openConfirm(oid) {
-    paidOid = oid || ''; paidMode = 'lieferung';
+    paidOid = oid || '';
     $('#confirmOid').textContent = oid || '—';
     $('#confirmModeLabel').textContent = 'Gesamt';
     $('#confirmTotal').textContent = '—';
     $('#confirmStatus').textContent = 'bezahlt';
+    renderOrderItems($('#confirmItems'), null);
     $('#confirmBackdrop').hidden = false;
     $('#confirmModal').setAttribute('aria-hidden', 'false');
-    // Details live nachladen (Betrag, Modus, Status)
+    // Details live nachladen (Artikel, Betrag, Modus, Status)
     if (oid) {
       fetch(ORDER_API + '/order/' + encodeURIComponent(oid))
         .then(function (r) { return r.json(); })
         .then(function (d) {
-          if (d && d.mode) paidMode = d.mode === 'lieferung' ? 'lieferung' : 'abholung';
           if (d && typeof d.total === 'number') {
             $('#confirmModeLabel').textContent = d.mode === 'lieferung' ? 'Lieferung' : 'Abholung';
             $('#confirmTotal').textContent = fmt(d.total);
           }
           if (d && d.status) $('#confirmStatus').textContent = d.status === 'paid' ? 'bezahlt' : d.status;
+          if (d && d.lines) renderOrderItems($('#confirmItems'), d.lines);
         })
         .catch(function () {});
     }
@@ -803,11 +849,10 @@
     if ($('#confirmModal').getAttribute('aria-hidden') === 'true') return;
     $('#confirmBackdrop').hidden = true;
     $('#confirmModal').setAttribute('aria-hidden', 'true');
-    // Blitz-Tracker mit der echten Bestellung starten und hinscrollen
+    // Zum Live-Tracker scrollen (Verfolgung läuft bereits über initTracker/loadOrder)
     var el = $('#tracker');
     if (el) {
-      $('#trackerSub').textContent = 'Verfolge deine Bestellung live.';
-      startTrackerForOrder(paidOid, paidMode);
+      if (paidOid && !activeOrder) loadOrder(paidOid, false);
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
@@ -819,7 +864,9 @@
     if (!b) return;
     if (b === 'ok') {
       cart = {}; saveCart(); renderCart(); closeCart(); closeCheckout();
-      openConfirm(p.get('oid') || '');
+      var oid = p.get('oid') || '';
+      if (oid) { try { localStorage.setItem(ORDER_KEY, oid); } catch (e) {} }  // für Tab-Wiederkehr
+      openConfirm(oid);
     } else if (b === 'abbruch') {
       // Warenkorb bleibt erhalten – Kasse wieder öffnen, falls noch was drin ist
       if (cartCount() > 0) { openCart(); }

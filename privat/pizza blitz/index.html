@@ -253,15 +253,31 @@
 <section class="section tracker-section" id="tracker">
   <div class="wrap">
     <header class="section-head reveal">
-      <span class="eyebrow">Live-Demo</span>
-      <h2 id="trackerHeadline">So läuft deine Bestellung</h2>
-      <p class="section-lead" id="trackerSub">Live-Demo mit simulierten Daten — starte den Tracker und schau zu.</p>
+      <span class="eyebrow">Bestellstatus</span>
+      <h2 id="trackerHeadline">Verfolge deine Bestellung</h2>
+      <p class="section-lead" id="trackerSub">Gib deine Bestellnummer ein und sieh live, wo deine Pizza gerade ist.</p>
     </header>
-    <div class="tracker-card reveal">
-      <span class="tracker-orderno" id="trackerOrderNo" hidden></span>
+
+    <!-- Zustand A: Bestellnummer eingeben / noch nicht bestellt -->
+    <div class="tracker-lookup reveal" id="trackerLookup">
+      <form class="tracker-form" id="trackerForm" novalidate>
+        <input type="text" id="trackerInput" autocomplete="off" spellcheck="false"
+          placeholder="Bestellnummer, z. B. PB-XXXX-XXXX" aria-label="Bestellnummer eingeben">
+        <button type="submit" class="btn btn-primary">Status ansehen</button>
+      </form>
+      <p class="tracker-error" id="trackerError" hidden></p>
+      <p class="tracker-nostart">Noch nicht bestellt? <a href="#speisekarte" class="link-arrow">Zur Speisekarte, dann Status verfolgen →</a></p>
+    </div>
+
+    <!-- Zustand B: aktive Verfolgung -->
+    <div class="tracker-card reveal" id="trackerCard" hidden>
+      <div class="tracker-card-top">
+        <span class="tracker-orderno" id="trackerOrderNo"></span>
+        <button type="button" class="tracker-change" id="trackerReset">Andere Bestellung</button>
+      </div>
       <div class="tracker-status">
         <span class="status-dot" id="statusDot"></span>
-        <div><strong id="statusTitle">Bereit für die Demo</strong><span id="statusText">Klick auf „Demo starten", um den Blitz auf die Reise zu schicken.</span><span class="status-eta" id="statusEta"></span></div>
+        <div><strong id="statusTitle">Bestellung eingegangen</strong><span id="statusText">Wir haben deine Bestellung erhalten.</span><span class="status-eta" id="statusEta"></span></div>
       </div>
       <div class="tracker-rail">
         <div class="rail-bg"></div>
@@ -269,7 +285,11 @@
         <div class="rail-token" id="railToken" aria-hidden="true"></div>
         <div class="stations" id="stations"></div>
       </div>
-      <button class="btn btn-primary" id="trackerBtn">Demo starten</button>
+      <ul class="confirm-items tracker-items" id="trackerItems" hidden></ul>
+      <div class="tracker-call" id="trackerCall" hidden>
+        <p id="trackerCallText">Deine Bestellung sollte jetzt bei dir sein. Noch nicht da oder eine Frage? Ruf uns kurz an — wir kümmern uns sofort.</p>
+        <a class="btn btn-primary" id="trackerCallBtn" href="tel:0421274080">📞 0421 274080 anrufen</a>
+      </div>
     </div>
   </div>
 </section>
@@ -439,6 +459,7 @@
   </div>
   <h3 id="confirmTitle">Bestellung bestätigt</h3>
   <p class="confirm-sub">Danke! Deine Zahlung ist eingegangen — wir bereiten alles frisch für dich zu.</p>
+  <ul class="confirm-items" id="confirmItems" hidden></ul>
   <div class="confirm-details">
     <div class="cd-row"><span>Bestellnummer</span><strong id="confirmOid">—</strong></div>
     <div class="cd-row"><span id="confirmModeLabel">Bestellung</span><strong id="confirmTotal">—</strong></div>
