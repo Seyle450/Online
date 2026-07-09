@@ -770,6 +770,25 @@ body { min-height: 100svh; }
       </div>
     </div>
 
+    <!-- Shop / Bestellungen (nur sichtbar, wenn Shop-Events vorliegen, z. B. Pizza Blitz) -->
+    <div class="section-label" id="shopSection" style="display:none">Shop / Bestellungen <span class="scope scope-consent">mit Einwilligung</span></div>
+    <div class="panel-grid" id="shopKpis" style="display:none;grid-template-columns:repeat(4,1fr);margin-bottom:1.25rem">
+      <div class="kpi-card" style="--kpi-accent:#25D366"><div class="kpi-icon">🛒</div><div class="kpi-label">Käufe</div><div class="kpi-value" id="shopPurchases">–</div><div class="kpi-sub" id="shopBuyersSub"></div></div>
+      <div class="kpi-card" style="--kpi-accent:#f59e0b"><div class="kpi-icon">💶</div><div class="kpi-label">Umsatz</div><div class="kpi-value" id="shopRevenue">–</div><div class="kpi-sub">im Zeitraum</div></div>
+      <div class="kpi-card" style="--kpi-accent:#22d3ee"><div class="kpi-icon">🧾</div><div class="kpi-label">Ø Bestellwert</div><div class="kpi-value" id="shopAvg">–</div><div class="kpi-sub">pro Kauf</div></div>
+      <div class="kpi-card" style="--kpi-accent:#a78bfa"><div class="kpi-icon">🎯</div><div class="kpi-label">Kaufabschluss</div><div class="kpi-value" id="shopConv">–</div><div class="kpi-sub">Käufe / Kasse gestartet</div></div>
+    </div>
+    <div class="panel-grid" id="shopPanels" style="display:none;margin-bottom:1.25rem">
+      <div class="panel">
+        <div class="panel-header"><h3>Bestell-Funnel</h3><span style="font-size:.72rem;color:var(--muted)">Weg bis zum Kauf</span></div>
+        <div class="panel-body" id="shopFunnel" style="padding:1rem 1.1rem"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><h3>Top-Produkte</h3><span style="font-size:.72rem;color:var(--muted)">in den Warenkorb gelegt</span></div>
+        <div class="panel-body"><table><thead><tr><th>Produkt</th><th>Mal</th></tr></thead><tbody id="shopTopProducts"></tbody></table></div>
+      </div>
+    </div>
+
     <!-- Scroll-Tiefe + Heatmap -->
     <div class="panel-grid" style="margin-bottom:1.25rem">
       <div class="chart-card">
@@ -1339,6 +1358,7 @@ function renderAll() {
   renderAnonPanel(s.anonStats || {});
   renderUtmPanel(s.topUtmSources || [], s.topUtmCampaigns || []);
   renderClicksPanel(s.topClicks || [], s.clickCategories || []);
+  renderShopPanel(s.shop || {});
   renderScrollChart(s.scrollDepth || {});
   renderHeatmap(rawEvents);
   renderLandingTable(s.topLandingPages || []);
@@ -2126,6 +2146,57 @@ function renderClicksPanel(topClicks, clickCategories) {
       + '<span class="country-count">' + c.count + '</span>'
       + '</div>';
   }).join('');
+}
+
+// ── Shop / Bestellungen (Funnel + Umsatz + Top-Produkte) ──────────────────────
+function fmtEuro(n) { return (n || 0).toLocaleString('de', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €'; }
+function renderShopPanel(shop) {
+  shop = shop || {};
+  var has = (shop.total || 0) > 0;
+  ['shopSection', 'shopKpis', 'shopPanels'].forEach(function (id) {
+    var el = document.getElementById(id); if (el) el.style.display = has ? '' : 'none';
+  });
+  if (!has) return;
+
+  document.getElementById('shopPurchases').textContent = (shop.purchases || 0).toLocaleString('de');
+  document.getElementById('shopBuyersSub').textContent = (shop.buyers || 0) + ' Käufer · ' + (shop.aborts || 0) + ' abgebrochen';
+  document.getElementById('shopRevenue').textContent   = fmtEuro(shop.revenue || 0);
+  document.getElementById('shopAvg').textContent       = fmtEuro(shop.avgOrder || 0);
+  document.getElementById('shopConv').textContent      = (shop.checkoutConversion || 0) + '%';
+
+  var steps = [
+    { label: 'Produkt angesehen',   count: shop.views || 0 },
+    { label: 'In den Warenkorb',    count: shop.addToCart || 0 },
+    { label: 'Kasse gestartet',     count: shop.checkoutStart || 0 },
+    { label: 'Bezahlung gestartet', count: shop.beginPayment || 0 },
+    { label: 'Gekauft',             count: shop.purchases || 0 },
+  ];
+  var max = steps.reduce(function (m, s) { return Math.max(m, s.count); }, 1);
+  document.getElementById('shopFunnel').innerHTML = steps.map(function (st, i) {
+    var pct = Math.round(st.count / max * 100);
+    var drop = (i > 0 && steps[i - 1].count > 0) ? Math.round(st.count / steps[i - 1].count * 100) : null;
+    return '<div style="margin-bottom:.65rem">'
+      + '<div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:.22rem">'
+      + '<span style="color:var(--muted2)">' + st.label + '</span>'
+      + '<span style="font-weight:600;color:var(--text)">' + st.count
+      + (drop != null ? ' <span style="color:var(--muted);font-weight:400">(' + drop + '%)</span>' : '') + '</span></div>'
+      + '<div style="height:9px;background:var(--border2);border-radius:5px;overflow:hidden">'
+      + '<div style="width:' + pct + '%;height:100%;background:linear-gradient(90deg,var(--accent2),#25D366);border-radius:5px"></div></div></div>';
+  }).join('');
+
+  var tb = document.getElementById('shopTopProducts');
+  if (!shop.topProducts || !shop.topProducts.length) {
+    tb.innerHTML = '<tr><td colspan="2" style="color:var(--muted);text-align:center;padding:1.25rem;font-size:.8rem">Noch keine Produkte im Warenkorb</td></tr>';
+  } else {
+    var pmax = shop.topProducts[0].count;
+    tb.innerHTML = shop.topProducts.map(function (p) {
+      var pct = pmax > 0 ? Math.round(p.count / pmax * 100) : 0;
+      return '<tr><td><span style="font-size:.82rem">' + esc(p.name) + '</span></td>'
+        + '<td><span style="color:var(--accent2);font-weight:600">' + p.count + '</span>'
+        + '<div style="width:50px;height:3px;background:var(--border2);border-radius:2px;margin:.25rem 0 0 .4rem;display:inline-block;vertical-align:middle">'
+        + '<div style="width:' + pct + '%;height:100%;background:var(--accent2);border-radius:2px"></div></div></td></tr>';
+    }).join('');
+  }
 }
 
 // ── Scroll-Tiefe ──────────────────────────────────────────────────────────────

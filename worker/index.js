@@ -1072,6 +1072,13 @@ async function handleSummary(request, env) {
   const convSessionIdsRaw = new Set();   // Sessions mit Conversion-Klick (roh)
   const CONV_CATS = new Set(['whatsapp', 'email', 'phone', 'form']);
   let totalClicks = 0;
+  // Shop-Funnel (category 'shop': product_view, add_to_cart, checkout_start,
+  // begin_payment, purchase, checkout_abort). Bestellwert steckt als Cent in depth.
+  const shopByType = {};
+  const shopProducts = {};
+  const shopSessions = new Set();
+  const shopBuyerSessions = new Set();
+  let shopRevenueCents = 0;
   if (env.DB) {
     try {
       const sql = `SELECT ts,type,label,category,depth,session_id,visitor_id FROM clicks WHERE ts >= ? AND ts <= ?` + (site ? ' AND site = ?' : '');
@@ -1082,6 +1089,20 @@ async function handleSummary(request, env) {
         if (c.category === 'scroll' || c.type === 'scroll') {
           const d = parseInt(c.depth != null ? c.depth : c.label, 10);
           if (scrollDepthCount[d] != null) scrollDepthCount[d]++;
+          continue;
+        }
+        // Shop-Events getrennt auswerten (nicht in die generischen Klick-Zähler)
+        if (c.category === 'shop') {
+          const t = c.type || 'event';
+          shopByType[t] = (shopByType[t] || 0) + 1;
+          if (c.session_id) shopSessions.add(c.session_id);
+          if (t === 'purchase') {
+            shopRevenueCents += (parseInt(c.depth, 10) || 0);
+            if (c.session_id) shopBuyerSessions.add(c.session_id);
+          } else if (t === 'add_to_cart') {
+            const nm = c.label || '?';
+            shopProducts[nm] = (shopProducts[nm] || 0) + 1;
+          }
           continue;
         }
         totalClicks++;
@@ -1100,6 +1121,27 @@ async function handleSummary(request, env) {
   const clickCategories = Object.entries(clickCategoryCount)
     .sort((a, b) => b[1] - a[1])
     .map(([category, count]) => ({ category, count }));
+
+  // Shop-Funnel zusammenfassen (leer, wenn die Site keinen Shop hat)
+  const shopPurchases = shopByType.purchase || 0;
+  const shopCheckoutStart = shopByType.checkout_start || 0;
+  const shop = {
+    total: Object.values(shopByType).reduce((a, b) => a + b, 0),
+    views: shopByType.product_view || 0,
+    addToCart: shopByType.add_to_cart || 0,
+    checkoutStart: shopCheckoutStart,
+    beginPayment: shopByType.begin_payment || 0,
+    purchases: shopPurchases,
+    aborts: shopByType.checkout_abort || 0,
+    revenue: Math.round(shopRevenueCents) / 100,
+    avgOrder: shopPurchases > 0 ? Math.round(shopRevenueCents / shopPurchases) / 100 : 0,
+    buyers: shopBuyerSessions.size,
+    shopSessions: shopSessions.size,
+    // Conversion: Käufe je Kassen-Start (Kaufabschluss-Quote)
+    checkoutConversion: shopCheckoutStart > 0 ? Math.round((shopPurchases / shopCheckoutStart) * 100) : 0,
+    topProducts: Object.entries(shopProducts).sort((a, b) => b[1] - a[1]).slice(0, 10)
+      .map(([name, count]) => ({ name, count })),
+  };
 
   // Pass 2: Session-Merge-Map aufbauen (verknüpft Cross-Tab-Pfade retroaktiv)
   const resolveSession = buildSessionMergeMap(allEvents);
@@ -1243,6 +1285,7 @@ async function handleSummary(request, env) {
     totalClicks,
     topClicks,
     clickCategories,
+    shop,
     scrollDepth: scrollDepthCount,
     conversions,
     conversionRate,
