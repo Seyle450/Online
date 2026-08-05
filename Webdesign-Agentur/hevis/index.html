@@ -42,9 +42,7 @@
   ]
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts.css">
 <link rel="stylesheet" href="styles.css">
 <script src="https://elyesferchichi.com/analytics/tracker.js" defer></script>
 <style>#_acb{--acb-bg:#fdf9f4;--acb-border:rgba(92,125,67,.12);--acb-text:#2a3a1e;--acb-sub:#6b7c60;--acb-accent:#5c7d43;--acb-accent-soft:rgba(92,125,67,.1);--acb-accent-fg:#fff;--acb-deny-bg:#f0ebe3;--acb-deny-text:#7a8a6e;--acb-deny-hover:#e6dfd5;--acb-shadow:0 -6px 40px rgba(92,125,67,.12);--acb-font:'Archivo','Fraunces',sans-serif;--acb-btn-r:6px;}</style></head>
@@ -421,6 +419,126 @@
 
 <script src="script.js"></script>
 <script async src="https://www.instagram.com/embed.js"></script>
+
+<!-- ============ KONZEPT-HINWEIS (Elyes Ferchichi) — nach 15 s, 1x pro Sitzung ============ -->
+<div class="elycn-backdrop" id="elycnBackdrop" hidden></div>
+<div class="elycn" id="elycnModal" role="dialog" aria-modal="true" aria-labelledby="elycnTitle" aria-hidden="true" lang="de">
+  <span class="elycn-badge">Konzept-Website</span>
+  <h2 class="elycn-title" id="elycnTitle">Kurzer Hinweis</h2>
+  <p class="elycn-text">Diese Website ist ein <strong>unverbindlicher Entwurf</strong> und nicht der offizielle Auftritt von Hevi's Café. Sie wurde als Gestaltungsvorschlag erstellt — Formulare sind <strong>noch nicht aktiv</strong>.</p>
+  <p class="elycn-text">Gestaltet und entwickelt von <strong>Elyes Ferchichi</strong> — Webdesign aus Bremen.</p>
+  <div class="elycn-actions">
+    <button type="button" class="elycn-btn elycn-primary" id="elycnClose">Website weiter ansehen</button>
+    <a class="elycn-btn elycn-ghost" href="https://elyesferchichi.com" target="_blank" rel="noopener">Mehr über den Ersteller <span aria-hidden="true">↗</span></a>
+  </div>
+</div>
+<style>
+.elycn-backdrop{position:fixed;inset:0;background:rgba(10,12,16,.58);z-index:2147482000;opacity:0;transition:opacity .28s ease}
+.elycn-backdrop.is-on{opacity:1}
+.elycn{position:fixed;left:50%;top:50%;transform:translate(-50%,-46%);z-index:2147482001;
+  width:min(460px,calc(100vw - 28px));max-height:calc(100vh - 28px);max-height:calc(100dvh - 28px);overflow-y:auto;
+  --elycn-accent:#4e6b39;--elycn-accent-ink:#fff;--elycn-paper:#faf6ee;--elycn-ink:#23291f;
+  --elycn-muted:#6d6959;--elycn-line:#e2dccd;--elycn-r:14px;
+  background:var(--elycn-paper);color:var(--elycn-ink);border:1px solid var(--elycn-line);border-radius:var(--elycn-r);
+  box-shadow:0 32px 80px -24px rgba(0,0,0,.5);padding:26px 24px 22px;
+  font-family:'Archivo',system-ui,sans-serif;font-size:15px;line-height:1.65;text-align:left;
+  opacity:0;visibility:hidden;transition:opacity .28s ease,transform .28s ease}
+.elycn[aria-hidden="false"]{opacity:1;visibility:visible;transform:translate(-50%,-50%)}
+.elycn-badge{display:inline-block;background:var(--elycn-accent);color:var(--elycn-accent-ink);
+  font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 12px;border-radius:100px;margin-bottom:14px;font-family:'Archivo',system-ui,sans-serif}
+.elycn-title{font-family:'Fraunces',Georgia,serif;font-size:26px;line-height:1.2;font-weight:600;margin:0 0 12px;color:var(--elycn-ink);letter-spacing:0}
+.elycn-text{margin:0 0 12px;color:var(--elycn-muted);font-size:15px;line-height:1.65}
+.elycn-text strong{color:var(--elycn-ink);font-weight:700}
+.elycn-actions{display:flex;flex-direction:column;gap:9px;margin-top:18px}
+.elycn-btn{display:flex;align-items:center;justify-content:center;min-height:46px;padding:12px 18px;
+  border:1px solid transparent;border-radius:calc(var(--elycn-r) * .6);cursor:pointer;
+  font-family:'Archivo',system-ui,sans-serif;font-size:15px;font-weight:600;line-height:1.2;text-align:center;text-decoration:none;
+  transition:opacity .2s ease,background-color .2s ease}
+.elycn-primary{background:var(--elycn-accent);color:var(--elycn-accent-ink)}
+.elycn-primary:hover{opacity:.88}
+.elycn-ghost{background:transparent;color:var(--elycn-muted);border-color:var(--elycn-line)}
+.elycn-ghost:hover{color:var(--elycn-ink);border-color:var(--elycn-muted)}
+.elycn-btn:focus-visible{outline:3px solid var(--elycn-accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.elycn,.elycn-backdrop,.elycn-btn{transition:none}
+  .elycn{transform:translate(-50%,-50%)}}
+</style>
+<script>
+(function(){
+  'use strict';
+  var KEY = 'hv_concept_seen', DELAY = 15000;
+  var seen = false; try { seen = sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+  if (seen) return;
+
+  var modal = document.getElementById('elycnModal');
+  var backdrop = document.getElementById('elycnBackdrop');
+  var closeBtn = document.getElementById('elycnClose');
+  if (!modal || !backdrop || !closeBtn) return;
+  try { modal.inert = true; } catch (e) {}
+
+  var isOpen = false, lastFocus = null, inerted = [], prevHtml = '', prevBody = '';
+
+  // Nicht in eine offene Navigation / einen offenen Dialog hineinplatzen
+  function busy() {
+    var c = document.body.className || '';
+    if (/\b(nav-open|cart-open|menu-open|modal-open|no-scroll)\b/.test(c)) return true;
+    if (document.querySelector('[role="dialog"][aria-hidden="false"]')) return true;
+    if (document.querySelector('.navlinks.open, .mobile-nav.open, nav .open')) return true;
+    return false;
+  }
+
+  function open() {
+    if (isOpen) return;
+    isOpen = true;
+    lastFocus = document.activeElement;
+    backdrop.hidden = false;
+
+    // Fokus-Falle: alles außer Dialog+Backdrop aus der Tab-Reihenfolge nehmen
+    inerted = [];
+    var kids = document.body.children;
+    for (var i = 0; i < kids.length; i++) {
+      var el = kids[i];
+      if (el === modal || el === backdrop) continue;
+      try { if (!el.inert) { el.inert = true; inerted.push(el); } } catch (e) {}
+    }
+    try { modal.inert = false; } catch (e) {}
+
+    prevHtml = document.documentElement.style.overflow;
+    prevBody = document.body.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+
+    modal.setAttribute('aria-hidden', 'false');
+    requestAnimationFrame(function () { backdrop.classList.add('is-on'); });
+    setTimeout(function () { try { closeBtn.focus(); } catch (e) {} }, 40);
+  }
+
+  function close() {
+    if (!isOpen) return;
+    isOpen = false;
+    modal.setAttribute('aria-hidden', 'true');
+    backdrop.classList.remove('is-on');
+    try { modal.inert = true; } catch (e) {}
+    inerted.forEach(function (el) { try { el.inert = false; } catch (e) {} });
+    inerted = [];
+    document.documentElement.style.overflow = prevHtml;
+    document.body.style.overflow = prevBody;
+    setTimeout(function () { backdrop.hidden = true; }, 320);
+    try { if (lastFocus && lastFocus.focus) lastFocus.focus(); } catch (e) {}
+  }
+
+  closeBtn.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  function attempt() {
+    if (busy()) { setTimeout(attempt, 8000); return; }
+    try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+    open();
+  }
+  setTimeout(attempt, DELAY);
+})();
+</script>
 </body>
 </html>
 
