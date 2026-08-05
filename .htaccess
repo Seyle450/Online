@@ -24,3 +24,7 @@ RewriteRule ^Webdesign-Agentur/cafe-niki(/.*)?$ https://niki.elyesferchichi.com$
 
 # webdesign-bremen/ → root (subdomain wurde gelöscht)
 RewriteRule ^webdesign-bremen(/.*)?$ https://elyesferchichi.com$1 [R=301,L]
+
+# Freelance.html → root (Datei gelöscht). Ersetzt die alte Meta-Refresh-Hülle:
+# echte 301 statt Client-Redirect, damit alte Links/Rankings sauber übergehen.
+RewriteRule ^Freelance\.html$ https://elyesferchichi.com/ [R=301,L]
