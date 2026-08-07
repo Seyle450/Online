@@ -1,6 +1,23 @@
 Options -Indexes
 RewriteEngine On
 
+# ── Eigene Fehlerseite statt der nackten Apache-Meldung ──────────────────────
+ErrorDocument 404 /404.html
+
+# ── Apple: Universal-Links-Datei ─────────────────────────────────────────────
+# iOS fragt beim Teilen von Links /apple-app-site-association und
+# /.well-known/apple-app-site-association ab. Ohne Datei landet jeder dieser
+# Aufrufe als 404 im Log. Die Datei sagt schlicht „zu dieser Domain gehört
+# keine App" — das ist die korrekte Antwort und beendet die Fehlermeldungen.
+# Sie MUSS als application/json ausgeliefert werden und hat bewusst keine
+# Dateiendung, deshalb der explizite Content-Type.
+<FilesMatch "^apple-app-site-association$">
+  ForceType application/json
+</FilesMatch>
+
+# .well-known darf nicht blockiert werden (manche Server sperren Punkt-Ordner)
+RewriteRule ^\.well-known/ - [L]
+
 # Subdomains für Konzept-Projekte (saubere URLs)
 # hevis.elyesferchichi.com → /Webdesign Agentur/hevis/
 # bens.elyesferchichi.com  → /Webdesign Agentur/bens/

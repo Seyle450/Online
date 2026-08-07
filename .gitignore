@@ -9,3 +9,7 @@ worker/.dev.vars
 # Internes Angebots-/Kalkulationsdokument – nicht öffentlich
 privat/pizza blitz/Pizza-Blitz-Erweiterungsangebot.pdf
 privat/pizza blitz/Pizza-Blitz-Website-Uebersicht.pdf
+
+# Bild-Originale (1024er PNGs, ~32 MB): bleiben lokal als Vorlage,
+# gehören aber nicht ins Repo — deployed wird das optimierte WebP.
+**/_original/

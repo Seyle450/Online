@@ -10,15 +10,21 @@
 <meta property="og:url" content="https://antepli.elyesferchichi.com/">
 <meta property="og:title" content="ANTEPLI — Künefe · Baklava · Kadayif · Bremen">
 <meta property="og:description" content="ANTEPLI Bremen — authentische türkische Süßspeisen: Baklava, Künefe & Kadayif. Frisch zubereitet, direkt aus Bremen.">
-<meta property="og:image" content="https://elyesferchichi.com/previews/antepli.png">
+<meta property="og:image" content="https://antepli.elyesferchichi.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Fıstıklı Baklava im Anschnitt — ANTEPLI, türkische Patisserie in Bremen">
 <meta property="og:site_name" content="Antepli Baklava">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","name":"Antepli Baklava","url":"https://antepli.elyesferchichi.com/"}
 </script>
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="shop.css">
+<link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<link rel="icon" type="image/png" sizes="128x128" href="assets/favicon-128.png">
-<link rel="apple-touch-icon" href="assets/favicon-128.png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#18230f">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
@@ -27,13 +33,20 @@
   "@type": "Bakery",
   "name": "ANTEPLI",
   "description": "Authentische türkische Süßspeisen aus Bremen: Baklava, Künefe & Kadayif – frisch zubereitet.",
-  "image": "https://elyesferchichi.com/previews/antepli.png",
+  "image": "https://antepli.elyesferchichi.com/assets/og-image.jpg",
   "url": "https://antepli.elyesferchichi.com/",
   "servesCuisine": ["Türkisch", "Baklava", "Künefe", "Kadayif", "Dessert"],
   "priceRange": "€€",
+  "currenciesAccepted": "EUR",
+  "paymentAccepted": "Karte, Apple Pay, Google Pay, Bar",
   "address": { "@type": "PostalAddress", "streetAddress": "Waller Ring 121a", "postalCode": "28219", "addressLocality": "Bremen", "addressCountry": "DE" },
-  "areaServed": "Bremen",
-  "hasMenu": "https://antepli.elyesferchichi.com/",
+  "areaServed": { "@type": "City", "name": "Bremen" },
+  "hasMenu": "https://antepli.elyesferchichi.com/bestellen.html",
+  "potentialAction": {
+    "@type": "OrderAction",
+    "target": { "@type": "EntryPoint", "urlTemplate": "https://antepli.elyesferchichi.com/bestellen.html", "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"] },
+    "deliveryMethod": ["http://purl.org/goodrelations/v1#DeliveryModePickUp", "http://purl.org/goodrelations/v1#DeliveryModeOwnFleet"]
+  },
   "sameAs": ["https://www.instagram.com/anteplibaklava.de/"],
   "openingHoursSpecification": [
     { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"], "opens": "10:30", "closes": "23:59" },
@@ -42,15 +55,18 @@
 }
 </script>
 <script src="script.js" defer></script>
+<script src="shop.js" defer></script>
 <script src="https://elyesferchichi.com/analytics/tracker.js" defer></script>
 <style>#_acb{--acb-bg:#18230f;--acb-border:rgba(208,169,61,.15);--acb-text:#f0e8d0;--acb-sub:rgba(240,232,208,.55);--acb-accent:#d0a93d;--acb-accent-soft:rgba(208,169,61,.1);--acb-accent-fg:#18230f;--acb-deny-bg:rgba(255,255,255,.06);--acb-deny-text:rgba(240,232,208,.55);--acb-deny-hover:rgba(255,255,255,.1);--acb-shadow:0 -8px 48px rgba(0,0,0,.5);--acb-font:'Cormorant Garamond','Manrope',serif;--acb-btn-r:4px;}</style></head>
 <body>
 
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+
 <nav class="nav" id="nav">
   <div class="nav-inner">
-    <a class="brand" href="#top"><img class="brand-logo" src="assets/logo.png" alt="Antepli — Baklava · Künefe"></a>
+    <a class="brand" href="#top"><img class="brand-logo" src="assets/logo.png" alt="Antepli — Baklava · Künefe" width="146" height="121" fetchpriority="high"></a>
     <div class="nav-links">
-      <a href="#speisekarte">Speisekarte</a>
+      <a href="bestellen.html">Online bestellen</a>
       <a href="#bestellen">Blech bestellen</a>
       <a href="#galerie">Galerie</a>
       <a href="#reservieren">Reservieren</a>
@@ -59,10 +75,12 @@
     <a class="ig-link" href="https://www.instagram.com/anteplibaklava.de/" target="_blank" rel="noopener" aria-label="Instagram">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect><circle cx="12" cy="12" r="4.5"></circle><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"></circle></svg>
     </a>
-    <a class="btn" href="#bestellen">Jetzt bestellen</a>
+    <a class="btn" href="bestellen.html">Jetzt bestellen</a>
     <button class="nav-toggle" id="navToggle" type="button" aria-label="Menü öffnen"><span></span><span></span><span></span></button>
   </div>
 </nav>
+
+<main id="main">
 
 <header class="hero" id="top" data-screen-label="Hero">
   <div class="wrap hero-grid">
@@ -83,8 +101,12 @@
     </div>
     <div class="stage" id="heroStage">
       <div class="stage-inner" id="heroInner">
-        <div class="card3d card-main"><image-slot id="hero-main" radius="18" placeholder="Instagram-Foto hierher ziehen — z. B. das Künefe-Bild"></image-slot></div>
-        <div class="card3d card-small"><image-slot id="hero-small" radius="18" placeholder="Zweites Foto"></image-slot></div>
+        <div class="card3d card-main"><image-slot id="hero-main" radius="18" fit="cover"
+          src="assets/hero-baklava.webp" role="img" aria-label="Vier Stücke Fıstıklı Baklava mit Antep-Pistazien auf einer grünen Marmorplatte"
+          placeholder="Instagram-Foto hierher ziehen — z. B. das Künefe-Bild"></image-slot></div>
+        <div class="card3d card-small"><image-slot id="hero-small" radius="18" fit="cover"
+          src="assets/hero-kunefe.webp" role="img" aria-label="Frisch gebackene Künefe mit Pistazien in der Kupferpfanne"
+          placeholder="Zweites Foto"></image-slot></div>
         <div class="card-chip">Fıstıklı Künefe<small>Hausspezialität</small></div>
       </div>
     </div>
@@ -98,65 +120,21 @@
   </div>
 </div>
 
-<section class="block" id="speisekarte" data-screen-label="Speisekarte">
+<section class="block alt" id="beliebt" data-screen-label="Beliebte Produkte">
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="eyebrow">Speisekarte</span>
-      <h2>Süßes nach Gaziantep-Art</h2>
-      <p>Alles wird täglich frisch in unserer Küche zubereitet — mit Antep-Pistazien, Butter und viel Geduld.</p>
+      <span class="eyebrow">Direkt bestellen</span>
+      <h2>Unsere Beliebtesten</h2>
+      <p>Einzelne Portionen für zwischendurch — leg sie gleich hier in den Warenkorb. Ganze Bleche für Feiern konfigurierst du weiter unten.</p>
     </div>
-    <div class="menu-card reveal">
-      <span class="menu-orn top">◆</span>
-      <div class="menu-cols">
-      <div class="menu-group reveal">
-        <h3>Baklava &amp; Co.</h3>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Fıstıklı Baklava<span class="badge">Beliebt</span></span><span class="dots"></span><span class="price">100 g · 3,50 €</span></div>
-          <p>Klassische Baklava mit Antep-Pistazien und Butterteig</p>
-        </div>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Şöbiyet</span><span class="dots"></span><span class="price">100 g · 3,80 €</span></div>
-          <p>Gefüllt mit Sahnecreme und Pistazien</p>
-        </div>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Soğuk Baklava</span><span class="dots"></span><span class="price">Stück · 4,50 €</span></div>
-          <p>Kalte Baklava mit Milch und Schokolade — erfrischend anders</p>
-        </div>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Havuç Dilimi</span><span class="dots"></span><span class="price">Stück · 4,20 €</span></div>
-          <p>„Karottenschnitte" — extra viele Pistazienschichten</p>
-        </div>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Cevizli Baklava</span><span class="dots"></span><span class="price">100 g · 3,20 €</span></div>
-          <p>Mit Walnüssen, für Freunde des klassischen Geschmacks</p>
-        </div>
-      </div>
-      <div class="menu-group reveal">
-        <h3>Warm &amp; frisch serviert</h3>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Fıstıklı Künefe<span class="badge">Hausspezialität</span></span><span class="dots"></span><span class="price">9,50 €</span></div>
-          <p>Engelshaar mit geschmolzenem Käse, Pistazien &amp; Sirup — am Tisch serviert</p>
-        </div>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Katmer</span><span class="dots"></span><span class="price">10,50 €</span></div>
-          <p>Hauchdünner Teig mit Kaymak und Pistazien, frisch gebacken</p>
-        </div>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Kadayıf</span><span class="dots"></span><span class="price">7,50 €</span></div>
-          <p>Knuspriges Engelshaar mit Pistazienfüllung</p>
-        </div>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Künefe mit Maraş-Eis</span><span class="dots"></span><span class="price">11,50 €</span></div>
-          <p>Heiß trifft kalt — unsere beliebteste Kombination</p>
-        </div>
-        <div class="menu-entry">
-          <div class="menu-item"><span class="name">Çay / Türkischer Mokka</span><span class="dots"></span><span class="price">2,00 / 3,50 €</span></div>
-          <p>Dazu gehört immer ein Tee</p>
-        </div>
-      </div>
-    </div>
-      <p class="menu-note">Torten auf Vorbestellung · Alle Preise sind Beispielwerte und können angepasst werden</p>
-      <span class="menu-orn bottom">◆</span>
+
+    <!-- Karten werden von shop.js gerendert (Preise & Größen kommen aus shop.js / order-api) -->
+    <div class="reveal" data-shop-popular="fistikli-baklava,fistikli-kunefe,sobiyet,katmer,kunefe-maras,havuc-dilimi"></div>
+
+    <div class="beliebt-cta reveal">
+      <a class="btn" href="bestellen.html">Ganze Karte ansehen</a>
+      <a class="btn ghost" href="#bestellen">Ganze Bleche</a>
+      <p>Abholung am Waller Ring kostenlos · Lieferung in Bremen ab 15 € Warenwert</p>
     </div>
   </div>
 </section>
@@ -188,59 +166,20 @@
 <section class="block alt" id="bestellen" data-screen-label="Blech bestellen">
   <div class="wrap order-grid">
     <figure class="order-visual reveal">
-      <div class="tilt js-tilt"><image-slot id="blech-foto" radius="20" placeholder="Foto eines ganzen Blechs hierher ziehen"></image-slot></div>
+      <div class="tilt js-tilt"><image-slot id="blech-foto" radius="20" fit="cover"
+        src="assets/bleche.webp" role="img" aria-label="Mehrere ganze Bleche Baklava frisch aus dem Ofen, dazu Pistazien"
+        placeholder="Foto eines ganzen Blechs hierher ziehen"></image-slot></div>
       <figcaption>Ganze Bleche — frisch gebacken, perfekt für Hochzeiten, Verlobungen &amp; Feiertage.</figcaption>
     </figure>
     <div class="reveal">
       <div class="section-head" style="margin-bottom: 36px;">
-        <span class="eyebrow">Vorbestellung</span>
+        <span class="eyebrow">Für Feiern</span>
         <h2>Ganze Bleche fertig machen lassen</h2>
-        <p>Wähle Sorte und Größe — wir bereiten dein Blech frisch zu. Abholung im Laden am Waller Ring.</p>
+        <p>Wähle Sorte und Größe — wir backen dein Blech frisch. Direkt online bezahlen, Abholung im Laden am Waller Ring.</p>
       </div>
-      <form id="orderForm">
-        <div class="field">
-          <label>Sorte</label>
-          <div class="seg" id="segSorte">
-            <button type="button" class="active" data-price="55">Fıstıklı Baklava<small>Pistazie</small></button>
-            <button type="button" data-price="45">Cevizli Baklava<small>Walnuss</small></button>
-            <button type="button" data-price="60">Şöbiyet<small>mit Sahnecreme</small></button>
-            <button type="button" data-price="58">Havuç Dilimi<small>Karottenschnitte</small></button>
-          </div>
-        </div>
-        <div class="field">
-          <label>Größe</label>
-          <div class="seg" id="segGroesse">
-            <button type="button" data-mult="0.35">¼ Blech<small>ca. 1 kg</small></button>
-            <button type="button" class="active" data-mult="0.6">½ Blech<small>ca. 2 kg</small></button>
-            <button type="button" data-mult="1">Ganzes Blech<small>ca. 4 kg</small></button>
-          </div>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="o-date">Abholdatum</label>
-            <input id="o-date" type="date" required="">
-          </div>
-          <div class="field">
-            <label for="o-anzahl">Anzahl Bleche</label>
-            <select id="o-anzahl"><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select>
-          </div>
-        </div>
-        <div class="field-row">
-          <div class="field">
-            <label for="o-name">Name</label>
-            <input id="o-name" type="text" placeholder="Dein Name" required="">
-          </div>
-          <div class="field">
-            <label for="o-tel">Telefon</label>
-            <input id="o-tel" type="tel" placeholder="0421 …" required="">
-          </div>
-        </div>
-        <div class="order-summary">
-          <div class="total"><small>Voraussichtlich</small><span id="orderTotal">33,00 €</span></div>
-          <button class="btn" type="submit">Blech vorbestellen</button>
-        </div>
-        <div class="form-ok" id="orderOk">Teşekkürler! Deine Vorbestellung ist eingegangen — wir melden uns telefonisch zur Bestätigung.</div>
-      </form>
+
+      <!-- Konfigurator wird von shop.js gerendert (gleiche Preise wie Karte & Kasse) -->
+      <div data-shop-blech></div>
     </div>
   </div>
 </section>
@@ -323,6 +262,8 @@
           <div class="field"><label for="r-name">Name</label><input id="r-name" type="text" placeholder="Dein Name" required=""></div>
         </div>
         <div class="field"><label for="r-tel">Telefon</label><input id="r-tel" type="tel" placeholder="0421 …" required=""></div>
+        <label class="consent"><input type="checkbox" name="datenschutz" required>
+          <span>Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden.</span></label>
         <button class="btn" type="submit" style="width: 100%; justify-content: center;">Tisch reservieren</button>
         <div class="form-ok" id="resOk">Deine Reservierungsanfrage ist eingegangen — wir bestätigen telefonisch.</div>
       </form>
@@ -350,6 +291,8 @@
             <div class="field"><label for="c-mail">E-Mail</label><input id="c-mail" type="email" placeholder="du@beispiel.de" required=""></div>
           </div>
           <div class="field"><label for="c-msg">Nachricht</label><textarea id="c-msg" rows="5" placeholder="Deine Nachricht — z. B. Fragen zu Torten, Catering oder Großbestellungen" required=""></textarea></div>
+          <label class="consent"><input type="checkbox" name="datenschutz" required>
+            <span>Ich habe die <a href="datenschutz.html">Datenschutzerklärung</a> gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden.</span></label>
           <button class="btn" type="submit">Nachricht senden</button>
           <div class="form-ok" id="contactOk">Danke für deine Nachricht — wir melden uns so schnell wie möglich!</div>
         </form>
@@ -361,15 +304,17 @@
   </div>
 </section>
 
+</main>
+
 <footer>
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a class="brand" href="#top"><img class="brand-logo" src="assets/logo.png" alt="Antepli — Baklava · Künefe" style="height: 72px;"></a>
+        <a class="brand" href="#top"><img class="brand-logo" src="assets/logo.png" alt="Antepli — Baklava · Künefe" width="146" height="121" loading="lazy" decoding="async" style="height: 72px;"></a>
         <p style="margin-top: 18px;">Türkische Patisserie nach Gaziantep-Art — täglich frisch in Bremen-Walle.</p>
       </div>
       <div class="foot-links">
-        <a href="#speisekarte">Speisekarte</a>
+        <a href="bestellen.html">Online bestellen</a>
         <a href="#bestellen">Blech bestellen</a>
         <a href="#reservieren">Reservieren</a>
         <a href="#kontakt">Kontakt</a>
@@ -378,12 +323,13 @@
         <a href="https://www.instagram.com/anteplibaklava.de/" target="_blank" rel="noopener">Instagram ↗</a>
         <a href="#kontakt">Waller Ring 121a, 28219 Bremen</a>
         <a href="#reservieren">Mo–Do 10:30–24:00 · Fr–So 10:30–01:00</a>
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 ANTEPLI GmbH · Bremen</span>
-      <span>Impressum · <a href="https://elyesferchichi.com/datenschutz.html?site=antepli" style="color:inherit;opacity:.7">Datenschutz</a></span>
-      <span><a href="https://elyesferchichi.com/" target="_blank" rel="noopener" style="color:#d0a93d;text-decoration:none;opacity:.6;font-size:.78rem;letter-spacing:.04em;font-family:'Cormorant Garamond',Georgia,serif;font-style:italic">Webdesign · Elyes Ferchichi →</a></span>
+      <span>© 2026 ANTEPLI · Bremen — <strong>Konzept-Website</strong></span>
+      <span><a href="https://elyesferchichi.com/" target="_blank" rel="noopener" style="color:#d0a93d;text-decoration:none;opacity:.75">Konzept &amp; Umsetzung: Elyes Ferchichi · Webdesign Bremen →</a></span>
     </div>
   </div>
 </footer>
@@ -451,28 +397,8 @@
     if (!reveals.length) clearInterval(revealTimer);
   }, 500);
 
-  // Segmented controls + price
-  var basePrice = 55, mult = 0.6;
-  function fmt(n) { return n.toFixed(2).replace('.', ',') + ' €'; }
-  function updateTotal() {
-    var anz = parseInt(document.getElementById('o-anzahl').value) || 1;
-    document.getElementById('orderTotal').textContent = fmt(basePrice * mult * anz);
-  }
-  function wireSeg(id, onPick) {
-    var seg = document.getElementById(id);
-    seg.querySelectorAll('button').forEach(function (b) {
-      b.addEventListener('click', function () {
-        seg.querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
-        b.classList.add('active');
-        onPick(b);
-        updateTotal();
-      });
-    });
-  }
-  wireSeg('segSorte', function (b) { basePrice = parseFloat(b.dataset.price); });
-  wireSeg('segGroesse', function (b) { mult = parseFloat(b.dataset.mult); });
-  document.getElementById('o-anzahl').addEventListener('change', updateTotal);
-  updateTotal();
+  // Der Blech-Konfigurator (#bestellen) läuft jetzt über shop.js — Sorte, Größe,
+  // Anzahl und Preis kommen aus derselben Quelle wie Warenkorb und Kasse.
 
   // 3D-Schichten: echte Freisteller, Pfeil-Labels, Scroll-Explosion, Maus-Tilt
   (function () {
@@ -550,6 +476,9 @@
     document.getElementById(formId).addEventListener('submit', function (e) {
       e.preventDefault();
       var form = e.target;
+      // preventDefault hebelt die native Prüfung aus — Pflichtfelder inkl.
+      // Datenschutz-Checkbox deshalb hier selbst anstoßen.
+      if (!form.reportValidity()) return;
       var btn = form.querySelector('[type="submit"]');
       if (btn) { btn.disabled = true; }
       var url = formspreeId
@@ -570,7 +499,6 @@
       });
     });
   }
-  wireForm('orderForm', 'orderOk', null);
   wireForm('resForm', 'resOk', null);
   wireForm('contactForm', 'contactOk', 'meewpvro');
 })();
@@ -640,7 +568,7 @@
   // Nicht in eine offene Navigation / einen offenen Dialog hineinplatzen
   function busy() {
     var c = document.body.className || '';
-    if (/\b(nav-open|cart-open|menu-open|modal-open|no-scroll)\b/.test(c)) return true;
+    if (/\b(nav-open|cart-open|menu-open|modal-open|no-scroll|shop-locked)\b/.test(c)) return true;
     if (document.querySelector('[role="dialog"][aria-hidden="false"]')) return true;
     if (document.querySelector('.navlinks.open, .mobile-nav.open, nav .open')) return true;
     return false;

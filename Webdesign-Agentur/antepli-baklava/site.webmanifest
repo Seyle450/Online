@@ -1,0 +1,26 @@
+{
+  "name": "ANTEPLI — Baklava & Künefe",
+  "short_name": "ANTEPLI",
+  "description": "Türkische Patisserie in Bremen — Baklava, Künefe und ganze Bleche online bestellen.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#18230f",
+  "theme_color": "#18230f",
+  "icons": [
+    {
+      "src": "assets/favicon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

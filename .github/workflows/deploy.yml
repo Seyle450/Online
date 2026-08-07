@@ -38,8 +38,14 @@ jobs:
           REMOTE_ROOT = '/www'
           MANIFEST_PATH = '.ftp-deploy-sync-state.json'
 
+          # Namen, die auf KEINER Ebene hochgeladen werden. 'tools' sind
+          # Build-Skripte (Favicons, Bilder) und 'PROMPTS.md' /
+          # 'KONZEPT-CHECKLISTE.md' interne Notizen — beides gehört nicht auf
+          # den Webserver.
           SKIP = {'.git', '.github', '.gitignore', '.gitattributes',
-                  'worker', 'order-api', 'README.md', 'ANALYTICS_SETUP.md', 'CNAME',
+                  'worker', 'order-api', 'tools', '_original',
+                  'README.md', 'ANALYTICS_SETUP.md', 'PROMPTS.md',
+                  'KONZEPT-CHECKLISTE.md', 'CNAME',
                   MANIFEST_PATH}
 
           def file_hash(path):

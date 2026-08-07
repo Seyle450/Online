@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seite nicht gefunden — Elyes Ferchichi · Webdesign Bremen</title>
+<meta name="description" content="Diese Seite existiert nicht (mehr). Zurück zur Startseite von Elyes Ferchichi — Webdesign aus Bremen.">
+<meta name="robots" content="noindex,follow">
+<link rel="stylesheet" href="/assets/fonts.css">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/svg+xml" href="/assets/ef-monogram-cobalt.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#000000">
+<style>
+  :root {
+    --bg: #000; --surface: #141414; --border: rgba(255,255,255,.08);
+    --fg: #f5f5f5; --fg-muted: #a0a0a0; --fg-dim: #6b6b6b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Manrope', system-ui, sans-serif; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    min-height: 100vh; min-height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px;
+    background:
+      radial-gradient(700px 420px at 50% 0%, rgba(255,255,255,.05), transparent 65%),
+      var(--bg);
+  }
+  .box { width: min(620px, 100%); text-align: center; }
+  .logo { height: 46px; width: auto; margin-bottom: 44px; opacity: .9; }
+  .code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; letter-spacing: .34em; text-transform: uppercase;
+    color: var(--fg-dim); margin-bottom: 20px;
+  }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(34px, 6vw, 54px); font-weight: 600;
+    line-height: 1.1; letter-spacing: -.02em; margin-bottom: 18px;
+  }
+  p { color: var(--fg-muted); font-size: 16.5px; max-width: 440px; margin: 0 auto 40px; }
+  .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  a.btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: 14px 28px; border-radius: 999px;
+    font-size: 15px; font-weight: 600; text-decoration: none;
+    transition: opacity .2s, border-color .2s, color .2s;
+  }
+  a.primary { background: #fff; color: #000; }
+  a.primary:hover { opacity: .86; }
+  a.ghost { border: 1px solid var(--border); color: var(--fg-muted); }
+  a.ghost:hover { border-color: rgba(255,255,255,.3); color: var(--fg); }
+  a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .links {
+    margin-top: 52px; padding-top: 26px; border-top: 1px solid var(--border);
+    display: flex; gap: 8px 26px; justify-content: center; flex-wrap: wrap;
+  }
+  .links a {
+    color: var(--fg-dim); font-size: 14px; text-decoration: none;
+    min-height: 26px; display: inline-flex; align-items: center;
+    transition: color .2s;
+  }
+  .links a:hover { color: var(--fg); }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+  <main class="box">
+    <img class="logo" src="/assets/ef-monogram-cobalt.svg" alt="Elyes Ferchichi" width="46" height="46">
+    <p class="code">Fehler 404</p>
+    <h1>Diese Seite gibt es nicht.</h1>
+    <p>Vielleicht wurde sie umbenannt oder entfernt. Über die Startseite findest du alles Aktuelle.</p>
+    <div class="actions">
+      <a class="btn primary" href="/">Zur Startseite</a>
+      <a class="btn ghost" href="/portfolio.html">Projekte ansehen</a>
+    </div>
+    <nav class="links" aria-label="Weitere Seiten">
+      <a href="/portfolio.html">Portfolio</a>
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+    </nav>
+  </main>
+</body></html>

@@ -1,0 +1,20 @@
+name = "antepli-orders"
+main = "index.js"
+compatibility_date = "2024-11-01"
+
+# Bestellungen werden hier zwischengespeichert (30 Tage).
+# Eigener Namespace — NICHT der von Pizza Blitz, sonst mischen sich die Bestellungen.
+# Angelegt mit: npx wrangler kv namespace create ANTEPLI_ORDERS
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "448d5e8302ac4607ac3be95b904de866"
+
+[vars]
+# Basis-URL der Antepli-Seite (für success/cancel nach der Zahlung).
+SITE_URL = "https://antepli.elyesferchichi.com"
+
+# Secrets NICHT hier eintragen, sondern:
+#   npx wrangler secret put STRIPE_SECRET_KEY        (sk_test_… → später sk_live_…)
+#   npx wrangler secret put STRIPE_WEBHOOK_SECRET    (whsec_… aus dem Webhook-Endpunkt)
+#   npx wrangler secret put TELEGRAM_BOT_TOKEN       (Bestell-Benachrichtigung)
+#   npx wrangler secret put TELEGRAM_CHAT_ID         (5895145432)

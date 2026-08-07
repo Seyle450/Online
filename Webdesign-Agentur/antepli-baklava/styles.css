@@ -372,6 +372,18 @@ a { color: inherit; }
 
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 32px); }
 
+/* Tastatur-Nutzer: erster Tab springt an den Inhalt vorbei an der Navigation */
+.skip-link {
+  position: fixed; top: 0; left: 50%; transform: translate(-50%, -120%);
+  z-index: 2147483000;
+  background: var(--gold); color: var(--ink);
+  font-family: var(--sans); font-size: 15px; font-weight: 700;
+  padding: 14px 26px; border-radius: 0 0 8px 8px; text-decoration: none;
+  transition: transform 0.2s ease;
+}
+.skip-link:focus { transform: translate(-50%, 0); }
+#main:focus { outline: none; }
+
 .eyebrow {
   display: inline-flex; align-items: center; gap: 12px;
   font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase;
@@ -401,6 +413,8 @@ a { color: inherit; }
 .nav-links a {
   text-decoration: none; font-size: 13.5px; letter-spacing: 0.06em; font-weight: 600;
   color: var(--cream-dim); transition: color 0.2s;
+  /* min-height: Ziel-Mindestgröße nach WCAG 2.5.8 (AA) */
+  display: inline-flex; align-items: center; min-height: 24px;
 }
 .nav-links a:hover { color: var(--gold-bright); }
 .btn {
@@ -418,7 +432,8 @@ a { color: inherit; }
 .btn.ghost { background: transparent; color: var(--cream); border: 1px solid rgba(244,236,221,0.35); box-shadow: none; }
 .btn.ghost:hover { border-color: var(--gold); color: var(--gold-bright); box-shadow: none; }
 .nav .btn { padding: 11px 22px; }
-.ig-link { display: inline-flex; align-items: center; }
+.ig-link { display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; margin: -10px; /* Klickfläche vergrößern, Layout unverändert */ }
 .ig-link svg { width: 21px; height: 21px; stroke: var(--cream-dim); transition: stroke 0.2s; }
 .ig-link:hover svg { stroke: var(--gold-bright); }
 .nav-toggle {
@@ -726,7 +741,8 @@ footer { background: var(--ink); padding: 64px 0 40px; border-top: 1px solid rgb
 .foot-grid { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
 .foot-grid p { color: var(--cream-dim); font-size: 14px; max-width: 340px; }
 .foot-links { display: grid; gap: 10px; }
-.foot-links a { text-decoration: none; color: var(--cream-dim); font-size: 14px; transition: color 0.2s; }
+.foot-links a { text-decoration: none; color: var(--cream-dim); font-size: 14px; transition: color 0.2s;
+  display: inline-flex; align-items: center; min-height: 26px; }
 .foot-links a:hover { color: var(--gold-bright); }
 .foot-bottom { margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(244,236,221,0.08); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; font-size: 12.5px; color: rgba(216,205,182,0.55); }
 

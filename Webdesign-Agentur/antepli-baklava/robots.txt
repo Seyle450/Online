@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Interne Dateien des Bestellsystems gehören nicht in den Index
+Disallow: /order-api/
+Disallow: /.image-slots.state.json
+
 Sitemap: https://antepli.elyesferchichi.com/sitemap.xml
