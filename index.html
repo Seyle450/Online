@@ -241,6 +241,101 @@
   .step h3{font-size:18px;}
   .step p{font-size:15px;color:#4a4a52;margin-top:6px;line-height:1.6;}
 
+  /* ---------- Ablauf: Chat-Animation ---------- */
+  .ablauf-grid{display:flex;flex-direction:column;gap:34px;margin-top:38px;}
+  .ablauf-grid .steps{margin-top:0;}
+
+  .chat{background:#1b1b21;border:1px solid rgba(246,245,241,.1);border-radius:16px;overflow:hidden;
+    box-shadow:0 34px 74px -44px rgba(0,0,0,.95);display:flex;flex-direction:column;}
+  .chat-top{display:flex;align-items:center;gap:11px;padding:13px 16px;border-bottom:1px solid rgba(246,245,241,.08);background:rgba(246,245,241,.03);}
+  .chat-av{width:34px;height:34px;border-radius:50%;background:var(--cobalt);color:#fff;font-family:var(--head);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none;letter-spacing:.02em;}
+  .chat-who{display:flex;flex-direction:column;min-width:0;flex:1;}
+  .chat-who strong{font-family:var(--head);font-size:14px;font-weight:600;color:var(--paper);letter-spacing:-.01em;}
+  .chat-who span{font-size:11.5px;color:#8d94a3;}
+  .chat-live{display:inline-flex;align-items:center;gap:6px;font-family:var(--head);font-size:10px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:#5ce29a;background:rgba(92,226,154,.12);border:1px solid rgba(92,226,154,.3);padding:4px 9px;border-radius:100px;flex:none;opacity:0;transform:scale(.8);transition:opacity .45s ease,transform .45s cubic-bezier(.2,1.4,.4,1);}
+  .chat-live.show{opacity:1;transform:none;}
+  .chat-live::before{content:"";width:6px;height:6px;border-radius:50%;background:#5ce29a;flex:none;animation:livePulse 1.6s ease-in-out infinite;}
+  @keyframes livePulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.7);}}
+
+  .chat-body{padding:18px 16px 20px;display:flex;flex-direction:column;gap:12px;height:470px;overflow-y:auto;
+    scrollbar-width:thin;scrollbar-color:rgba(246,245,241,.18) transparent;}
+  .chat-body::-webkit-scrollbar{width:5px;}
+  .chat-body::-webkit-scrollbar-thumb{background:rgba(246,245,241,.16);border-radius:100px;}
+  .chat-body::-webkit-scrollbar-track{background:transparent;}
+
+  .msg{display:flex;gap:9px;align-items:flex-end;max-width:90%;opacity:0;transform:translateY(12px) scale(.97);animation:msgIn .45s cubic-bezier(.2,.8,.3,1) forwards;}
+  @keyframes msgIn{to{opacity:1;transform:none;}}
+  .msg.in{align-self:flex-start;}
+  .msg.out{align-self:flex-end;flex-direction:row-reverse;}
+  .msg .av{width:26px;height:26px;border-radius:50%;flex:none;font-family:var(--head);font-size:9.5px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-bottom:2px;}
+  .msg.in .av{background:#3a3a45;color:#c9ccd4;}
+  .msg.out .av{background:var(--cobalt);color:#fff;}
+  .bub{padding:11px 14px;border-radius:15px;font-size:14.5px;line-height:1.5;}
+  .msg.in .bub{background:#2a2a33;color:#e6e7ea;border-bottom-left-radius:5px;}
+  .msg.out .bub{background:var(--cobalt);color:#fff;border-bottom-right-radius:5px;}
+  .msg.cardmsg .bub{padding:6px;background:rgba(43,80,226,.92);}
+
+  .sysmsg{align-self:center;font-family:var(--head);font-size:11.5px;font-weight:500;letter-spacing:.05em;color:#9aa0ad;
+    background:rgba(246,245,241,.06);border:1px solid rgba(246,245,241,.1);padding:6px 14px;border-radius:100px;
+    display:inline-flex;align-items:center;gap:7px;opacity:0;animation:msgIn .45s ease forwards;}
+  .sysmsg.ok{color:#5ce29a;background:rgba(92,226,154,.1);border-color:rgba(92,226,154,.26);}
+
+  .typing .bub{display:flex;gap:4px;padding:14px 15px;align-items:center;}
+  .typing i{width:6px;height:6px;border-radius:50%;background:#9aa0ad;display:block;animation:tdot 1.2s ease-in-out infinite;}
+  .typing.out i{background:rgba(255,255,255,.75);}
+  .typing i:nth-child(2){animation-delay:.16s;}
+  .typing i:nth-child(3){animation-delay:.32s;}
+  @keyframes tdot{0%,60%,100%{opacity:.3;transform:translateY(0);}30%{opacity:1;transform:translateY(-4px);}}
+
+  .offer{background:#fff;color:var(--ink);border-radius:11px;padding:14px;width:270px;max-width:100%;}
+  .offer-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+  .offer-h strong{font-family:var(--head);font-size:13.5px;font-weight:600;}
+  .offer-h b{font-family:var(--head);font-weight:700;font-size:21px;color:var(--cobalt);letter-spacing:-.03em;}
+  .offer ul{list-style:none;margin:11px 0 13px;display:flex;flex-direction:column;gap:6px;}
+  .offer li{font-size:12.5px;color:#4a4a52;display:flex;gap:7px;align-items:center;line-height:1.4;}
+  .offer li::before{content:"✓";color:var(--cobalt);font-weight:700;font-size:11px;flex:none;}
+  .offer-btns{display:flex;gap:8px;}
+  .obtn{flex:1;font-family:var(--head);font-size:12.5px;font-weight:600;padding:9px 10px;border-radius:8px;border:1px solid;cursor:default;
+    transition:transform .3s ease,opacity .35s ease,flex .35s ease,background .25s ease;}
+  .obtn.yes{background:var(--cobalt);border-color:var(--cobalt);color:#fff;}
+  .obtn.no{background:#fff;border-color:rgba(22,22,26,.16);color:#78787f;}
+  .obtn.press{animation:btnPress .5s cubic-bezier(.3,1.4,.4,1);}
+  @keyframes btnPress{0%{transform:scale(1);}35%{transform:scale(.88);}100%{transform:scale(1);}}
+  .offer.decided .obtn.no{opacity:0;flex:0;padding-left:0;padding-right:0;border-width:0;overflow:hidden;}
+
+  .build{width:270px;max-width:100%;padding:10px 8px 8px;}
+  .build-lbl{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-family:var(--head);font-size:12.5px;color:#fff;margin-bottom:9px;}
+  .build-lbl em{font-style:normal;font-variant-numeric:tabular-nums;opacity:.85;}
+  .build-bar{height:6px;border-radius:100px;background:rgba(255,255,255,.24);overflow:hidden;}
+  .build-fill{height:100%;width:0;border-radius:100px;background:#fff;transition:width 2.3s cubic-bezier(.35,.7,.3,1);}
+
+  .result{width:270px;max-width:100%;border-radius:8px;overflow:hidden;background:#fff;}
+  .result img{width:100%;height:122px;object-fit:cover;object-position:top;display:block;}
+  .result-f{padding:9px 12px;font-family:var(--head);font-size:12.5px;font-weight:600;color:var(--ink);display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .result-f em{font-style:normal;font-weight:400;color:var(--neutral);font-size:11px;}
+
+  .reaction{align-self:flex-start;margin:-4px 0 0 35px;font-size:27px;line-height:1;opacity:0;transform:scale(.3);animation:pop .6s cubic-bezier(.2,1.5,.4,1) forwards;}
+  @keyframes pop{to{opacity:1;transform:none;}}
+
+  .golive{align-self:center;display:inline-flex;align-items:center;gap:10px;margin-top:4px;
+    background:linear-gradient(135deg,rgba(92,226,154,.15),rgba(43,80,226,.16));border:1px solid rgba(92,226,154,.32);
+    border-radius:12px;padding:11px 15px;opacity:0;animation:msgIn .5s cubic-bezier(.2,.8,.3,1) forwards;}
+  .golive .dot{width:8px;height:8px;border-radius:50%;background:#5ce29a;flex:none;animation:livePulse 1.6s ease-in-out infinite;}
+  .golive div{display:flex;flex-direction:column;gap:2px;}
+  .golive strong{font-family:var(--head);font-size:13.5px;font-weight:600;color:var(--paper);}
+  .golive code{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;color:#5ce29a;}
+
+  .chat-foot{padding:0 16px 15px;}
+  .chat-replay{background:transparent;border:1px solid rgba(246,245,241,.16);color:#9aa0ad;font-family:var(--head);
+    font-size:12px;font-weight:500;padding:7px 13px;border-radius:8px;cursor:pointer;
+    transition:color .2s,border-color .2s,opacity .3s;opacity:0;pointer-events:none;}
+  .chat-replay.show{opacity:1;pointer-events:auto;}
+  .chat-replay:hover{color:var(--paper);border-color:rgba(246,245,241,.36);}
+  @media(max-width:400px){
+    .offer,.build,.result{width:238px;}
+    .chat-body{height:430px;}
+  }
+
   /* ---------- FAQ ---------- */
   .faq-list{margin-top:38px;}
   details.faq-item{border-top:1px solid var(--line);}
@@ -474,6 +569,29 @@
   .ablauf .step h3{color:var(--paper);}
   .ablauf .step p{color:#b1b4be;}
   .ablauf .sec-no{-webkit-text-stroke-color:rgba(155,176,255,.24);}
+
+  /* Steps folgen dem Chat-Fortschritt */
+  .ablauf .step{opacity:.42;transition:opacity .45s ease;}
+  .ablauf .step.active,.ablauf .step.done{opacity:1;}
+  .ablauf .step .no{background:#2c2c36;color:#8d94a3;
+    transition:background .4s ease,color .4s ease,box-shadow .4s ease,transform .4s cubic-bezier(.2,1.3,.4,1);}
+  .ablauf .step.done .no{background:var(--cobalt);color:#fff;}
+  .ablauf .step.active .no{background:var(--cobalt);color:#fff;transform:scale(1.08);box-shadow:0 0 0 5px rgba(43,80,226,.2);}
+
+  /* Desktop: Chat links, Schritte rechts */
+  @media(min-width:940px){
+    .ablauf-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.82fr);gap:52px;align-items:start;}
+    .ablauf-grid .steps{display:flex;flex-direction:column;gap:0;}
+    .ablauf-grid .steps .step{border-top:1px solid var(--line-dk);}
+    .ablauf-grid .steps .step:first-child{border-top:none;}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .msg,.sysmsg,.golive,.reaction{animation:none;opacity:1;transform:none;}
+    .chat-live::before,.golive .dot,.typing i{animation:none;}
+    .build-fill{transition:none;}
+    .ablauf .step{opacity:1;}
+  }
 
   /* Häufige Fragen: weiche Tönung gegen zwei weiße Flächen nebeneinander */
   #faq{background:linear-gradient(180deg,var(--paper),#efeef8);}
@@ -917,23 +1035,39 @@
       <h2>In vier einfachen Schritten zur fertigen Seite.</h2>
       <p class="lede">Kein technisches Blabla. Sie kümmern sich um Ihr Geschäft, ich kümmere mich um die Website.</p>
     </div>
-    <div class="steps">
-      <div class="step reveal">
-        <span class="no">1</span>
-        <div><h3>Anfrage</h3><p>Sie schreiben mir kurz, was Sie brauchen. Kostenlos und unverbindlich – per Mail oder WhatsApp.</p></div>
+    <div class="ablauf-grid">
+
+      <div class="chat reveal" id="chatDemo">
+        <div class="chat-top">
+          <span class="chat-av" aria-hidden="true">EF</span>
+          <span class="chat-who"><strong>Elyes Ferchichi</strong><span>Webdesign · Bremen</span></span>
+          <span class="chat-live" id="chatLive" aria-hidden="true">live</span>
+        </div>
+        <div class="chat-body" id="chatBody" aria-hidden="true"></div>
+        <div class="chat-foot">
+          <button type="button" class="chat-replay" id="chatReplay">Nochmal abspielen</button>
+        </div>
       </div>
-      <div class="step reveal reveal-d1">
-        <span class="no">2</span>
-        <div><h3>Angebot & Konzept</h3><p>Sie bekommen ein festes Angebot und einen klaren Vorschlag, wie Ihre Seite aussehen wird.</p></div>
+
+      <div class="steps" id="ablaufSteps">
+        <div class="step reveal">
+          <span class="no">1</span>
+          <div><h3>Anfrage</h3><p>Sie schreiben mir kurz, was Sie brauchen. Kostenlos und unverbindlich – per Mail oder WhatsApp.</p></div>
+        </div>
+        <div class="step reveal reveal-d1">
+          <span class="no">2</span>
+          <div><h3>Angebot &amp; Konzept</h3><p>Sie bekommen ein festes Angebot und einen klaren Vorschlag, wie Ihre Seite aussehen wird.</p></div>
+        </div>
+        <div class="step reveal">
+          <span class="no">3</span>
+          <div><h3>Gestaltung</h3><p>Ich baue Ihre Seite. Fotos und Texte liefern Sie – oder ich helfe Ihnen dabei.</p></div>
+        </div>
+        <div class="step reveal reveal-d1">
+          <span class="no">4</span>
+          <div><h3>Online</h3><p>Letzter Feinschliff, dann geht Ihre Seite live. Auf Wunsch pflege ich sie laufend weiter.</p></div>
+        </div>
       </div>
-      <div class="step reveal">
-        <span class="no">3</span>
-        <div><h3>Gestaltung</h3><p>Ich baue Ihre Seite. Fotos und Texte liefern Sie – oder ich helfe Ihnen dabei.</p></div>
-      </div>
-      <div class="step reveal reveal-d1">
-        <span class="no">4</span>
-        <div><h3>Online</h3><p>Letzter Feinschliff, dann geht Ihre Seite live. Auf Wunsch pflege ich sie laufend weiter.</p></div>
-      </div>
+
     </div>
   </div>
 </section>
@@ -1333,6 +1467,162 @@
         btn.textContent = btnText;
       }
     });
+  })();
+
+  /* ---------- Ablauf: Chat-Animation ---------- */
+  (function(){
+    const chat   = document.getElementById('chatDemo');
+    const body   = document.getElementById('chatBody');
+    const live   = document.getElementById('chatLive');
+    const replay = document.getElementById('chatReplay');
+    if(!chat || !body) return;
+
+    const steps  = Array.from(document.querySelectorAll('#ablaufSteps .step'));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let timers = [], ticks = [], token = 0;
+
+    const wait = ms => new Promise(res => {
+      if(reduce) return res();
+      timers.push(setTimeout(res, ms));
+    });
+
+    function stop(){
+      token++;
+      timers.forEach(clearTimeout); timers = [];
+      ticks.forEach(clearInterval); ticks = [];
+    }
+
+    function node(html){
+      const t = document.createElement('template');
+      t.innerHTML = html.trim();
+      return t.content.firstElementChild;
+    }
+    function add(html){
+      const el = typeof html === 'string' ? node(html) : html;
+      body.appendChild(el);
+      body.scrollTo({top: body.scrollHeight, behavior: reduce ? 'auto' : 'smooth'});
+      return el;
+    }
+
+    const typing = side => `<div class="msg ${side} typing"><span class="av">${side === 'in' ? 'K' : 'EF'}</span><span class="bub"><i></i><i></i><i></i></span></div>`;
+    const msg    = (side, text) => `<div class="msg ${side}"><span class="av">${side === 'in' ? 'K' : 'EF'}</span><p class="bub">${text}</p></div>`;
+    const sys    = (text, ok) => `<span class="sysmsg${ok ? ' ok' : ''}">${ok ? '✓ ' : ''}${text}</span>`;
+
+    const offerCard = `<div class="msg out cardmsg"><span class="av">EF</span><div class="bub"><div class="offer">
+        <div class="offer-h"><strong>Angebot · Café-Website</strong><b>390 €</b></div>
+        <ul><li>One-Pager mit Speisekarte</li><li>Tisch-Reservierung</li><li>Google &amp; Handy optimiert</li></ul>
+        <div class="offer-btns"><button class="obtn no" tabindex="-1">Ablehnen</button><button class="obtn yes" tabindex="-1">Annehmen</button></div>
+      </div></div></div>`;
+
+    const buildCard = `<div class="msg out cardmsg"><span class="av">EF</span><div class="bub"><div class="build">
+        <div class="build-lbl"><span>Ihre Seite wird gebaut …</span><em>0 %</em></div>
+        <div class="build-bar"><span class="build-fill"></span></div>
+      </div></div></div>`;
+
+    const resultCard = `<div class="msg out cardmsg"><span class="av">EF</span><div class="bub"><div class="result">
+        <img src="previews/niki.webp" alt="" width="1200" height="762" loading="lazy" decoding="async">
+        <div class="result-f"><span>Ihre neue Website</span><em>Vorschau</em></div>
+      </div></div></div>`;
+
+    const goLive = `<div class="golive"><span class="dot"></span><div><strong>Website ist online</strong><code>ihr-cafe.de</code></div></div>`;
+
+    function setStep(i){
+      steps.forEach((s, idx) => {
+        s.classList.toggle('done', idx < i);
+        s.classList.toggle('active', idx === i);
+      });
+    }
+
+    function countUp(el, ms){
+      if(reduce){ el.textContent = '100 %'; return; }
+      const start = performance.now();
+      const id = setInterval(() => {
+        const p = Math.min(1, (performance.now() - start) / ms);
+        el.textContent = Math.round(p * 100) + ' %';
+        if(p >= 1) clearInterval(id);
+      }, 40);
+      ticks.push(id);
+    }
+
+    async function play(){
+      const my = ++token;
+      const alive = () => my === token;
+
+      body.innerHTML = '';
+      live.classList.remove('show');
+      replay.classList.remove('show');
+      setStep(0);
+      await wait(400); if(!alive()) return;
+
+      /* 1 · Anfrage */
+      let t = add(typing('in'));
+      await wait(900); if(!alive()) return;
+      t.remove();
+      add(msg('in', 'Hallo! Ich brauche eine Website für mein Café 🙂'));
+      await wait(650); if(!alive()) return;
+      add(msg('in', 'Geht da auch eine Tisch-Reservierung?'));
+      await wait(850); if(!alive()) return;
+
+      /* 2 · Angebot */
+      setStep(1);
+      t = add(typing('out'));
+      await wait(900); if(!alive()) return;
+      t.remove();
+      add(msg('out', 'Klar. Hier Ihr Angebot – Festpreis, keine versteckten Kosten.'));
+      await wait(450); if(!alive()) return;
+      const offer = add(offerCard);
+      await wait(1100); if(!alive()) return;
+
+      offer.querySelector('.obtn.yes').classList.add('press');
+      await wait(420); if(!alive()) return;
+      offer.querySelector('.offer').classList.add('decided');
+      await wait(380); if(!alive()) return;
+      add(sys('Angebot angenommen', true));
+      await wait(750); if(!alive()) return;
+
+      /* 3 · Gestaltung */
+      setStep(2);
+      const build = add(buildCard);
+      await wait(120); if(!alive()) return;
+      build.querySelector('.build-fill').style.width = '100%';
+      countUp(build.querySelector('.build-lbl em'), 2300);
+      await wait(2450); if(!alive()) return;
+      build.querySelector('.build-lbl span').textContent = 'Fertig gebaut';
+      await wait(450); if(!alive()) return;
+      add(msg('out', 'So sieht Ihre Seite aus – schauen Sie mal drüber:'));
+      await wait(400); if(!alive()) return;
+      add(resultCard);
+      await wait(1200); if(!alive()) return;
+
+      /* Reaktion */
+      t = add(typing('in'));
+      await wait(800); if(!alive()) return;
+      t.remove();
+      add('<span class="reaction">👍</span>');
+      await wait(350); if(!alive()) return;
+      add(msg('in', 'Sieht mega aus! Können wir so online stellen.'));
+      await wait(950); if(!alive()) return;
+
+      /* 4 · Online */
+      setStep(3);
+      add(sys('Seite wird veröffentlicht …'));
+      await wait(1300); if(!alive()) return;
+      add(goLive);
+      live.classList.add('show');
+      steps.forEach(s => { s.classList.add('done'); s.classList.remove('active'); });
+      await wait(600); if(!alive()) return;
+      replay.classList.add('show');
+    }
+
+    replay.addEventListener('click', () => { stop(); play(); });
+
+    const start = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting){ start.disconnect(); play(); }
+      });
+    }, {threshold: 0.3});
+    start.observe(chat);
   })();
 </script>
 <script src="analytics/tracker.js" defer></script>
