@@ -203,16 +203,27 @@
   .card.feat li::before{background:#9bb0ff;}
 
   /* ---------- leistungen ---------- */
-  .svc-grid{display:flex;flex-direction:column;gap:16px;margin-top:38px;}
-  .svc{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:24px 22px;}
-  .svc h3{font-family:var(--head);font-size:18px;font-weight:600;letter-spacing:-.01em;margin-bottom:15px;display:flex;align-items:center;gap:10px;}
-  .svc h3::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--cobalt);flex:none;}
+  /* Endlos-Karussell: scrollbar + bewegt sich von allein */
+  .svc-marquee{--fade:clamp(40px,10vw,190px);
+    margin-top:38px;overflow-x:auto;overflow-y:hidden;padding:8px 0 14px;
+    scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-x:contain;cursor:grab;
+    -webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.5) calc(var(--fade) * .45),#000 var(--fade),#000 calc(100% - var(--fade)),rgba(0,0,0,.5) calc(100% - var(--fade) * .45),transparent 100%);
+    mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.5) calc(var(--fade) * .45),#000 var(--fade),#000 calc(100% - var(--fade)),rgba(0,0,0,.5) calc(100% - var(--fade) * .45),transparent 100%);}
+  .svc-marquee::-webkit-scrollbar{display:none;}
+  .svc-marquee.grabbing{cursor:grabbing;}
+  .svc-track{display:flex;align-items:stretch;gap:18px;width:max-content;padding:0 22px;}
+
+  .svc{flex:none;width:min(304px,78vw);border-radius:16px;padding:26px 24px;color:#fff;
+    background:linear-gradient(158deg,#3d5eea 0%,#2544c6 100%);
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:0 20px 44px -28px rgba(43,80,226,.9);}
+  .svc h3{font-family:var(--head);font-size:18px;font-weight:600;letter-spacing:-.01em;margin-bottom:16px;display:flex;align-items:center;gap:10px;color:#fff;}
+  .svc h3::before{content:"";width:9px;height:9px;border-radius:50%;background:#fff;flex:none;}
   .svc ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
-  .svc li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;line-height:1.45;color:#3a3a42;}
-  .svc li::before{content:"";flex:none;width:17px;height:17px;border-radius:50%;margin-top:1px;background:var(--cobalt);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/12px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/12px no-repeat;}
+  .svc li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;line-height:1.45;color:rgba(255,255,255,.93);}
+  .svc li::before{content:"";flex:none;width:17px;height:17px;border-radius:50%;margin-top:1px;background:#fff;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/12px no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z'/%3E%3C/svg%3E") center/12px no-repeat;}
   .svc-note{margin-top:24px;font-size:15px;color:var(--neutral);}
   .svc-note a{color:var(--cobalt);font-weight:600;}
-  @media(min-width:720px){ .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;} }
 
   /* ---------- beispiele ---------- */
   .work-grid{display:flex;flex-direction:column;gap:28px;margin-top:38px;}
@@ -914,8 +925,11 @@
       <h2>Alles aus einer Hand — von der Idee bis online.</h2>
       <p class="lede">Ob einfache Seite oder Shop mit Extras: Ich baue, was Ihr Betrieb wirklich braucht – und kümmere mich auf Wunsch auch danach um alles Technische.</p>
     </div>
-    <div class="svc-grid">
-      <div class="svc reveal">
+  </div>
+
+  <div class="svc-marquee reveal" id="svcMarquee">
+    <div class="svc-track" id="svcTrack">
+      <div class="svc">
         <h3>Website &amp; Design</h3>
         <ul>
           <li>Individuelle Website – One-Pager oder mehrseitig</li>
@@ -924,7 +938,7 @@
           <li>Logo &amp; einfaches Branding</li>
         </ul>
       </div>
-      <div class="svc reveal reveal-d1">
+      <div class="svc">
         <h3>Funktionen &amp; Shop</h3>
         <ul>
           <li>Online-Shop &amp; Zahlungsanbindung</li>
@@ -935,7 +949,7 @@
           <li>Mehrsprachige Seiten</li>
         </ul>
       </div>
-      <div class="svc reveal reveal-d2">
+      <div class="svc">
         <h3>Gefunden werden</h3>
         <ul>
           <li>SEO – damit Google Sie findet</li>
@@ -944,7 +958,7 @@
           <li>Besucher-Statistiken für Ihre Seite</li>
         </ul>
       </div>
-      <div class="svc reveal reveal-d3">
+      <div class="svc">
         <h3>Hosting &amp; Betreuung</h3>
         <ul>
           <li>Hosting &amp; Domain – ich richte alles ein</li>
@@ -954,6 +968,9 @@
         </ul>
       </div>
     </div>
+  </div>
+
+  <div class="container">
     <p class="svc-note reveal">Etwas nicht dabei, das Sie brauchen? <a href="#kontakt">Fragen Sie einfach</a> – fast alles lässt sich individuell umsetzen.</p>
   </div>
 </section>
@@ -1478,6 +1495,110 @@
         btn.disabled = false;
         btn.textContent = btnText;
       }
+    });
+  })();
+
+  /* ---------- Leistungen: Endlos-Karussell ---------- */
+  (function(){
+    const box   = document.getElementById('svcMarquee');
+    const track = document.getElementById('svcTrack');
+    if(!box || !track) return;
+
+    const originals = Array.from(track.children);
+    if(!originals.length) return;
+
+    /* So oft klonen, bis der Streifen breit genug fuer einen
+       nahtlosen Loop ist (mind. 3 Saetze und 3x Sichtbereich). */
+    let copies = 1;
+    const setWidth = () => track.scrollWidth / copies;
+    while(copies < 3 || track.scrollWidth < box.clientWidth * 3){
+      originals.forEach(card => {
+        const clone = card.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        track.appendChild(clone);
+      });
+      copies++;
+      if(copies > 12) break;
+    }
+
+    let unit = setWidth(), lo = unit * .5, hi = unit * 1.5;
+    function measure(){
+      unit = setWidth(); lo = unit * .5; hi = unit * 1.5;
+      if(box.scrollLeft < lo || box.scrollLeft > hi) box.scrollLeft = unit;
+    }
+    box.scrollLeft = unit;
+
+    /* Position immer im mittleren Satz halten – der Sprung ist
+       unsichtbar, weil dort exakt derselbe Inhalt steht. */
+    function wrap(){
+      if(unit <= 0) return;
+      if(box.scrollLeft > hi)      box.scrollLeft -= unit;
+      else if(box.scrollLeft < lo) box.scrollLeft += unit;
+    }
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SPEED  = 0.5;          /* px pro Frame bei 60 fps */
+    let hold = 0, visible = true, last = 0, idle = null;
+
+    const pause  = () => { hold++; };
+    const release= () => { hold = Math.max(0, hold - 1); };
+    function nudgeIdle(){
+      hold++;
+      clearTimeout(idle);
+      idle = setTimeout(() => { hold = Math.max(0, hold - 1); }, 1400);
+    }
+
+    function tick(ts){
+      const dt = last ? Math.min(ts - last, 60) : 16.7;
+      last = ts;
+      if(!hold && visible && unit > 0){
+        box.scrollLeft += SPEED * dt / 16.7;
+        wrap();
+      }
+      requestAnimationFrame(tick);
+    }
+    if(!reduce) requestAnimationFrame(tick);
+
+    /* Pausieren, solange jemand draufschaut oder scrollt */
+    box.addEventListener('mouseenter', pause);
+    box.addEventListener('mouseleave', release);
+    box.addEventListener('focusin',  pause);
+    box.addEventListener('focusout', release);
+    box.addEventListener('wheel',     nudgeIdle, {passive:true});
+    box.addEventListener('touchstart',pause,     {passive:true});
+    box.addEventListener('touchend',  nudgeIdle, {passive:true});
+    box.addEventListener('scroll',    wrap,      {passive:true});
+    window.addEventListener('resize', measure);
+
+    /* Ziehen mit der Maus */
+    let dragging = false, startX = 0, startLeft = 0;
+    box.addEventListener('pointerdown', e => {
+      if(e.pointerType !== 'mouse') return;
+      dragging = true; startX = e.clientX; startLeft = box.scrollLeft;
+      pause();
+      box.classList.add('grabbing');
+      box.setPointerCapture(e.pointerId);
+    });
+    box.addEventListener('pointermove', e => {
+      if(!dragging) return;
+      box.scrollLeft = startLeft - (e.clientX - startX);
+      wrap();
+    });
+    const endDrag = () => {
+      if(!dragging) return;
+      dragging = false;
+      box.classList.remove('grabbing');
+      release();
+    };
+    box.addEventListener('pointerup', endDrag);
+    box.addEventListener('pointercancel', endDrag);
+
+    /* Ausserhalb des Sichtfelds nicht weiterlaufen lassen */
+    new IntersectionObserver(entries => {
+      entries.forEach(e => { visible = e.isIntersecting; });
+    }, {threshold: 0}).observe(box);
+    document.addEventListener('visibilitychange', () => {
+      if(document.hidden) pause(); else release();
     });
   })();
 
