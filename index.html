@@ -342,8 +342,20 @@
   details.faq-item:last-child{border-bottom:1px solid var(--line);}
   details.faq-item summary{list-style:none;padding:22px 0;font-family:var(--head);font-weight:600;font-size:17px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;user-select:none;}
   details.faq-item summary::-webkit-details-marker{display:none;}
-  details.faq-item summary::after{content:"+";font-size:22px;font-weight:300;flex:none;color:var(--cobalt);line-height:1;}
-  details.faq-item[open] summary::after{content:"−";}
+  details.faq-item summary > span:first-child{transition:color .25s ease;}
+  details.faq-item summary:hover > span:first-child,
+  details.faq-item[open] summary > span:first-child{color:var(--cobalt);}
+
+  /* +/− Icon, morpht beim Öffnen */
+  .faq-ic{position:relative;width:15px;height:15px;flex:none;}
+  .faq-ic::before,.faq-ic::after{content:"";position:absolute;background:var(--cobalt);border-radius:2px;
+    transition:transform .38s cubic-bezier(.2,.7,.2,1),opacity .26s ease;}
+  .faq-ic::before{left:0;right:0;top:50%;height:1.8px;margin-top:-.9px;}
+  .faq-ic::after{top:0;bottom:0;left:50%;width:1.8px;margin-left:-.9px;}
+  details.faq-item[open] .faq-ic::before{transform:rotate(180deg);}
+  details.faq-item[open] .faq-ic::after{transform:rotate(90deg);opacity:0;}
+
+  .faq-wrap{overflow:hidden;}
   details.faq-item .faq-a{padding-bottom:22px;font-size:15.5px;color:#4a4a52;line-height:1.7;max-width:680px;}
 
   /* ---------- über mich ---------- */
@@ -1082,24 +1094,24 @@
     </div>
     <div class="faq-list">
       <details class="faq-item reveal">
-        <summary>Was kostet Hosting und Domain?</summary>
-        <p class="faq-a">Im Einmalpreis (Starter/Komplett) sind Hosting und Domain nicht enthalten – typisch ca. 5–15 € / Monat. Wenn Sie das Pflege-Paket dazubuchen, übernehme ich das Hosting komplett für Sie. Sie zahlen nur die 39 € / Monat und müssen sich um nichts weiter kümmern.</p>
+        <summary><span>Was kostet Hosting und Domain?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+        <div class="faq-wrap"><p class="faq-a">Im Einmalpreis (Starter/Komplett) sind Hosting und Domain nicht enthalten – typisch ca. 5–15 € / Monat. Wenn Sie das Pflege-Paket dazubuchen, übernehme ich das Hosting komplett für Sie. Sie zahlen nur die 39 € / Monat und müssen sich um nichts weiter kümmern.</p></div>
       </details>
       <details class="faq-item reveal">
-        <summary>Muss ich selbst Fotos liefern?</summary>
-        <p class="faq-a">Im Idealfall ja – eigene Fotos Ihres Unternehmens wirken am authentischsten. Falls keine vorhanden sind, helfe ich mit hochwertigen Stockfotos oder gebe Empfehlungen für günstige Fotografen in Bremen.</p>
+        <summary><span>Muss ich selbst Fotos liefern?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+        <div class="faq-wrap"><p class="faq-a">Im Idealfall ja – eigene Fotos Ihres Unternehmens wirken am authentischsten. Falls keine vorhanden sind, helfe ich mit hochwertigen Stockfotos oder gebe Empfehlungen für günstige Fotografen in Bremen.</p></div>
       </details>
       <details class="faq-item reveal">
-        <summary>Kann ich die Seite später selbst bearbeiten?</summary>
-        <p class="faq-a">Ja. Auf Wunsch richte ich ein einfaches System ein, mit dem Sie Öffnungszeiten, Preise und Texte selbst ändern können – ohne technisches Wissen. Alternativ übernehme ich das im Pflege-Paket für 39 € / Monat.</p>
+        <summary><span>Kann ich die Seite später selbst bearbeiten?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+        <div class="faq-wrap"><p class="faq-a">Ja. Auf Wunsch richte ich ein einfaches System ein, mit dem Sie Öffnungszeiten, Preise und Texte selbst ändern können – ohne technisches Wissen. Alternativ übernehme ich das im Pflege-Paket für 39 € / Monat.</p></div>
       </details>
       <details class="faq-item reveal">
-        <summary>Wie lange dauert es wirklich?</summary>
-        <p class="faq-a">Nach Auftragserteilung und Lieferung der Inhalte dauert es in der Regel 1–2 Wochen bis zur fertigen Seite. Bei einem One-Pager oft schon in einer Woche.</p>
+        <summary><span>Wie lange dauert es wirklich?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+        <div class="faq-wrap"><p class="faq-a">Nach Auftragserteilung und Lieferung der Inhalte dauert es in der Regel 1–2 Wochen bis zur fertigen Seite. Bei einem One-Pager oft schon in einer Woche.</p></div>
       </details>
       <details class="faq-item reveal">
-        <summary>Arbeiten Sie nur mit Unternehmen in Bremen?</summary>
-        <p class="faq-a">Nein – ich arbeite deutschlandweit, alles läuft per Video-Call und E-Mail. Branche spielt keine Rolle: vom Handwerksbetrieb über die Praxis bis zum Café – ich freue mich über Anfragen aus ganz Deutschland.</p>
+        <summary><span>Arbeiten Sie nur mit Unternehmen in Bremen?</span><span class="faq-ic" aria-hidden="true"></span></summary>
+        <div class="faq-wrap"><p class="faq-a">Nein – ich arbeite deutschlandweit, alles läuft per Video-Call und E-Mail. Branche spielt keine Rolle: vom Handwerksbetrieb über die Praxis bis zum Café – ich freue mich über Anfragen aus ganz Deutschland.</p></div>
       </details>
     </div>
   </div>
@@ -1466,6 +1478,51 @@
         btn.disabled = false;
         btn.textContent = btnText;
       }
+    });
+  })();
+
+  /* ---------- FAQ: sanftes Auf-/Zuklappen ---------- */
+  (function(){
+    const items = document.querySelectorAll('details.faq-item');
+    if(!items.length || !Element.prototype.animate) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const EASE_IN  = 'cubic-bezier(.2,.7,.2,1)';
+    const EASE_OUT = 'cubic-bezier(.4,0,.7,1)';
+
+    items.forEach(d => {
+      const sum  = d.querySelector('summary');
+      const wrap = d.querySelector('.faq-wrap');
+      if(!sum || !wrap) return;
+      let anim = null;
+
+      sum.addEventListener('click', e => {
+        e.preventDefault();
+        if(anim){ anim.cancel(); anim = null; }
+
+        if(!d.open){
+          d.open = true;
+          const h = wrap.offsetHeight;
+          anim = wrap.animate(
+            [{height:'0px', opacity:0}, {height:h+'px', opacity:1}],
+            {duration:360, easing:EASE_IN}
+          );
+          anim.onfinish = () => { anim = null; };
+        } else {
+          const h = wrap.offsetHeight;
+          anim = wrap.animate(
+            [{height:h+'px', opacity:1}, {height:'0px', opacity:0}],
+            {duration:270, easing:EASE_OUT, fill:'forwards'}
+          );
+          /* erst zuklappen, dann die Fixierung lösen – sonst blitzt die
+             volle Höhe für einen Frame auf */
+          anim.onfinish = () => {
+            d.open = false;
+            const done = anim; anim = null;
+            if(done) done.cancel();
+          };
+        }
+      });
     });
   })();
 
