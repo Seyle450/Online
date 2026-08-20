@@ -213,9 +213,11 @@
   .svc-track{display:flex;align-items:stretch;gap:18px;width:max-content;}
 
   .svc{flex:none;width:min(304px,78vw);border-radius:16px;padding:26px 24px;color:#fff;
-    background:linear-gradient(158deg,#3d5eea 0%,#2544c6 100%);
-    border:1px solid rgba(255,255,255,.16);
-    box-shadow:0 20px 44px -28px rgba(43,80,226,.9);}
+    background:
+      radial-gradient(125% 95% at 14% 0%,rgba(138,166,255,.32) 0%,rgba(138,166,255,0) 58%),
+      linear-gradient(158deg,#3055e8 0%,#2039b6 54%,#152479 100%);
+    border:1px solid rgba(255,255,255,.13);
+    box-shadow:0 24px 50px -30px rgba(16,32,110,.95),inset 0 1px 0 rgba(255,255,255,.18);}
   .svc h3{font-family:var(--head);font-size:18px;font-weight:600;letter-spacing:-.01em;margin-bottom:16px;display:flex;align-items:center;gap:10px;color:#fff;}
   .svc h3::before{content:"";width:9px;height:9px;border-radius:50%;background:#fff;flex:none;}
   .svc ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
