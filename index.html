@@ -204,14 +204,13 @@
 
   /* ---------- leistungen ---------- */
   /* Endlos-Karussell: scrollbar + bewegt sich von allein */
-  .svc-marquee{--fade:clamp(40px,10vw,190px);
-    margin-top:38px;overflow-x:auto;overflow-y:hidden;padding:8px 0 14px;
-    scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-x:contain;cursor:grab;
-    -webkit-mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.5) calc(var(--fade) * .45),#000 var(--fade),#000 calc(100% - var(--fade)),rgba(0,0,0,.5) calc(100% - var(--fade) * .45),transparent 100%);
-    mask-image:linear-gradient(to right,transparent 0,rgba(0,0,0,.5) calc(var(--fade) * .45),#000 var(--fade),#000 calc(100% - var(--fade)),rgba(0,0,0,.5) calc(100% - var(--fade) * .45),transparent 100%);}
+  /* Der Streifen endet an einer gerundeten Kante, nicht an der Seitenkante */
+  .svc-marquee{margin-top:38px;overflow-x:auto;overflow-y:hidden;padding:8px 0 14px;
+    border-radius:18px;
+    scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-x:contain;cursor:grab;}
   .svc-marquee::-webkit-scrollbar{display:none;}
   .svc-marquee.grabbing{cursor:grabbing;}
-  .svc-track{display:flex;align-items:stretch;gap:18px;width:max-content;padding:0 22px;}
+  .svc-track{display:flex;align-items:stretch;gap:18px;width:max-content;}
 
   .svc{flex:none;width:min(304px,78vw);border-radius:16px;padding:26px 24px;color:#fff;
     background:linear-gradient(158deg,#3d5eea 0%,#2544c6 100%);
@@ -925,10 +924,9 @@
       <h2>Alles aus einer Hand — von der Idee bis online.</h2>
       <p class="lede">Ob einfache Seite oder Shop mit Extras: Ich baue, was Ihr Betrieb wirklich braucht – und kümmere mich auf Wunsch auch danach um alles Technische.</p>
     </div>
-  </div>
 
-  <div class="svc-marquee reveal" id="svcMarquee">
-    <div class="svc-track" id="svcTrack">
+    <div class="svc-marquee reveal" id="svcMarquee">
+      <div class="svc-track" id="svcTrack">
       <div class="svc">
         <h3>Website &amp; Design</h3>
         <ul>
@@ -967,10 +965,9 @@
           <li>Fester Ansprechpartner, schnelle Reaktion</li>
         </ul>
       </div>
+      </div>
     </div>
-  </div>
 
-  <div class="container">
     <p class="svc-note reveal">Etwas nicht dabei, das Sie brauchen? <a href="#kontakt">Fragen Sie einfach</a> – fast alles lässt sich individuell umsetzen.</p>
   </div>
 </section>
