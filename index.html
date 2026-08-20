@@ -439,6 +439,28 @@
   .qform-note{margin-top:14px;font-size:12px;color:#85858d;line-height:1.5;}
   .qform-note a{color:#9bb0ff;text-decoration:underline;text-underline-offset:2px;}
 
+  /* ---------- Kurzfrage-Popup ---------- */
+  .qq-ovl{position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;padding:20px;
+    background:rgba(10,10,14,.62);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+    opacity:0;transition:opacity .28s ease;}
+  .qq-ovl[hidden]{display:none;}
+  .qq-ovl.open{opacity:1;}
+  .qq-panel{position:relative;width:100%;max-width:440px;background:var(--ink);color:var(--paper);
+    border:1px solid var(--line-dk);border-radius:16px;padding:26px 24px 24px;
+    box-shadow:0 42px 90px -44px rgba(0,0,0,.95);max-height:calc(100dvh - 40px);overflow-y:auto;
+    opacity:0;transform:translateY(18px) scale(.97);
+    transition:opacity .28s ease,transform .34s cubic-bezier(.2,.8,.3,1);}
+  .qq-ovl.open .qq-panel{opacity:1;transform:none;}
+  /* im Popup traegt das Panel den Rahmen – nicht noch einmal das Formular */
+  .qq-panel .qform{background:none;border:0;border-radius:0;padding:0;margin-top:0;}
+  .qq-panel .qform-head{padding-right:40px;font-size:19px;}
+  .qq-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:9px;
+    border:1px solid var(--line-dk);background:transparent;color:#9aa0ad;font-size:20px;line-height:1;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:color .2s ease,border-color .2s ease;}
+  .qq-close:hover{color:var(--paper);border-color:rgba(246,245,241,.35);}
+  @media(prefers-reduced-motion:reduce){ .qq-ovl,.qq-panel{transition:none;} }
+
   /* ---------- footer ---------- */
   footer{background:var(--ink);color:var(--paper);padding:36px 0 44px;border-top:1px solid var(--line-dk);}
   .foot-row{display:flex;flex-direction:column;gap:24px;}
@@ -983,7 +1005,7 @@
       </div>
     </div>
 
-    <p class="svc-note reveal">Etwas nicht dabei, das Sie brauchen? <a href="#kontakt">Fragen Sie einfach</a> – fast alles lässt sich individuell umsetzen.</p>
+    <p class="svc-note reveal">Etwas nicht dabei, das Sie brauchen? <a href="#kontakt" id="qqOpen">Fragen Sie einfach</a> – fast alles lässt sich individuell umsetzen.</p>
   </div>
 </section>
 
@@ -1337,6 +1359,33 @@
   </div>
 </footer>
 
+<!-- ===== KURZFRAGE-POPUP ===== -->
+<div class="qq-ovl" id="qqOvl" hidden>
+  <div class="qq-panel" role="dialog" aria-modal="true" aria-labelledby="qqTitle">
+    <button type="button" class="qq-close" id="qqClose" aria-label="Schließen">&times;</button>
+    <form class="qform" id="qqForm" novalidate>
+      <div class="qform-head" id="qqTitle">Kurz gefragt</div>
+      <p class="qform-intro">Stellen Sie Ihre Frage – ich antworte Ihnen per E-Mail.</p>
+
+      <div class="fld">
+        <label for="qqMsg">Ihre Frage</label>
+        <textarea id="qqMsg" name="message" placeholder="Was möchten Sie wissen?" required maxlength="2000"></textarea>
+      </div>
+
+      <div class="fld">
+        <label for="qqMail">Ihre E-Mail</label>
+        <input id="qqMail" name="email" type="email" placeholder="ihre@email.de" required maxlength="120" autocomplete="email">
+      </div>
+
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <button type="submit" class="btn btn-primary" id="qqSubmit">Frage senden</button>
+      <div class="qform-status" id="qqStatus" role="status" aria-live="polite"></div>
+      <p class="qform-note">Ihre Angaben nutze ich nur, um Ihre Frage zu beantworten. Details in der <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+    </form>
+  </div>
+</div>
+
 <script>
   /* nav scroll border + Scroll-Fortschritt */
   const nav = document.getElementById('nav');
@@ -1506,6 +1555,132 @@
       } finally {
         btn.disabled = false;
         btn.textContent = btnText;
+      }
+    });
+  })();
+
+  /* ---------- Kurzfrage-Popup (gleiches /contact wie das Angebotsformular) ---------- */
+  (function(){
+    const WORKER_URL = 'https://portfolio-analytics.seyle450.workers.dev';
+    const ovl    = document.getElementById('qqOvl');
+    const opener = document.getElementById('qqOpen');
+    const form   = document.getElementById('qqForm');
+    if(!ovl || !opener || !form) return;
+
+    const panel  = ovl.querySelector('.qq-panel');
+    const closeB = document.getElementById('qqClose');
+    const btn    = document.getElementById('qqSubmit');
+    const status = document.getElementById('qqStatus');
+    const msgEl  = document.getElementById('qqMsg');
+    const mailEl = document.getElementById('qqMail');
+    const MAIL   = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    let lastFocus = null, closeTimer = null;
+
+    function open(e){
+      if(e) e.preventDefault();
+      clearTimeout(closeTimer);
+      lastFocus = document.activeElement;
+      ovl.hidden = false;
+      void ovl.offsetWidth;              /* Reflow, damit der Übergang greift */
+      ovl.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => msgEl.focus(), 60);
+    }
+
+    function close(){
+      ovl.classList.remove('open');
+      document.body.style.overflow = '';
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(() => { ovl.hidden = true; }, 320);
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+
+    opener.addEventListener('click', open);
+    closeB.addEventListener('click', close);
+    ovl.addEventListener('mousedown', e => { if(e.target === ovl) close(); });
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape' && !ovl.hidden) close();
+    });
+
+    /* Fokus im Dialog halten */
+    panel.addEventListener('keydown', e => {
+      if(e.key !== 'Tab') return;
+      const f = panel.querySelectorAll('button, textarea, input:not(.hp), a[href]');
+      if(!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    });
+
+    function hasConsent(){
+      try { return /(?:^|;)\s*analytics_consent=granted/.test(document.cookie); } catch(e){ return false; }
+    }
+
+    form.addEventListener('submit', async ev => {
+      ev.preventDefault();
+      const message = msgEl.value.trim();
+      const email   = mailEl.value.trim();
+      status.className = 'qform-status';
+
+      if(!message){
+        status.classList.add('err');
+        status.textContent = 'Bitte schreiben Sie kurz Ihre Frage.';
+        msgEl.focus();
+        return;
+      }
+      if(!MAIL.test(email)){
+        status.classList.add('err');
+        status.textContent = 'Bitte eine gültige E-Mail-Adresse angeben.';
+        mailEl.focus();
+        return;
+      }
+
+      btn.disabled = true;
+      const label = btn.textContent;
+      btn.textContent = 'Wird gesendet…';
+      status.textContent = '';
+
+      /* Gleiche Nutzlast wie das Angebotsformular, damit der Worker
+         nichts Zusaetzliches kennen muss. */
+      const payload = {
+        company: 'Kurzfrage über die Website',
+        person: '',
+        contactType: 'E-Mail',
+        contactValue: email,
+        source: '',
+        package: '',
+        pflege: false,
+        message,
+        website: form.website.value,   /* Honeypot */
+        page: '/',
+        turnstileToken: '',
+      };
+      if(hasConsent()){
+        try { payload.sessionId = sessionStorage.getItem('_as') || ''; } catch(e){}
+      }
+
+      try {
+        const res = await fetch(WORKER_URL + '/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if(!res.ok){
+          let m = 'Senden fehlgeschlagen. Bitte per WhatsApp oder E-Mail versuchen.';
+          try { const d = await res.json(); if(d && d.error) m = d.error; } catch(e){}
+          throw new Error(m);
+        }
+        form.reset();
+        status.classList.add('ok');
+        status.textContent = '✓ Danke! Ihre Frage ist angekommen – ich melde mich per E-Mail.';
+        closeTimer = setTimeout(close, 2600);
+      } catch(err){
+        status.classList.add('err');
+        status.textContent = err.message || 'Senden fehlgeschlagen. Bitte per WhatsApp oder E-Mail versuchen.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = label;
       }
     });
   })();
